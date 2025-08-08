@@ -1,0 +1,28 @@
+<div class="container nav">
+  <div class="logo">
+    <a href="/">{{ settings.logo_text | default: shop.name }}</a>
+  </div>
+  <nav class="menu" role="navigation" aria-label="Main navigation">
+    {% if settings.main_menu != blank and linklists[settings.main_menu] %}
+      {% for link in linklists[settings.main_menu].links %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {% endfor %}
+    {% else %}
+      <a href="/collections/all">Shop</a>
+      <a href="/pages/about">About</a>
+      <a href="/blogs/news">Blog</a>
+    {% endif %}
+  </nav>
+  <div class="menu">
+    <form action="/search" method="get" role="search">
+      <input type="search" name="q" placeholder="{{ 'sections.header.search_placeholder' | t }}">
+    </form>
+    <a href="/cart">{{ 'sections.header.cart' | t }} ({{ cart.item_count }})</a>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Header",
+  "settings": []
+}
+{% endschema %}

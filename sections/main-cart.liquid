@@ -1,0 +1,29 @@
+<section class="container">
+  <h1>{{ 'cart.general.title' | t }}</h1>
+  {% if cart.item_count == 0 %}
+    <p>{{ 'cart.general.empty' | t }}</p>
+  {% else %}
+    <form action="/cart" method="post" novalidate>
+      <div class="grid">
+        {% for item in cart.items %}
+          <div class="product-card">
+            {% if item.image %}
+              <img src="{{ item.image | img_url: '300x' }}" alt="{{ item.product.title | escape }}">
+            {% endif %}
+            <div><a href="{{ item.url }}">{{ item.product.title }}</a></div>
+            <div class="price">{{ item.price | money }}</div>
+            <div>
+              <input type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <p><strong>{{ 'cart.general.subtotal' | t }}:</strong> {{ cart.total_price | money }}</p>
+      <button class="btn" name="update" type="submit">{{ 'cart.general.update' | t }}</button>
+      <button class="btn" name="checkout" type="submit">{{ 'cart.general.checkout' | t }}</button>
+    </form>
+  {% endif %}
+</section>
+{% schema %}
+{"name":"Main cart","settings":[]}
+{% endschema %}

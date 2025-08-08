@@ -1,0 +1,35 @@
+{
+  "general": {
+    "search": "Search",
+    "view_product": "View product"
+  },
+  "sections": {
+    "header": {
+      "cart": "Cart",
+      "search_placeholder": "Search products..."
+    },
+    "footer": {
+      "copyright": "\u00a9 {{ shop.name }}"
+    },
+    "hero": {
+      "heading": "Welcome to {{ shop.name }}",
+      "subheading": "Fresh picks, daily."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your cart",
+      "empty": "Your cart is empty",
+      "subtotal": "Subtotal",
+      "update": "Update",
+      "checkout": "Checkout"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "hero": {
+      "type": "thattukadai-hero",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero"
+  ]
+}

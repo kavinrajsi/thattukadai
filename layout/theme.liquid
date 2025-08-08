@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ shop.name }}{% if page_title %} — {{ page_title }}{% endif %}</title>
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ content_for_header }}
+  </head>
+  <body class="{{ template | handleize }}">
+    <a class="skip-to-content" href="#MainContent">Skip to content</a>
+    <header>
+      {% section 'header' %}
+    </header>
+
+    <main id="MainContent" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    <footer>
+      {% section 'footer' %}
+    </footer>
+
+    {{ 'theme.js' | asset_url | script_tag }}
+  </body>
+</html>
