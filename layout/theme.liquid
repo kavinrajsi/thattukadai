@@ -3,12 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ shop.name }}{% if page_title %} — {{ page_title }}{% endif %}</title>
+    <title>
+      {{ shop.name }}
+      {% if page_title %} — {{ page_title }}{% endif %}
+    </title>
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
     {{ content_for_header }}
   </head>
   <body class="{{ template | handleize }}">
     <a class="skip-to-content" href="#MainContent">Skip to content</a>
+    {% section 'announcement-bar' %}
     <header>
       {% section 'header' %}
     </header>
@@ -20,7 +25,7 @@
     <footer>
       {% section 'footer' %}
     </footer>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
 
-    {{ 'theme.js' | asset_url | script_tag }}
   </body>
 </html>

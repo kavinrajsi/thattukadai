@@ -1,0 +1,180 @@
+<section class="promo">
+  <!-- Promo card appended after the videos -->
+  <div
+    class="video-snippet__promo"
+    style="
+      --promo-surface: {{ section.settings.promo_bg }};
+      --promo-card: {{ section.settings.promo_card_bg }};
+      --promo-chip-bg: {{ section.settings.promo_chip_bg }};
+      --promo-chip-fg: {{ section.settings.promo_chip_fg }};
+      --promo-title-fg: {{ section.settings.promo_title_color }};
+      --promo-text-fg: {{ section.settings.promo_text_color }};
+      --promo-btn-bg: {{ section.settings.promo_btn_bg }};
+      --promo-btn-fg: {{ section.settings.promo_btn_fg }};
+    "
+  >
+    <div class="promo-card">
+      <div class="promo-card__surface">
+        <div class="promo-card__inner">
+          <div class="promo-card__media">
+            {% if section.settings.promo_image != blank %}
+              {% assign promo = section.settings.promo_image %}
+              {{
+                promo
+                | image_url: width: 1200
+                | image_tag:
+                  alt: section.settings.promo_title,
+                  widths: '600,900,1200',
+                  sizes: '(min-width: 1000px) 560px, 100vw',
+                  loading: 'lazy',
+                  decoding: 'async',
+                  class: 'promo-card__img',
+                  width: promo.width,
+                  height: promo.height
+              }}
+            {% else %}
+              <div class="promo-card__ph">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="promo-card__content">
+            {% if section.settings.promo_tag != blank %}
+              <span class="promo-card__tag">{{ section.settings.promo_tag }}</span>
+            {% endif %}
+
+            {% if section.settings.promo_title != blank %}
+              <h3 class="promo-card__title">{{ section.settings.promo_title }}</h3>
+            {% endif %}
+
+            {% if section.settings.promo_text != blank %}
+              <div class="promo-card__text rte">{{ section.settings.promo_text }}</div>
+            {% endif %}
+
+            {% if section.settings.promo_btn_label != blank and section.settings.promo_btn_link != blank %}
+              <a class="promo-card__button" href="{{ section.settings.promo_btn_link }}">
+                {{- section.settings.promo_btn_label -}}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /promo -->
+</section>
+
+{% schema %}
+{
+  "name": "Slider Content",
+  "settings": [
+
+    { "type": "header", "content": "Promo card" },
+    { "id": "promo_image", "type": "image_picker", "label": "Promo image" },
+    { "id": "promo_tag", "type": "text", "label": "Promo tag", "default": "Traditional Sweets" },
+    { "id": "promo_title", "type": "text", "label": "Promo title", "default": "A FAMILY TRADITION ROOTED IN FLAVOR" },
+    {
+      "id": "promo_text",
+      "type": "richtext",
+      "label": "Promo text",
+      "default": "<p>Today, the legacy continues with thriving outlets across Sivakasi, proudly run by the next generations.</p>"
+    },
+    { "id": "promo_btn_label", "type": "text", "label": "Button label", "default": "View More" },
+    { "id": "promo_btn_link", "type": "url", "label": "Button link" },
+
+    { "type": "header", "content": "Promo colors" },
+    { "id": "promo_bg", "type": "color", "label": "Surface background", "default": "#F2C635" },
+    { "id": "promo_card_bg", "type": "color", "label": "Card background", "default": "#FFFFFF" },
+    { "id": "promo_chip_bg", "type": "color", "label": "Chip background", "default": "#EFEFEF" },
+    { "id": "promo_chip_fg", "type": "color", "label": "Chip text", "default": "#111111" },
+    { "id": "promo_title_color", "type": "color", "label": "Title color", "default": "#111111" },
+    { "id": "promo_text_color", "type": "color", "label": "Body text color", "default": "#333333" },
+    { "id": "promo_btn_bg", "type": "color", "label": "Button background", "default": "#F2C635" },
+    { "id": "promo_btn_fg", "type": "color", "label": "Button text color", "default": "#111111" }
+  ],
+  "presets": [
+    {
+      "name": "Slider Content",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .promo-card {
+    background: var(--promo-surface, #f2c635);
+    padding: clamp(16px, 3vw, 28px);
+    border-radius: 18px;
+  }
+  .promo-card__surface {
+    background: var(--promo-card, #fff);
+    border-radius: 18px;
+    padding: clamp(12px, 2vw, 20px);
+  }
+  .promo-card__inner {
+    display: grid;
+    gap: clamp(16px, 3vw, 28px);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 900px) {
+    .promo-card__inner {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+    }
+  }
+  .promo-card__media {
+    overflow: hidden;
+    border-radius: 18px;
+  }
+  .promo-card__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 18px;
+  }
+  .promo-card__ph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 240px;
+    background: #f6f6f6;
+    border-radius: 18px;
+  }
+  .promo-card__content {
+    padding: clamp(8px, 1.5vw, 16px);
+  }
+  .promo-card__tag {
+    display: inline-block;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    background: var(--promo-chip-bg, #efefef);
+    color: var(--promo-chip-fg, #111);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .promo-card__title {
+    margin: 0.75rem 0 0.5rem;
+    color: var(--promo-title-fg, #111);
+    font-weight: 800;
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
+    line-height: 1.2;
+  }
+  .promo-card__text {
+    color: var(--promo-text-fg, #333);
+    margin-bottom: 1rem;
+  }
+  .promo-card__button {
+    display: inline-block;
+    padding: 0.8rem 1.25rem;
+    border-radius: 999px;
+    background: var(--promo-btn-bg, #f2c635);
+    color: var(--promo-btn-fg, #111);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .promo-card__button:hover {
+    opacity: 0.92;
+  }
+{% endstyle %}

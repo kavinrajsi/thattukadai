@@ -1,0 +1,190 @@
+<!-- sections/promo-cta.liquid -->
+<section class="promo-cta{% if section.settings.full_bleed %} promo-cta--full{% endif %}">
+  <div
+    class="promo-cta__surface"
+    style="
+      --promo-bg: {{ section.settings.bg_color }};
+      --promo-text: {{ section.settings.text_color }};
+      --promo-btn-bg: {{ section.settings.btn_bg }};
+      --promo-btn-fg: {{ section.settings.btn_text }};
+      --promo-radius: {{ section.settings.radius }}px;
+      --promo-padding-y: {{ section.settings.pad_y }}px;
+      --promo-padding-x: {{ section.settings.pad_x }}px;
+      --promo-gap: {{ section.settings.gap }}px;
+      --promo-max: {{ section.settings.max_width }}px;
+    "
+  >
+    <div class="promo-cta__container">
+      <div class="promo-cta__grid promo-cta__grid--{{ section.settings.layout }}">
+        {% if section.settings.image != blank %}
+          <div class="promo-cta__media">
+            {% comment %} {% assign img = section.settings.image %}
+            {{
+              img
+              | image_url: width: 1200x
+              | default: section.settings.title,
+                class: 'promo-cta__img',
+                loading: 'lazy',
+                decoding: 'async',
+                widths: '400,600,800,1000,1200',
+                sizes: '(min-width: 1200px) 480px, (min-width: 768px) 40vw, 90vw',
+                width: img.width,
+                height: img.height
+            }} {% endcomment %}
+          </div>
+        {% endif %}
+
+        <div class="promo-cta__content">
+          {% if section.settings.title != blank %}
+            <h2 class="promo-cta__title">{{ section.settings.title }}</h2>
+          {% endif %}
+
+          {% if section.settings.body != blank %}
+            <div class="promo-cta__body rte">{{ section.settings.body }}</div>
+          {% endif %}
+
+          {% if section.settings.btn_label != blank and section.settings.btn_link != blank %}
+            <a class="promo-cta__button" href="{{ section.settings.btn_link }}">{{ section.settings.btn_label }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promo CTA Banner",
+  "tag": "section",
+  "class": "promo-cta",
+  "settings": [
+    { "type": "checkbox", "id": "full_bleed", "label": "Full-width background", "default": true },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "default": 1200
+    },
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#F5C62E" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#111111" },
+
+    { "type": "header", "content": "Layout & spacing" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image position",
+      "default": "image-left",
+      "options": [
+        { "value": "image-left", "label": "Image left" },
+        { "value": "image-right", "label": "Image right" }
+      ]
+    },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 40, "step": 2, "default": 24 },
+    { "type": "range", "id": "pad_y", "label": "Vertical padding", "min": 12, "max": 64, "step": 2, "default": 24 },
+    { "type": "range", "id": "pad_x", "label": "Horizontal padding", "min": 12, "max": 64, "step": 2, "default": 24 },
+    { "type": "range", "id": "gap", "label": "Media/content gap", "min": 8, "max": 64, "step": 2, "default": 24 },
+
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "title", "label": "Title", "default": "READY TO SHOP" },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Find your traditional sweets and savouries here.</p>"
+    },
+
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "btn_label", "label": "Button label", "default": "Shop now" },
+    { "type": "url", "id": "btn_link", "label": "Button link" },
+    { "type": "color", "id": "btn_bg", "label": "Button background", "default": "#FFFFFF" },
+    { "type": "color", "id": "btn_text", "label": "Button text", "default": "#111111" }
+  ],
+  "blocks": [],
+  "presets": [{ "name": "Promo CTA Banner", "category": "Image" }]
+}
+{% endschema %}
+
+{% stylesheet %}
+  .promo-cta {
+    position: relative;
+  }
+  .promo-cta--full {
+    display: block;
+  }
+  .promo-cta__surface {
+    background: var(--promo-bg, #f5c62e);
+  }
+  .promo-cta__container {
+    max-width: var(--promo-max, 1200px);
+    margin-inline: auto;
+    padding: var(--promo-padding-y, 24px) var(--promo-padding-x, 24px);
+  }
+  .promo-cta__grid {
+    display: grid;
+    align-items: center;
+    gap: var(--promo-gap, 24px);
+    background: transparent;
+    color: var(--promo-text, #111);
+    border-radius: var(--promo-radius, 24px);
+  }
+  @media (min-width: 768px) {
+    .promo-cta__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .promo-cta__grid--image-right {
+      direction: rtl;
+    }
+    .promo-cta__grid--image-right > * {
+      direction: ltr;
+    }
+  }
+  .promo-cta__media {
+    overflow: hidden;
+    border-radius: calc(var(--promo-radius, 24px) - 4px);
+  }
+  .promo-cta__img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .promo-cta__content {
+    display: grid;
+    gap: 8px;
+    justify-items: start;
+  }
+  .promo-cta__kicker {
+    font-weight: 700;
+    opacity: 0.85;
+  }
+  .promo-cta__title {
+    margin: 0;
+    font-size: clamp(1.25rem, 2.6vw, 1.5rem);
+    line-height: 1.2;
+    font-weight: 800;
+  }
+  .promo-cta__body {
+    max-width: 56ch;
+  }
+  .promo-cta__button {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    background: var(--promo-btn-bg, #fff);
+    color: var(--promo-btn-fg, #111);
+    font-weight: 700;
+    transition: transform 0.06s ease, opacity 0.2s ease;
+  }
+  .promo-cta__button:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+{% endstylesheet %}

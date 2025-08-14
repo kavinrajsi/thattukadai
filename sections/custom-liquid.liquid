@@ -1,0 +1,101 @@
+{% comment %}
+  Custom Liquid Section (Advanced)
+  - Allows direct Liquid input
+  - Separate desktop & mobile padding controls
+  - No heading field
+{% endcomment %}
+
+<section id="custom-liquid-{{ section.id }}" class="custom-liquid-section">
+  <div class="custom-liquid__container custom-liquid__container--{{ section.settings.width }}">
+    {% if section.settings.liquid_code != blank %}
+      {{ section.settings.liquid_code }}
+    {% else %}
+      {% if request.design_mode %}
+        <p style="opacity:.6">Add your Liquid in the section settings → “Liquid code”.</p>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {% style %}
+    #custom-liquid-{{ section.id }} {
+      padding-top: {{ section.settings.pad_top_desktop }}px;
+      padding-bottom: {{ section.settings.pad_bottom_desktop }}px;
+    }
+    @media (max-width: 767px) {
+      #custom-liquid-{{ section.id }} {
+        padding-top: {{ section.settings.pad_top_mobile }}px;
+        padding-bottom: {{ section.settings.pad_bottom_mobile }}px;
+      }
+    }
+    .custom-liquid__container--full { width: 100%; }
+    .custom-liquid__container--narrow { max-width: 800px; margin-inline: auto; padding-inline: 1rem; }
+  {% endstyle %}
+</section>
+
+{% schema %}
+{
+  "name": "Custom Liquid (Pro)",
+  "tag": "section",
+  "class": "section custom-liquid",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "liquid_code",
+      "label": "Liquid code",
+      "info": "You can use Liquid, HTML, and filters. Be careful—this runs as theme code."
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "default": "narrow",
+      "options": [
+        { "value": "narrow", "label": "Contained (max-width)" },
+        { "value": "full", "label": "Full width" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Mobile Layout"
+    },
+    {
+      "type": "range",
+      "id": "pad_top_desktop",
+      "label": "Top padding (desktop)",
+      "min": 0, "max": 200, "step": 4, "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_desktop",
+      "label": "Bottom padding (desktop)",
+      "min": 0, "max": 200, "step": 4, "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "header",
+      "content": "Desktop Layout"
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0, "max": 200, "step": 4, "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0, "max": 200, "step": 4, "unit": "px",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Liquid",
+      "category": "Advanced"
+    }
+  ]
+}
+{% endschema %}

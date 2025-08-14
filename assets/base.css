@@ -27,3 +27,40 @@ footer { border-top: 1px solid #eee; border-bottom: none; }
 .btn[disabled] { opacity:.5; cursor: not-allowed; }
 .skip-to-content { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
 .skip-to-content:focus { left:1rem; top:1rem; width:auto; height:auto; padding:.5rem .75rem; background:#000; color:#fff; z-index:9999; }
+
+
+/* Optional inner container when Container = Contained */
+.homepage-slider__container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* Positioning by data-pos (grid trick keeps it simple) */
+.homepage-slider__slide { position: relative; }
+.homepage-slider__content { position: absolute; inset: 0; display: grid; }
+.homepage-slider__content[data-pos="tl"] { place-items: start start; }
+.homepage-slider__content[data-pos="tc"] { place-items: start center; }
+.homepage-slider__content[data-pos="tr"] { place-items: start end; }
+.homepage-slider__content[data-pos="cl"] { place-items: center start; }
+.homepage-slider__content[data-pos="cc"] { place-items: center center; }
+.homepage-slider__content[data-pos="cr"] { place-items: center end; }
+.homepage-slider__content[data-pos="bl"] { place-items: end start; }
+.homepage-slider__content[data-pos="bc"] { place-items: end center; }
+.homepage-slider__content[data-pos="br"] { place-items: end end; }
+
+/* Alignment desktop vs mobile */
+.homepage-slider__content[data-align="left"]   { text-align: left; }
+.homepage-slider__content[data-align="center"] { text-align: center; }
+.homepage-slider__content[data-align="right"]  { text-align: right; }
+
+@media (max-width: 767px) {
+  .homepage-slider__content[data-align-mobile="left"]   { text-align: left; }
+  .homepage-slider__content[data-align-mobile="center"] { text-align: center; }
+  .homepage-slider__content[data-align-mobile="right"]  { text-align: right; }
+}
+
+/* Overlay & text color hooks */
+.homepage-slider__overlay { position:absolute; inset:0; background:#000; pointer-events:none; }
+.homepage-slider__slide   { color: var(--slider-text-color, #fff); }
+.homepage-slider__slide[data-text-color] { --slider-text-color: attr(data-text-color color, #fff); }
+
+/* Button styles */
+.homepage-slider__btn { display:inline-block; padding:.9rem 1.4rem; border:0; background: currentColor; color:#000; text-decoration:none; }
+.homepage-slider__btn--outline { background: transparent; border: 2px solid currentColor; color: currentColor; }

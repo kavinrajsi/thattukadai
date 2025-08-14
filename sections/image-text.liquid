@@ -1,0 +1,235 @@
+{% comment %}
+  Section: Image and content (content outside)
+  - Uses ONLY min-width media queries (you add CSS)
+  - Placement controls overall order:
+      image-first  => <figure> then content
+      image-second => content then <figure>
+{% endcomment %}
+
+{%- assign desktop  = section.settings.desktop_image -%}
+{%- assign mobile   = section.settings.mobile_image | default: desktop -%}
+{%- assign alt_text = section.settings.image_alt | default: desktop.alt -%}
+
+{%- assign mods = '' -%}
+{%- assign mods = mods | append: ' image-content--' | append: section.settings.width -%}
+{%- assign mods = mods | append: ' image-content--' | append: section.settings.layout_overlap -%}
+{%- assign mods = mods | append: ' image-content--pos-' | append: section.settings.position -%}
+{%- assign mods = mods | append: ' image-content--align-' | append: section.settings.align -%}
+{%- assign mods = mods | append: ' image-content--align-m-' | append: section.settings.align_mobile -%}
+{%- assign mods = mods | append: ' image-content--' | append: section.settings.placement -%}
+
+<section
+  class="image-content image-content--section {{ mods }}"
+  aria-labelledby="image-content__title-{{ section.id }}"
+  style="
+    --pt: {{ section.settings.padding_top_desktop | default: 0 }}px;
+    --pb: {{ section.settings.padding_bottom_desktop | default: 0 }}px;
+    --pt-m: {{ section.settings.padding_top_mobile | default: 0 }}px;
+    --pb-m: {{ section.settings.padding_bottom_mobile | default: 0 }}px;
+  "
+>
+  {%- if section.settings.placement == 'image-first' -%}
+
+    <figure class="image-content__media">
+      {% if desktop != blank %}
+        <picture class="image-content__picture">
+          <source media="(min-width: 750px)" type="image/avif" srcset="
+            {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
+            {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
+            {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
+          " sizes="50vw">
+          <source media="(min-width: 0px)" type="image/avif" srcset="
+            {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
+            {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
+          " sizes="100vw">
+          <source media="(min-width: 750px)" type="image/webp" srcset="
+            {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
+            {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
+            {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
+          " sizes="50vw">
+          <source media="(min-width: 0px)" type="image/webp" srcset="
+            {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
+            {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
+          " sizes="100vw">
+          <img
+            class="image-content__image"
+            src="{{ desktop | image_url: width: 1600 }}"
+            alt="{{ alt_text | escape }}"
+            width="{{ desktop.width }}"
+            height="{{ desktop.height }}"
+            loading="lazy"
+          >
+        </picture>
+      {% endif %}
+    </figure>
+  {%- endif -%}
+
+  <div class="image-content__inner">
+    <header class="image-content__header">
+      {% if section.settings.eyebrow != blank %}
+        <div class="image-content__eyebrow-wrapper">
+          <span class="image-content__eyebrow">{{ section.settings.eyebrow }}</span>
+        </div>
+      {% endif %}
+
+      {% if section.settings.title != blank %}
+        <div class="image-content__title-wrapper">
+          <h1 id="image-content__title-{{ section.id }}" class="image-content__title">
+            {{ section.settings.title | newline_to_br }}
+          </h1>
+        </div>
+      {% endif %}
+    </header>
+
+    {% if section.settings.body_text != blank %}
+      <div class="image-content__body-wrapper">
+        <div class="image-content__text">
+          {{ section.settings.body_text }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+      <div class="image-content__cta-wrapper">
+        <a class="image-content__cta" href="{{ section.settings.cta_link }}">
+          {{ section.settings.cta_label }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  {%- if section.settings.placement == 'image-second' -%}
+
+    <figure class="image-content__media">
+      {% if desktop != blank %}
+        <picture class="image-content__picture">
+          <source media="(min-width: 750px)" type="image/avif" srcset="
+            {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
+            {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
+            {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
+          " sizes="50vw">
+          <source media="(min-width: 0px)" type="image/avif" srcset="
+            {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
+            {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
+          " sizes="100vw">
+          <source media="(min-width: 750px)" type="image/webp" srcset="
+            {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
+            {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
+            {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
+          " sizes="50vw">
+          <source media="(min-width: 0px)" type="image/webp" srcset="
+            {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
+            {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
+          " sizes="100vw">
+          <img
+            class="image-content__image"
+            src="{{ desktop | image_url: width: 1600 }}"
+            alt="{{ alt_text | escape }}"
+            width="{{ desktop.width }}"
+            height="{{ desktop.height }}"
+            loading="lazy"
+          >
+        </picture>
+      {% endif %}
+    </figure>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Image and content",
+  "tag": "section",
+  "class": "section image-content-section",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "default": "narrow",
+      "options": [
+        { "value": "narrow", "label": "Contained (max-width)" },
+        { "value": "full", "label": "Full width" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "layout_overlap",
+      "label": "Layout",
+      "default": "no-overlap",
+      "options": [
+        { "value": "no-overlap", "label": "No overlap" },
+        { "value": "overlap", "label": "Overlap" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Vertical position",
+      "default": "middle",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment (desktop)",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "align_mobile",
+      "label": "Mobile alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "placement",
+      "label": "Placement",
+      "default": "image-first",
+      "options": [
+        { "value": "image-first", "label": "Image first" },
+        { "value": "image-second", "label": "Image second" }
+      ]
+    },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top_desktop", "label": "Padding top (desktop)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom_desktop", "label": "Padding bottom (desktop)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Padding top (mobile)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Padding bottom (mobile)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "desktop_image", "label": "Desktop image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image (optional)" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop" },
+
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "About us" },
+    { "type": "text", "id": "title", "label": "Heading", "info": "Use line breaks to split across lines.", "default": "A LEGACY OF TASTE\nSINCE 1956" },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body",
+      "default": "<p>Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured the hearts of many, laying the foundation for what would become a cherished family business.</p><p>Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.</p>"
+    },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Learn More" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "blocks": [],
+  "presets": [{ "name": "Image and content", "category": "Image" }]
+}
+{% endschema %}

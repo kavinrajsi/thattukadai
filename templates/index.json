@@ -1,11 +1,9 @@
 {
   "sections": {
-    "hero": {
-      "type": "thattukadai-hero",
+    "slider": {
+      "type": "homepage-slider",
       "settings": {}
     }
   },
-  "order": [
-    "hero"
-  ]
+  "order": ["slider"]
 }

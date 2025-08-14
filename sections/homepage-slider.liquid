@@ -1,0 +1,353 @@
+{%- comment -%}
+  Home Page Slider (Owl Carousel 2) — Grouped schema
+  --------------------------------------------------
+  Block groups: Image, Text, Button
+  Section group: Layout
+  - Requires owl.carousel.css/js assets in your theme.
+  - Single "Content area" (RTE) per slide.
+  - Outline button style option.
+{%- endcomment -%}
+
+{%- comment -%} 1) Include Owl assets {%- endcomment -%}
+{{ 'owl.carousel.css' | asset_url | stylesheet_tag }}
+{{ 'owl.theme.default.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'owl.carousel.js' | asset_url }}" defer></script>
+
+{%- comment -%} 2) Section wrapper with config via data-* {%- endcomment -%}
+<section
+  id="homepage-slider-{{ section.id }}"
+  class="homepage-slider"
+  data-section-id="{{ section.id }}"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-timeout="{{ section.settings.autoplay_timeout | times: 1000 }}"
+  data-loop="{{ section.settings.loop }}"
+  data-nav="{{ section.settings.nav }}"
+  data-dots="{{ section.settings.dots }}"
+  data-animate="{{ section.settings.transition_style }}"
+  data-pause-on-hover="{{ section.settings.pause_on_hover }}"
+  data-lazy="{{ section.settings.lazyload }}"
+  data-height-mode="{{ section.settings.height_mode }}"
+  data-fixed-height="{{ section.settings.fixed_height }}"
+  data-container="{{ section.settings.container_mode }}"
+  data-content-pos="{{ section.settings.content_position }}"
+  data-content-align="{{ section.settings.content_align }}"
+  data-content-align-mobile="{{ section.settings.content_align_mobile }}"
+>
+  {%- comment -%} Optional inner container when using "Contained" layout {%- endcomment -%}
+  {% assign container_mode = section.settings.container_mode %}
+  {% if container_mode == 'contained' %}
+    <div class="homepage-slider__container">
+  {% endif %}
+
+  {%- comment -%} 3) Owl Carousel track {%- endcomment -%}
+  <div class="homepage-slider__owl owl-carousel">
+    {%- for block in section.blocks -%}
+      {% assign img_desktop = block.settings.image %}
+      {% assign img_mobile = block.settings.image_mobile | default: block.settings.image %}
+      {% assign overlay = block.settings.overlay_opacity | default: 30 %}
+
+      {%- comment -%} Slide link mode (entire slide clickable) {%- endcomment -%}
+      {% assign use_full_link = false %}
+      {% if block.settings.link_mode == 'button_url' and block.settings.button_url != blank %}
+        {% assign use_full_link = true %}
+      {% endif %}
+      {% assign full_link_url = block.settings.button_url %}
+
+      {%- comment -%} 4) Slide wrapper (a/div) {%- endcomment -%}
+      {% if use_full_link %}
+        <a
+          href="{{ full_link_url }}"
+          class="homepage-slider__slide homepage-slider__slide--link"
+          aria-label="{{ block.settings.kicker | default: block.settings.content_area | strip_html | truncate: 80 | default: 'Slide' }}"
+          data-text-color="{{ block.settings.text_color }}"
+          {{ block.shopify_attributes }}
+        >
+      {% else %}
+        <div
+          class="homepage-slider__slide"
+          aria-label="{{ block.settings.kicker | default: block.settings.content_area | strip_html | truncate: 80 | default: 'Slide' }}"
+          data-text-color="{{ block.settings.text_color }}"
+          {{ block.shopify_attributes }}
+        >
+      {% endif %}
+
+        {%- comment -%} Image / picture (mobile source + desktop fallback) {%- endcomment -%}
+        {% if img_desktop != blank %}
+          <picture class="homepage-slider__media">
+            {% if img_mobile %}
+              <source media="(max-width: 767px)" srcset="{{ img_mobile | image_url: width: 1200 }}">
+            {% endif %}
+            <img
+              class="homepage-slider__img"
+              src="{{ img_desktop | image_url: width: 2000 }}"
+              width="{{ img_desktop.width }}"
+              height="{{ img_desktop.height }}"
+              alt="{{ block.settings.kicker | default: block.settings.content_area | strip_html | truncate: 120 | escape }}"
+              loading="lazy"
+            >
+          </picture>
+        {% else %}
+          <div class="homepage-slider__placeholder">
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+
+        {%- comment -%} Overlay (opacity via setting) {%- endcomment -%}
+        <div class="homepage-slider__overlay" style="opacity: {{ overlay | divided_by: 100.0 }};"></div>
+
+        {%- comment -%} 5) Content (RTE) + button {%- endcomment -%}
+        <div
+          class="homepage-slider__content"
+          data-pos="{{ section.settings.content_position }}"
+          data-align="{{ section.settings.content_align }}"
+          data-align-mobile="{{ section.settings.content_align_mobile }}"
+        >
+          {% if block.settings.kicker != blank %}
+            <div class="homepage-slider__kicker">{{ block.settings.kicker }}</div>
+          {% endif %}
+
+          {% if block.settings.content_area != blank %}
+            <div class="homepage-slider__content-area rte">
+              {{ block.settings.content_area }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.button_label != blank and block.settings.button_url != blank %}
+            {% assign btn_classes = 'homepage-slider__btn' %}
+            {% if block.settings.button_style == 'outline' %}
+              {% assign btn_classes = btn_classes | append: ' homepage-slider__btn--outline' %}
+            {% endif %}
+
+            {% if use_full_link %}
+              <span class="{{ btn_classes }}" role="button" tabindex="0" aria-hidden="true">
+                {{ block.settings.button_label }}
+              </span>
+            {% else %}
+              <a class="{{ btn_classes }}" href="{{ block.settings.button_url }}">
+                {{ block.settings.button_label }}
+              </a>
+            {% endif %}
+          {% endif %}
+        </div>
+      {% if use_full_link %}
+        </a>
+      {% else %}
+        </div>
+      {% endif %}
+    {%- endfor -%}
+  </div>
+
+  {% if container_mode == 'contained' %}
+    </div>
+  {% endif %}
+
+  {%- comment -%} 6) JS init (reads options from data-*) {%- endcomment -%}
+  <script>
+    (function () {
+      var el = document.getElementById('homepage-slider-{{ section.id }}');
+      if (!el) return;
+
+      function bool(val) { return String(val) === 'true'; }
+
+      function initOwl() {
+        if (typeof jQuery === 'undefined' || !jQuery.fn || !jQuery.fn.owlCarousel) {
+          console.warn('[homepage-slider] Owl Carousel not found. Include owl.carousel.js');
+          return;
+        }
+        var $ = jQuery;
+        var $owl = $(el).find('.homepage-slider__owl');
+
+        var autoplay = bool(el.dataset.autoplay);
+        var autoplayTimeout = parseInt(el.dataset.timeout, 10) || 5000;
+        var loop = bool(el.dataset.loop);
+        var nav = bool(el.dataset.nav);
+        var dots = bool(el.dataset.dots);
+        var pauseOnHover = bool(el.dataset.pauseOnHover);
+        var lazyLoad = bool(el.dataset.lazy);
+        var transition = el.dataset.animate;
+
+        var owlOpts = {
+          items: 1,
+          loop: loop,
+          nav: nav,
+          dots: dots,
+          autoplay: autoplay,
+          autoplayTimeout: autoplayTimeout,
+          autoplayHoverPause: pauseOnHover,
+          lazyLoad: lazyLoad,
+          smartSpeed: 500,
+          responsive: { 0: { items: 1 }, 768: { items: 1 }, 1024: { items: 1 } }
+        };
+
+        if (transition === 'fade') {
+          owlOpts.animateOut = 'fadeOut';
+          owlOpts.animateIn = 'fadeIn';
+        }
+
+        $owl.owlCarousel(owlOpts);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initOwl);
+      } else {
+        initOwl();
+      }
+
+      document.addEventListener('shopify:section:load', function (e) {
+        if (e.detail.sectionId === '{{ section.id }}') initOwl();
+      });
+
+      document.addEventListener('shopify:section:unload', function (e) {
+        if (e.detail.sectionId === '{{ section.id }}') {
+          if (window.jQuery) {
+            jQuery('#homepage-slider-{{ section.id }} .homepage-slider__owl').trigger('destroy.owl.carousel');
+          }
+        }
+      });
+    })();
+  </script>
+</section>
+
+{%- comment -%} 7) Schema — grouped as Image, Text, Button (block) and Layout (section) {%- endcomment -%}
+{% schema %}
+{
+  "name": "Home Page Slider",
+  "tag": "section",
+  "class": "section--homepage-slider",
+  "settings": [
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-rotate slides", "default": true },
+    {
+      "type": "range",
+      "id": "autoplay_timeout",
+      "label": "Change slide every (seconds)",
+      "min": 2, "max": 12, "step": 1, "unit": "s", "default": 5
+    },
+    { "type": "checkbox", "id": "loop", "label": "Loop", "default": true },
+    { "type": "checkbox", "id": "nav", "label": "Show arrows", "default": true },
+    { "type": "checkbox", "id": "dots", "label": "Show dots", "default": true },
+    {
+      "type": "select",
+      "id": "transition_style",
+      "label": "Transition",
+      "default": "slide",
+      "options": [
+        { "value": "slide", "label": "Slide" },
+        { "value": "fade", "label": "Fade" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Height mode",
+      "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Auto height" },
+        { "value": "fixed", "label": "Fixed height" }
+      ]
+    },
+    { "type": "range", "id": "fixed_height", "label": "Fixed height (px)", "min": 320, "max": 900, "step": 10, "default": 560 },
+    { "type": "checkbox", "id": "pause_on_hover", "label": "Pause on hover", "default": true },
+    { "type": "checkbox", "id": "lazyload", "label": "Lazy-load images", "default": true },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "container_mode",
+      "label": "Container",
+      "default": "full",
+      "options": [
+        { "value": "full", "label": "Full width" },
+        { "value": "contained", "label": "Contained (max-width)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "default": "cc",
+      "options": [
+        { "value": "tl", "label": "Top left" },
+        { "value": "tc", "label": "Top center" },
+        { "value": "tr", "label": "Top right" },
+        { "value": "cl", "label": "Center left" },
+        { "value": "cc", "label": "Center" },
+        { "value": "cr", "label": "Center right" },
+        { "value": "bl", "label": "Bottom left" },
+        { "value": "bc", "label": "Bottom center" },
+        { "value": "br", "label": "Bottom right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_align",
+      "label": "Content alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_align_mobile",
+      "label": "Mobile content alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "header", "content": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Desktop/Tablet image" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (optional)" },
+
+        { "type": "header", "content": "Text" },
+        { "type": "text", "id": "kicker", "label": "Kicker", "default": "Featured" },
+        { "type": "richtext", "id": "content_area", "label": "Content area", "default": "<p><strong>Your headline here</strong></p><p>Add a short, punchy description for this slide.</p>" },
+
+        { "type": "header", "content": "Button" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+        { "type": "url", "id": "button_url", "label": "Button link" },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "solid",
+          "options": [
+            { "value": "solid", "label": "Solid" },
+            { "value": "outline", "label": "Outline" }
+          ]
+        },
+        {
+          "type": "radio",
+          "id": "link_mode",
+          "label": "Link for entire slide",
+          "options": [
+            { "value": "none", "label": "Do not link entire slide" },
+            { "value": "button_url", "label": "Use button link for entire slide" }
+          ],
+          "default": "none"
+        },
+
+        { "type": "color", "id": "text_color", "label": "Text & button color", "default": "#ffffff" },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 30 }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Home Page Slider",
+      "blocks": [{ "type": "slide" }, { "type": "slide" }]
+    }
+  ]
+}
+{% endschema %}

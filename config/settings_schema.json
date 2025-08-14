@@ -1,23 +1,135 @@
 [
   {
-    "name": "Theme settings",
+    "name": "theme_info",
+    "theme_name": "thattukadai",
+    "theme_author": "Shopify",
+    "theme_version": "1.0.0",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes/os20/themes-by-shopify/dawn",
+    "theme_support_url": "https://support.shopify.com/"
+  },
+  {
+    "name": "Favicon",
     "settings": [
       {
-        "type": "text",
-        "id": "logo_text",
-        "label": "Logo text",
-        "default": "thattukadai"
-      },
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+
+  {
+    "name": "Color",
+    "settings": [
       {
-        "type": "link_list",
-        "id": "main_menu",
-        "label": "Main menu"
+        "type": "color",
+        "id": "primary_color_1",
+        "label": "Primary Red 1",
+        "default": "#C61D23"
       },
       {
         "type": "color",
-        "id": "accent_color",
-        "label": "Accent color",
-        "default": "#0f766e"
+        "id": "primary_color_2",
+        "label": "Primary Red 2",
+        "default": "#A5161A"
+      },
+      {
+        "type": "color",
+        "id": "primary_color_3",
+        "label": "Primary Red 3",
+        "default": "#660808"
+      },
+      {
+        "type": "color",
+        "id": "secondary_color",
+        "label": "Secondary Peach",
+        "default": "#FDDECF"
+      },
+      {
+        "type": "color",
+        "id": "black_color_1",
+        "label": "Black 1",
+        "default": "#0B090A"
+      },
+      {
+        "type": "color",
+        "id": "black_color_2",
+        "label": "Black 2",
+        "default": "#161A1D"
+      },
+      {
+        "type": "color",
+        "id": "white_color_1",
+        "label": "White 1",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "white_color_2",
+        "label": "White 2",
+        "default": "#F5F3F4"
+      },
+      {
+        "type": "color",
+        "id": "white_color_3",
+        "label": "White 3",
+        "default": "#D3D3D3"
+      }
+    ]
+  },
+  {
+    "name": "Font Family",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_header",
+        "default": "playfair_display_n7",
+        "label": "Heading 1"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body",
+        "default": "montserrat_n4",
+        "label": "Body Font"
+      }
+    ]
+  },
+  {
+    "name": "Organization Schema",
+    "settings": [
+      {
+        "type": "header",
+        "content": "social media url, logo for organization schema"
+      },
+      {
+        "type": "image_picker",
+        "id": "brand_logo",
+        "label": "Brand Logo"
+      },
+      {
+        "type": "url",
+        "id": "social_twitter_link",
+        "label": "Twitter URL"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook_link",
+        "label": "Facebook link"
+      },
+      {
+        "type": "url",
+        "id": "social_pinterest_link",
+        "label": "Pinterest link"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram_link",
+        "label": "Instagram link"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube_link",
+        "label": "Youtube link"
       }
     ]
   }

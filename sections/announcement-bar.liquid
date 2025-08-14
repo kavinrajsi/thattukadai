@@ -1,0 +1,297 @@
+{% comment %}
+  ANNOUNCEMENT BAR (Multi-instance)
+  ------------------------------------------------------------------
+  PURPOSE:
+  - Displays one or more announcement bars on the site (stacked vertically if multiple).
+  - Each bar can:
+      - Have its own message, colors, scroll effect, link, and dismiss button.
+      - Be shown only on the homepage or across the site.
+      - Be displayed only between specific dates.
+      - Remember dismissals via cookies (per block).
+
+  HOW IT WORKS:
+  1. Liquid handles:
+      - Conditional rendering (homepage only, date filtering).
+      - Rendering blocks with their specific settings.
+  2. JavaScript handles:
+      - Cookie-based dismissal.
+      - Date-based hiding to prevent FOUC (Flash of Unwanted Content).
+  3. CSS styles:
+      - Spacing, colors, layout, hover states, and close button styling.
+{% endcomment %}
+
+<div class="announcement-bars" style="--ab-gap: {{ section.settings.stackGap }}px;">
+  {% assign today = 'now' | date: '%Y-%m-%d' %}
+
+  {% for block in section.blocks %}
+    {%- comment -%}
+      Skip block if:
+      - `showOnlyOnHome` is enabled AND current page is not the homepage.
+    {%- endcomment -%}
+    {% if block.settings.showOnlyOnHome and request.page_type != 'index' %}
+      {% continue %}
+    {% endif %}
+
+    {%- comment -%}
+      Date range gating in Liquid:
+      - Avoids showing bars outside their date window (prevents FOUC before JS runs).
+    {%- endcomment -%}
+    {% assign start = block.settings.startDate | default: '' %}
+    {% assign end = block.settings.endDate | default: '' %}
+    {% if start != '' and today < start %}{% continue %}{% endif %}
+    {% if end != '' and today > end %}{% continue %}{% endif %}
+
+    {% assign key = 'announcement_bar_' | append: section.id | append: '_' | append: block.id %}
+
+    <!-- Announcement Bar -->
+    <div
+      class="announcement-bar"
+      role="region"
+      aria-label="Store announcement"
+      style="--ab-bg: {{ block.settings.bgColor }}; --ab-text: {{ block.settings.textColor }};"
+      data-key="{{ key }}"
+      data-enable-dismiss="{{ block.settings.enableDismiss }}"
+      data-cookie-days="{{ block.settings.cookieExpireDays }}"
+      data-start-date="{{ block.settings.startDate }}"
+      data-end-date="{{ block.settings.endDate }}"
+      {{ block.shopify_attributes }}
+    >
+      <div class="announcement-bar__inner">
+        {%- comment -%} Render marquee (scrolling text) if enabled {%- endcomment -%}
+        {% if block.settings.useMarquee %}
+          <marquee
+            class="announcement-bar__marquee"
+            direction="left"
+            width="100%"
+            scrollamount="{{ block.settings.scrollAmount | default: 10 }}"
+            onmouseover="this.stop();"
+            onmouseout="this.start();"
+          >
+            {% if block.settings.link != blank %}
+              <a class="announcement-bar__link" href="{{ block.settings.link }}">
+                <span class="announcement-bar__text">{{ block.settings.message | escape }}</span>
+              </a>
+            {% else %}
+              <span class="announcement-bar__text">{{ block.settings.message | escape }}</span>
+            {% endif %}
+          </marquee>
+
+          {%- comment -%} Otherwise, render static text {%- endcomment -%}
+        {% else %}
+          {% if block.settings.link != blank %}
+            <a class="announcement-bar__link" href="{{ block.settings.link }}">
+              <span class="announcement-bar__text">{{ block.settings.message | escape }}</span>
+            </a>
+          {% else %}
+            <span class="announcement-bar__text">{{ block.settings.message | escape }}</span>
+          {% endif %}
+        {% endif %}
+
+        {%- comment -%} Optional dismiss button {%- endcomment -%}
+        {% if block.settings.enableDismiss %}
+          <button class="announcement-bar__close" type="button" aria-label="Dismiss announcement">&times;</button>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "range",
+      "id": "stackGap",
+      "label": "Space between bars (px)",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bar",
+      "name": "Announcement bar",
+      "settings": [
+        { "type": "text", "id": "message", "label": "Message text", "default": "Free shipping on orders over $50!" },
+        { "type": "url", "id": "link", "label": "Optional link" },
+        { "type": "checkbox", "id": "useMarquee", "label": "Scroll (marquee)", "default": true },
+        {
+          "type": "range",
+          "id": "scrollAmount",
+          "label": "Scroll speed",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 10
+        },
+        { "type": "color", "id": "bgColor", "label": "Background color", "default": "#111827" },
+        { "type": "color", "id": "textColor", "label": "Text color", "default": "#ffffff" },
+        { "type": "checkbox", "id": "enableDismiss", "label": "Allow dismiss", "default": true },
+        { "type": "number", "id": "cookieExpireDays", "label": "Cookie expiry (days)", "default": 30 },
+        { "type": "text", "id": "startDate", "label": "Show from date (YYYY-MM-DD)" },
+        { "type": "text", "id": "endDate", "label": "Show until date (YYYY-MM-DD)" },
+        { "type": "checkbox", "id": "showOnlyOnHome", "label": "Show only on homepage", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}
+
+{% stylesheet %}
+  /* Container for all stacked announcement bars */
+  .announcement-bars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ab-gap, 8px); /* Controlled by section setting */
+  }
+
+  /* Single announcement bar styling */
+  .announcement-bar {
+    background: var(--ab-bg, #111827);
+    color: var(--ab-text, #fff);
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  /* Inner container: centers content & applies padding */
+  .announcement-bar__inner {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  /* Text styling */
+  .announcement-bar__text {
+    display: inline-block;
+  }
+
+  /* Link styling */
+  .announcement-bar__link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .announcement-bar__link:hover,
+  .announcement-bar__link:focus {
+    text-decoration: underline;
+  }
+
+  /* Close (dismiss) button styling */
+  .announcement-bar__close {
+    margin-left: 12px;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    /**
+     * Set a cookie
+     * @param {string} name - Cookie name
+     * @param {string} value - Cookie value
+     * @param {number} days - Days until expiration
+     */
+    function setCookie(name, value, days) {
+      var expires = '';
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = '; expires=' + date.toUTCString();
+      }
+      document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=Lax';
+    }
+
+    /**
+     * Get a cookie value by name
+     */
+    function getCookie(name) {
+      var nameEQ = name + '=';
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    /**
+     * Initialize a single announcement bar
+     */
+    function initBar(bar) {
+      if (!bar) return;
+
+      // JS date gating (to ensure bars also hide dynamically if needed)
+      var startDateStr = bar.getAttribute('data-start-date');
+      var endDateStr = bar.getAttribute('data-end-date');
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (startDateStr) {
+        var startDate = new Date(startDateStr);
+        startDate.setHours(0, 0, 0, 0);
+        if (today < startDate) {
+          bar.style.display = 'none';
+          return;
+        }
+      }
+      if (endDateStr) {
+        var endDate = new Date(endDateStr);
+        endDate.setHours(0, 0, 0, 0);
+        if (today > endDate) {
+          bar.style.display = 'none';
+          return;
+        }
+      }
+
+      // Handle dismissal via cookies
+      var enableDismiss = bar.getAttribute('data-enable-dismiss') === 'true';
+      var key = bar.getAttribute('data-key');
+      var expireDays = parseInt(bar.getAttribute('data-cookie-days'), 10) || 30;
+
+      if (enableDismiss && getCookie(key) === 'true') {
+        bar.style.display = 'none';
+        return;
+      }
+
+      // Bind dismiss button click event
+      if (enableDismiss) {
+        var closeBtn = bar.querySelector('.announcement-bar__close');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', function () {
+            bar.style.display = 'none';
+            setCookie(key, 'true', expireDays);
+          });
+        }
+      }
+    }
+
+    /**
+     * Initialize all announcement bars on the page
+     */
+    function initAll() {
+      var bars = document.querySelectorAll('.announcement-bar');
+      if (!bars || !bars.length) return;
+      bars.forEach(initBar);
+    }
+
+    // Run init when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+      initAll();
+    }
+  })();
+{% endjavascript %}
