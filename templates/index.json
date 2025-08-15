@@ -1,9 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "slider": {
       "type": "homepage-slider",
-      "settings": {}
+      "settings": {
+        "autoplay": true,
+        "autoplay_timeout": 5,
+        "loop": true,
+        "nav": true,
+        "dots": true,
+        "transition_style": "slide",
+        "height_mode": "auto",
+        "fixed_height": 560,
+        "pause_on_hover": true,
+        "lazyload": true,
+        "container_mode": "full",
+        "content_position": "cc",
+        "content_align": "left",
+        "content_align_mobile": "center"
+      }
+    },
+    "best_sellers_hULKcC": {
+      "type": "best-sellers",
+      "name": "Best sellers (carousel)",
+      "settings": {
+        "eyebrow": "Our Best Sellers",
+        "heading": "South India’s most‑loved snacks!",
+        "source": "collection",
+        "collection": "best-colleciton",
+        "product_limit": 8
+      }
     }
   },
-  "order": ["slider"]
+  "order": [
+    "slider",
+    "best_sellers_hULKcC"
+  ]
 }
