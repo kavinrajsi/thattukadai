@@ -211,68 +211,29 @@ footer {
   color: currentColor;
 }
 
-.pm-gallery {
-  display: grid;
-  gap: 0.75rem;
-}
-.pm-main {
-  position: relative;
-}
-.pm-slide {
-  display: none;
-}
-.pm-slide.is-active {
-  display: block;
-}
-.pm-media {
+/* Swiper-specific tweaks */
+.pm-main-swiper {
   width: 100%;
+}
+.pm-main-swiper .swiper-slide {
+  text-align: center;
+}
+.pm-thumbs-swiper {
+  margin-top: 0.75rem;
+}
+.pm-thumbs-swiper .swiper-slide {
+  width: 80px !important;
   height: auto;
-}
-.pm-thumbs {
-  display: grid;
-  grid-auto-flow: column;
-  gap: 0.5rem;
-  overflow-x: auto;
-}
-.pm-thumb {
-  border: 1px solid #e5e5e5;
-  background: #fff;
-  padding: 0;
+  opacity: 0.5;
   cursor: pointer;
-  position: relative;
 }
-.pm-thumb:focus {
-  outline: 2px solid #000;
-  outline-offset: 2px;
+.pm-thumbs-swiper .swiper-slide-thumb-active {
+  opacity: 1;
+  border: 2px solid #000;
 }
 .pm-thumb-img {
+  width: 100%;
+  height: auto;
   display: block;
-  width: 72px;
-  height: 72px;
   object-fit: cover;
-}
-.pm-badge {
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  font-size: 12px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 10px;
-}
-.pm-model-btn {
-  margin-top: 0.5rem;
-}
-.pm-video-lightbox {
-  margin-top: 0.5rem;
-  font: inherit;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #e5e5e5;
-  background: #fff;
-  cursor: pointer;
-}
-.pm-video-lightbox:focus {
-  outline: 2px solid #000;
-  outline-offset: 2px;
 }
