@@ -1,0 +1,152 @@
+{%- comment -%}
+  Snippet: product-price
+  Usage: {% render 'product-price', product: product, ...options... %}
+
+  OPTIONS:
+  - mode: 'variant' (default) | 'range'
+      • 'variant' → Show selected/first available variant price
+      • 'range'   → Show min–max price across variants
+
+  - show_compare: true/false (default: false)
+      • Whether to display compare-at price when on sale
+
+  - compare_style: 'strike' (default) | 'plain' | 'hidden'
+      • strike → Compare-at price with strikethrough
+      • plain  → Compare-at price shown normally
+      • hidden → Do not display compare-at price
+
+  - show_discount: true/false (default: false)
+      • Show discount text (amount/percent/both)
+
+  - discount_format: 'percent' (default) | 'amount' | 'both'
+      • percent → "(20% OFF)"
+      • amount  → "(Save $20)"
+      • both    → "(Save $20 — 20% OFF)"
+
+  - show_from: true/false (default: false)
+      • Adds "From" label in range mode
+
+  - show_badges: true/false (default: true)
+  - show_sale_badge: true/false (default: true)
+  - show_sold_out_badge: true/false (default: true)
+
+  --------------------------------------------------
+  EXAMPLES:
+
+  1. Basic:
+     {% render 'product-price', product: product %}
+
+  2. Variant mode with compare-at (strike through) and discount percent:
+     {% render 'product-price', product: product, mode: 'variant', show_compare: true, compare_style: 'strike', show_discount: true, discount_format: 'percent' %}
+
+  3. Range mode with "From":
+     {% render 'product-price', product: product, mode: 'range', show_from: true %}
+
+  4. Hide badges:
+     {% render 'product-price', product: product, show_badges: false %}
+
+  5. Show discount savings amount only:
+     {% render 'product-price', product: product, show_compare: true, compare_style: 'plain', show_discount: true, discount_format: 'amount' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign mode = mode | default: 'variant'
+  assign show_compare = show_compare | default: false
+  assign compare_style = compare_style | default: 'strike'
+  assign show_discount = show_discount | default: false
+  assign discount_format = discount_format | default: 'percent'
+  assign show_from = show_from | default: false
+  assign current_variant = current_variant | default: product.selected_or_first_available_variant
+
+  assign show_badges = show_badges | default: true
+  assign show_sale_badge = show_sale_badge | default: true
+  assign show_sold_out_badge = show_sold_out_badge | default: true
+
+  assign is_on_sale = false
+  assign is_sold_out = false
+  assign discount_percent = 0
+  assign savings_amount = 0
+-%}
+
+{%- if product and product.available == false -%}
+  {%- assign is_sold_out = true -%}
+{%- endif -%}
+
+{%- if mode == 'range' -%}
+  {%- if product and product.available and product.compare_at_price_max > product.price_min -%}
+    {%- assign is_on_sale = true -%}
+    {%- assign savings_amount = product.compare_at_price_max | minus: product.price_min -%}
+    {%- assign discount_percent = savings_amount | times: 100 | divided_by: product.compare_at_price_max | round -%}
+  {%- endif -%}
+{%- else -%}
+  {%- if current_variant and current_variant.available and current_variant.compare_at_price > current_variant.price -%}
+    {%- assign is_on_sale = true -%}
+    {%- assign savings_amount = current_variant.compare_at_price | minus: current_variant.price -%}
+    {%- assign discount_percent = savings_amount | times: 100 | divided_by: current_variant.compare_at_price | round -%}
+  {%- endif -%}
+{%- endif -%}
+
+<span class="product-price" data-price-mode="{{ mode }}">
+  {%- if mode == 'range' -%}
+    {%- if product.price_min != product.price_max -%}
+      {%- if show_from -%}
+        <span class="from-label">From</span>
+      {%- endif -%}
+      <span class="price-range">{{ product.price_min | money }} – {{ product.price_max | money }}</span>
+      {%- if show_discount and is_on_sale and discount_percent > 0 -%}
+        <span class="discount">
+          {%- if discount_format == 'amount' -%}
+            (Save {{ savings_amount | money }})
+          {%- elsif discount_format == 'both' -%}
+            (Save {{ savings_amount | money }} — {{ discount_percent }}% OFF)
+          {%- else -%}
+            ({{ discount_percent }}% OFF)
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+    {%- else -%}
+      <span class="price-single">{{ product.price_min | money }}</span>
+    {%- endif -%}
+
+  {%- else -%}
+    {%- if current_variant and current_variant.available -%}
+      {%- if is_on_sale and show_compare -%}
+        <span class="sale-price">{{ current_variant.price | money }}</span>
+
+        {%- unless compare_style == 'hidden' -%}
+          <span class="compare-at{% if compare_style == 'strike' %} is-struck{% endif %}">
+            {{ current_variant.compare_at_price | money }}
+          </span>
+        {%- endunless -%}
+
+        {%- if show_discount and discount_percent > 0 -%}
+          <span class="discount">
+            {%- if discount_format == 'amount' -%}
+              (Save {{ savings_amount | money }})
+            {%- elsif discount_format == 'both' -%}
+              (Save {{ savings_amount | money }} — {{ discount_percent }}% OFF)
+            {%- else -%}
+              ({{ discount_percent }}% OFF)
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+
+      {%- else -%}
+        <span class="price-single">{{ current_variant.price | money }}</span>
+      {%- endif -%}
+    {%- else -%}
+      <span class="price-unavailable">Unavailable</span>
+    {%- endif -%}
+  {%- endif -%}
+</span>
+
+{%- if show_badges -%}
+  <span class="product-badges">
+    {%- if show_sale_badge and is_on_sale -%}
+      <span class="badge badge--sale" aria-label="On sale">Sale</span>
+    {%- endif -%}
+    {%- if show_sold_out_badge and is_sold_out -%}
+      <span class="badge badge--sold-out" aria-label="Sold out">Sold Out</span>
+    {%- endif -%}
+  </span>
+{%- endif -%}

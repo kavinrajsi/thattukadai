@@ -1,0 +1,160 @@
+{%- comment -%}
+  Product media gallery with:
+  - Images: <picture> (AVIF/WebP/JPG) + PhotoSwipe zoom
+  - Video: Shopify-hosted <video> inline + "Full screen" button (PhotoSwipe)
+  - External video: YouTube/Vimeo inline + "Full screen" button (PhotoSwipe)
+  - 3D model unchanged
+  Usage: {% render 'product-media', product: product %}
+{%- endcomment -%}
+
+{%- assign product_obj = product_obj | default: product -%}
+{%- if product_obj == blank -%}{% assign product_obj = product %}{%- endif -%}
+
+{%- if product_obj and product_obj.media.size > 0 -%}
+  <div class="pm-gallery" id="pm-{{ product_obj.id }}">
+    <div class="pm-main" role="region" aria-label="{{ product_obj.title | escape }} media">
+      {%- for media in product_obj.media -%}
+        {%- assign alt_text = media.alt | default: product_obj.title -%}
+        {%- assign full_w = media.preview_image.width -%}
+        {%- assign full_h = media.preview_image.height -%}
+
+        <div class="pm-slide{% if forloop.first %} is-active{% endif %}" data-media-id="{{ media.id }}">
+          {%- case media.media_type -%}
+            {%- when 'image' -%}
+              <a
+                class="pswp-item"
+                href="{{ media | image_url: width: 4096, format: 'jpg' }}"
+                data-pswp-width="{{ full_w }}"
+                data-pswp-height="{{ full_h }}"
+                data-pswp-uid="{{ product_obj.id }}-{{ media.id }}"
+                aria-label="Open image zoom: {{ alt_text | escape }}"
+              >
+                <picture>
+                  <source srcset="{{ media | image_url: width: 2048, format: 'avif' }}" type="image/avif">
+                  <source srcset="{{ media | image_url: width: 2048, format: 'webp' }}" type="image/webp">
+                  <img
+                    src="{{ media | image_url: width: 2048, format: 'jpg' }}"
+                    alt="{{ alt_text | escape }}"
+                    class="pm-media"
+                    loading="lazy"
+                    width="{{ full_w }}"
+                    height="{{ full_h }}"
+                  >
+                </picture>
+              </a>
+
+            {%- when 'video' -%}
+              {{
+                media
+                | media_tag:
+                  image_size: '2048x',
+                  class: 'pm-media',
+                  autoplay: false,
+                  loop: false,
+                  controls: true,
+                  preload: 'metadata',
+                  muted: true
+              }}
+              {%- assign first_source = media.sources | first -%}
+              {%- if first_source and first_source.url -%}
+                <button
+                  class="pm-video-lightbox"
+                  type="button"
+                  data-pswp-type="mp4"
+                  data-src="{{ first_source.url }}"
+                  data-poster="{{ media.preview_image | image_url: width: 2048, format: 'jpg' }}"
+                  data-w="{{ full_w }}"
+                  data-h="{{ full_h }}"
+                  aria-label="Open video full screen"
+                >
+                  Full screen
+                </button>
+              {%- endif -%}
+
+            {%- when 'external_video' -%}
+              {{ media | media_tag: image_size: '2048x', class: 'pm-media' }}
+              {%- comment -%}
+                Build an embeddable URL for PhotoSwipe slide
+              {%- endcomment -%}
+              {%- assign host = media.host -%}
+              {%- assign eid = media.external_id -%}
+              {%- capture embed_url -%}
+                {%- if host == 'youtube' -%}
+                  https://www.youtube.com/embed/{{ eid }}?autoplay=1&rel=0
+                {%- elsif host == 'vimeo' -%}
+                  https://player.vimeo.com/video/{{ eid }}?autoplay=1
+                {%- endif -%}
+              {%- endcapture -%}
+              <button
+                class="pm-video-lightbox"
+                type="button"
+                data-pswp-type="embed"
+                data-src="{{ embed_url | strip }}"
+                data-w="{{ full_w }}"
+                data-h="{{ full_h }}"
+                aria-label="Open video full screen"
+              >
+                Full screen
+              </button>
+
+            {%- when 'model' -%}
+              {{ media | media_tag: image_size: '2048x', class: 'pm-media' }}
+              <button
+                class="pm-model-btn"
+                data-shopify-xr
+                data-shopify-model3d-id="{{ media.id }}"
+                data-shopify-title="{{ product_obj.title | escape }}"
+                data-shopify-shop-id="{{ shop.id }}"
+                type="button"
+              >
+                View in your space
+              </button>
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if product_obj.media.size > 1 -%}
+      <div class="pm-thumbs" aria-label="Product media thumbnails">
+        {%- for media in product_obj.media -%}
+          {%- assign thumb_alt = media.alt | default: product_obj.title -%}
+          <button
+            class="pm-thumb"
+            type="button"
+            aria-label="Show media {{ forloop.index }}"
+            data-target-id="{{ media.id }}"
+          >
+            {%- if media.media_type == 'image' and media.preview_image -%}
+              <picture>
+                <source srcset="{{ media.preview_image | image_url: width: 240, format: 'avif' }}" type="image/avif">
+                <source srcset="{{ media.preview_image | image_url: width: 240, format: 'webp' }}" type="image/webp">
+                <img
+                  src="{{ media.preview_image | image_url: width: 240, format: 'jpg' }}"
+                  alt="{{ thumb_alt | escape }}"
+                  class="pm-thumb-img"
+                  loading="lazy"
+                  width="72"
+                  height="72"
+                >
+              </picture>
+            {%- else -%}
+              {{ media | media_tag: image_size: '360x', class: 'pm-thumb-img' }}
+            {%- endif -%}
+            <span class="pm-badge" aria-hidden="true">
+              {%- case media.media_type -%}
+                {%- when 'video' -%}
+                  ▶
+                {%- when 'external_video' -%}
+                  ▶
+                {%- when 'model' -%}
+                  3D
+                {%- else -%}
+                  🖼
+              {%- endcase -%}
+            </span>
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

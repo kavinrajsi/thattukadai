@@ -1,17 +1,23 @@
 <section class="container">
   <article itemscope itemtype="http://schema.org/Product">
     <h1 itemprop="name">{{ product.title }}</h1>
-    {% if product.featured_image %}
-      <img src="{{ product.featured_image | img_url: '720x' }}" alt="{{ product.title | escape }}" itemprop="image">
-    {% endif %}
-    <p class="price">{{ product.price | money }}</p>
 
+    {% render 'product-image', product: product %}
+
+    <p>
+      {% render 'product-price', product: product, mode: 'range', show_from: true %}
+    </p>
     {% form 'product', product %}
       {% if product.variants.size > 1 %}
         <label for="variant">Options</label>
         <select name="id" id="variant">
           {% for variant in product.variants %}
-            <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>
+            <option
+              value="{{ variant.id }}"
+              {% if variant == product.selected_or_first_available_variant %}
+                selected
+              {% endif %}
+            >
               {{ variant.title }} — {{ variant.price | money }}
             </option>
           {% endfor %}
@@ -19,8 +25,18 @@
       {% else %}
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
       {% endif %}
-      <button class="btn" type="submit" {% unless product.available %}disabled="disabled"{% endunless %}>
-        {% if product.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}
+      <button
+        class="btn"
+        type="submit"
+        {% unless product.available %}
+          disabled="disabled"
+        {% endunless %}
+      >
+        {% if product.available -%}
+          {{- 'products.product.add_to_cart' | t -}}
+        {%- else -%}
+          {{- 'products.product.sold_out' | t -}}
+        {%- endif %}
       </button>
     {% endform %}
 
