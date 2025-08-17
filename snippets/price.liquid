@@ -1,0 +1,7 @@
+{% if product.compare_at_price_max > product.price %}
+  <span class="price"
+    ><s>{{ product.compare_at_price_min | money }}</s> {{ product.price | money -}}
+  </span>
+{% else %}
+  <span class="price">{{ product.price | money }}</span>
+{% endif %}

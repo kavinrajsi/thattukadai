@@ -1,0 +1,89 @@
+{% layout none %}
+
+{%- if cart == empty -%}
+  <div class="drawer-empty">Your cart is empty.</div>
+{%- else -%}
+  <ul class="drawer-items">
+    {%- for item in cart.items -%}
+      <li class="drawer-item" data-line="{{ forloop.index }}">
+        <img
+          class="drawer-item__image"
+          src="{{ item.image | img_url: '200x' }}"
+          alt="{{ item.product.title | escape }}"
+          width="60"
+          height="60"
+          loading="lazy"
+        >
+
+        <div class="drawer-item__meta">
+          <a href="{{ item.url }}" class="drawer-item__title">{{ item.product.title }}</a>
+
+          {%- comment -%} Variant options {%- endcomment -%}
+          {%- if item.options_with_values and item.options_with_values.size > 0 -%}
+            <div class="drawer-item__variants">
+              {%- for ov in item.options_with_values -%}
+                {%- unless ov.value == blank or ov.value == 'Default Title' -%}
+                  <div class="drawer-item__variant">
+                    <span class="opt-name">{{ ov.name }}:</span> <span class="opt-val">{{ ov.value }}</span>
+                  </div>
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+          {%- elsif item.variant_title and item.variant_title != 'Default Title' -%}
+            <div class="drawer-item__variant">{{ item.variant_title }}</div>
+          {%- endif -%}
+
+          {%- if item.variant_title and item.variant_title != 'Default Title' -%}
+            <div class="drawer-item__variant">{{ item.variant_title }}</div>
+          {%- endif -%}
+
+          {%- if item.properties and item.properties.size > 0 -%}
+            <ul class="drawer-item__props">
+              {%- for p in item.properties -%}
+                {%- assign key = p.first -%}
+                {%- assign val = p.last -%}
+                {%- if val != blank -%}
+                  <li>
+                    <span>{{ key }}:</span> <span>{{ val }}</span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          <div class="drawer-item__qty">
+            <button type="button" class="qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>
+            <input
+              class="qty-input"
+              type="number"
+              min="1"
+              inputmode="numeric"
+              value="{{ item.quantity }}"
+              aria-label="Quantity"
+            >
+            <button type="button" class="qty-btn" data-qty-plus aria-label="Increase quantity">+</button>
+
+            <button type="button" class="drawer-item__remove" data-line-remove title="Remove">Remove</button>
+          </div>
+        </div>
+
+        <div class="drawer-item__price">
+          {{ item.final_line_price | money }}
+          {%- if item.original_line_price > item.final_line_price -%}
+            <div class="drawer-item__savings">
+              Saved {{ item.original_line_price | minus: item.final_line_price | money }}
+            </div>
+          {%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  </ul>
+
+  <div class="drawer-summary">
+    <div class="drawer-subtotal">
+      <span>Subtotal</span>
+      <strong>{{ cart.total_price | money }}</strong>
+    </div>
+    <p class="drawer-note">Taxes and shipping calculated at checkout.</p>
+  </div>
+{%- endif -%}

@@ -1,23 +1,139 @@
-<div class="container nav">
-  <div class="logo">
-    <a href="/">{{ settings.logo_text | default: shop.name }}</a>
-  </div>
-  <nav class="menu" role="navigation" aria-label="Main navigation">
-    {% if settings.main_menu != blank and linklists[settings.main_menu] %}
-      {% for link in linklists[settings.main_menu].links %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
-      {% endfor %}
-    {% endif %}
-  </nav>
+{% comment %}
+  sections/header.liquid
+  A self-contained, accessible header with:
+  - Logo (image or store name fallback)
+  - Main navigation (from a menu setting)
+  - Predictive search (powered by /search/suggest.json)
+  - Cart icon with live item count
+{% endcomment %}
 
+<header class="ch-header" role="banner">
+  <div class="ch-inner">
+    <!-- Logo -->
+    <div class="ch-left">
+      <a class="ch-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+        {% if section.settings.logo != blank %}
+          {%- assign image = section.settings.logo -%}
+          <img
+            src="{{ image | image_url: width: 240 }}"
+            srcset="
+              {{ image | image_url: width: 120 }} 120w,
+              {{ image | image_url: width: 160 }} 160w,
+              {{ image | image_url: width: 200 }} 200w,
+              {{ image | image_url: width: 240 }} 240w
+            "
+            sizes="(max-width: 768px) 160px, 240px"
+            loading="eager"
+            width="{{ image.width }}"
+            height="{{ image.height }}"
+            alt="{{ shop.name | escape }}"
+          >
+        {% else %}
+          <span class="ch-logo-text">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+    </div>
 
-  <div class="menu">
-    <a href="/cart"><span data-cart-count aria-label="0 items in cart">({{ cart.item_count }})</span></a>
+    <!-- Navigation -->
+    <nav class="ch-nav" role="navigation" aria-label="Main">
+      {% if section.settings.menu != blank %}
+        <ul class="ch-menu">
+          {% for link in linklists[section.settings.menu].links %}
+            <li class="ch-menu-item">
+              <a
+                href="{{ link.url }}"
+                class="ch-menu-link"
+                {% if link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {{ link.title }}
+              </a>
+              {% if link.links.size > 0 %}
+                <button class="ch-sub-toggle" aria-expanded="false" aria-label="Toggle submenu">▾</button>
+                <ul class="ch-submenu" hidden>
+                  {% for sublink in link.links %}
+                    <li>
+                      <a href="{{ sublink.url }}" class="ch-submenu-link">{{ sublink.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </nav>
+
+    <!-- Search + Cart -->
+    <div class="ch-right">
+      {% if section.settings.enable_search %}
+        <div class="ch-search" role="search">
+          <form action="{{ routes.search_url }}" method="get" class="ch-search-form" autocomplete="off">
+            <input
+              id="ch-search-input-{{ section.id }}"
+              class="ch-search-input"
+              type="search"
+              name="q"
+              value=""
+              placeholder="search"
+              aria-label="search"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+            >
+            <input type="hidden" name="type" value="{{ section.settings.search_types | escape }}">
+          </form>
+          <div class="ch-search-suggestions" id="ch-suggest-{{ section.id }}" role="listbox" hidden></div>
+        </div>
+      {% endif %}
+
+      <span class="ch-cart" aria-label="Cart">
+        <!-- Simple cart icon (SVG) -->
+        <svg class="ch-cart-icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.44A2 2 0 0 0 10 19h9v-2h-9l1.1-2H17a2 2 0 0 0 1.79-1.11l3.58-7.16A1 1 0 0 0 21.5 5H7zM7 20a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+        </svg>
+        <span data-cart-count aria-label="0 items in cart">({{ cart.item_count }})</span>
+      </span>
+    </div>
   </div>
-</div>
+</header>
 {% schema %}
 {
-  "name": "Header",
-  "settings": []
+  "name": "Custom Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "label": "Enable predictive search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_types",
+      "label": "Search resource types",
+      "default": "product,collection,page,article",
+      "info": "Comma-separated. Supported: product, collection, page, article."
+    },
+    {
+      "type": "number",
+      "id": "min_chars",
+      "label": "Min characters to trigger suggestions",
+      "default": 2
+    }
+  ],
+  "blocks": [],
+  "presets": [{ "name": "Custom Header" }]
 }
 {% endschema %}

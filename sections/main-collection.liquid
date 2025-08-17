@@ -5,13 +5,7 @@
   {% endif %}
   <div class="grid">
     {% for product in collection.products %}
-      <a class="product-card" href="{{ product.url }}">
-        {% if product.featured_image %}
-          <img src="{{ product.featured_image | img_url: '400x' }}" alt="{{ product.title | escape }}">
-        {% endif %}
-        <div class="title">{{ product.title }}</div>
-        <div class="price">{{ product.price | money }}</div>
-      </a>
+      {% render 'product-card', product: product %}
     {% else %}
       <p>No products found.</p>
     {% endfor %}

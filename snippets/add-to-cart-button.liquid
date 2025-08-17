@@ -1,0 +1,167 @@
+{% comment %}
+  Snippet: add-to-cart-button (AJAX)
+  Usage:
+    {% render 'add-to-cart-button',
+        product: product,
+        class: 'product-card__cart',
+        label: 'Add to cart',
+        sold_out_label: 'Sold out',
+        view_label: 'View product',
+        cart_count_selector: '[data-cart-count]',   # optional, defaults to [data-cart-count]
+        open_drawer_on_add: false,                  # optional, set true if you want to signal a cart drawer
+        show_quantity: false                        # optional, set true to render a qty input (defaults to 1)
+    %}
+  Notes:
+    - AJAX is used only when the product has a single purchasable variant.
+    - For multi-variant products, we keep UX consistent and link to product page.
+    - Emits `window.dispatchEvent(new CustomEvent('thattu:cart:updated', { detail: { cart } }))`
+      after a successful add, so a cart drawer can subscribe and refresh.
+{% endcomment %}
+
+{% assign classes = class | default: 'add-to-cart' %}
+{% assign label_text = label | default: 'Add to cart' %}
+{% assign sold_out_text = sold_out_label | default: 'Sold out' %}
+{% assign view_text = view_label | default: 'View product' %}
+{% assign count_selector = cart_count_selector | default: '[data-cart-count]' %}
+{% assign drawer_flag = open_drawer_on_add | default: false %}
+{% assign qty_enabled = show_quantity | default: false %}
+
+<div class="{{ classes }}">
+  {% if product.available %}
+    {% if product.variants.size == 1 %}
+      {% assign v = product.first_available_variant %}
+      <form
+        method="post"
+        action="/cart/add"
+        class="{{ classes }}__form js-atc-form"
+        enctype="multipart/form-data"
+        data-ajax="true"
+        data-count-target="{{ count_selector | escape }}"
+        data-open-drawer="{{ drawer_flag }}"
+      >
+        <input type="hidden" name="id" value="{{ v.id }}">
+        {% if qty_enabled %}
+          <label class="{{ classes }}__qty-label" for="qty-{{ section.id }}-{{ v.id }}">Qty</label>
+          <input id="qty-{{ section.id }}-{{ v.id }}" class="{{ classes }}__qty" type="number" name="quantity" value="1" min="1" step="1" inputmode="numeric">
+        {% else %}
+          <input type="hidden" name="quantity" value="1">
+        {% endif %}
+        <button type="submit" name="add" class="{{ classes }}__button js-atc-btn" aria-live="polite">
+          <span class="js-atc-btn__text">{{ label_text }}</span>
+          <span class="js-atc-btn__spinner" hidden></span>
+        </button>
+        <span class="{{ classes }}__status sr-only" aria-live="polite"></span>
+      </form>
+    {% else %}
+      <a href="{{ product.url }}" class="{{ classes }}__link">
+        {{ view_text }}
+      </a>
+    {% endif %}
+  {% else %}
+    <span class="{{ classes }}__soldout">{{ sold_out_text }}</span>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .add-to-cart { margin-top: .5rem; }
+  .add-to-cart__form, .add-to-cart__link, .add-to-cart__soldout { display: block; }
+  .add-to-cart__button, .add-to-cart__link {
+    width: 100%; background:#111; color:#fff; font-weight:600; text-align:center;
+    padding:.75rem 1rem; border-radius:8px; border:none; cursor:pointer; text-decoration:none;
+    transition: background-color .2s ease, opacity .2s ease;
+  }
+  .add-to-cart__button:hover, .add-to-cart__link:hover { background:#333; }
+  .add-to-cart__soldout {
+    display:inline-block; width:100%; padding:.75rem 1rem; background:#ccc; color:#666; border-radius:8px; text-align:center; font-weight:600;
+  }
+  .add-to-cart__qty { width: 64px; padding:.5rem; margin:0 .5rem .5rem 0; border:1px solid #ddd; border-radius:6px; }
+  /* Spinner (minimal) */
+  .js-atc-btn__spinner::after {
+    content:""; width:16px; height:16px; border-radius:50%;
+    border:2px solid rgba(255,255,255,.4); border-top-color:#fff; display:inline-block; vertical-align:middle;
+    animation: atc-spin .7s linear infinite; margin-left:8px;
+  }
+  @keyframes atc-spin { to { transform: rotate(360deg);} }
+  .sr-only { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+{% endstylesheet %}
+
+<script>
+(function() {
+  // Delegate on submit for all AJAX ATC forms on the page
+  document.addEventListener('submit', async function(e) {
+    const form = e.target;
+    if (!form.classList.contains('js-atc-form')) return;
+    if (form.dataset.ajax !== 'true') return;
+
+    e.preventDefault();
+
+    const btn = form.querySelector('.js-atc-btn');
+    const btnText = form.querySelector('.js-atc-btn__text');
+    const spinner = form.querySelector('.js-atc-btn__spinner');
+    const status = form.querySelector('.add-to-cart__status') || form.querySelector('.sr-only');
+
+    const originalLabel = btnText ? btnText.textContent : '';
+    const countTargetSel = form.getAttribute('data-count-target') || '[data-cart-count]';
+    const openDrawer = form.getAttribute('data-open-drawer') === 'true';
+
+    // Build payload
+    const formData = new FormData(form);
+    const id = formData.get('id');
+    const quantity = parseInt(formData.get('quantity') || '1', 10);
+
+    // UI: loading
+    if (spinner) spinner.hidden = false;
+    if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); }
+    if (btnText) btnText.textContent = 'Adding…';
+
+    try {
+      // Add to cart
+      const addRes = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: id, quantity: quantity })
+      });
+
+      if (!addRes.ok) {
+        const errText = await addRes.text();
+        throw new Error(errText || 'Failed to add to cart');
+      }
+
+      // Fetch cart to update count
+      const cartRes = await fetch('/cart.js', { headers: { 'Accept': 'application/json' } });
+      const cart = await cartRes.json();
+
+      // Update count badge
+      const countEl = document.querySelector(countTargetSel);
+      if (countEl) {
+        countEl.textContent = cart.item_count;
+        countEl.setAttribute('aria-label', cart.item_count + ' items in cart');
+      }
+
+      // Announce + brief visual feedback
+      if (status) status.textContent = 'Added to cart';
+      if (btnText) btnText.textContent = 'Added!';
+      setTimeout(function(){ if (btnText) btnText.textContent = originalLabel; }, 1000);
+
+      // Notify listeners (e.g., cart drawer)
+      window.dispatchEvent(new CustomEvent('thattu:cart:updated', { detail: { cart: cart } }));
+
+      // Optionally open cart drawer (let your theme listen & act)
+      if (openDrawer) {
+        window.dispatchEvent(new CustomEvent('thattu:cart:open'));
+      }
+
+    } catch (err) {
+      console.error('[AJAX ATC] Error:', err);
+      if (status) status.textContent = 'Could not add to cart';
+      if (btnText) btnText.textContent = 'Try again';
+      setTimeout(function(){ if (btn && btnText) btnText.textContent = originalLabel; }, 1500);
+    } finally {
+      if (spinner) spinner.hidden = true;
+      if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); }
+    }
+  }, false);
+})();
+</script>
+
+{% comment %} {% render 'add-to-cart-button', product: product, class: 'product-card__cart', open_drawer_on_add: true %} {% endcomment %}

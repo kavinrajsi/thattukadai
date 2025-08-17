@@ -1,0 +1,15 @@
+{% comment %} sections/product-recommendations.liquid {% endcomment %}
+<section
+  class="product-recommendations"
+  data-product-id="{{ product.id }}"
+  data-limit="{{ section.settings.products_to_show }}"
+>
+  {% if recommendations.performed and recommendations.products_count > 0 %}
+    <h2>{{ section.settings.heading }}</h2>
+    <ul class="grid">
+      {% for product in recommendations.products %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>

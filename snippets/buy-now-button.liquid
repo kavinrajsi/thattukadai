@@ -1,0 +1,68 @@
+{% comment %}
+  Snippet: buy-now-button
+  Usage:
+    {% render 'buy-now-button', product: product, class: 'product-card__buy', label: 'Buy now' %}
+  Params:
+    - product: Product object
+    - class: Optional custom wrapper class
+    - label: Optional button text (default: "Buy now")
+    - sold_out_label: Optional button text when sold out (default: "Sold out")
+    - view_label: Optional text when product requires variant selection (default: "Choose options")
+{% endcomment %}
+
+{% assign classes = class | default: 'buy-now' %}
+{% assign label_text = label | default: 'Buy now' %}
+{% assign sold_out_text = sold_out_label | default: 'Sold out' %}
+{% assign view_text = view_label | default: 'Choose options' %}
+
+<div class="{{ classes }}">
+  {% if product.available %}
+    {% if product.variants.size == 1 %}
+      {% assign v = product.first_available_variant %}
+      <a
+        href="/cart/{{ v.id }}:1?checkout"
+        class="{{ classes }}__button"
+        data-product-id="{{ product.id }}"
+      >
+        {{ label_text }}
+      </a>
+    {% else %}
+      <a href="{{ product.url }}" class="{{ classes }}__link">
+        {{ view_text }}
+      </a>
+    {% endif %}
+  {% else %}
+    <span class="{{ classes }}__soldout">{{ sold_out_text }}</span>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .buy-now { margin-top: .5rem; }
+  .buy-now__button, .buy-now__link {
+    display: block;
+    width: 100%;
+    background-color: #d97706; /* amber-600 */
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    padding: .75rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color .2s ease;
+  }
+  .buy-now__button:hover, .buy-now__link:hover {
+    background-color: #b45309; /* amber-700 */
+  }
+  .buy-now__soldout {
+    display: block;
+    width: 100%;
+    padding: .75rem 1rem;
+    background-color: #ccc;
+    color: #666;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+  }
+{% endstylesheet %}
+
+{% comment %} {% render 'buy-now-button', product: product, class: 'product-card__buy', label: 'Buy Now' %} {% endcomment %}

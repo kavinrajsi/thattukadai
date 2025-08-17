@@ -2,10 +2,12 @@
   "sections": {
     "main": {
       "type": "main-cart",
-      "settings": {}
+      "settings": {
+        "show_vendor": false,
+        "free_shipping_threshold": 75.0,
+        "upsell_collection": "frontpage"
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

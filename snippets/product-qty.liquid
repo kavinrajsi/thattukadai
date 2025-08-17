@@ -1,0 +1,43 @@
+{% comment %}
+  product-qty.liquid
+  - Renders a + / - quantity selector
+  - Expects `form_id` and `section_id` passed in for accessibility
+{% endcomment %}
+
+<div class="product-qty">
+  <label for="quantity-{{ section_id }}">Quantity</label>
+  <div class="qty-wrapper">
+    <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
+    <input
+      id="quantity-{{ section_id }}"
+      class="quantity-input"
+      type="number"
+      name="quantity"
+      min="1"
+      value="1"
+      inputmode="numeric"
+    >
+    <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.product-qty').forEach(function (root) {
+      // prevent attaching twice if the section re-renders
+      if (root.dataset.qtyInited) return;
+      root.dataset.qtyInited = 'true';
+
+      const minus = root.querySelector('.qty-minus');
+      const plus = root.querySelector('.qty-plus');
+      const input = root.querySelector('.quantity-input');
+      console.log('out' + input.value);
+      minus.addEventListener('click', function () {
+        if (input.value > 1) input.value--;
+      });
+
+      plus.addEventListener('click', function () {
+        input.value++;
+      });
+    });
+  });
+</script>

@@ -1,0 +1,29 @@
+{%- comment -%} Product card snippet {%- endcomment -%}
+<div
+  class="bestsellers__item"
+  {% if block %}
+    {{- block.shopify_attributes -}}
+  {% endif %}
+>
+  <a class="product-card" href="{{ product.url }}">
+    <div class="product-card__media">
+      {% render 'product-image', product: product %}
+    </div>
+    <div class="product-card__body">
+      <div class="product-card__title">{{ product.title }}</div>
+      {% render 'product-price', product: product %}
+    </div>
+  </a>
+
+  {%- comment -%} Hover CTA (opens drawer) {%- endcomment -%}
+  <button
+    class="product-card__cta"
+    type="button"
+    data-product-handle="{{ product.handle }}"
+    data-product-url="{{ product.url }}"
+    aria-haspopup="dialog"
+    aria-controls="product-drawer"
+  >
+    Select options
+  </button>
+</div>

@@ -1,48 +1,170 @@
-<section class="container">
-  <article itemscope itemtype="http://schema.org/Product">
-    <h1 itemprop="name">{{ product.title }}</h1>
+{% comment %}
+  sections/main-product.liquid
+  - Uses custom 'product-media' snippet for gallery
+  - Uses 'variant-picker' snippet for options (swatches + selects)
+  - Simple product form with qty + add to cart
+{% endcomment %}
 
-    {% render 'product-image', product: product %}
+{% comment %} {% assign product = product %} {% endcomment %}
 
-    <p>
-      {% render 'product-price', product: product, mode: 'range', show_from: true %}
-    </p>
-    {% form 'product', product %}
-      {% if product.variants.size > 1 %}
-        <label for="variant">Options</label>
-        <select name="id" id="variant">
-          {% for variant in product.variants %}
-            <option
-              value="{{ variant.id }}"
-              {% if variant == product.selected_or_first_available_variant %}
-                selected
-              {% endif %}
+<section id="main-product-{{ section.id }}" class="main-product">
+  {% if product == blank %}
+    <p>No product selected.</p>
+    {% comment %} In Theme Editor, choose a product for this section. {% endcomment %}
+  {% else %}
+    <div class="product-grid">
+      <div class="product-image-col">
+        {% render 'product-media', product: product %}
+      </div>
+      <div class="product-info-col">
+        <h1 class="product-title">{{ product.title }}</h1>
+
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        {%- assign form_id = 'product-form-' | append: section.id -%}
+
+        {% form 'product', product, id: form_id, novalidate: 'novalidate' %}
+          {% render 'variant-picker', product: product, form_id: form_id, option_blocks: section.blocks %}
+
+          {% if section.settings.show_quantity %}
+            {% render 'product-qty', section_id: section.id %}
+          {% endif %}
+
+          <input type="text" name="id" value="{{ current_variant.id }}">
+          <div class="product-actions">
+            <button
+              type="submit"
+              name="add"
+              class="product-atc"
+              {% unless current_variant.available %}
+                disabled
+              {% endunless %}
             >
-              {{ variant.title }} — {{ variant.price | money }}
-            </option>
-          {% endfor %}
-        </select>
-      {% else %}
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-      {% endif %}
-      <button
-        class="btn"
-        type="submit"
-        {% unless product.available %}
-          disabled="disabled"
-        {% endunless %}
-      >
-        {% if product.available -%}
-          {{- 'products.product.add_to_cart' | t -}}
-        {%- else -%}
-          {{- 'products.product.sold_out' | t -}}
-        {%- endif %}
-      </button>
-    {% endform %}
+              {%- if current_variant.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+            </button>
 
-    <div class="rte" itemprop="description">{{ product.description }}</div>
-  </article>
+            {% if section.settings.show_dynamic_checkout and current_variant.available %}
+              <div class="product-buy-now">
+                {{ form | payment_button }}
+              </div>
+            {% endif %}
+          </div>
+        {% endform %}
+
+        {% if product.description != blank and section.settings.show_description %}
+          <div class="product-description rte">
+            {{ product.description }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
 </section>
+
+<br>
+{% assign primary_collection = product.collections | first %}
+
+{% if primary_collection and primary_collection.products_count > 1 %}
+  <h3>You may also like</h3>
+  <div class="related-products">
+    {% assign shown = 0 %}
+    {% for related in primary_collection.products %}
+      {% if related.id != product.id %}
+        <div class="related-product-item">
+          <a href="{{ related.url }}">
+            {% if related.featured_image %}
+              <img
+                src="{{ related.featured_image | image_url: width: 300, height: 300, crop: 'center' }}"
+                alt="{{ related.title | escape }}"
+              >
+            {% endif %}
+            <p>{{ related.title }}</p>
+          </a>
+        </div>
+        {% assign shown = shown | plus: 1 %}
+        {% if shown >= 4 %}
+          {% break %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+<br>
+
+{%- comment -%}
+  Assets — toggle via settings
+{%- endcomment -%}
 {% schema %}
-{ "name": "Main product", "settings": [] }
+{
+  "name": "Main product (custom)",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product (leave blank on product template)"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_gallery",
+      "label": "Use custom media gallery (Swiper + PhotoSwipe)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "include_swiper_assets",
+      "label": "Include Swiper assets from theme Assets",
+      "default": true,
+      "info": "Requires swiper-bundle.min.css and swiper-bundle.min.js in Assets."
+    },
+    {
+      "type": "checkbox",
+      "id": "include_photoswipe_assets",
+      "label": "Include PhotoSwipe assets from theme Assets",
+      "default": true,
+      "info": "Requires photoswipe.css, photoswipe.umd.min.js, photoswipe-lightbox.umd.min.js in Assets."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show dynamic checkout button",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show product description",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "option_style",
+      "name": "Option display",
+      "settings": [
+        { "type": "text", "id": "option_name", "label": "Option name (e.g., Color, Size)" },
+        {
+          "type": "select",
+          "id": "display",
+          "label": "Display type",
+          "default": "swatch",
+          "options": [
+            { "value": "swatch", "label": "Swatch" },
+            { "value": "select", "label": "Select" }
+          ]
+        },
+        { "type": "text", "id": "custom_label", "label": "Label override (optional)" }
+      ]
+    }
+  ],
+
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
 {% endschema %}

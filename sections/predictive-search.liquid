@@ -1,0 +1,85 @@
+{%- comment -%}
+  Renders predictive search results (HTML is fetched via /search/suggest?section_id=predictive-search)
+  Docs: https://shopify.dev/docs/storefronts/themes/navigation-search/search/predictive-search
+{%- endcomment -%}
+
+{%- if predictive_search.performed -%}
+  <div id="predictive-search-results" role="region" aria-label="Search suggestions">
+    {%- assign found_any = false -%}
+
+    {%- if predictive_search.resources.products.size > 0 -%}
+      {%- assign found_any = true -%}
+      <h3 id="predictive-search-products">Products</h3>
+      <ul role="listbox" aria-labelledby="predictive-search-products">
+        {%- for product in predictive_search.resources.products -%}
+          <li role="option">
+            <a href="{{ product.url }}">
+              {{ product | image_url: width: 80 | image_tag: alt: product.title, loading: 'lazy' }}
+              <span>{{ product.title }}</span>
+              {%- if product.price -%}
+                <span>
+                  {%- if product.compare_at_price > product.price -%}
+                    <s>{{ product.compare_at_price | money }}</s>
+                  {%- endif -%}
+                  {{ product.price | money }}
+                </span>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if predictive_search.resources.collections.size > 0 -%}
+      {%- assign found_any = true -%}
+      <h3 id="predictive-search-collections">Collections</h3>
+      <ul role="listbox" aria-labelledby="predictive-search-collections">
+        {%- for collection in predictive_search.resources.collections -%}
+          <li role="option">
+            <a href="{{ collection.url }}">
+              {{ collection.featured_image | image_url: width: 80 | image_tag: alt: collection.title, loading: 'lazy' }}
+              <span>{{ collection.title }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if predictive_search.resources.pages.size > 0 -%}
+      {%- assign found_any = true -%}
+      <h3 id="predictive-search-pages">Pages</h3>
+      <ul role="listbox" aria-labelledby="predictive-search-pages">
+        {%- for page in predictive_search.resources.pages -%}
+          <li role="option">
+            <a href="{{ page.url }}">{{ page.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if predictive_search.resources.articles.size > 0 -%}
+      {%- assign found_any = true -%}
+      <h3 id="predictive-search-articles">Articles</h3>
+      <ul role="listbox" aria-labelledby="predictive-search-articles">
+        {%- for article in predictive_search.resources.articles -%}
+          <li role="option">
+            <a href="{{ article.url }}">{{ article.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <div class="predictive-search__footer">
+      <a
+        class="predictive-search__view-all"
+        href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}"
+      >
+        View all results for “{{ predictive_search.terms }}”
+      </a>
+    </div>
+
+    {%- unless found_any -%}
+      <p>No suggestions for “{{ predictive_search.terms }}”.</p>
+    {%- endunless -%}
+  </div>
+{%- endif -%}

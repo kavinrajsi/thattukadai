@@ -2,10 +2,14 @@
   "sections": {
     "main": {
       "type": "main-search",
-      "settings": {}
+      "settings": {
+        "results_per_page": 24,
+        "show_filters": true,
+        "show_vendors": false,
+        "show_compare_at": true,
+        "show_content_results": true
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

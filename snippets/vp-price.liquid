@@ -1,0 +1,10 @@
+{%- comment -%} Renders price for a given product/variant {%- endcomment -%}
+{%- assign v = variant | default: product.selected_or_first_available_variant -%}
+{%- if v -%}
+  <span class="vp-price-current">{{ v.price | money }}</span>
+  {%- if v.compare_at_price and v.compare_at_price > v.price -%}
+    <s class="vp-price-compare">{{ v.compare_at_price | money }}</s>
+  {%- endif -%}
+{%- else -%}
+  <span class="vp-price-current">{{ product.price | money }}</span>
+{%- endif -%}
