@@ -11,6 +11,42 @@
   "sections": {
     "slider": {
       "type": "homepage-slider",
+      "blocks": {
+        "slide_zGrLLK": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/test-slider-desktop-3.png",
+            "image_mobile": "shopify://shop_images/test-slider-mobile-2.png",
+            "kicker": "",
+            "content_area": "",
+            "button_label": "",
+            "button_url": "shopify://products/ennai-kadalai-parupu",
+            "button_style": "solid",
+            "link_mode": "button_url",
+            "text_color": "#ffffff",
+            "overlay_opacity": 30
+          }
+        },
+        "slide_wm3cwY": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/test-slider-desktop-1.png",
+            "image_mobile": "shopify://shop_images/test-slider-mobile-1.png",
+            "kicker": "",
+            "content_area": "",
+            "button_label": "",
+            "button_url": "shopify://products/andra-muruku",
+            "button_style": "solid",
+            "link_mode": "button_url",
+            "text_color": "#ffffff",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "slide_zGrLLK",
+        "slide_wm3cwY"
+      ],
       "settings": {
         "autoplay": true,
         "autoplay_timeout": 5,
