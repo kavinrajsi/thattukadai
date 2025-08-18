@@ -1,3 +1,75 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-
+  "current": {
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "blocks": {
+          "bar_QW6HeT": {
+            "type": "bar",
+            "settings": {
+              "message": "<ul><li>Flat 20% Off on all sweets for this festive season.</li><li>Special discounts for bulk & corporate orders. <a href=\"/pages/contact\" target=\"_blank\" title=\"Contact\">Contact us today!</a></li><li>Enjoy FREE delivery on orders above ₹999. Order now!</li><li>Flat 20% Off on all sweets for this festive season.</li><li>Special discounts for bulk & corporate orders. <a href=\"/pages/contact\" target=\"_blank\" title=\"Contact\">Contact us today!</a></li><li>Enjoy FREE delivery on orders above ₹999. Order now!</li><li>Flat 20% Off on all sweets for this festive season.</li><li>Special discounts for bulk & corporate orders. <a href=\"/pages/contact\" target=\"_blank\" title=\"Contact\">Contact us today!</a></li><li>Enjoy FREE delivery on orders above ₹999. Order now!</li></ul>",
+              "link": "",
+              "useMarquee": true,
+              "scrollAmount": 10,
+              "bgColor": "#111827",
+              "textColor": "#ffffff",
+              "enableDismiss": true,
+              "cookieExpireDays": 30,
+              "startDate": "",
+              "endDate": "",
+              "showOnlyOnHome": false
+            }
+          }
+        },
+        "block_order": [
+          "bar_QW6HeT"
+        ],
+        "settings": {
+          "stackGap": 8
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo_svg": "",
+          "header_height": 88,
+          "shop_menu": "",
+          "shop_label": "Shop",
+          "our_story_link": "",
+          "our_story_label": "Our story",
+          "cta_label": "Contact Us",
+          "cta_link": "",
+          "chrome_bg": "#e5e5e5",
+          "cta_bg": "#fad75f",
+          "text_color": "#2b2b2b"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      },
+      "predictive-search": {
+        "type": "predictive-search",
+        "settings": {}
+      },
+      "drawer-product": {
+        "type": "drawer-product",
+        "settings": {}
+      },
+      "drawer-cart": {
+        "type": "drawer-cart",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
+  }
 }
