@@ -82,13 +82,13 @@
       {
         "type": "font_picker",
         "id": "type_header",
-        "default": "playfair_display_n7",
+        "default": "dm_sans_n4",
         "label": "Heading 1"
       },
       {
         "type": "font_picker",
         "id": "type_body",
-        "default": "montserrat_n4",
+        "default": "instrument_sans_n4",
         "label": "Body Font"
       }
     ]

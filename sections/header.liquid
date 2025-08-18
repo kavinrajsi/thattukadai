@@ -92,13 +92,18 @@
         </a>
       {%- endif -%}
 
-      <span class="icon-link icon-link--bag" type="button" aria-label="cart">
+      <button
+        class="icon-link icon-link--bag"
+        type="button"
+        aria-label="Open cart"
+        aria-controls="cart-drawer"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" fill="none" viewBox="0 0 18 22">
           <path fill="#2A2A2A" d="M2.25 6.5a.25.25 0 0 0-.25.25v13c0 .138.112.25.25.25h14a.25.25 0 0 0 .25-.25v-13a.25.25 0 0 0-.25-.25h-14ZM.5 6.75C.5 5.784 1.284 5 2.25 5h14c.966 0 1.75.784 1.75 1.75v13a1.75 1.75 0 0 1-1.75 1.75h-14A1.75 1.75 0 0 1 .5 19.75v-13Z"/>
           <path fill="#2A2A2A" d="M9.25 1.5A2.75 2.75 0 0 0 6.5 4.25v3.5a.75.75 0 0 1-1.5 0v-3.5a4.25 4.25 0 0 1 8.5 0v3.5a.75.75 0 0 1-1.5 0v-3.5A2.75 2.75 0 0 0 9.25 1.5Z"/>
         </svg>
         <span class="badge" data-cart-count aria-label="0 items in cart">{{ cart.item_count }}</span>
-      </span>
+      </button>
     </nav>
   </div>
 

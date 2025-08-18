@@ -51,7 +51,6 @@
       style="--ab-bg: {{ block.settings.bgColor }}; --ab-text: {{ block.settings.textColor }};"
       data-key="{{ key }}"
       data-enable-dismiss="{{ block.settings.enableDismiss }}"
-      data-cookie-days="{{ block.settings.cookieExpireDays }}"
       data-start-date="{{ block.settings.startDate }}"
       data-end-date="{{ block.settings.endDate }}"
       {{ block.shopify_attributes }}
@@ -140,7 +139,6 @@
         { "type": "color", "id": "bgColor", "label": "Background color", "default": "#111827" },
         { "type": "color", "id": "textColor", "label": "Text color", "default": "#ffffff" },
         { "type": "checkbox", "id": "enableDismiss", "label": "Allow dismiss", "default": true },
-        { "type": "number", "id": "cookieExpireDays", "label": "Cookie expiry (days)", "default": 30 },
         { "type": "text", "id": "startDate", "label": "Show from date (YYYY-MM-DD)" },
         { "type": "text", "id": "endDate", "label": "Show until date (YYYY-MM-DD)" },
         { "type": "checkbox", "id": "showOnlyOnHome", "label": "Show only on homepage", "default": false }
@@ -177,13 +175,7 @@
      * @param {string} value - Cookie value
      * @param {number} days - Days until expiration
      */
-    function setCookie(name, value, days) {
-      var expires = '';
-      if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = '; expires=' + date.toUTCString();
-      }
+    function setCookie(name, value) {
       document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=Lax';
     }
 
@@ -232,7 +224,6 @@
       // Handle dismissal via cookies
       var enableDismiss = bar.getAttribute('data-enable-dismiss') === 'true';
       var key = bar.getAttribute('data-key');
-      var expireDays = parseInt(bar.getAttribute('data-cookie-days'), 10) || 30;
 
       if (enableDismiss && getCookie(key) === 'true') {
         bar.style.display = 'none';
@@ -245,7 +236,7 @@
         if (closeBtn) {
           closeBtn.addEventListener('click', function () {
             bar.style.display = 'none';
-            setCookie(key, 'true', expireDays);
+            setCookie(key, 'true');
           });
         }
       }

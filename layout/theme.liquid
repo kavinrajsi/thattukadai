@@ -27,6 +27,7 @@
       {{ settings.type_header | font_face }}
       {{ settings.type_body | font_face }}
       :root {
+        --font-dm-sans: {{ settings.type_header.family }}, {{ settings.type_header.fallback_families }};
         --font-header: {{ settings.type_header.family }}, {{ settings.type_header.fallback_families }};
         --font-body: {{ settings.type_body.family }}, {{ settings.type_body.fallback_families }};
       }
@@ -110,8 +111,6 @@
       }
     </script>
 
-    <script src="{{ 'header.js' | asset_url }}" defer></script>
-    <script src="{{ 'owl.carousel.js' | asset_url }}" defer></script>
     {%- if request.page_type == 'product' -%}
       <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
       <script src="{{ 'photoswipe.umd.min.js' | asset_url }}" defer></script>
@@ -120,6 +119,8 @@
       <script src="{{ 'variant-picker.js' | asset_url }}" defer></script>
     {%- endif -%}
 
+    <script src="{{ 'header.js' | asset_url }}" defer></script>
+    <script src="{{ 'owl.carousel.js' | asset_url }}" defer></script>
     <script src="{{ 'drawer-product.js' | asset_url }}" defer></script>
     <script src="{{ 'drawer-cart.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>

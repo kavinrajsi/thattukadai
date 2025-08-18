@@ -19,6 +19,9 @@
             right: 0;
             text-align: center;
             display: inline-block;
+            width: 146px;
+            height: auto;
+            margin: 0 auto;
         }
         .site-nav {
             &.site-nav--left {
@@ -54,9 +57,8 @@
                 align-items: center;
                 gap: 20px;
                 .icon-link--bag {
-
-                display: flex;
-                align-items: center;
+                    display: flex;
+                    align-items: center;
                     padding: 12px 16px;
                     /* Neutral/White2 */
                     background: #f6f6f6;
@@ -65,7 +67,7 @@
                     span {
                         display: inline-block;
                         padding-left: 8px;
-                        font-family: "DM Sans";
+                        font-family: var(--font-dm-sans);
                         font-style: normal;
                         font-weight: 500;
                         font-size: 16px;
@@ -77,5 +79,20 @@
                 }
             }
         }
+    }
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    will-change: transform;
+    &.scrolldown {
+        transform: translateY(-100%);
+        transition: transform 200ms ease;
+    }
+    &.scrollup {
+        transform: translateY(0);
+        transition: transform 200ms ease;
     }
 }

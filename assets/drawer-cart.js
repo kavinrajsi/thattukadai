@@ -138,13 +138,19 @@
   /* =========================
      Header count click -> open drawer
   ========================== */
-  $(document).on('click', '[data-cart-count]', function (e) {
+  // $(document).on('click', '[data-cart-count]', function (e) {
+  //   e.preventDefault();
+  //   var $a = $(this).closest('a');
+  //   if ($a.length) e.preventDefault();
+  //   $('#cart-drawer .cart-drawer__body').html(drawerSkeletonHTML());
+  //   openCartDrawer();
+  //   $.when(refreshCartDrawer());
+  // });
+  $(document).on('click', '.icon-link--bag', function (e) {
     e.preventDefault();
-    var $a = $(this).closest('a');
-    if ($a.length) e.preventDefault();
     $('#cart-drawer .cart-drawer__body').html(drawerSkeletonHTML());
     openCartDrawer();
-    $.when(refreshCartDrawer());
+    refreshCartDrawer();
   });
 
   function setLineLoading(line, isLoading) {
