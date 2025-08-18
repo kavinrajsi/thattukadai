@@ -25,8 +25,7 @@
               "bgColor": "#f6ca30",
               "textColor": "#161a1d",
               "enableDismiss": true,
-              "cookieExpireDays": 30,
-              "startDate": "",
+              "startDate": "2025-Aug-16",
               "endDate": "",
               "showOnlyOnHome": false
             }
