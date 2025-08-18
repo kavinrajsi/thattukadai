@@ -64,7 +64,7 @@
 
     {%- comment -%} RIGHT NAV (search/account/cart) {%- endcomment -%}
     <nav class="site-nav site-nav--right" aria-label="Utilities">
-      <a class="icon-link" href="{{ routes.search_url }}" aria-label="search">
+      <button class="icon-link js-search-toggle" aria-label="search" type="button">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="none" viewBox="0 0 21 21">
           <g clip-path="url(#a)">
             <path fill="#2A2A2A" d="m20.31 19.662-5.163-5.081a8.168 8.168 0 0 0 2.183-5.55C17.329 4.457 13.562.75 8.914.75 4.267.75.5 4.457.5 9.03c0 4.574 3.767 8.281 8.414 8.281 2.008 0 3.85-.694 5.297-1.849l5.183 5.101a.654.654 0 0 0 .916 0 .63.63 0 0 0 0-.901ZM8.914 16.037c-3.932 0-7.12-3.137-7.12-7.006 0-3.87 3.188-7.007 7.12-7.007 3.933 0 7.12 3.137 7.12 7.007 0 3.87-3.187 7.006-7.12 7.006Z"/>
@@ -75,7 +75,7 @@
             </clipPath>
           </defs>
         </svg>
-      </a>
+      </button>
 
       {%- if shop.customer_accounts_enabled -%}
         <a class="icon-link" href="{{ routes.account_url }}" aria-label="account">
@@ -151,6 +151,24 @@
   {%- endif -%}
 
   <button class="backdrop" type="button" data-backdrop hidden aria-label="Close menu"></button>
+</section>
+
+<!-- Hidden predictive search bar -->
+<section class="site-search" id="site-search" hidden>
+  <predictive-search>
+    <form action="{{ routes.search_url }}" method="get" role="search">
+      <input
+        type="search"
+        name="q"
+        placeholder="Search products..."
+        aria-label="Search"
+        autocomplete="off"
+      >
+      <button type="submit">Go</button>
+    </form>
+    <!-- Results will be injected here -->
+    <div id="predictive-search" class="predictive-search-results" hidden></div>
+  </predictive-search>
 </section>
 
 {% schema %}

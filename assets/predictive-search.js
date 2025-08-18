@@ -5,10 +5,8 @@ class PredictiveSearch extends HTMLElement {
     this.results = this.querySelector('#predictive-search');
     this.form = this.querySelector('form');
 
-    // a11y state
     this.input.setAttribute('aria-expanded', 'false');
 
-    // input handler (debounced)
     this.input.addEventListener(
       'input',
       this.debounce(() => {
@@ -18,7 +16,6 @@ class PredictiveSearch extends HTMLElement {
       }, 250)
     );
 
-    // close on escape / outside click
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') this.close();
     });
@@ -28,11 +25,10 @@ class PredictiveSearch extends HTMLElement {
   }
 
   getResults(term) {
-    // Customize resource types/limits here (max 10). Use locale-aware base path.
     const root = window.Shopify?.routes?.root || '/';
-    const types = 'product,collection,page,article'; // change as needed
-    const limit = 6; // 1..10
-    const scope = 'each'; // 'all' | 'each'
+    const types = 'product,collection,page,article';
+    const limit = 6;
+    const scope = 'each';
 
     const url =
       `${root}search/suggest` +
@@ -58,16 +54,15 @@ class PredictiveSearch extends HTMLElement {
   }
 
   open() {
-    this.results.style.display = 'block';
+    this.results.hidden = false;
     this.input.setAttribute('aria-expanded', 'true');
   }
 
   close() {
-    this.results.style.display = 'none';
+    this.results.hidden = true;
     this.input.setAttribute('aria-expanded', 'false');
   }
 
-  // tiny debounce
   debounce(fn, wait) {
     let t = null;
     return (...args) => {

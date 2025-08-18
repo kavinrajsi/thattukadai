@@ -486,85 +486,6 @@ body {
   cursor: pointer;
 }
 
-.site-header {
-  overflow: hidden;
-  padding: 24px 20px;
-  background-color: transparent;
-}
-.site-header .site-header__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  padding: 8px 20px;
-  border-radius: 6px;
-  background-color: var(--Netrual-White1, #ffffff);
-  box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
-}
-.site-header .site-header__inner .site-logo {
-  position: absolute;
-  top: -20px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  text-align: center;
-  display: inline-block;
-  width: 146px;
-  height: auto;
-  margin: 0 auto;
-}
-.site-header .site-header__inner .site-nav.site-nav--left button {
-  padding: 12px 16px;
-  /* Neutral/White2 */
-  background: #f6f6f6;
-  border-radius: 25px;
-}
-.site-header .site-header__inner .site-nav.site-nav--left button span {
-  font-family: var(--font-header);
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 16px;
-  color: #2a2a2a;
-  display: inline-block;
-  margin-right: 8px;
-}
-.site-header .site-header__inner .site-nav.site-nav--left .site-link {
-  padding: 12px 24px;
-  border-radius: 4px;
-  font-family: var(--font-header);
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 16px;
-  color: #2a2a2a;
-}
-.site-header .site-header__inner .site-nav.site-nav--right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.site-header .site-header__inner .site-nav.site-nav--right .icon-link--bag {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  /* Neutral/White2 */
-  background: #f6f6f6;
-  border-radius: 25px;
-}
-.site-header .site-header__inner .site-nav.site-nav--right .icon-link--bag span {
-  display: inline-block;
-  padding-left: 8px;
-  font-family: var(--font-dm-sans);
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 16px;
-  /* identical to box height, or 100% */
-  /* Neutral/Black1 */
-  color: #2a2a2a;
-}
-
 header {
   position: sticky;
   top: 0;
@@ -578,6 +499,101 @@ header.scrolldown {
 header.scrollup {
   transform: translateY(0);
   transition: transform 200ms ease;
+}
+header .site-header {
+  overflow: hidden;
+  padding: 24px 20px;
+  background-color: transparent;
+}
+header .site-header .site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 8px 20px;
+  border-radius: 6px;
+  background-color: var(--Netrual-White1, #ffffff);
+  box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
+}
+header .site-header .site-header__inner .site-logo {
+  position: absolute;
+  top: -20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  display: inline-block;
+  width: 146px;
+  height: auto;
+  margin: 0 auto;
+}
+header .site-header .site-header__inner .site-nav.site-nav--left button {
+  padding: 12px 16px;
+  /* Neutral/White2 */
+  background: #f6f6f6;
+  border-radius: 25px;
+}
+header .site-header .site-header__inner .site-nav.site-nav--left button span {
+  font-family: var(--font-header);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2a2a2a;
+  display: inline-block;
+  margin-right: 8px;
+}
+header .site-header .site-header__inner .site-nav.site-nav--left .site-link {
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-family: var(--font-header);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  color: #2a2a2a;
+}
+header .site-header .site-header__inner .site-nav.site-nav--right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+header .site-header .site-header__inner .site-nav.site-nav--right .icon-link--bag {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  /* Neutral/White2 */
+  background: #f6f6f6;
+  border-radius: 25px;
+}
+header .site-header .site-header__inner .site-nav.site-nav--right .icon-link--bag span {
+  display: inline-block;
+  padding-left: 8px;
+  font-family: var(--font-dm-sans);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  /* identical to box height, or 100% */
+  /* Neutral/Black1 */
+  color: #2a2a2a;
+}
+header .site-search {
+  overflow: hidden;
+  padding: 24px 20px;
+  background-color: transparent;
+}
+header .site-search form input {
+  border: 1px solid #d3d3d3;
+  padding: 12px 32px 12px 12px;
+  border-radius: 6px;
+  margin: 0 auto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  width: calc(100% - 46px);
+  min-width: 690px;
 }
 
 /* Skeleton loader */

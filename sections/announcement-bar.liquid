@@ -4,106 +4,96 @@
   PURPOSE:
   - Displays one or more announcement bars on the site (stacked vertically if multiple).
   - Each bar can:
-      - Have its own message, colors, scroll effect, link, and dismiss button.
+      - Have its own message, colors, scroll effect, and dismiss button.
       - Be shown only on the homepage or across the site.
       - Be displayed only between specific dates.
-      - Remember dismissals via cookies (per block).
-
-  HOW IT WORKS:
-  1. Liquid handles:
-      - Conditional rendering (homepage only, date filtering).
-      - Rendering blocks with their specific settings.
-  2. JavaScript handles:
-      - Cookie-based dismissal.
-      - Date-based hiding to prevent FOUC (Flash of Unwanted Content).
-  3. CSS styles:
-      - Spacing, colors, layout, hover states, and close button styling.
+      - Remember dismissals via session cookies (no expiry date set).
 {% endcomment %}
 
-<div class="announcement-bars" style="--ab-gap: {{ section.settings.stackGap }}px;">
-  {% assign today = 'now' | date: '%Y-%m-%d' %}
+{% assign today = 'now' | date: '%Y-%m-%d' %}
+{% assign has_active_announcement = false %}
 
-  {% for block in section.blocks %}
-    {%- comment -%}
-      Skip block if:
-      - `showOnlyOnHome` is enabled AND current page is not the homepage.
-    {%- endcomment -%}
-    {% if block.settings.showOnlyOnHome and request.page_type != 'index' %}
-      {% continue %}
-    {% endif %}
+{%- for block in section.blocks -%}
+  {%- if block.settings.showOnlyOnHome and request.page_type != 'index' -%}
+    {%- continue -%}
+  {%- endif -%}
 
-    {%- comment -%}
-      Date range gating in Liquid:
-      - Avoids showing bars outside their date window (prevents FOUC before JS runs).
-    {%- endcomment -%}
-    {% assign start = block.settings.startDate | default: '' %}
-    {% assign end = block.settings.endDate | default: '' %}
-    {% if start != '' and today < start %}{% continue %}{% endif %}
-    {% if end != '' and today > end %}{% continue %}{% endif %}
+  {%- assign start = block.settings.startDate | default: '' -%}
+  {%- assign end = block.settings.endDate | default: '' -%}
+  {%- if start != '' and today < start -%}{%- continue -%}{%- endif -%}
+  {%- if end != '' and today > end -%}{%- continue -%}{%- endif -%}
 
-    {% assign key = 'announcement_bar_' | append: section.id | append: '_' | append: block.id %}
+  {% assign has_active_announcement = true %}
+  {%- break -%}
+{%- endfor -%}
 
-    <!-- Announcement Bar -->
-    <div
-      class="announcement-bar"
-      role="region"
-      aria-label="Store announcement"
-      style="--ab-bg: {{ block.settings.bgColor }}; --ab-text: {{ block.settings.textColor }};"
-      data-key="{{ key }}"
-      data-enable-dismiss="{{ block.settings.enableDismiss }}"
-      data-start-date="{{ block.settings.startDate }}"
-      data-end-date="{{ block.settings.endDate }}"
-      {{ block.shopify_attributes }}
-    >
-      <div class="announcement-bar__inner">
-        {%- comment -%} Render marquee (scrolling text) if enabled {%- endcomment -%}
-        {% if block.settings.useMarquee %}
-          <marquee
-            class="announcement-bar__marquee"
-            direction="left"
-            width="100%"
-            scrollamount="{{ block.settings.scrollAmount | default: 10 }}"
-            onmouseover="this.stop();"
-            onmouseout="this.start();"
-          >
-            {% assign marquee_text = block.settings.message | strip_newlines | replace: '&nbsp;', ' ' %}
-            {% if block.settings.link != blank %}
-              <a class="announcement-bar__link" href="{{ block.settings.link }}">
-                <span class="announcement-bar__text">{{ marquee_text }}</span>
-              </a>
-            {% else %}
+{% if section.settings.enableAnnouncement and has_active_announcement %}
+  <div class="announcement-bars" style="--ab-gap: {{ section.settings.stackGap }}px;">
+    {% assign today = 'now' | date: '%Y-%m-%d' %}
+
+    {% for block in section.blocks %}
+      {% if block.settings.showOnlyOnHome and request.page_type != 'index' %}
+        {% continue %}
+      {% endif %}
+
+      {% assign start = block.settings.startDate | default: '' %}
+      {% assign end = block.settings.endDate | default: '' %}
+      {% if start != '' and today < start %}{% continue %}{% endif %}
+      {% if end != '' and today > end %}{% continue %}{% endif %}
+
+      {% assign key = 'announcement_bar_' | append: section.id | append: '_' | append: block.id %}
+
+      <!-- Announcement Bar -->
+      <div
+        class="announcement-bar"
+        role="region"
+        aria-label="Store announcement"
+        style="--ab-bg: {{ block.settings.bgColor }}; --ab-text: {{ block.settings.textColor }};"
+        data-key="{{ key }}"
+        data-enable-dismiss="{{ block.settings.enableDismiss }}"
+        data-start-date="{{ block.settings.startDate }}"
+        data-end-date="{{ block.settings.endDate }}"
+        {{ block.shopify_attributes }}
+      >
+        <div class="announcement-bar__inner">
+          {% if block.settings.useMarquee %}
+            <marquee
+              class="announcement-bar__marquee"
+              direction="left"
+              width="100%"
+              scrollamount="{{ block.settings.scrollAmount | default: 10 }}"
+              onmouseover="this.stop();"
+              onmouseout="this.start();"
+            >
+              {% assign marquee_text = block.settings.message | strip_newlines | replace: '&nbsp;', ' ' %}
               <span class="announcement-bar__text">{{ marquee_text }}</span>
-            {% endif %}
-          </marquee>
-
-          {%- comment -%} Otherwise, render static text {%- endcomment -%}
-        {% else %}
-          {% if block.settings.link != blank %}
-            {%- comment -%}
-              If you frequently include links inside the rich text itself,
-              consider removing this outer <a> to avoid nested anchors.
-            {%- endcomment -%}
-            <a class="announcement-bar__link" href="{{ block.settings.link }}">
-              <span class="announcement-bar__text rte">{{ block.settings.message }}</span>
-            </a>
+            </marquee>
           {% else %}
             <span class="announcement-bar__text rte">{{ block.settings.message }}</span>
           {% endif %}
-        {% endif %}
 
-        {%- comment -%} Optional dismiss button {%- endcomment -%}
-        {% if block.settings.enableDismiss %}
-          <button class="announcement-bar__close" type="button" aria-label="Dismiss announcement">&times;</button>
-        {% endif %}
+          {% if block.settings.enableDismiss %}
+            <button class="announcement-bar__close" type="button" aria-label="Dismiss announcement">&times;</button>
+          {% endif %}
+        </div>
       </div>
-    </div>
-  {% endfor %}
-</div>
+    {% endfor %}
+  </div>
+
+  <!-- Only load announcement.js if enabled + has bars -->
+  <script src="{{ 'announcement.js' | asset_url }}" defer></script>
+{% endif %}
 
 {% schema %}
 {
   "name": "Announcement Bar",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "enableAnnouncement",
+      "label": "Enable announcement",
+      "default": true
+    },
     {
       "type": "range",
       "id": "stackGap",
@@ -125,7 +115,6 @@
           "label": "Message text",
           "default": "<ul><li>Free shipping over $50</li><li>30-day returns</li></ul>"
         },
-        { "type": "url", "id": "link", "label": "Optional link" },
         { "type": "checkbox", "id": "useMarquee", "label": "Scroll (marquee)", "default": true },
         {
           "type": "range",
@@ -166,96 +155,3 @@
     max-width: var(--page-width, 100%);
   }
 {% endstylesheet %}
-
-{% javascript %}
-  (function () {
-    /**
-     * Set a cookie
-     * @param {string} name - Cookie name
-     * @param {string} value - Cookie value
-     * @param {number} days - Days until expiration
-     */
-    function setCookie(name, value) {
-      document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=Lax';
-    }
-
-    /**
-     * Get a cookie value by name
-     */
-    function getCookie(name) {
-      var nameEQ = name + '=';
-      var ca = document.cookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i].trim();
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-      }
-      return null;
-    }
-
-    /**
-     * Initialize a single announcement bar
-     */
-    function initBar(bar) {
-      if (!bar) return;
-
-      // JS date gating (to ensure bars also hide dynamically if needed)
-      var startDateStr = bar.getAttribute('data-start-date');
-      var endDateStr = bar.getAttribute('data-end-date');
-      var today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      if (startDateStr) {
-        var startDate = new Date(startDateStr);
-        startDate.setHours(0, 0, 0, 0);
-        if (today < startDate) {
-          bar.style.display = 'none';
-          return;
-        }
-      }
-      if (endDateStr) {
-        var endDate = new Date(endDateStr);
-        endDate.setHours(0, 0, 0, 0);
-        if (today > endDate) {
-          bar.style.display = 'none';
-          return;
-        }
-      }
-
-      // Handle dismissal via cookies
-      var enableDismiss = bar.getAttribute('data-enable-dismiss') === 'true';
-      var key = bar.getAttribute('data-key');
-
-      if (enableDismiss && getCookie(key) === 'true') {
-        bar.style.display = 'none';
-        return;
-      }
-
-      // Bind dismiss button click event
-      if (enableDismiss) {
-        var closeBtn = bar.querySelector('.announcement-bar__close');
-        if (closeBtn) {
-          closeBtn.addEventListener('click', function () {
-            bar.style.display = 'none';
-            setCookie(key, 'true');
-          });
-        }
-      }
-    }
-
-    /**
-     * Initialize all announcement bars on the page
-     */
-    function initAll() {
-      var bars = document.querySelectorAll('.announcement-bar');
-      if (!bars || !bars.length) return;
-      bars.forEach(initBar);
-    }
-
-    // Run init when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAll);
-    } else {
-      initAll();
-    }
-  })();
-{% endjavascript %}
