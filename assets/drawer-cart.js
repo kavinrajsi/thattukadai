@@ -23,7 +23,7 @@
   function updateCartCount(n) {
     var $badge = $('[data-cart-count]');
     if (!$badge.length) return;
-    $badge.text('(' + n + ')');
+    $badge.text(n);
     $badge.attr('aria-label', cartLabel(n));
   }
   // Initial sync and prefetch drawer view

@@ -23,10 +23,14 @@
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
-    {% style %}
+    <style>
       {{ settings.type_header | font_face }}
       {{ settings.type_body | font_face }}
-    {% endstyle %}
+      :root {
+        --font-header: {{ settings.type_header.family }}, {{ settings.type_header.fallback_families }};
+        --font-body: {{ settings.type_body.family }}, {{ settings.type_body.fallback_families }};
+      }
+    </style>
 
     {{ 'base.css' | asset_url | preload_tag: as: 'style' }}
     {{ 'owl.carousel.css' | asset_url | preload_tag: as: 'style' }}
@@ -45,13 +49,13 @@
     {%- endif -%}
 
     {{ 'jquery.min.js' | asset_url | preload_tag: as: 'script' }}
+    {{ 'header.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'owl.carousel.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'drawer-product.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'drawer-cart.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
 
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
-    <script src="{{ 'owl.carousel.js' | asset_url }}" defer></script>
     {{ content_for_header }}
   </head>
   <body class="{{ template | handleize }}">
@@ -64,7 +68,7 @@
     <header>
       {% section 'header' %}
     </header>
-    <main id="MainContent" role="main">
+    <main id="MainContent" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
     <footer>
@@ -106,6 +110,8 @@
       }
     </script>
 
+    <script src="{{ 'header.js' | asset_url }}" defer></script>
+    <script src="{{ 'owl.carousel.js' | asset_url }}" defer></script>
     {%- if request.page_type == 'product' -%}
       <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
       <script src="{{ 'photoswipe.umd.min.js' | asset_url }}" defer></script>

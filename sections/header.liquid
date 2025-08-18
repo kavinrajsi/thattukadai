@@ -7,131 +7,180 @@
   - Cart icon with live item count
 {% endcomment %}
 
-<header class="ch-header" role="banner">
-  <div class="ch-inner">
-    <!-- Logo -->
-    <div class="ch-left">
-      <a class="ch-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-        {% if section.settings.logo != blank %}
-          {%- assign image = section.settings.logo -%}
-          <img
-            src="{{ image | image_url: width: 240 }}"
-            srcset="
-              {{ image | image_url: width: 120 }} 120w,
-              {{ image | image_url: width: 160 }} 160w,
-              {{ image | image_url: width: 200 }} 200w,
-              {{ image | image_url: width: 240 }} 240w
-            "
-            sizes="(max-width: 768px) 160px, 240px"
-            loading="eager"
-            width="{{ image.width }}"
-            height="{{ image.height }}"
-            alt="{{ shop.name | escape }}"
-          >
-        {% else %}
-          <span class="ch-logo-text">{{ shop.name }}</span>
-        {% endif %}
-      </a>
-    </div>
+{% comment %}
+  Header with centered logo, left/right nav, and a "Shop" mega panel.
+  Settings:
+  - Menu for "Shop" (child links shown in the panel)
+  - Our story link
+  - CTA label + link in panel
+  - Optional logo SVG (inline) or theme logo fallback
+{% endcomment %}
 
-    <!-- Navigation -->
-    <nav class="ch-nav" role="navigation" aria-label="Main">
-      {% if section.settings.menu != blank %}
-        <ul class="ch-menu">
-          {% for link in linklists[section.settings.menu].links %}
-            <li class="ch-menu-item">
-              <a
-                href="{{ link.url }}"
-                class="ch-menu-link"
-                {% if link.current %}
-                  aria-current="page"
-                {% endif %}
-              >
-                {{ link.title }}
-              </a>
-              {% if link.links.size > 0 %}
-                <button class="ch-sub-toggle" aria-expanded="false" aria-label="Toggle submenu">▾</button>
-                <ul class="ch-submenu" hidden>
-                  {% for sublink in link.links %}
-                    <li>
-                      <a href="{{ sublink.url }}" class="ch-submenu-link">{{ sublink.title }}</a>
-                    </li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+<section class="site-header" data-header>
+  <div class="site-header__inner">
+    {%- comment -%} LEFT NAV {%- endcomment -%}
+    <nav class="site-nav site-nav--left">
+      {%- if section.settings.shop_menu != blank -%}
+        <button
+          class="nav-pill"
+          data-shop-toggle
+          aria-expanded="false"
+          aria-controls="shop-panel"
+          type="button"
+        >
+          <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
+          <span class="nav-pill__plus" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" fill="none" viewBox="0 0 14 15">
+              <path fill="#2A2A2A" d="M7 14.75a.951.951 0 0 1-.951-.951V1.7a.951.951 0 1 1 1.902 0v12.1a.951.951 0 0 1-.951.95Z"/>
+              <path fill="#2A2A2A" d="M13.049 8.701H.95a.951.951 0 1 1 0-1.902h12.1a.951.951 0 1 1 0 1.902Z"/>
+            </svg>
+          </span>
+        </button>
+      {%- endif -%}
+
+      {%- if section.settings.our_story_link != blank -%}
+        <a class="site-link" href="{{ section.settings.our_story_link }}">
+          {{ section.settings.our_story_label | default: 'Our story' }}
+        </a>
+      {%- endif -%}
     </nav>
 
-    <!-- Search + Cart -->
-    <div class="ch-right">
-      {% if section.settings.enable_search %}
-        <div class="ch-search" role="search">
-          <form action="{{ routes.search_url }}" method="get" class="ch-search-form" autocomplete="off">
-            <input
-              id="ch-search-input-{{ section.id }}"
-              class="ch-search-input"
-              type="search"
-              name="q"
-              value=""
-              placeholder="search"
-              aria-label="search"
-              autocapitalize="off"
-              autocorrect="off"
-              spellcheck="false"
-            >
-            <input type="hidden" name="type" value="{{ section.settings.search_types | escape }}">
-          </form>
-          <div class="ch-search-suggestions" id="ch-suggest-{{ section.id }}" role="listbox" hidden></div>
-        </div>
-      {% endif %}
+    {%- comment -%} CENTER LOGO {%- endcomment -%}
+    <a class="site-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+      {%- if section.settings.logo_svg != blank -%}
+        {{ section.settings.logo_svg }}
+      {%- elsif settings.logo -%}
+        <img
+          src="{{ settings.logo | image_url: width: 320 }}"
+          width="{{ settings.logo.width }}"
+          height="{{ settings.logo.height }}"
+          alt="{{ shop.name }}"
+          loading="eager"
+        >
+      {%- else -%}
+        <span class="logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
 
-      <span class="ch-cart" aria-label="Cart">
-        <!-- Simple cart icon (SVG) -->
-        <svg class="ch-cart-icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 4h-2l-1 2h2l3.6 7.59-1.35 2.44A2 2 0 0 0 10 19h9v-2h-9l1.1-2H17a2 2 0 0 0 1.79-1.11l3.58-7.16A1 1 0 0 0 21.5 5H7zM7 20a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+    {%- comment -%} RIGHT NAV (search/account/cart) {%- endcomment -%}
+    <nav class="site-nav site-nav--right" aria-label="Utilities">
+      <a class="icon-link" href="{{ routes.search_url }}" aria-label="search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="none" viewBox="0 0 21 21">
+          <g clip-path="url(#a)">
+            <path fill="#2A2A2A" d="m20.31 19.662-5.163-5.081a8.168 8.168 0 0 0 2.183-5.55C17.329 4.457 13.562.75 8.914.75 4.267.75.5 4.457.5 9.03c0 4.574 3.767 8.281 8.414 8.281 2.008 0 3.85-.694 5.297-1.849l5.183 5.101a.654.654 0 0 0 .916 0 .63.63 0 0 0 0-.901ZM8.914 16.037c-3.932 0-7.12-3.137-7.12-7.006 0-3.87 3.188-7.007 7.12-7.007 3.933 0 7.12 3.137 7.12 7.007 0 3.87-3.187 7.006-7.12 7.006Z"/>
+          </g>
+          <defs>
+            <clipPath id="a">
+              <path fill="#fff" d="M.5.75h20v20H.5z"/>
+            </clipPath>
+          </defs>
         </svg>
-        <span data-cart-count aria-label="0 items in cart">({{ cart.item_count }})</span>
+      </a>
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="icon-link" href="{{ routes.account_url }}" aria-label="account">
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="none" viewBox="0 0 21 21">
+            <g clip-path="url(#a)">
+              <path fill="#2A2A2A" d="M10.189 11.448a5.356 5.356 0 0 1-5.35-5.35A5.357 5.357 0 0 1 10.19.75c2.948 0 5.348 2.4 5.348 5.349 0 2.949-2.4 5.349-5.348 5.349Zm0-9.303A3.962 3.962 0 0 0 6.235 6.1a3.962 3.962 0 0 0 3.954 3.953A3.962 3.962 0 0 0 14.142 6.1a3.962 3.962 0 0 0-3.953-3.954Zm7.99 18.605a.703.703 0 0 1-.698-.698c0-3.209-3.274-5.814-7.293-5.814-4.018 0-7.293 2.605-7.293 5.814a.703.703 0 0 1-.697.698.703.703 0 0 1-.698-.698c0-3.972 3.898-7.209 8.688-7.209 4.791 0 8.689 3.237 8.689 7.21a.703.703 0 0 1-.698.697Z"/>
+            </g>
+            <defs>
+              <clipPath id="a">
+                <path fill="#fff" d="M.5.75h20v20H.5z"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </a>
+      {%- endif -%}
+
+      <span class="icon-link icon-link--bag" type="button" aria-label="cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" fill="none" viewBox="0 0 18 22">
+          <path fill="#2A2A2A" d="M2.25 6.5a.25.25 0 0 0-.25.25v13c0 .138.112.25.25.25h14a.25.25 0 0 0 .25-.25v-13a.25.25 0 0 0-.25-.25h-14ZM.5 6.75C.5 5.784 1.284 5 2.25 5h14c.966 0 1.75.784 1.75 1.75v13a1.75 1.75 0 0 1-1.75 1.75h-14A1.75 1.75 0 0 1 .5 19.75v-13Z"/>
+          <path fill="#2A2A2A" d="M9.25 1.5A2.75 2.75 0 0 0 6.5 4.25v3.5a.75.75 0 0 1-1.5 0v-3.5a4.25 4.25 0 0 1 8.5 0v3.5a.75.75 0 0 1-1.5 0v-3.5A2.75 2.75 0 0 0 9.25 1.5Z"/>
+        </svg>
+        <span class="badge" data-cart-count aria-label="0 items in cart">{{ cart.item_count }}</span>
       </span>
-    </div>
+    </nav>
   </div>
-</header>
+
+  {%- comment -%} MEGA PANEL {%- endcomment -%}
+  {%- if section.settings.shop_menu != blank -%}
+    <div class="mega" id="shop-panel" hidden>
+      <div class="mega__chrome">
+        <button
+          class="nav-pill nav-pill--active"
+          data-shop-toggle
+          aria-expanded="true"
+          aria-controls="shop-panel"
+          type="button"
+        >
+          <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
+          <span class="nav-pill__plus" aria-hidden="true">×</span>
+        </button>
+
+        {%- if section.settings.our_story_link != blank -%}
+          <a class="site-link" href="{{ section.settings.our_story_link }}">
+            {{ section.settings.our_story_label | default: 'Our story' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="mega__body">
+        {%- assign menu = section.settings.shop_menu | linklist -%}
+        <ul class="mega__list" role="menu" aria-label="{{ section.settings.shop_label | default: 'Shop' }}">
+          {%- for link in menu.links -%}
+            <li role="none">
+              <a role="menuitem" href="{{ link.url }}">
+                {{ link.title }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+          <a class="mega__cta" href="{{ section.settings.cta_link }}">
+            {{ section.settings.cta_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <button class="backdrop" type="button" data-backdrop hidden aria-label="Close menu"></button>
+</section>
+
 {% schema %}
 {
   "name": "Custom Header",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
+      "type": "textarea",
+      "id": "logo_svg",
+      "label": "Logo SVG (inline)",
+      "info": "Paste your SVG markup here to match the design. If blank, theme logo is used."
     },
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Main menu",
-      "default": "main-menu"
+      "type": "range",
+      "id": "header_height",
+      "min": 60,
+      "max": 140,
+      "step": 2,
+      "unit": "px",
+      "label": "Header height",
+      "default": 88
     },
-    {
-      "type": "checkbox",
-      "id": "enable_search",
-      "label": "Enable predictive search",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "search_types",
-      "label": "Search resource types",
-      "default": "product,collection,page,article",
-      "info": "Comma-separated. Supported: product, collection, page, article."
-    },
-    {
-      "type": "number",
-      "id": "min_chars",
-      "label": "Min characters to trigger suggestions",
-      "default": 2
-    }
+
+    { "type": "link_list", "id": "shop_menu", "label": "Shop menu", "info": "Child links appear in the mega panel." },
+    { "type": "text", "id": "shop_label", "label": "Shop label", "default": "Shop" },
+
+    { "type": "url", "id": "our_story_link", "label": "Our story link" },
+    { "type": "text", "id": "our_story_label", "label": "Our story label", "default": "Our story" },
+
+    { "type": "text", "id": "cta_label", "label": "Panel CTA label", "default": "Contact Us" },
+    { "type": "url", "id": "cta_link", "label": "Panel CTA link" },
+
+    { "type": "color", "id": "chrome_bg", "label": "Panel chrome background", "default": "#e5e5e5" },
+    { "type": "color", "id": "cta_bg", "label": "CTA background", "default": "#FAD75F" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#2b2b2b" }
   ],
   "blocks": [],
   "presets": [{ "name": "Custom Header" }]

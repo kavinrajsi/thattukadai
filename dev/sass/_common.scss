@@ -1,0 +1,20 @@
+    .skip-to-content {
+      position: absolute;
+      left: -999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .skip-to-content:focus {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      width: auto;
+      height: auto;
+      padding: 10px;
+      background: #000;
+      color: #fff;
+      z-index: 1000;
+    }
