@@ -10,6 +10,7 @@
 {
   "current": {
     "type_header": "dm_sans_n4",
+    "type_body": "instrument_sans_n4",
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
