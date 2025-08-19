@@ -11,13 +11,13 @@
   "current": {
     "black_color_1": "#2a2a2a",
     "white_color_2": "#f6f6f6",
-    "type_header": "dm_sans_n4",
     "type_body": "instrument_sans_n4",
     "social_twitter_link": "https://x.com",
     "social_facebook_link": "https://facebook.com",
     "social_pinterest_link": "https://pinterest.com/",
     "social_instagram_link": "https://www.instagram.com/",
     "social_youtube_link": "https://youtube.com/",
+    "type_header": "dm_sans_n4",
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
@@ -72,7 +72,7 @@
           "email_icon": "<svg width=\"16\" height=\"16\" fill=\"currentColor\"><path d=\"M0 4a2 2 0 012-2h12a2 2 0 012 2v.217l-8 5-8-5V4zm0 1.383v6.634l5.803-3.96L0 5.383zM6.761 8.83l-6.53 4.455A2 2 0 002 14h12a2 2 0 001.77-1.015l-6.53-4.455L8 9.833 6.761 8.83zM10.197 8.057 16 12.017V5.383l-5.803 3.96z\"></path></svg>",
           "email": "support@example.com",
           "follow_us_label": "Follow Us",
-          "copyright_text": "2025 Nithya Amirtham Indian Food Pvt Ltd.",
+          "copyright_text": "VS Thattukadai C.Velayutha Nadar Sweets Pvt Ltd.",
           "made_by_text": "Madarth",
           "made_by_url": "shopify://collections/all"
         }
@@ -90,6 +90,13 @@
         "settings": {}
       }
     },
-    "content_for_index": []
+    "content_for_index": [],
+    "blocks": {
+      "13768625480086291342": {
+        "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   }
 }
