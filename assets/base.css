@@ -1311,7 +1311,7 @@ body.index.drawer-open {
   padding-top: 24px;
   padding-bottom: 24px;
   margin-top: 56px;
-  background: #fddecf;
+  background: var(--color-white1);
 }
 .footer__identification {
   padding-top: 8px;

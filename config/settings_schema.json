@@ -23,32 +23,20 @@
       {
         "type": "color",
         "id": "primary_color_1",
-        "label": "Primary Red 1",
-        "default": "#C61D23"
+        "label": "Primary Yellow 1",
+        "default": "#FAD75F"
       },
       {
         "type": "color",
         "id": "primary_color_2",
-        "label": "Primary Red 2",
-        "default": "#A5161A"
-      },
-      {
-        "type": "color",
-        "id": "primary_color_3",
-        "label": "Primary Red 3",
-        "default": "#660808"
-      },
-      {
-        "type": "color",
-        "id": "secondary_color",
-        "label": "Secondary Peach",
-        "default": "#FDDECF"
+        "label": "Primary Yellow 2",
+        "default": "#F6CA30"
       },
       {
         "type": "color",
         "id": "black_color_1",
         "label": "Black 1",
-        "default": "#0B090A"
+        "default": "#2A2A2A"
       },
       {
         "type": "color",
@@ -66,7 +54,7 @@
         "type": "color",
         "id": "white_color_2",
         "label": "White 2",
-        "default": "#F5F3F4"
+        "default": "#F6F6F6"
       },
       {
         "type": "color",
@@ -81,15 +69,27 @@
     "settings": [
       {
         "type": "font_picker",
-        "id": "type_header",
+        "id": "dm-sans",
         "default": "dm_sans_n4",
-        "label": "Heading 1"
+        "label": "DM Sans"
+      },
+      {
+        "type": "font_picker",
+        "id": "dm-sans-medium",
+        "default": "dm_sans_n5",
+        "label": "DM Sans Medium"
+      },
+      {
+        "type": "font_picker",
+        "id": "dm-sans-bold",
+        "default": "dm_sans_n7",
+        "label": "DM Sans Bold"
       },
       {
         "type": "font_picker",
         "id": "type_body",
         "default": "instrument_sans_n4",
-        "label": "Body Font"
+        "label": "Instrument Sans"
       }
     ]
   },
@@ -103,6 +103,11 @@
       {
         "type": "image_picker",
         "id": "brand_logo",
+        "label": "Brand Logo"
+      },
+      {
+        "type": "textarea",
+        "id": "brand_logo_svg",
         "label": "Brand Logo"
       },
       {
