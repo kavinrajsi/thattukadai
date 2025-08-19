@@ -1,174 +1,287 @@
-(function () {
-  const drawer = document.getElementById('product-drawer');
-  if (!drawer) return;
+/* global Shopify */
+(function ($, window, document) {
+  'use strict';
 
-  const panel = drawer.querySelector('.product-drawer__panel');
-  const closeEls = drawer.querySelectorAll('[data-drawer-close]');
-  const titleEl = drawer.querySelector('.product-drawer__title');
-  const priceEl = drawer.querySelector('.product-drawer__price');
-  const descEl = drawer.querySelector('.product-drawer__desc');
-  const imgEl = drawer.querySelector('.product-drawer__image');
-  const variantsWrap = drawer.querySelector('.product-drawer__variants');
-  const variantSelect = drawer.querySelector('.product-drawer__select');
-  const qtyInput = drawer.querySelector('.qty-input');
-  const addBtn = drawer.querySelector('.product-drawer__add');
-  const viewLink = drawer.querySelector('.product-drawer__view');
-  const noteEl = drawer.querySelector('.product-drawer__note');
+  // ---- Cached DOM refs (inside drawer) ----
+  var $drawer = $('#product-drawer');
+  if (!$drawer.length) return;
 
-  let state = { product: null, selectedVariant: null, openerBtn: null };
+  var $panel = $drawer.find('.product-drawer__panel');
+  var $closeEls = $drawer.find('[data-drawer-close]');
+  var $titleEl = $drawer.find('.product-drawer__title');
+  var $priceEl = $drawer.find('.product-drawer__price');
+  var $descEl = $drawer.find('.product-drawer__desc');
+  var $imgEl = $drawer.find('.product-drawer__image');
+  var $variantsWrap = $drawer.find('.product-drawer__variants');
+  var $sizeLabel = $drawer.find('.product-drawer__size-label');
+  var $sizeGroup = $drawer.find('.product-drawer__size-group');
+  var $qtyInput = $drawer.find('.qty-input');
+  var $addBtn = $drawer.find('.product-drawer__add');
+  var $viewLink = $drawer.find('.product-drawer__view');
+  var $noteEl = $drawer.find('.product-drawer__note');
 
+  // ---- Local state container ----
+  var state = {
+    product: null, // last loaded product object
+    selectedVariant: null, // currently selected variant object
+    openerBtn: null, // button that opened the drawer (for focus restore)
+  };
+
+  // ---- Helpers ----
+
+  /**
+   * Format money in INR like "Rs. 210.00"
+   * Falls back if Shopify.formatMoney isn't available.
+   */
   function money(cents) {
     try {
-      return Shopify.formatMoney ? Shopify.formatMoney(cents) : `₹${(cents / 100).toFixed(2)}`;
+      return Shopify && Shopify.formatMoney ? Shopify.formatMoney(cents) : 'Rs. ' + (cents / 100).toFixed(2);
     } catch (e) {
-      return `₹${(cents / 100).toFixed(2)}`;
+      return 'Rs. ' + (cents / 100).toFixed(2);
     }
   }
 
+  /** Open drawer (sets aria + locks scroll + sends focus to panel) */
   function openDrawer() {
-    drawer.setAttribute('aria-hidden', 'false');
-    setTimeout(() => panel.focus(), 0);
-    document.body.style.overflow = 'hidden';
+    $drawer.attr('aria-hidden', 'false');
+    setTimeout(function () {
+      $panel.trigger('focus');
+    }, 0);
+    $('body').css('overflow', 'hidden');
   }
+
+  /** Close drawer and restore focus to the opener button if we have it */
   function closeDrawer() {
-    drawer.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    noteEl.textContent = '';
-    if (state.openerBtn) state.openerBtn.focus();
+    $drawer.attr('aria-hidden', 'true');
+    $('body').css('overflow', '');
+    $noteEl.text('');
+    if (state.openerBtn) $(state.openerBtn).trigger('focus');
   }
 
-  closeEls.forEach((el) => el.addEventListener('click', closeDrawer));
-  drawer.addEventListener('click', (e) => {
-    if (e.target.matches('.product-drawer__overlay')) closeDrawer();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (drawer.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') closeDrawer();
-  });
-
+  /** Update the price block based on selected variant */
   function updatePrice() {
-    const v = state.selectedVariant;
+    var v = state.selectedVariant;
     if (!v) {
-      priceEl.textContent = '';
+      $priceEl.empty();
       return;
     }
+
     if (v.compare_at_price && v.compare_at_price > v.price) {
-      priceEl.innerHTML = `<span style="font-weight:800">${money(v.price)}</span> <s style="color:#9b9b9b">${money(
-        v.compare_at_price
-      )}</s>`;
+      $priceEl.html(
+        '<span class="product-drawer__price-current">' +
+          money(v.price) +
+          '</span> ' +
+          '<s class="product-drawer__price-compare">' +
+          money(v.compare_at_price) +
+          '</s>'
+      );
     } else {
-      priceEl.innerHTML = `<span style="font-weight:800">${money(v.price)}</span>`;
+      $priceEl.html('<span class="product-drawer__price-current">' + money(v.price) + '</span>');
     }
   }
 
+  /**
+   * Render variant "pills" like the design (e.g., 250 gm / 500 gm)
+   * - Accessible via role="radio" + aria-checked
+   * - Disabled when variant.available === false
+   */
+  function renderSizePills(variants) {
+    $sizeGroup.empty().attr('role', 'radiogroup');
+
+    // Build each pill button
+    $.each(variants, function (idx, v) {
+      var $btn = $('<button/>', {
+        type: 'button',
+        class: 'size-pill',
+        text: v.title,
+        'data-variant-id': String(v.id),
+        role: 'radio',
+        'aria-checked': 'false',
+        disabled: !v.available,
+      });
+
+      if (!v.available) $btn.addClass('is-disabled');
+
+      // Click selects this variant
+      $btn.on('click', function () {
+        selectVariantById(v.id, true);
+      });
+
+      // Keyboard support: arrow-left / arrow-right to move, space/enter to select
+      $btn.on('keydown', function (e) {
+        var $pills = $sizeGroup.find('.size-pill:not(:disabled)');
+        var i = $pills.index(this);
+        if (e.key === 'ArrowRight') {
+          $pills.eq((i + 1) % $pills.length).focus();
+        }
+        if (e.key === 'ArrowLeft') {
+          $pills.eq((i - 1 + $pills.length) % $pills.length).focus();
+        }
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          $(this).trigger('click');
+        }
+      });
+
+      $sizeGroup.append($btn);
+    });
+
+    // Default selection: first available
+    state.selectedVariant =
+      variants.find(function (v) {
+        return v.available;
+      }) ||
+      variants[0] ||
+      null;
+    reflectSelectedPill();
+  }
+
+  /** Visually/ARIA mark the active pill and refresh price + label */
+  function reflectSelectedPill() {
+    var id = state.selectedVariant && state.selectedVariant.id;
+
+    $sizeGroup.find('.size-pill').each(function () {
+      var isActive = Number($(this).data('variant-id')) === id;
+      $(this).toggleClass('is-active', isActive).attr('aria-checked', String(isActive));
+    });
+
+    $sizeLabel.text(state.selectedVariant ? 'Size : ' + state.selectedVariant.title : 'Size');
+    updatePrice();
+  }
+
+  /** Programmatic variant selection by numeric id */
+  function selectVariantById(id, fromUser) {
+    if (!state.product) return;
+    var v = state.product.variants.find(function (x) {
+      return x.id === Number(id);
+    });
+    if (!v) return;
+
+    state.selectedVariant = v;
+    reflectSelectedPill();
+
+    if (fromUser && !v.available) {
+      $noteEl.text('This option is unavailable.');
+    } else {
+      $noteEl.text('');
+    }
+  }
+
+  /**
+   * Render the product in the drawer
+   * @param {Object} p - product object from /products/{handle}.js
+   * @param {String} productUrl - canonical URL for "View details"
+   */
   function renderProduct(p, productUrl) {
     state.product = p;
 
-    titleEl.textContent = p.title;
-    descEl.innerHTML = p.description || '';
-    viewLink.href = productUrl;
+    // Title / description / view link
+    $titleEl.text(p.title || '');
+    $descEl.html(p.description || ''); // Shopify product description is already sanitized by you/the theme
+    $viewLink.attr('href', productUrl || '#');
 
+    // Image (first available)
     if (p.images && p.images.length) {
-      imgEl.src = p.images[0];
-      imgEl.alt = p.title;
-      imgEl.hidden = false;
+      $imgEl.attr({ src: p.images[0], alt: p.title || '' }).prop('hidden', false);
     } else {
-      imgEl.hidden = true;
+      $imgEl.prop('hidden', true);
     }
 
+    // Variants → pills or hide section if just one
     if (p.variants && p.variants.length > 1) {
-      variantsWrap.hidden = false;
-      variantSelect.innerHTML = '';
-      p.variants.forEach((v) => {
-        const opt = document.createElement('option');
-        opt.value = v.id;
-        opt.textContent = v.title + (v.available ? '' : ' — Sold out');
-        opt.disabled = !v.available;
-        variantSelect.appendChild(opt);
-      });
-      const firstAvail = p.variants.find((v) => v.available) || p.variants[0];
-      variantSelect.value = String(firstAvail.id);
-      state.selectedVariant = firstAvail;
+      $variantsWrap.prop('hidden', false);
+      renderSizePills(p.variants);
     } else {
-      variantsWrap.hidden = true;
+      $variantsWrap.prop('hidden', true);
       state.selectedVariant = p.variants && p.variants[0] ? p.variants[0] : null;
     }
 
     updatePrice();
-    qtyInput.value = 1;
+    $qtyInput.val(1);
   }
 
-  variantSelect?.addEventListener('change', () => {
-    const id = Number(variantSelect.value);
-    state.selectedVariant = state.product.variants.find((v) => v.id === id);
-    updatePrice();
+  // ---- Global bindings ----
+
+  // Close handlers (buttons + overlay)
+  $closeEls.on('click', closeDrawer);
+  $drawer.on('click', function (e) {
+    if ($(e.target).is('.product-drawer__overlay')) closeDrawer();
   });
 
-  drawer.querySelectorAll('.qty-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const dir = btn.getAttribute('data-qty');
-      const val = Math.max(1, parseInt(qtyInput.value || '1', 10) + (dir === 'incr' ? 1 : -1));
-      qtyInput.value = val;
-    });
+  // ESC key closes when open
+  $(document).on('keydown', function (e) {
+    if ($drawer.attr('aria-hidden') === 'false' && e.key === 'Escape') closeDrawer();
   });
 
-  addBtn.addEventListener('click', async () => {
-    const v = state.selectedVariant;
+  // Qty stepper
+  $drawer.on('click', '.qty-btn', function () {
+    var dir = $(this).data('qty');
+    var val = Math.max(1, parseInt($qtyInput.val() || '1', 10) + (dir === 'incr' ? 1 : -1));
+    $qtyInput.val(val);
+  });
+
+  // Add to cart
+  $addBtn.on('click', function () {
+    var v = state.selectedVariant;
     if (!v || !v.available) {
-      noteEl.textContent = 'This option is unavailable.';
+      $noteEl.text('This option is unavailable.');
       return;
     }
-    const quantity = Math.max(1, parseInt(qtyInput.value || '1', 10));
-    addBtn.disabled = true;
-    addBtn.textContent = 'Adding…';
-    noteEl.textContent = '';
-    try {
-      const res = await fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ items: [{ id: v.id, quantity }] }),
+
+    var quantity = Math.max(1, parseInt($qtyInput.val() || '1', 10));
+    $addBtn.prop('disabled', true).text('Adding…');
+    $noteEl.text('');
+
+    // POST to Shopify AJAX cart
+    $.ajax({
+      url: '/cart/add.js',
+      method: 'POST',
+      dataType: 'json',
+      contentType: 'application/json; charset=UTF-8',
+      data: JSON.stringify({ items: [{ id: v.id, quantity: quantity }] }),
+    })
+      .done(function (data) {
+        $addBtn.text('Added ✓');
+        $noteEl.text('Added to cart.');
+        // Broadcast cart update for any header/cart components listening
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+      })
+      .fail(function () {
+        $addBtn.text('Add to cart');
+        $noteEl.text('Could not add to cart. Please try again.');
+      })
+      .always(function () {
+        setTimeout(function () {
+          $addBtn.prop('disabled', false).text('Add to cart');
+        }, 900);
       });
-      if (!res.ok) throw new Error('Cart error');
-      const data = await res.json();
-      addBtn.textContent = 'Added ✓';
-      noteEl.textContent = 'Added to cart.';
-      document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
-    } catch (e) {
-      addBtn.textContent = 'Add to cart';
-      noteEl.textContent = 'Could not add to cart. Please try again.';
-    } finally {
-      setTimeout(() => {
-        addBtn.disabled = false;
-        addBtn.textContent = 'Add to cart';
-      }, 900);
-    }
   });
 
-  // GLOBAL EVENT DELEGATION:
-  // Any .product-card__cta on the page will open this drawer.
-  function onGlobalCtaClick(e) {
-    const btn = e.target.closest('.product-card__cta');
-    if (!btn) return;
+  // ---- Global event delegation: any `.product-card__cta` opens this drawer ----
+  // Expected attributes on the clicked element:
+  //   data-product-handle  (required)
+  //   data-product-url     (optional; falls back to /products/{handle})
+  $(document).on('click', '.product-card__cta', function (e) {
     e.preventDefault();
 
-    state.openerBtn = btn;
-    const handle = btn.getAttribute('data-product-handle');
-    const url = btn.getAttribute('data-product-url') || `/products/${handle}`;
+    state.openerBtn = this;
 
+    var handle = $(this).attr('data-product-handle');
+    var url = $(this).attr('data-product-url') || (handle ? '/products/' + handle : '#');
     if (!handle) return;
 
-    fetch(`/products/${handle}.js`)
-      .then((r) => r.json())
-      .then((product) => {
+    // Get product JSON (Shopify storefront AJAX endpoint)
+    $.getJSON('/products/' + handle + '.js')
+      .done(function (product) {
         renderProduct(product, url);
         openDrawer();
       })
-      .catch((err) => console.error(err));
-  }
-
-  document.addEventListener('click', onGlobalCtaClick);
-
-  // Re-bind when sections reload inside Theme Editor
-  document.addEventListener('shopify:section:load', () => {
-    // nothing specific needed due to global delegation
+      .fail(function (err) {
+        // You may want to toast/log here
+        console.error('Product fetch failed:', err);
+      });
   });
-})();
+
+  // Theme Editor compatibility: nothing needed because we use global delegation
+  document.addEventListener('shopify:section:load', function () {});
+})(jQuery, window, document);

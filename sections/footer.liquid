@@ -1,9 +1,325 @@
-<div class="container">
-  <p>{{ 'sections.footer.copyright' | t }}</p>
-</div>
+{% comment %}
+  Shopify Footer Section
+  ----------------------
+
+  📌 Purpose:
+  - Renders a responsive footer with logo, navigation menus, contact info, payment icons, and social media links.
+
+  🧱 Structure:
+  - Logo (SVG or image)
+  - Dynamic footer menus via link lists (footer_menu blocks)
+  - Contact info (address, phone, email with SVG icons)
+  - Trust section (payment icons, social media links via social_icon blocks)
+  - Bottom bar with copyright and attribution
+
+  🛠 Admin Settings:
+  - Logo image or SVG
+  - Address, phone, email, and icons
+  - "Follow Us" label
+  - Copyright text
+  - "Made by" name and link
+  - Blocks for menus and social links
+
+  📦 JSON-LD Schema:
+  - Outputs structured data for SEO (organization, contact point, social profiles)
+
+  ✅ Accessibility:
+  - ARIA roles, labels, and semantic HTML
+
+  🔁 Preset:
+  - Name: "Responsive Footer"
+  - Includes default footer menu and one social icon block
+{% endcomment %}
+
+<footer class="site-footer" role="contentinfo" aria-label="Site Footer">
+  <div class="footer">
+    <div class="footer__navigtion-wrapper layout__grid-box">
+      <!-- Footer Menus -->
+      <div class="footer__navigtion-lists" role="navigation" aria-label="Footer Navigation">
+        {% for block in section.blocks %}
+          {% if block.type == 'footer_menu' %}
+            {% assign menu = linklists[block.settings.menu] %}
+            {% if menu.links.size > 0 %}
+              <nav class="footer__navigtion-menu" aria-labelledby="footer-menu-{{ forloop.index }}">
+                {% if block.settings.label != blank %}
+                  <h4 class="footer__navigtion-menu-title" id="footer-menu-{{ forloop.index }}">
+                    {{ block.settings.label }}
+                  </h4>
+                {% endif %}
+                <ul class="footer__navigtion-menu-items">
+                  {% for link in menu.links %}
+                    <li class="footer__navigtion-menu-item">
+                      <a class="footer__navigtion-menu-link" href="{{ link.url }}">{{ link.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </nav>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Contact Info -->
+      <div class="footer__navigtion-contact" aria-label="Contact Information">
+        {% if section.settings.address %}
+          <p class="footer__navigtion-contact-list">
+            <i>{{ section.settings.address_icon }}</i>
+            <span>{{ section.settings.address }}</span>
+          </p>
+        {% endif %}
+        {% if section.settings.phone %}
+          <p class="footer__navigtion-contact-list">
+            <i>{{ section.settings.phone_icon }}</i>
+            <a href="tel:{{ section.settings.phone }}" aria-label="Call us at {{ section.settings.phone }}">
+              {{- section.settings.phone -}}
+            </a>
+          </p>
+        {% endif %}
+        {% if section.settings.email %}
+          <p class="footer__navigtion-contact-list">
+            <i>{{ section.settings.email_icon }}</i>
+            <a href="mailto:{{ section.settings.email }}" aria-label="Email us at {{ section.settings.email }}">
+              {{- section.settings.email -}}
+            </a>
+          </p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Social Icons -->
+    <div class="footer__trust layout__grid-box">
+      <div class="footer__trust-payment">
+        {% comment %} FIX: change theis title as dynamic {% endcomment %}
+        <p class="footer__trust-title">Payment Options</p>
+        <div class="image">
+          {% comment %} FIX: load image as dynamic {% endcomment %}
+          <svg
+            width="295"
+            height="20"
+            viewBox="0 0 295 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <rect width="295" height="20" fill="url(#pattern0_4185_4622)" />
+            <defs>
+              <pattern id="pattern0_4185_4622" patternContentUnits="objectBoundingBox" width="1" height="1">
+                <use xlink:href="#image0_4185_4622" transform="scale(0.00338983 0.05)" />
+              </pattern>
+              <image id="image0_4185_4622" width="295" height="20" preserveAspectRatio="none"
+                xlink:href="data:image/png;base64,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" />
+            </defs>
+          </svg>
+        </div>
+      </div>
+      <div class="footer__trust-social" aria-label="Social Media Links">
+        <p class="footer__trust-title">{{ section.settings.follow_us_label }}</p>
+        <nav class="footer__trust-links" role="navigation" aria-label="Social Media">
+          {% for block in section.blocks %}
+            {% if block.type == 'social_icon' and block.settings.url and block.settings.svg_code %}
+              <a
+                href="{{ block.settings.url }}"
+                target="_blank"
+                class="footer__trust-links-icon"
+                rel="noopener"
+                aria-label="{{ block.settings.label | escape }}"
+              >
+                {{ block.settings.svg_code }}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom layout__grid-fluid">
+    <div class="layout__grid-box">
+      <p class="footer-bottom__copyright">
+        {% if section.settings.copyright_text %}
+          &copy; {{ section.settings.copyright_text }}
+        {% else %}
+          &copy; {{ 'now' | date: '%Y' }}, Your Company.
+        {% endif %}
+      </p>
+      <p class="footer-bottom__madeby">
+        {% if section.settings.made_by_text and section.settings.made_by_url %}
+          Made by
+          <a href="{{ section.settings.made_by_url }}" target="_blank" rel="noopener">
+            {{- section.settings.made_by_text -}}
+          </a>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Nithya Amirtham Indian Food Pvt Ltd.",
+    "url": "{{ shop.url }}",
+    "logo": {% if section.settings.logo %}"{{ section.settings.logo | image_url: width: 300 }}"{% else %}""{% endif %},
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "{{ section.settings.phone }}",
+      "contactType": "Customer Service",
+      "areaServed": "IN",
+      "availableLanguage": [
+        { "@type": "Language", "name": "English" },
+        { "@type": "Language", "name": "Tamil" }
+      ]
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ section.settings.address }}",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      {% assign social_urls = section.blocks | where: "type", "social_icon" %}
+      {% for block in social_urls %}
+        {% if block.settings.url != blank %}
+          "{{ block.settings.url }}"{% unless forloop.last %},{% endunless %}
+        {% endif %}
+      {% endfor %}
+    ]
+  }
+</script>
+
 {% schema %}
 {
   "name": "Footer",
-  "settings": []
+  "tag": "footer",
+  "class": "site-footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo (Image)"
+    },
+    {
+      "type": "textarea",
+      "id": "logo_svg",
+      "label": "Logo (SVG Code)"
+    },
+    {
+      "type": "header",
+      "content": "Contact Info"
+    },
+    {
+      "type": "textarea",
+      "id": "address_icon",
+      "label": "Address Icon SVG",
+      "default": "<svg width='16' height='16' fill='currentColor'><path d='M8 0a5.5 5.5 0 015.5 5.5c0 3.5-5.5 10.5-5.5 10.5S2.5 9 2.5 5.5A5.5 5.5 0 018 0zm0 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3z'/></svg>"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "123 Sample Street, City"
+    },
+    {
+      "type": "textarea",
+      "id": "phone_icon",
+      "label": "Phone Icon SVG",
+      "default": "<svg width='16' height='16' fill='currentColor'><path d='M3.654 1.328a.678.678 0 01.58-.326h2.31c.38 0 .684.293.741.67l.436 2.893c.045.298-.08.594-.328.775L5.879 6.765a11.72 11.72 0 005.356 5.356l1.425-1.515a.78.78 0 01.776-.327l2.893.436c.38.057.67.36.67.741v2.31a.678.678 0 01-.326.58A13.993 13.993 0 012.01 1.654z'/></svg>"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "+91 9876543210"
+    },
+    {
+      "type": "textarea",
+      "id": "email_icon",
+      "label": "Email Icon SVG",
+      "default": "<svg width='16' height='16' fill='currentColor'><path d='M0 4a2 2 0 012-2h12a2 2 0 012 2v.217l-8 5-8-5V4zm0 1.383v6.634l5.803-3.96L0 5.383zM6.761 8.83l-6.53 4.455A2 2 0 002 14h12a2 2 0 001.77-1.015l-6.53-4.455L8 9.833 6.761 8.83zM10.197 8.057 16 12.017V5.383l-5.803 3.96z'/></svg>"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email Address",
+      "default": "support@example.com"
+    },
+    {
+      "type": "text",
+      "id": "follow_us_label",
+      "label": "Follow Us Label",
+      "default": "Follow Us"
+    },
+    {
+      "type": "header",
+      "content": "Legal & Credit"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "2025 Nithya Amirtham Indian Food Pvt Ltd."
+    },
+    {
+      "type": "text",
+      "id": "made_by_text",
+      "label": "Made By Text",
+      "default": "Madarth"
+    },
+    {
+      "type": "url",
+      "id": "made_by_url",
+      "label": "Made By URL",
+      "default": "/collections/all"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "footer_menu",
+      "name": "Footer Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Menu Title",
+          "default": "Company"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Navigation Menu"
+        }
+      ]
+    },
+    {
+      "type": "social_icon",
+      "name": "Social Icon",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Facebook"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link URL"
+        },
+        {
+          "type": "textarea",
+          "id": "svg_code",
+          "label": "SVG Code",
+          "default": "<svg width='16' height='16' fill='currentColor'><path d='M8.94 6.5H10V4.27c-.17-.02-.76-.07-1.44-.07-1.43 0-2.41.87-2.41 2.45V8H5V10h1.15v6h2.29v-6h1.54l.23-2H8.44V6.78c0-.38.1-.63.66-.63z'/></svg>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Responsive Footer",
+      "blocks": [{ "type": "footer_menu" }, { "type": "social_icon" }]
+    }
+  ]
 }
 {% endschema %}
