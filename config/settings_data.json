@@ -11,6 +11,11 @@
   "current": {
     "type_header": "dm_sans_n4",
     "type_body": "instrument_sans_n4",
+    "social_twitter_link": "https://x.com",
+    "social_facebook_link": "https://facebook.com",
+    "social_pinterest_link": "https://pinterest.com/",
+    "social_instagram_link": "https://www.instagram.com/",
+    "social_youtube_link": "https://youtube.com/",
     "sections": {
       "announcement-bar": {
         "type": "announcement-bar",
@@ -19,7 +24,6 @@
             "type": "bar",
             "settings": {
               "message": "<ul><li>Flat 20% Off on all sweets for this festive season.</li><li>Special discounts for bulk & corporate orders. <a href=\"/pages/contact\" target=\"_blank\" title=\"Contact\">Contact us today!</a></li><li>Enjoy FREE delivery on orders above ₹999. Order now!</li><li>Flat 20% Off on all sweets for this festive season.</li><li>Special discounts for bulk & corporate orders. <a href=\"/pages/contact\" target=\"_blank\" title=\"Contact\">Contact us today!</a></li><li>Enjoy FREE delivery on orders above ₹999. Order now!</li><li>Flat 20% Off on all sweets for this festive season.</li><li>Special discounts for bulk & corporate orders. <a href=\"/pages/contact\" target=\"_blank\" title=\"Contact\">Contact us today!</a></li><li>Enjoy FREE delivery on orders above ₹999. Order now!</li></ul>",
-              "link": "",
               "useMarquee": true,
               "scrollAmount": 6,
               "bgColor": "#f6ca30",
@@ -35,6 +39,7 @@
           "bar_QW6HeT"
         ],
         "settings": {
+          "enableAnnouncement": true,
           "stackGap": 8
         }
       },
@@ -56,7 +61,19 @@
       },
       "footer": {
         "type": "footer",
-        "settings": {}
+        "settings": {
+          "logo_svg": "",
+          "address_icon": "<svg width=\"16\" height=\"16\" fill=\"currentColor\"><path d=\"M8 0a5.5 5.5 0 015.5 5.5c0 3.5-5.5 10.5-5.5 10.5S2.5 9 2.5 5.5A5.5 5.5 0 018 0zm0 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3z\"></path></svg>",
+          "address": "123 Sample Street, City",
+          "phone_icon": "<svg width=\"16\" height=\"16\" fill=\"currentColor\"><path d=\"M3.654 1.328a.678.678 0 01.58-.326h2.31c.38 0 .684.293.741.67l.436 2.893c.045.298-.08.594-.328.775L5.879 6.765a11.72 11.72 0 005.356 5.356l1.425-1.515a.78.78 0 01.776-.327l2.893.436c.38.057.67.36.67.741v2.31a.678.678 0 01-.326.58A13.993 13.993 0 012.01 1.654z\"></path></svg>",
+          "phone": "+91 9876543210",
+          "email_icon": "<svg width=\"16\" height=\"16\" fill=\"currentColor\"><path d=\"M0 4a2 2 0 012-2h12a2 2 0 012 2v.217l-8 5-8-5V4zm0 1.383v6.634l5.803-3.96L0 5.383zM6.761 8.83l-6.53 4.455A2 2 0 002 14h12a2 2 0 001.77-1.015l-6.53-4.455L8 9.833 6.761 8.83zM10.197 8.057 16 12.017V5.383l-5.803 3.96z\"></path></svg>",
+          "email": "support@example.com",
+          "follow_us_label": "Follow Us",
+          "copyright_text": "2025 Nithya Amirtham Indian Food Pvt Ltd.",
+          "made_by_text": "Madarth",
+          "made_by_url": "shopify://collections/all"
+        }
       },
       "predictive-search": {
         "type": "predictive-search",
