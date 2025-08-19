@@ -11,12 +11,21 @@
   "current": {
     "black_color_1": "#2a2a2a",
     "white_color_2": "#f6f6f6",
-    "type_body": "instrument_sans_n4",
+    "heading-1": "dm_sans_n5",
+    "heading-2": "dm_sans_n5",
+    "heading-3": "dm_sans_n5",
+    "heading-4": "dm_sans_n5",
+    "heading-5": "dm_sans_n5",
+    "heading-6": "dm_sans_n5",
+    "font-normal": "dm_sans_n4",
+    "font-medium": "dm_sans_n5",
+    "font-extrabold": "dm_sans_n8",
     "social_twitter_link": "https://x.com",
     "social_facebook_link": "https://facebook.com",
     "social_pinterest_link": "https://pinterest.com/",
     "social_instagram_link": "https://www.instagram.com/",
     "social_youtube_link": "https://youtube.com/",
+    "type_body": "instrument_sans_n4",
     "type_header": "dm_sans_n4",
     "sections": {
       "announcement-bar": {
