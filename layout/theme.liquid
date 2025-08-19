@@ -5,33 +5,58 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#1d5d31">
+    <link rel="canonical" href="{{ canonical_url }}">
     {% if settings.favicon != blank %}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {% endif %}
     <title>
       {{ page_title }}
-      {% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
-      {% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
-      {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
-    {% comment %} {% render 'social-meta-tags' %} {% endcomment %}
-    <link rel="canonical" href="{{ canonical_url }}">
     <link rel="dns-prefetch" href="https://cdn.shopify.com">
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
-    <style>
-      {{ settings.type_header | font_face }}
-      {{ settings.type_body | font_face }}
+    {% liquid
+      assign h1_font = settings['heading-1'] | font_modify: 'weight', settings['heading-1_weight']
+      assign h2_font = settings['heading-2'] | font_modify: 'weight', settings['heading-2_weight']
+      assign h3_font = settings['heading-3'] | font_modify: 'weight', settings['heading-3_weight']
+      assign h4_font = settings['heading-4'] | font_modify: 'weight', settings['heading-4_weight']
+      assign h5_font = settings['heading-5'] | font_modify: 'weight', settings['heading-5_weight']
+      assign h6_font = settings['heading-6'] | font_modify: 'weight', settings['heading-6_weight']
+
+      assign b1_font = settings['type_body-1'] | font_modify: 'weight', settings['type_body-1_weight']
+      assign b2_font = settings['type_body-2'] | font_modify: 'weight', settings['type_body-2_weight']
+    %}
+
+    {% style %}
+          /* Emit @font-face for the chosen variants */
+          {{ h1_font | font_face: font_display: 'swap' }}
+          {{ h2_font | font_face: font_display: 'swap' }}
+          {{ h3_font | font_face: font_display: 'swap' }}
+          {{ h4_font | font_face: font_display: 'swap' }}
+          {{ h5_font | font_face: font_display: 'swap' }}
+          {{ h6_font | font_face: font_display: 'swap' }}
+          {{ b1_font | font_face: font_display: 'swap' }}
+          {{ b2_font | font_face: font_display: 'swap' }}
+
       :root {
-        --font-dm-sans: {{ settings.type_header.family }}, {{ settings.type_header.fallback_families }};
-        --font-header: {{ settings.type_header.family }}, {{ settings.type_header.fallback_families }};
-        --font-body: {{ settings.type_body.family }}, {{ settings.type_body.fallback_families }};
+        --font-h1: normal normal {{ h1_font.weight }} {{ h1_font.family }}, {{ h1_font.fallback_families }};
+        --font-h2: normal normal {{ h2_font.weight }} {{ h2_font.family }}, {{ h2_font.fallback_families }};
+        --font-h3: normal normal {{ h3_font.weight }} {{ h3_font.family }}, {{ h3_font.fallback_families }};
+        --font-h4: normal normal {{ h4_font.weight }} {{ h4_font.family }}, {{ h4_font.fallback_families }};
+        --font-h5: normal normal {{ h5_font.weight }} {{ h5_font.family }}, {{ h5_font.fallback_families }};
+        --font-h6: normal normal {{ h6_font.weight }} {{ h6_font.family }}, {{ h6_font.fallback_families }};
+
+        --font-b1: normal normal {{ b1_font.weight }} {{ b1_font.family }}, {{ b1_font.fallback_families }};
+        --font-b2: normal normal {{ b2_font.weight }} {{ b2_font.family }}, {{ b2_font.fallback_families }};
       }
-    </style>
+    {% endstyle %}
 
     {{ 'base.css' | asset_url | preload_tag: as: 'style' }}
     {{ 'owl.carousel.css' | asset_url | preload_tag: as: 'style' }}
@@ -57,6 +82,9 @@
     {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
 
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
+
+    {% comment %} {% render 'social-meta-tags' %} {% endcomment %}
+
     {{ content_for_header }}
   </head>
   <body class="{{ template | handleize }}">

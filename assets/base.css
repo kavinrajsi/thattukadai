@@ -402,13 +402,17 @@ summary::marker {
 }
 
 :root {
-  --color-yellow: #FAD75F;
-  --color-yellow2: #F6CA30;
-  --color-black1: #2A2A2A;
-  --color-black2: #161A1D;
-  --color-white1: #FFFFFF;
-  --color-white2: #F6F6F6;
-  --color-white3: #D3D3D3;
+  --color-yellow1: #fad75f;
+  --color-yellow2: #f6ca30;
+  --color-black1: #2a2a2a;
+  --color-black2: #161a1d;
+  --color-white1: #ffffff;
+  --color-white2: #f6f6f6;
+  --color-white3: #d3d3d3;
+  --font-dm-sans: dm_sans_n4;
+  --font-dm-sans-medium: dm_sans_n5;
+  --font-dm-sans-bold: dm_sans_n7;
+  --font-type-body: instrument_sans_n4;
 }
 
 @media screen and (prefers-reduced-motion: reduce), (update: slow) {
@@ -426,7 +430,7 @@ summary::marker {
 
 html {
   scroll-behavior: smooth;
-  font-family: var(--font-dm-sans);
+  font: var(--font-heading-1);
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
@@ -446,7 +450,7 @@ html {
 }
 
 body {
-  font-family: var(--font-dm-sans);
+  font: var(--font-heading-1);
   overflow-x: hidden;
   font-size: 14px;
   font-weight: 400;
@@ -543,12 +547,10 @@ a {
 
 .heading--1,
 .shopify-policy__title {
-  /* Heading1 */
-  font-family: var(--font-dm-sans);
-  font-weight: 700;
+  font-family: var(--font-heading-1);
+  font-style: normal;
   font-size: 40px;
   line-height: 42px;
-  /* or 100% */
 }
 @media (min-width: 768px) {
   .heading--1,
@@ -559,61 +561,51 @@ a {
 }
 
 .heading--2 {
-  /* Heading2 */
-  font-family: var(--font-dm-sans);
-  font-weight: 700;
+  font-family: var(--font-heading-2);
+  font-style: normal;
   font-size: 32px;
   line-height: 36px;
 }
 
 .heading--3 {
-  /* Heading3 */
-  font-family: var(--font-dm-sans);
+  font-family: var(--font-heading-3);
   font-style: normal;
-  font-weight: 500;
   font-size: 24px;
   line-height: 28px;
 }
 
 .heading--4 {
-  /* Heading4 */
-  font-family: var(--font-dm-sans);
-  font-weight: 700;
+  font-family: var(--font-heading-4);
+  font-style: normal;
   font-size: 24px;
   line-height: 28px;
 }
 
 .heading--5 {
-  /* Heading4 */
-  font-family: var(--font-dm-sans);
-  font-weight: 700;
+  font-family: var(--font-heading-5);
+  font-style: normal;
   font-size: 24px;
   line-height: 28px;
 }
 
 .heading--6 {
-  /* Heading4 */
-  font-family: var(--font-dm-sans);
-  font-weight: 700;
+  font-family: var(--font-heading-6);
+  font-style: normal;
   font-size: 24px;
   line-height: 28px;
 }
 
 .text--body-1 {
-  /* Body1 */
   font-family: var(--font-dm-sans);
   font-style: normal;
-  font-weight: 400;
   font-size: 16px;
   line-height: normal;
 }
 
 .text--body-2,
 p {
-  /* Body2 */
   font-family: var(--font-dm-sans);
   font-style: normal;
-  font-weight: 400;
   font-size: 14px;
   line-height: 16px;
 }
@@ -838,7 +830,7 @@ header .site-header .site-header__inner .site-nav.site-nav--right .icon-link--ba
 header .site-header .site-header__inner .site-nav.site-nav--right .icon-link--bag span {
   display: inline-block;
   padding-left: 8px;
-  font-family: var(--font-dm-sans);
+  font: var(--font-heading-1);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
