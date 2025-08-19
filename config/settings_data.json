@@ -9,6 +9,8 @@
  */
 {
   "current": {
+    "black_color_1": "#2a2a2a",
+    "white_color_2": "#f6f6f6",
     "type_header": "dm_sans_n4",
     "type_body": "instrument_sans_n4",
     "social_twitter_link": "https://x.com",
