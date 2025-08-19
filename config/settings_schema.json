@@ -64,90 +64,25 @@
       }
     ]
   },
-{
-  "name": "Font Family",
-  "settings": [
-    { "type": "font_picker", "id": "heading-1", "default": "dm_sans_n7", "label": "Heading 1" },
-    { "type": "select", "id": "heading-1_weight", "label": "H1 weight", "default": "700",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra Bold (800)" }
-      ]
-    },
+  {
+    "name": "Font Family",
+    "settings": [
+      { "type": "font_picker", "id": "heading-1", "default": "dm_sans_n7", "label": "Heading 1" },
+      { "type": "font_picker", "id": "heading-2", "default": "dm_sans_n7", "label": "Heading 2" },
+      { "type": "font_picker", "id": "heading-3", "default": "dm_sans_n7", "label": "Heading 3" },
+      { "type": "font_picker", "id": "heading-4", "default": "dm_sans_n7", "label": "Heading 4" },
+      { "type": "font_picker", "id": "heading-5", "default": "dm_sans_n7", "label": "Heading 5" },
+      { "type": "font_picker", "id": "heading-6", "default": "dm_sans_n7", "label": "Heading 6" },
 
-    { "type": "font_picker", "id": "heading-2", "default": "dm_sans_n7", "label": "Heading 2" },
-    { "type": "select", "id": "heading-2_weight", "label": "H2 weight", "default": "700",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra Bold (800)" }
-      ]
-    },
+      { "type": "font_picker", "id": "type_body-1", "default": "instrument_sans_n4", "label": "Body 1" },
+      { "type": "font_picker", "id": "type_body-2", "default": "instrument_sans_n4", "label": "Body 2" },
 
-    { "type": "font_picker", "id": "heading-3", "default": "dm_sans_n7", "label": "Heading 3" },
-    { "type": "select", "id": "heading-3_weight", "label": "H3 weight", "default": "700",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra Bold (800)" }
-      ]
-    },
-
-    { "type": "font_picker", "id": "heading-4", "default": "dm_sans_n7", "label": "Heading 4" },
-    { "type": "select", "id": "heading-4_weight", "label": "H4 weight", "default": "700",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra Bold (800)" }
-      ]
-    },
-
-    { "type": "font_picker", "id": "heading-5", "default": "dm_sans_n7", "label": "Heading 5" },
-    { "type": "select", "id": "heading-5_weight", "label": "H5 weight", "default": "700",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra Bold (800)" }
-      ]
-    },
-
-    { "type": "font_picker", "id": "heading-6", "default": "dm_sans_n7", "label": "Heading 6" },
-    { "type": "select", "id": "heading-6_weight", "label": "H6 weight", "default": "700",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra Bold (800)" }
-      ]
-    },
-
-    { "type": "font_picker", "id": "type_body-1", "default": "instrument_sans_n4", "label": "Body 1" },
-    { "type": "select", "id": "type_body-1_weight", "label": "Body 1 weight", "default": "400",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra Bold (800)" }
-      ]
-    },
-
-    { "type": "font_picker", "id": "type_body-2", "default": "instrument_sans_n4", "label": "Body 2" },
-    { "type": "select", "id": "type_body-2_weight", "label": "Body 2 weight", "default": "400",
-      "options": [
-        { "value": "400", "label": "Normal (400)" },
-        { "value": "500", "label": "Medium (500)" },
-        { "value": "700", "label": "Bold (700)" },
-        { "value": "800", "label": "Extra Bold (800)" }
-      ]
-    }
-  ]
-},
+      { "type": "font_picker", "id": "font-normal", "default": "dm_sans_n7", "label": "Font Normal" },
+      { "type": "font_picker", "id": "font-medium", "default": "dm_sans_n7", "label": "Font Medium" },
+      { "type": "font_picker", "id": "font-bold", "default": "dm_sans_n7", "label": "Font Bold" },
+      { "type": "font_picker", "id": "font-extrabold", "default": "dm_sans_n7", "label": "Font Extra Bold" },
+    ]
+  },
   {
     "name": "Organization Schema",
     "settings": [

@@ -23,38 +23,50 @@
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
     {% liquid
-      assign h1_font = settings['heading-1'] | font_modify: 'weight', settings['heading-1_weight']
-      assign h2_font = settings['heading-2'] | font_modify: 'weight', settings['heading-2_weight']
-      assign h3_font = settings['heading-3'] | font_modify: 'weight', settings['heading-3_weight']
-      assign h4_font = settings['heading-4'] | font_modify: 'weight', settings['heading-4_weight']
-      assign h5_font = settings['heading-5'] | font_modify: 'weight', settings['heading-5_weight']
-      assign h6_font = settings['heading-6'] | font_modify: 'weight', settings['heading-6_weight']
+      # Headings (font + weight come from picker)
+      assign h1_font = settings['heading-1']
+      assign h2_font = settings['heading-2']
+      assign h3_font = settings['heading-3']
+      assign h4_font = settings['heading-4']
+      assign h5_font = settings['heading-5']
+      assign h6_font = settings['heading-6']
 
-      assign b1_font = settings['type_body-1'] | font_modify: 'weight', settings['type_body-1_weight']
-      assign b2_font = settings['type_body-2'] | font_modify: 'weight', settings['type_body-2_weight']
+      # Body
+      assign b1_font = settings['type_body-1']
+      assign b2_font = settings['type_body-2']
+
+      # Utility weights (Normal/Medium/Bold/ExtraBold)
+      assign font_normal = settings['font-normal']
+      assign font_medium = settings['font-medium']
+      assign font_bold = settings['font-bold']
+      assign font_extrabold = settings['font-extrabold']
     %}
 
     {% style %}
-          /* Emit @font-face for the chosen variants */
-          {{ h1_font | font_face: font_display: 'swap' }}
-          {{ h2_font | font_face: font_display: 'swap' }}
-          {{ h3_font | font_face: font_display: 'swap' }}
-          {{ h4_font | font_face: font_display: 'swap' }}
-          {{ h5_font | font_face: font_display: 'swap' }}
-          {{ h6_font | font_face: font_display: 'swap' }}
-          {{ b1_font | font_face: font_display: 'swap' }}
-          {{ b2_font | font_face: font_display: 'swap' }}
+      /* Emit @font-face for each chosen variant */
+      {{ h1_font | font_face: font_display: 'swap' }}
+      {{ h2_font | font_face: font_display: 'swap' }}
+      {{ h3_font | font_face: font_display: 'swap' }}
+      {{ h4_font | font_face: font_display: 'swap' }}
+      {{ h5_font | font_face: font_display: 'swap' }}
+      {{ h6_font | font_face: font_display: 'swap' }}
+      {{ b1_font | font_face: font_display: 'swap' }}
+      {{ b2_font | font_face: font_display: 'swap' }}
+      {{ font_normal | font_face: font_display: 'swap' }}
+      {{ font_medium | font_face: font_display: 'swap' }}
+      {{ font_bold | font_face: font_display: 'swap' }}
+      {{ font_extrabold | font_face: font_display: 'swap' }}
 
       :root {
-        --font-h1: normal normal {{ h1_font.weight }} {{ h1_font.family }}, {{ h1_font.fallback_families }};
-        --font-h2: normal normal {{ h2_font.weight }} {{ h2_font.family }}, {{ h2_font.fallback_families }};
-        --font-h3: normal normal {{ h3_font.weight }} {{ h3_font.family }}, {{ h3_font.fallback_families }};
-        --font-h4: normal normal {{ h4_font.weight }} {{ h4_font.family }}, {{ h4_font.fallback_families }};
-        --font-h5: normal normal {{ h5_font.weight }} {{ h5_font.family }}, {{ h5_font.fallback_families }};
-        --font-h6: normal normal {{ h6_font.weight }} {{ h6_font.family }}, {{ h6_font.fallback_families }};
+        --font-h1: normal normal {{ h1_font.weight }} 2.5rem/1.2 {{ h1_font.family }}, {{ h1_font.fallback_families }};
+        --font-h2: normal normal {{ h2_font.weight }} 2rem/1.3 {{ h2_font.family }}, {{ h2_font.fallback_families }};
+        --font-h3: normal normal {{ h3_font.weight }} 1.75rem/1.3 {{ h3_font.family }}, {{ h3_font.fallback_families }};
+        --font-h4: normal normal {{ h4_font.weight }} 1.5rem/1.4 {{ h4_font.family }}, {{ h4_font.fallback_families }};
+        --font-h5: normal normal {{ h5_font.weight }} 1.25rem/1.4 {{ h5_font.family }}, {{ h5_font.fallback_families }};
+        --font-h6: normal normal {{ h6_font.weight }} 1.125rem/1.4 {{ h6_font.family }}, {{ h6_font.fallback_families }};
 
-        --font-b1: normal normal {{ b1_font.weight }} {{ b1_font.family }}, {{ b1_font.fallback_families }};
-        --font-b2: normal normal {{ b2_font.weight }} {{ b2_font.family }}, {{ b2_font.fallback_families }};
+        --font-b1: normal normal {{ b1_font.weight }} 1rem/1.6 {{ b1_font.family }}, {{ b1_font.fallback_families }};
+        --font-b2: normal normal {{ b2_font.weight }} 0.875rem/1.6 {{ b2_font.family }}, {{ b2_font.fallback_families }};
       }
     {% endstyle %}
 
