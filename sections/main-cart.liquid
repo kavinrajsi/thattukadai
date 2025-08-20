@@ -8,7 +8,7 @@
 {% endcomment %}
 
 <section class="cart-page layout__grid-box" aria-labelledby="cart-heading">
-  <h1 id="cart-heading" class="heading--2">Shopping Cart</h1>
+  <h1 id="cart-heading" class="page-title heading--2">Shopping Cart</h1>
 
   <div id="cart-container">
     {% if cart.item_count == 0 %}
@@ -141,7 +141,7 @@
                 </div>
               </div>
 
-              <div class="cart-col total-col line-total">
+              <div class="cart-col total-col line-total line-total-col">
                 {% if item.original_line_price > item.line_price %}
                   <span class="original-price" style="text-decoration: line-through; color:#999;">
                     {{ item.original_line_price | money }}

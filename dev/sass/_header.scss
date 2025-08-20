@@ -1,115 +1,116 @@
 header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    will-change: transform;
-    &.scrolldown {
-        transform: translateY(-100%);
-        transition: transform 200ms ease;
-    }
-    &.scrollup {
-        transform: translateY(0);
-        transition: transform 200ms ease;
-    }
+	position: sticky;
+	z-index: 50;
+	top: 0;
+	will-change: transform;
+	&.scrolldown {
+		transition: transform 200ms ease;
+		transform: translateY(-100%);
+	}
+	&.scrollup {
+		transition: transform 200ms ease;
+		transform: translateY(0);
+	}
 
-    .site-header {
-        overflow: hidden;
-        padding: 24px 20px;
-        background-color: transparent;
-        .site-header__inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            padding: 8px 20px;
-            border-radius: 6px;
-            background-color: var(--Netrual-White1, #ffffff);
-            box-shadow: 0 0.0625rem 0.25rem #0003;
-            .site-logo {
-                position: absolute;
-                top: -20px;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                text-align: center;
-                display: inline-block;
-                width: 146px;
-                height: auto;
-                margin: 0 auto;
-            }
-            .site-nav {
-                &.site-nav--left {
-                    button {
-                        padding: 12px 16px;
-                        /* Neutral/White2 */
-                        background: #f6f6f6;
-                        border-radius: 25px;
-                        span {
-                            font: var(--font-600);
-                            font-size: 14px;
-                            line-height: 16px;
-                            color: #2a2a2a;
-                            display: inline-block;
-                            margin-right: 8px;
-                        }
-                    }
-                    .site-link {
-                        padding: 12px 24px;
-                        border-radius: 4px;
-                        font: var(--font-600);
-                        font-style: normal;
-                        font-size: 14px;
-                        line-height: 16px;
-                        color: #2a2a2a;
-                    }
-                }
-                &.site-nav--right {
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-                    .icon-link--bag {
-                        display: flex;
-                        align-items: center;
-                        padding: 12px 16px;
-                        /* Neutral/White2 */
-                        background: #f6f6f6;
-                        border-radius: 25px;
+	.site-header {
+		overflow: hidden;
+		padding: 24px 20px;
+		background-color: transparent;
+		.site-header__inner {
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 8px 20px;
+			border-radius: 6px;
+			background-color: var(--Netrual-White1, #ffffff);
+			box-shadow: 0 0.0625rem 0.25rem #0003;
+			.site-logo {
+				position: absolute;
+				top: -20px;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				display: inline-block;
+				width: 146px;
+				height: auto;
+				margin: 0 auto;
+				text-align: center;
+			}
+			.site-nav {
+				&.site-nav--left {
+					button {
+						padding: 12px 16px;
+						border-radius: 25px;
+						/* Neutral/White2 */
+						background: #f6f6f6;
+						span {
+							font: var(--font-600);
+							font-size: 14px;
+							line-height: 16px;
+							display: inline-block;
+							margin-right: 8px;
+							color: #2a2a2a;
+						}
+					}
+					.site-link {
+						font: var(--font-600);
+						font-size: 14px;
+						font-style: normal;
+						line-height: 16px;
+						padding: 12px 24px;
+						color: #2a2a2a;
+						border-radius: 4px;
+					}
+				}
+				&.site-nav--right {
+					display: flex;
+					align-items: center;
+					gap: 20px;
+					.icon-link--bag {
+						display: flex;
+						align-items: center;
+						padding: 12px 16px;
+						border-radius: 25px;
+						/* Neutral/White2 */
+						background: #f6f6f6;
 
-                        span {
-                            display: inline-block;
-                            padding-left: 8px;
-                            font: var(--font-heading-1);
-                            font-style: normal;
-                            font: var(--font-500);
-                            font-size: 16px;
-                            line-height: 16px;
-                            /* identical to box height, or 100% */
-                            /* Neutral/Black1 */
-                            color: #2a2a2a;
-                        }
-                    }
-                }
-            }
-        }
-    }
+						span {
+							font: var(--font-heading-1);
+							font: var(--font-500);
+							font-size: 16px;
+							font-style: normal;
+							line-height: 16px;
+							display: inline-block;
+							padding-left: 8px;
+							/* identical to box height, or 100% */
+							/* Neutral/Black1 */
 
-    .site-search {
-        overflow: hidden;
-        padding: 24px 20px;
-        background-color: transparent;
-        form {
-            input {
-                border: 1px solid #d3d3d3;
-                padding: 12px 32px 12px 12px;
-                border-radius: 6px;
-                margin: 0 auto;
-                font-style: normal;
-                font: var(--font-400);
-                font-size: 12px;
-                line-height: 15px;
-                width: calc(100% - 46px);
-                min-width: 690px;
-            }
-        }
-    }
+							color: #2a2a2a;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.site-search {
+		overflow: hidden;
+		padding: 24px 20px;
+		background-color: transparent;
+		form {
+			input {
+				font: var(--font-400);
+				font-size: 12px;
+				font-style: normal;
+				line-height: 15px;
+				width: calc(100% - 46px);
+				min-width: 690px;
+				margin: 0 auto;
+				padding: 12px 32px 12px 12px;
+				border: 1px solid #d3d3d3;
+				border-radius: 6px;
+			}
+		}
+	}
 }
