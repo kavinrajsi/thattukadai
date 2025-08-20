@@ -90,15 +90,15 @@
           "footer_menu_bBLtE8": {
             "type": "footer_menu",
             "settings": {
-              "label": "Company",
-              "menu": ""
+              "label": "Legal",
+              "menu": "legal"
             }
           },
           "social_icon_Xkciy8": {
             "type": "social_icon",
             "settings": {
               "label": "Facebook",
-              "url": "",
+              "url": "https://facebook.com",
               "svg_code": "<svg width=\"16\" height=\"16\" fill=\"currentColor\"><path d=\"M8.94 6.5H10V4.27c-.17-.02-.76-.07-1.44-.07-1.43 0-2.41.87-2.41 2.45V8H5V10h1.15v6h2.29v-6h1.54l.23-2H8.44V6.78c0-.38.1-.63.66-.63z\"></path></svg>"
             }
           }
