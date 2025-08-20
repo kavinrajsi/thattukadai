@@ -72,6 +72,43 @@
       },
       "footer": {
         "type": "footer",
+        "blocks": {
+          "footer_menu_JAgfxR": {
+            "type": "footer_menu",
+            "settings": {
+              "label": "Shop",
+              "menu": "shop"
+            }
+          },
+          "footer_menu_zTh8Y4": {
+            "type": "footer_menu",
+            "settings": {
+              "label": "Other Links",
+              "menu": "other-links"
+            }
+          },
+          "footer_menu_bBLtE8": {
+            "type": "footer_menu",
+            "settings": {
+              "label": "Company",
+              "menu": ""
+            }
+          },
+          "social_icon_Xkciy8": {
+            "type": "social_icon",
+            "settings": {
+              "label": "Facebook",
+              "url": "",
+              "svg_code": "<svg width=\"16\" height=\"16\" fill=\"currentColor\"><path d=\"M8.94 6.5H10V4.27c-.17-.02-.76-.07-1.44-.07-1.43 0-2.41.87-2.41 2.45V8H5V10h1.15v6h2.29v-6h1.54l.23-2H8.44V6.78c0-.38.1-.63.66-.63z\"></path></svg>"
+            }
+          }
+        },
+        "block_order": [
+          "footer_menu_JAgfxR",
+          "footer_menu_zTh8Y4",
+          "footer_menu_bBLtE8",
+          "social_icon_Xkciy8"
+        ],
         "settings": {
           "logo_svg": "",
           "address_icon": "<svg width=\"16\" height=\"16\" fill=\"currentColor\"><path d=\"M8 0a5.5 5.5 0 015.5 5.5c0 3.5-5.5 10.5-5.5 10.5S2.5 9 2.5 5.5A5.5 5.5 0 018 0zm0 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3z\"></path></svg>",
