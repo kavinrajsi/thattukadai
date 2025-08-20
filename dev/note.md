@@ -64,3 +64,49 @@ Show (default):
 {% render 'product-price', product: product, show_sold_out_badge: true %}
 
 If you want, I can bundle these into a tiny README comment you can paste at the top of the snippet.
+
+
+# Add dropdowns to config/settings_schema.json
+{
+  "name": "Typography (Custom)",
+  "settings": [
+    {
+      "type": "select",
+      "id": "custom_body_font",
+      "label": "Body font",
+      "options": [
+        { "value": "MyCustomFont", "label": "My Custom Font" },
+        { "value": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "label": "System Sans (fallback)" }
+      ],
+      "default": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+    },
+    {
+      "type": "select",
+      "id": "custom_heading_font",
+      "label": "Headings font",
+      "options": [
+        { "value": "MyCustomFont", "label": "My Custom Font" },
+        { "value": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif", "label": "System Sans (fallback)" }
+      ],
+      "default": "MyCustomFont"
+    }
+  ]
+}
+
+{{ 'custom-fonts.css' | asset_url | stylesheet_tag }}
+
+<style>
+  :root {
+    --font-body: {{ settings.custom_body_font | json }};
+    --font-heading: {{ settings.custom_heading_font | json }};
+  }
+</style>
+body {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, .h1, .h2, .h3 {
+  font-family: var(--font-heading);
+}
+<link rel="preload" as="font" type="font/woff2" href="{{ 'mycustomfont-regular.woff2' | asset_url }}" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="{{ 'mycustomfont-bold.woff2'    | asset_url }}" crossorigin>
