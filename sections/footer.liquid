@@ -138,7 +138,7 @@
     <div class="layout__grid-box">
       <p class="footer-bottom__copyright">
         {% if section.settings.copyright_text %}
-          &copy; {{ section.settings.copyright_text }}
+          &copy; {{ 'now' | date: '%Y' }}, {{ section.settings.copyright_text }}
         {% else %}
           &copy; {{ 'now' | date: '%Y' }}, Your Company.
         {% endif %}

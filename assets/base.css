@@ -409,10 +409,6 @@ summary::marker {
   --color-white1: #ffffff;
   --color-white2: #f6f6f6;
   --color-white3: #d3d3d3;
-  --font-dm-sans: dm_sans_n4;
-  --font-dm-sans-medium: dm_sans_n5;
-  --font-dm-sans-bold: dm_sans_n7;
-  --font-type-body: instrument_sans_n4;
 }
 
 @media screen and (prefers-reduced-motion: reduce), (update: slow) {
@@ -430,9 +426,8 @@ summary::marker {
 
 html {
   scroll-behavior: smooth;
-  font: var(--font-heading-1);
+  font: var(--font-400);
   font-size: 14px;
-  font-weight: 400;
   line-height: 1.5;
   text-align: left;
   -webkit-text-size-adjust: 100%;
@@ -450,10 +445,9 @@ html {
 }
 
 body {
-  font: var(--font-heading-1);
   overflow-x: hidden;
+  font: var(--font-400);
   font-size: 14px;
-  font-weight: 400;
   line-height: normal;
   margin: 0 auto;
   -webkit-font-smoothing: antialiased;
@@ -630,9 +624,7 @@ p {
   border: 1px solid transparent;
   border-radius: 2px;
   /* Body1 */
-  font-family: var(--font-dm-sans);
-  font-style: normal;
-  font-weight: 400;
+  font: var(--font-400);
   font-size: 16px;
   line-height: 20px;
   /* identical to box height */
@@ -693,7 +685,7 @@ p {
 }
 
 .announcement-bar {
-  font-family: var(--font-body);
+  font: var(--font-400);
   /* Text styling */
   /* Link styling */
   /* Close (dismiss) button styling */
@@ -723,7 +715,6 @@ p {
 .announcement-bar__text ul li {
   font-family: inherit;
   font-style: normal;
-  font-weight: 400;
   font-size: 12px;
   line-height: 15px;
   color: inherit;
@@ -795,9 +786,7 @@ header .site-header .site-header__inner .site-nav.site-nav--left button {
   border-radius: 25px;
 }
 header .site-header .site-header__inner .site-nav.site-nav--left button span {
-  font-family: var(--font-header);
-  font-style: normal;
-  font-weight: 600;
+  font: var(--font-600);
   font-size: 14px;
   line-height: 16px;
   color: #2a2a2a;
@@ -807,9 +796,8 @@ header .site-header .site-header__inner .site-nav.site-nav--left button span {
 header .site-header .site-header__inner .site-nav.site-nav--left .site-link {
   padding: 12px 24px;
   border-radius: 4px;
-  font-family: var(--font-header);
+  font: var(--font-600);
   font-style: normal;
-  font-weight: 600;
   font-size: 14px;
   line-height: 16px;
   color: #2a2a2a;
@@ -832,7 +820,7 @@ header .site-header .site-header__inner .site-nav.site-nav--right .icon-link--ba
   padding-left: 8px;
   font: var(--font-heading-1);
   font-style: normal;
-  font-weight: 500;
+  font: var(--font-500);
   font-size: 16px;
   line-height: 16px;
   /* identical to box height, or 100% */
@@ -850,7 +838,7 @@ header .site-search form input {
   border-radius: 6px;
   margin: 0 auto;
   font-style: normal;
-  font-weight: 400;
+  font: var(--font-400);
   font-size: 12px;
   line-height: 15px;
   width: calc(100% - 46px);
@@ -969,7 +957,6 @@ body.index.drawer-open {
   justify-content: space-between;
 }
 .cart-drawer__header h3 {
-  font-family: var(--font-dm-sans);
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -1012,7 +999,7 @@ body.index.drawer-open {
   flex-direction: column;
 }
 .cart-drawer .drawer-content .drawer-items .drawer-item .drawer-item__meta .drawer-item__title {
-  font-family: var(--font-dm-sans);
+  font: var(--font-600);
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -1022,9 +1009,7 @@ body.index.drawer-open {
   color: #0b090a;
 }
 .cart-drawer .drawer-content .drawer-items .drawer-item .drawer-item__meta .drawer-item__variant {
-  font-family: var(--font-dm-sans);
-  font-style: normal;
-  font-weight: 400;
+  font: var(--font-400);
   font-size: 14px;
   line-height: 16px;
   /* identical to box height, or 114% */
@@ -1036,7 +1021,7 @@ body.index.drawer-open {
 }
 .cart-drawer .drawer-content .drawer-items .drawer-item .drawer-item__meta .drawer-item__price {
   /* Remove */
-  font-family: var(--font-dm-sans);
+  font: var(--font-400);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1066,7 +1051,7 @@ body.index.drawer-open {
   left: initial;
 }
 .cart-drawer .drawer-content .drawer-items .drawer-item .drawer-item__meta .drawer-item__action .drawer-item__qty input.qty-input {
-  font-family: var(--font-dm-sans);
+  font: var(--font-400);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1080,7 +1065,7 @@ body.index.drawer-open {
   border-radius: 4px;
 }
 .cart-drawer .drawer-content .drawer-items .drawer-item .drawer-item__meta .drawer-item__action .drawer-item__remove {
-  font-family: var(--font-dm-sans);
+  font: var(--font-400);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -1098,7 +1083,7 @@ body.index.drawer-open {
   justify-content: space-between;
 }
 .cart-drawer .drawer-content .drawer-subtotal strong {
-  font-family: var(--font-dm-sans);
+  font: var(--font-400);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -1106,7 +1091,7 @@ body.index.drawer-open {
   color: #0b090a;
 }
 .cart-drawer .drawer-content .drawer-subtotal span {
-  font-family: var(--font-dm-sans);
+  font: var(--font-400);
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -1125,7 +1110,7 @@ body.index.drawer-open {
   /* Primary/yellow2 */
   background: #f6ca30;
   border-radius: 24px;
-  font-family: var(--font-dm-sans);
+  font: var(--font-600);
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -1139,7 +1124,7 @@ body.index.drawer-open {
 }
 .cart-drawer__footer .button--view-cart {
   display: block;
-  font-family: var(--font-dm-sans);
+  font: var(--font-400);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;

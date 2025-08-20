@@ -6,10 +6,6 @@
   --color-white1: #ffffff;
   --color-white2: #f6f6f6;
   --color-white3: #d3d3d3;
-  --font-dm-sans: dm_sans_n4;
-  --font-dm-sans-medium: dm_sans_n5;
-  --font-dm-sans-bold: dm_sans_n7;
-  --font-type-body: instrument_sans_n4;
 }
 
 @media screen and (prefers-reduced-motion: reduce), (update: slow) {
@@ -32,9 +28,8 @@
 
 html {
   scroll-behavior: smooth;
-  font: var(--font-heading-1);
+  font: var(--font-400);
   font-size: 14px;
-  font-weight: 400;
   line-height: 1.5;
   text-align: left;
   -webkit-text-size-adjust: 100%;
@@ -52,10 +47,9 @@ html {
 }
 
 body {
-  font: var(--font-heading-1);
   overflow-x: hidden;
+  font: var(--font-400);
   font-size: 14px;
-  font-weight: 400;
   line-height: normal;
   margin: 0 auto;
   -webkit-font-smoothing: antialiased;
@@ -221,9 +215,7 @@ p {
     border: 1px solid transparent;
     border-radius: 2px;
     /* Body1 */
-    font-family: var(--font-dm-sans);
-    font-style: normal;
-    font-weight: 400;
+    font: var(--font-400);
     font-size: 16px;
     line-height: 20px;
     /* identical to box height */

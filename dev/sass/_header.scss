@@ -45,9 +45,7 @@ header {
                         background: #f6f6f6;
                         border-radius: 25px;
                         span {
-                            font-family: var(--font-header);
-                            font-style: normal;
-                            font-weight: 600;
+                            font: var(--font-600);
                             font-size: 14px;
                             line-height: 16px;
                             color: #2a2a2a;
@@ -58,9 +56,8 @@ header {
                     .site-link {
                         padding: 12px 24px;
                         border-radius: 4px;
-                        font-family: var(--font-header);
+                        font: var(--font-600);
                         font-style: normal;
-                        font-weight: 600;
                         font-size: 14px;
                         line-height: 16px;
                         color: #2a2a2a;
@@ -83,7 +80,7 @@ header {
                             padding-left: 8px;
                             font: var(--font-heading-1);
                             font-style: normal;
-                            font-weight: 500;
+                            font: var(--font-500);
                             font-size: 16px;
                             line-height: 16px;
                             /* identical to box height, or 100% */
@@ -107,7 +104,7 @@ header {
                 border-radius: 6px;
                 margin: 0 auto;
                 font-style: normal;
-                font-weight: 400;
+                font: var(--font-400);
                 font-size: 12px;
                 line-height: 15px;
                 width: calc(100% - 46px);

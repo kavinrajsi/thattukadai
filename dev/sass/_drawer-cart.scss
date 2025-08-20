@@ -121,7 +121,6 @@ body.index.drawer-open {
     align-items: center;
     justify-content: space-between;
     h3 {
-      font-family: var(--font-dm-sans);
       font-style: normal;
       font-weight: 700;
       font-size: 24px;
@@ -164,7 +163,7 @@ body.index.drawer-open {
           flex-direction: column;
 
           .drawer-item__title {
-            font-family: var(--font-dm-sans);
+            font: var(--font-600);
             font-style: normal;
             font-weight: 600;
             font-size: 16px;
@@ -174,9 +173,7 @@ body.index.drawer-open {
             color: #0b090a;
           }
           .drawer-item__variant {
-            font-family: var(--font-dm-sans);
-            font-style: normal;
-            font-weight: 400;
+            font: var(--font-400);
             font-size: 14px;
             line-height: 16px;
             /* identical to box height, or 114% */
@@ -189,7 +186,7 @@ body.index.drawer-open {
 
           .drawer-item__price {
             /* Remove */
-            font-family: var(--font-dm-sans);
+            font: var(--font-400);
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -218,7 +215,7 @@ body.index.drawer-open {
                 }
               }
               input.qty-input {
-                font-family: var(--font-dm-sans);
+                font: var(--font-400);
                 font-style: normal;
                 font-weight: 400;
                 font-size: 14px;
@@ -234,7 +231,7 @@ body.index.drawer-open {
               }
             }
             .drawer-item__remove {
-              font-family: var(--font-dm-sans);
+              font: var(--font-400);
               font-style: normal;
               font-weight: 400;
               font-size: 14px;
@@ -255,7 +252,7 @@ body.index.drawer-open {
       align-items: center;
       justify-content: space-between;
       strong {
-        font-family: var(--font-dm-sans);
+        font: var(--font-400);
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
@@ -263,7 +260,7 @@ body.index.drawer-open {
         color: #0b090a;
       }
       span {
-        font-family: var(--font-dm-sans);
+        font: var(--font-400);
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
@@ -283,7 +280,7 @@ body.index.drawer-open {
       /* Primary/yellow2 */
       background: #f6ca30;
       border-radius: 24px;
-      font-family: var(--font-dm-sans);
+      font: var(--font-600);
       font-style: normal;
       font-weight: 600;
       font-size: 14px;
@@ -297,7 +294,7 @@ body.index.drawer-open {
     }
     .button--view-cart {
       display: block;
-      font-family: var(--font-dm-sans);
+      font: var(--font-400);
       font-style: normal;
       font-weight: 400;
       font-size: 14px;

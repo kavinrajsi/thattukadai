@@ -79,6 +79,7 @@
 
       { "type": "font_picker", "id": "font-normal", "default": "dm_sans_n7", "label": "Font Normal" },
       { "type": "font_picker", "id": "font-medium", "default": "dm_sans_n7", "label": "Font Medium" },
+      { "type": "font_picker", "id": "font-semibold", "default": "dm_sans_n7", "label": "Font Semi Bold" },
       { "type": "font_picker", "id": "font-bold", "default": "dm_sans_n7", "label": "Font Bold" },
       { "type": "font_picker", "id": "font-extrabold", "default": "dm_sans_n7", "label": "Font Extra Bold" },
     ]

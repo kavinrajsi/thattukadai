@@ -38,6 +38,7 @@
       # Utility weights (Normal/Medium/Bold/ExtraBold)
       assign font_normal = settings['font-normal']
       assign font_medium = settings['font-medium']
+      assign font_semibold = settings['font-semibold']
       assign font_bold = settings['font-bold']
       assign font_extrabold = settings['font-extrabold']
     %}
@@ -54,6 +55,7 @@
       {{ b2_font | font_face: font_display: 'swap' }}
       {{ font_normal | font_face: font_display: 'swap' }}
       {{ font_medium | font_face: font_display: 'swap' }}
+      {{ font_semibold| font_face: font_display: 'swap' }}
       {{ font_bold | font_face: font_display: 'swap' }}
       {{ font_extrabold | font_face: font_display: 'swap' }}
 
@@ -67,6 +69,12 @@
 
         --font-b1: normal normal {{ b1_font.weight }} 1rem/1.6 {{ b1_font.family }}, {{ b1_font.fallback_families }};
         --font-b2: normal normal {{ b2_font.weight }} 0.875rem/1.6 {{ b2_font.family }}, {{ b2_font.fallback_families }};
+
+        --font-400: normal normal {{ font_normal.weight }} 1rem/1.6 {{ font_normal.family }}, {{ font_normal.fallback_families }};
+        --font-500: normal normal {{ font_medium.weight }} 1rem/1.6 {{ font_medium.family }}, {{ font_medium.fallback_families }};
+        --font-600: normal normal {{ font_semibold.weight }} 1rem/1.6 {{ font_semibold.family }}, {{ font_semibold.fallback_families }};
+        --font-700: normal normal {{ font_bold.weight }} 1rem/1.6 {{ font_bold.family }}, {{ font_bold.fallback_families }};
+        --font-800: normal normal {{ font_extrabold.weight }} 1rem/1.6 {{ font_extrabold.family }}, {{ font_extrabold.fallback_families }};
       }
     {% endstyle %}
 
