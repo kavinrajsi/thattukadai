@@ -1,411 +1,452 @@
 {% comment %}
   Full Cart Page (OS 2.0)
-  - No translation keys; plain English labels.
+  - Plain English labels
   - AJAX qty +/- and remove via /cart/change.js
-  - Live subtotal + line totals
-  - Cart note autosave
-  - Free-shipping progress bar
-  - Simple upsell grid (select a collection in settings)
+  - Live subtotal refresh (via DOM swap)
+  - Upsell: selectable mode (collection / tag / manual)
+  - No free-shipping block
 {% endcomment %}
 
-<section class="cart-page" aria-labelledby="cart-heading">
-  <div class="cart-page__inner">
-    <h1 id="cart-heading" class="cart-title">Your cart</h1>
+<section class="cart-page layout__grid-box" aria-labelledby="cart-heading">
+  <h1 id="cart-heading" class="heading--2">Shopping Cart</h1>
 
+  <div id="cart-container">
     {% if cart.item_count == 0 %}
-      <p class="cart-empty">Your cart is currently empty.</p>
-      <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Continue shopping</a>
+      <p>Your cart is currently empty.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn" style="margin-top: 1rem;">Continue Shopping</a>
     {% else %}
-      {%- assign threshold = section.settings.free_shipping_threshold | default: 0 -%}
-      {% if threshold > 0 %}
-        {%- assign remaining_cents = threshold | times: 100 | minus: cart.total_price | at_least: 0 -%}
-        <div class="cart-free-ship" role="status" aria-live="polite">
-          {% if remaining_cents == 0 %}
-            <p class="cart-free-ship__text">🎉 You’ve got free shipping!</p>
-          {% else %}
-            <p class="cart-free-ship__text">Spend {{ remaining_cents | money }} more for free shipping.</p>
-          {% endif %}
-          {%- assign progress = cart.total_price | times: 100 | divided_by: threshold | at_most: 100 -%}
-          <div class="progress"><div class="progress__bar" style="width: {{ progress }}%"></div></div>
+      <div class="cart-container">
+        <div class="cart-header">
+          <div class="cart-col product-col">Product</div>
+          <div class="cart-col price-col">Price</div>
+          <div class="cart-col qty-col">Quantity</div>
+          <div class="cart-col total-col">Total</div>
         </div>
-      {% endif %}
 
-      <form action="{{ routes.cart_url }}" method="post" novalidate class="cart-form" id="cart-form">
-        <table class="cart-table" role="table">
-          <thead>
-            <tr>
-              <th scope="col">Product</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Total</th>
-              <th scope="col"><span class="visually-hidden">Remove</span></th>
-            </tr>
-          </thead>
-          <tbody id="cart-line-items">
-            {% for item in cart.items %}
-              <tr class="cart-line" data-line="{{ forloop.index }}">
-                <td class="cart-line__product">
-                  <a href="{{ item.url }}" class="cart-line__thumb">
-                    {{ item.image | image_url: width: 200 | image_tag: alt: item.image.alt }}
-                  </a>
-                  <div class="cart-line__meta">
-                    <a href="{{ item.url }}" class="cart-line__title">{{ item.product.title }}</a>
-                    {% if section.settings.show_vendor and item.vendor %}
-                      <div class="cart-line__vendor">{{ item.vendor }}</div>
+        <div id="cart-items">
+          {% for item in cart.items %}
+            <div class="cart-item" data-line="{{ forloop.index }}" data-key="{{ item.variant_id }}">
+              <div class="wrapper">
+                <div class="cart-col product-col">
+                  <div class="product-info">
+                    {% if item.image %}
+                      <picture>
+                        <source
+                          srcset="{{ item.image | image_url: width: 95, height: 100, crop: 'center', format: 'pjpg' }}"
+                          type="image/jpeg"
+                        >
+                        <source
+                          srcset="{{ item.image | image_url: width: 95, height: 100, crop: 'center', format: 'webp' }}"
+                          type="image/webp"
+                        >
+                        <img
+                          src="{{ item.image | image_url: width: 95, height: 100, crop: 'center' }}"
+                          alt="{{ item.product.title }}"
+                          class="product-image"
+                          width="95"
+                          height="100"
+                        >
+                      </picture>
                     {% endif %}
-                    {% unless item.variant.title == 'Default Title' %}
-                      <div class="cart-line__variant">{{ item.variant.title }}</div>
-                    {% endunless %}
-                    {% if item.selling_plan_allocation %}
-                      <div class="cart-line__plan">{{ item.selling_plan_allocation.selling_plan.name }}</div>
-                    {% endif %}
-                    {% if item.properties and item.properties != empty %}
-                      <ul class="cart-line__properties">
-                        {% for p in item.properties %}
-                          {% assign key = p.first -%}
-                          {%- assign val = p.last %}
-                          {% if val != blank %}
-                            <li>
-                              <span>{{ key }}:</span> <span>{{ val }}</span>
-                            </li>
-                          {% endif %}
-                        {% endfor %}
-                      </ul>
-                    {% endif %}
+                    <div class="product-text">
+                      <div class="product-titleWrapper">
+                        <a href="{{ item.url }}">{{ item.product.title }}</a>
+
+                        <div class="product-options">
+                          {% for option in item.options_with_values %}
+                            {% if option.name != 'Title' %}
+                              <div class="line-item__option-block">
+                                <span class="line-item__option">{{ option.name }}:</span>
+                                <span class="line-item__value">{{ option.value }}</span>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+
+                        <div class="product-properties">
+                          {%- for property in item.properties -%}
+                            {%- assign property_first_char = property.first | slice: 0 -%}
+                            {%- if property.last != blank and property_first_char != '_' -%}
+                              <div class="product-option">
+                                <span class="product-option__label">{{ property.first }}:</span>
+                                <span class="product-option__value">
+                                  {%- if property.last contains '/uploads/' -%}
+                                    <a
+                                      href="{{ property.last }}"
+                                      class="link"
+                                      target="_blank"
+                                      aria-describedby="a11y-new-window-message"
+                                    >
+                                      {{ property.last | split: '/' | last }}
+                                    </a>
+                                  {%- else -%}
+                                    {{ property.last | remove: 'yes' | remove: '[' | remove: ']' }}
+                                  {%- endif -%}
+                                </span>
+                              </div>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </div>
+                      </div>
+
+                      <button
+                        class="remove-btn"
+                        data-line-key="{{ item.key }}"
+                        aria-label="Remove {{ item.product.title }}"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
-                </td>
+                </div>
 
-                <td class="cart-line__price">
-                  {% if item.original_price > item.final_price -%}
-                    <s>{{ item.original_price | money }}</s>
-                  {%- endif %}
-                  <div class="money-each" aria-live="polite">{{ item.final_price | money }}</div>
-                </td>
+                <div class="cart-col price-col unit-price">
+                  {% assign orig = item.original_price | plus: 0 %}
+                  {% assign disc = item.final_price | plus: 0 %}
+                  {% if orig > disc %}
+                    <span class="original-price" style="text-decoration: line-through; color:#999;">
+                      {{ item.original_price | money }}
+                    </span>
+                    <span class="discounted-price" style="color:#e53935; font-weight:bold; margin-left:8px;">
+                      {{ item.final_price | money }} </span
+                    ><br>
+                    <span class="discount-label" style="color:#388e3c; font-size:0.9em; margin-left:8px;">
+                      (You save {{ item.original_price | minus: item.final_price | money }})
+                    </span>
+                  {% else %}
+                    <span class="regular-price">
+                      {{ item.final_price | money }}
+                    </span>
+                  {% endif %}
+                </div>
 
-                <td class="cart-line__qty">
-                  <div class="qty">
-                    <button type="button" class="qty-btn" data-action="decrement" aria-label="Decrease quantity">
+                <div class="cart-col qty-col">
+                  <div class="qty-changer">
+                    <button type="button" class="qty-btn qty-decrease minus-btn" data-line-key="{{ item.key }}">
                       −
                     </button>
                     <input
-                      class="qty-input"
-                      name="updates[{{ item.key }}]"
-                      id="updates-{{ item.key }}"
-                      value="{{ item.quantity }}"
                       type="number"
-                      min="0"
+                      class="cart-qty-input quantity-input"
+                      value="{{ item.quantity }}"
+                      data-line-key="{{ item.key }}"
+                      min="1"
                       step="1"
                       inputmode="numeric"
-                      aria-label="Quantity for {{ item.product.title }}"
                     >
-                    <button type="button" class="qty-btn" data-action="increment" aria-label="Increase quantity">
+                    <button type="button" class="qty-btn qty-increase plus-btn" data-line-key="{{ item.key }}">
                       +
                     </button>
                   </div>
-                </td>
+                </div>
+              </div>
 
-                <td class="cart-line__line-total">
-                  {% assign line_final = item.final_line_price %}
-                  {% if item.original_line_price > line_final -%}
-                    <s>{{ item.original_line_price | money }}</s>
-                  {%- endif %}
-                  <div class="money-line" aria-live="polite">{{ line_final | money }}</div>
-                </td>
-
-                <td class="cart-line__remove">
-                  <button
-                    type="button"
-                    class="remove-line link"
-                    data-remove="{{ forloop.index }}"
-                    aria-label="Remove {{ item.product.title }}"
-                  >
-                    Remove
-                  </button>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-
-        <!-- Cart note -->
-        <div class="cart-note">
-          <label for="CartNote">Order note</label>
-          <textarea id="CartNote" name="note" rows="3">{{ cart.note }}</textarea>
+              <div class="cart-col total-col line-total">
+                {% if item.original_line_price > item.line_price %}
+                  <span class="original-price" style="text-decoration: line-through; color:#999;">
+                    {{ item.original_line_price | money }}
+                  </span>
+                  <span class="discounted-price" style="color:#e53935; font-weight:bold; margin-left:8px;">
+                    {{ item.line_price | money }}
+                  </span>
+                  <br>
+                  <span class="discount-label" style="color:#388e3c; font-size:0.9em; margin-left:8px;">
+                    (You save {{ item.original_line_price | minus: item.line_price | money }})
+                  </span>
+                {% else %}
+                  <span class="regular-price">{{ item.line_price | money }}</span>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
         </div>
 
-        <!-- Totals -->
-        <div class="cart-totals">
-          <div class="cart-totals__row">
-            <span>Subtotal</span><strong id="cart-subtotal" aria-live="polite">{{ cart.total_price | money }}</strong>
+        <div class="cart-footer">
+          <div class="cart-footer-subtotal">
+            <p>
+              <strong>Subtotal:</strong>
+              <small>Tax included. Shipping calculated at checkout.</small>
+            </p>
+            <p>
+              <span id="cart-subtotal">{{ cart.total_price | money }}</span>
+            </p>
           </div>
-          {% if cart.total_discount > 0 %}
-            <div class="cart-totals__row cart-totals__row--savings">
-              <span>Savings</span><span>{{ cart.total_discount | money }}</span>
+          <div>
+            <a href="{{ routes.checkout_url }}" class="cart-footer-checkout">Checkout</a>
+            <a href="{{ routes.all_products_collection_url }}" class="cart-footer-continue">Continue Shopping</a>
+          </div>
+        </div>
+
+        {%- comment -%}
+          Upsell area with three modes:
+          - collection: show from a chosen collection (fallback 'all')
+          - tag: show products matching a tag within a base collection (fallback 'all')
+          - manual: show hand-picked products via blocks
+        {%- endcomment -%}
+        {% assign upsell_mode = section.settings.upsell_mode | default: 'collection' %}
+        {% assign upsell_header = 'You might also like' %}
+
+        {% if upsell_mode == 'manual' %}
+          {% assign manual_blocks = section.blocks | where: 'type', 'manual_product' %}
+          {% if manual_blocks.size > 0 %}
+            <div class="cart-upsell" style="margin-top:2rem;">
+              <h2>{{ upsell_header }}</h2>
+              <ul
+                class="upsell-grid"
+                style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;list-style:none;padding:0;"
+              >
+                {% for b in manual_blocks limit: 4 %}
+                  {% assign p = all_products[b.settings.product] %}
+                  {% if p %}
+                    <li class="upsell-card" style="border:1px solid #eee;padding:0.75rem;border-radius:6px;">
+                      <a href="{{ p.url }}" style="text-decoration:none;color:inherit;">
+                        {% if p.featured_image %}
+                          {{ p.featured_image | image_url: width: 400 | image_tag: alt: p.title, loading: 'lazy' }}
+                        {% endif %}
+                        <div class="upsell-card__title" style="margin-top:0.5rem;font-weight:600;">{{ p.title }}</div>
+                        <div class="upsell-card__price">{% render 'price', product: p %}</div>
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
             </div>
           {% endif %}
-          <p class="cart-totals__fineprint">Taxes and shipping calculated at checkout.</p>
-          <div class="cart-actions">
-            <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary">Continue shopping</a>
-            <button name="update" class="btn">Update cart</button>
-            <button type="submit" name="checkout" class="btn btn--primary">Checkout</button>
-          </div>
-        </div>
-      </form>
 
-      <!-- Simple Upsell -->
-      {% assign upsell_handle = section.settings.upsell_collection %}
-      {% if upsell_handle %}
-        {% assign upcoll = collections[upsell_handle] %}
-        {% if upcoll and upcoll.products_count > 0 %}
-          <div class="cart-upsell">
-            <h2>You might also like</h2>
-            <ul class="upsell-grid">
-              {% for product in upcoll.products limit: 4 %}
-                <li class="upsell-card">
-                  <a href="{{ product.url }}">
-                    {{ product.featured_image | image_url: width: 400 | image_tag: alt: product.title }}
-                    <div class="upsell-card__title">{{ product.title }}</div>
-                    <div class="upsell-card__price">{% render 'price', product: product %}</div>
-                  </a>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
+        {% elsif upsell_mode == 'tag' %}
+          {% assign tag_query = section.settings.upsell_tag | strip %}
+          {% if tag_query != blank %}
+            {% assign base_handle = section.settings.upsell_tag_base | default: 'all' %}
+            {% assign base_coll = collections[base_handle] %}
+            {% if base_coll and base_coll.products_count > 0 %}
+              <div class="cart-upsell" style="margin-top:2rem;">
+                <h2>{{ upsell_header }}</h2>
+                <ul
+                  class="upsell-grid"
+                  style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;list-style:none;padding:0;"
+                >
+                  {% assign shown = 0 %}
+                  {% for product in base_coll.products %}
+                    {% if product.tags contains tag_query %}
+                      <li class="upsell-card" style="border:1px solid #eee;padding:0.75rem;border-radius:6px;">
+                        <a href="{{ product.url }}" style="text-decoration:none;color:inherit;">
+                          {% if product.featured_image %}
+                            {{
+                              product.featured_image
+                              | image_url: width: 400
+                              | image_tag: alt: product.title, loading: 'lazy'
+                            }}
+                          {% endif %}
+                          <div class="upsell-card__title" style="margin-top:0.5rem;font-weight:600;">
+                            {{ product.title }}
+                          </div>
+                          <div class="upsell-card__price">{% render 'price', product: product %}</div>
+                        </a>
+                      </li>
+                      {% assign shown = shown | plus: 1 %}
+                      {% if shown >= 4 %}{% break %}{% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+          {% endif %}
+
+        {% else %}
+          {% assign upsell_handle = section.settings.upsell_collection | default: 'all' %}
+          {% assign upcoll = collections[upsell_handle] %}
+          {% if upcoll and upcoll.products_count > 0 %}
+            <div class="cart-upsell" style="margin-top:2rem;">
+              <h2>{{ upsell_header }}</h2>
+              <ul
+                class="upsell-grid"
+                style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;list-style:none;padding:0;"
+              >
+                {% for product in upcoll.products limit: 4 %}
+                  <li class="upsell-card" style="border:1px solid #eee;padding:0.75rem;border-radius:6px;">
+                    <a href="{{ product.url }}" style="text-decoration:none;color:inherit;">
+                      {% if product.featured_image %}
+                        {{
+                          product.featured_image
+                          | image_url: width: 400
+                          | image_tag: alt: product.title, loading: 'lazy'
+                        }}
+                      {% endif %}
+                      <div class="upsell-card__title" style="margin-top:0.5rem;font-weight:600;">
+                        {{ product.title }}
+                      </div>
+                      <div class="upsell-card__price">{% render 'price', product: product %}</div>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
         {% endif %}
-      {% endif %}
+      </div>
     {% endif %}
   </div>
+</section>
 
-  <style>
-    .cart-page__inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-    .cart-title {
-      margin: 0 0 12px;
-    }
-    .cart-empty {
-      margin: 12px 0 24px;
-    }
-    .cart-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-    }
-    .cart-table th,
-    .cart-table td {
-      padding: 12px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      vertical-align: top;
-      text-align: left;
-    }
-    .cart-line__thumb img {
-      width: 84px;
-      height: auto;
-      display: block;
-    }
-    .cart-line__meta {
-      gap: 4px;
-    }
-    .qty {
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid rgba(0, 0, 0, 0.15);
-    }
-    .qty-btn {
-      border: 0;
-      background: transparent;
-      padding: 8px 10px;
-      cursor: pointer;
-    }
-    .qty-input {
-      width: 56px;
-      padding: 8px;
-      border: 0;
-      text-align: center;
-    }
-    .cart-totals {
-      margin-top: 24px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 16px;
-    }
-    .cart-totals__row {
-      display: flex;
-      justify-content: space-between;
-      margin: 6px 0;
-    }
-    .cart-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-    .progress {
-      height: 8px;
-      background: rgba(0, 0, 0, 0.08);
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 8px 0 0;
-    }
-    .progress__bar {
-      height: 100%;
-    }
-    .cart-upsell {
-      margin-top: 36px;
-    }
-    .upsell-grid {
-      list-style: none;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 16px;
-      padding: 0;
-    }
-    .upsell-card {
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 8px;
-    }
-    .visually-hidden {
-      position: absolute !important;
-      height: 1px;
-      width: 1px;
-      overflow: hidden;
-      clip: rect(1px, 1px, 1px, 1px);
-      white-space: nowrap;
-    }
-    .link {
-      background: none;
-      border: none;
-      color: inherit;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-    .btn {
-      display: inline-block;
-      padding: 10px 16px;
-      border: 1px solid #000;
-      cursor: pointer;
-    }
-    .btn--primary {
-      background: #000;
-      color: #fff;
-    }
-    .btn--secondary {
-      background: transparent;
-    }
-  </style>
+<!-- Loader -->
+<div
+  id="cart-loader"
+  style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.5);z-index:9999;text-align:center;padding-top:20%;"
+>
+  <p>Updating cart...</p>
+</div>
 
-  <script>
-  (function () {
-    const debounce = (fn, t = 400) => { let id; return (...a) => { clearTimeout(id); id = setTimeout(() => fn(...a), t); }; };
+<!-- INR Money Formatter with Commas -->
+<script>
+  if (typeof Shopify === 'undefined') {
+    var Shopify = {};
+  }
+  Shopify.formatMoney = function (cents, format = '₹{{amount}}') {
+    const formatINR = (amount) => {
+      let [rupees, paise] = amount.toFixed(2).split('.');
+      rupees = rupees.replace(/\B(?=(\d{2})+(?!\d))/g, ',').replace(/,(\d{3})$/, '$1'); // Indian comma rule
+      return `${rupees}.${paise}`;
+    };
+    return format.replace('{{amount}}', formatINR(cents / 100));
+  };
+</script>
 
-    async function changeLine(line, quantity) {
-      const res = await fetch('/cart/change.js', {
+<!-- AJAX Cart Logic -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const loader = document.getElementById('cart-loader');
+
+    const showLoader = () => (loader.style.display = 'block');
+    const hideLoader = () => (loader.style.display = 'none');
+
+    // Refreshes the whole cart section after cart update
+    const refreshCart = () => {
+      fetch(window.location.href)
+        .then((res) => res.text())
+        .then((html) => {
+          const parser = new DOMParser();
+          const newDoc = parser.parseFromString(html, 'text/html');
+          const newCart = newDoc.querySelector('#cart-container');
+          const currentCart = document.querySelector('#cart-container');
+          if (newCart && currentCart) {
+            currentCart.innerHTML = newCart.innerHTML;
+          }
+          hideLoader();
+          rebindCartEvents(); // Rebind events after replacing HTML
+        })
+        .catch((e) => {
+          console.error('Cart refresh error:', e);
+          hideLoader(); // ensure loader never sticks
+        });
+    };
+
+    // Handles updating item quantity or removing (quantity = 0)
+    const updateCartLine = (lineKey, quantity) => {
+      showLoader();
+      fetch('/cart/change.js', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ line, quantity: Math.max(0, Number(quantity) || 0) })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: lineKey, quantity: quantity }),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          refreshCart(); // Re-render cart after change
+        })
+        .catch((err) => {
+          console.error('Cart update error:', err);
+          hideLoader();
+        });
+    };
+
+    // Rebind all event listeners after DOM refresh
+    const rebindCartEvents = () => {
+      // Quantity inputs
+      document.querySelectorAll('.quantity-input').forEach((input) => {
+        input.addEventListener('change', () => {
+          let qty = parseInt(input.value);
+          const key = input.dataset.lineKey;
+          if (isNaN(qty) || qty < 1) qty = 1;
+          input.value = qty;
+          updateCartLine(key, qty);
+        });
       });
-      if (!res.ok) throw new Error('Cart update failed');
-      return res.json(); // cart state
-    }
 
-    function renderCart(state) {
-      const subtotalEl = document.getElementById('cart-subtotal');
-      if (subtotalEl) subtotalEl.textContent = Shopify.formatMoney(state.total_price);
-
-      // Update rows (assumes DOM order == state.items order)
-      const rows = document.querySelectorAll('.cart-line');
-      rows.forEach((row, idx) => {
-        const item = state.items[idx];
-        if (!item) { row.remove(); return; }
-        const qtyInput = row.querySelector('.qty-input');
-        const lineMoney = row.querySelector('.money-line');
-        const eachMoney = row.querySelector('.money-each');
-        if (qtyInput) qtyInput.value = item.quantity;
-        if (lineMoney) lineMoney.textContent = Shopify.formatMoney(item.final_line_price);
-        if (eachMoney) eachMoney.textContent = Shopify.formatMoney(item.final_price);
+      // Plus buttons
+      document.querySelectorAll('.plus-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.lineKey;
+          const input = document.querySelector(`.quantity-input[data-line-key='${key}']`);
+          const qty = parseInt(input.value || '0') + 1;
+          input.value = qty;
+          input.dispatchEvent(new Event('change'));
+        });
       });
 
-      // Free shipping progress
-      const threshold = {{ section.settings.free_shipping_threshold | default: 0 | times: 100 }};
-      const fsWrap = document.querySelector('.cart-free-ship');
-      if (fsWrap && threshold > 0) {
-        const remaining = Math.max(threshold - state.total_price, 0);
-        fsWrap.querySelector('.cart-free-ship__text').textContent =
-          remaining === 0 ? '🎉 You’ve got free shipping!' :
-                            `Spend ${Shopify.formatMoney(remaining)} more for free shipping.`;
-        const progress = Math.min(Math.round((state.total_price / threshold) * 100), 100);
-        fsWrap.querySelector('.progress__bar').style.width = progress + '%';
-      }
+      // Minus buttons
+      document.querySelectorAll('.minus-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.lineKey;
+          const input = document.querySelector(`.quantity-input[data-line-key='${key}']`);
+          const qty = Math.max(1, parseInt(input.value || '1') - 1);
+          input.value = qty;
+          input.dispatchEvent(new Event('change'));
+        });
+      });
 
-      if (state.item_count === 0) window.location.reload();
-    }
+      // Remove buttons
+      document.querySelectorAll('.remove-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.lineKey;
+          updateCartLine(key, 0); // Remove item
+        });
+      });
+    };
 
-    function getRowLine(el) {
-      const row = el.closest('.cart-line');
-      if (!row) return { row: null, line: null };
-      return { row, line: Number(row.getAttribute('data-line')) || null };
-    }
+    // Initial bind on page load
+    rebindCartEvents();
+  });
+</script>
 
-    document.addEventListener('click', async (e) => {
-      // Qty +/- buttons
-      if (e.target.matches('.qty-btn')) {
-        const { row, line } = getRowLine(e.target);
-        if (!line) return;
-        const input = row.querySelector('.qty-input');
-        const delta = e.target.dataset.action === 'increment' ? 1 : -1;
-        const next = Math.max(0, (Number(input.value) || 0) + delta);
-        try { const state = await changeLine(line, next); renderCart(state); }
-        catch (err) { console.error(err); alert('Could not update quantity. Please try again.'); }
-      }
-      // Remove
-      if (e.target.matches('.remove-line')) {
-        const { line } = getRowLine(e.target);
-        if (!line) return;
-        try { const state = await changeLine(line, 0); renderCart(state); }
-        catch (err) { console.error(err); alert('Could not remove item. Please try again.'); }
-      }
-    });
-
-    // Qty input typing
-    document.addEventListener('input', debounce(async (e) => {
-      if (!e.target.matches('.qty-input')) return;
-      const { line } = getRowLine(e.target);
-      if (!line) return;
-      const val = Math.max(0, Number(e.target.value) || 0);
-      try { const state = await changeLine(line, val); renderCart(state); }
-      catch (err) { console.error(err); }
-    }, 500));
-
-    // Cart note autosave
-    const note = document.getElementById('CartNote');
-    if (note) {
-      note.addEventListener('input', debounce(async (e) => {
-        try {
-          await fetch('/cart/update.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ note: e.target.value })
-          });
-        } catch(err) { console.error(err); }
-      }, 600));
-    }
-  })();
-  </script>
-
-  {% schema %}
+{% schema %}
 {
   "name": "Cart template",
   "settings": [
     { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
+
     {
-      "type": "number",
-      "id": "free_shipping_threshold",
-      "label": "Free shipping threshold (store currency)",
-      "default": 0
+      "type": "select",
+      "id": "upsell_mode",
+      "label": "Upsell mode",
+      "default": "collection",
+      "options": [
+        { "value": "collection", "label": "Auto — by collection" },
+        { "value": "tag", "label": "Auto — by tag (within a collection)" },
+        { "value": "manual", "label": "Manual — choose products" }
+      ]
     },
-    { "type": "collection", "id": "upsell_collection", "label": "Upsell collection" }
+
+    { "type": "collection", "id": "upsell_collection", "label": "Upsell collection (for 'by collection' mode)" },
+
+    {
+      "type": "text",
+      "id": "upsell_tag",
+      "label": "Tag to match (for 'by tag' mode)",
+      "placeholder": "e.g. upsell, best-seller"
+    },
+    {
+      "type": "collection",
+      "id": "upsell_tag_base",
+      "label": "Search within collection (for 'by tag' mode). Leave empty for All Products."
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "manual_product",
+      "name": "Manual product",
+      "limit": 8,
+      "settings": [{ "type": "product", "id": "product", "label": "Product" }]
+    }
   ]
 }
-  {% endschema %}
-</section>
+{% endschema %}
