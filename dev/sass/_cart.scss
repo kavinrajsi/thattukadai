@@ -61,11 +61,11 @@
 			}
 		}
 		.cart-footer-checkout {
-			font-family: var(--font-header);
-			font-size: 14px;
-			font-weight: 400;
+			font-family: "DM Sans";
 			font-style: normal;
-			line-height: 17px;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 18px;
 			display: block;
 			margin-bottom: 8px;
 			padding: 12px 16px;
@@ -73,11 +73,12 @@
 
 			text-align: center;
 			/* Neutral/White1 */
-
-			color: #ffffff;
+			/* Neutral/Black1 */
+			color: #2a2a2a;
 			border-radius: 6px;
 			/* Primary/Red1 */
 			background: var(--color-yellow2);
+			border-radius: 24px;
 		}
 		.cart-footer-continue {
 			font-size: 14px;

@@ -6,18 +6,18 @@
 
 <div class="product-qty">
   <label for="quantity-{{ section_id }}">Quantity</label>
-  <div class="qty-wrapper">
-    <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
+  <div class="qty-wrapper qty-changer">
+    <button type="button" class="qty-btn qty-minus qty-decrease minus-btn" aria-label="Decrease quantity">−</button>
     <input
       id="quantity-{{ section_id }}"
-      class="quantity-input"
+      class="cart-qty-input quantity-input"
       type="number"
       name="quantity"
       min="1"
       value="1"
       inputmode="numeric"
     >
-    <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
+    <button type="button" class="qty-btn qty-increase qty-plus plus-btn" aria-label="Increase quantity">+</button>
   </div>
 </div>
 <script>

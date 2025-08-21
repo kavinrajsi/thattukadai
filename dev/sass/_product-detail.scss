@@ -1,0 +1,137 @@
+.main-product {
+	.product-grid {
+		display: grid;
+		gap: 20px;
+		grid-template-columns: 1fr 1fr;
+	}
+	.product-title {
+		/* Desktop_H3 */
+		font-family: "Neilvard One";
+		font-style: normal;
+		font-weight: 400;
+		font-size: 24px;
+		line-height: 28px;
+		/* identical to box height, or 117% */
+
+		/* Neutral/Black2 */
+		color: #161a1d;
+		padding-bottom: 16px;
+	}
+	.product-description {
+		font-family: "DM Sans";
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 16px;
+		/* or 114% */
+
+		/* Neutral/Black1 */
+		color: #2a2a2a;
+		padding-bottom: 24px;
+		.MsoNormal span {
+			font-family: inherit !important;
+			font-size: inherit !important;
+		}
+	}
+
+
+	.product__actionWrapper {
+		display: flex;
+		gap: 8px;
+		align-items: flex-end;
+
+		.product-qty {
+			label {
+				display: block;
+				/* Desktop_B2 */
+				font-family: "DM Sans";
+				font-style: normal;
+				font-weight: 600;
+				font-size: 14px;
+				line-height: 16px;
+				/* identical to box height, or 114% */
+				/* Neutral/Black1 */
+				color: #0b090a;
+				padding-bottom: 8px;
+			}
+			.qty-changer {
+				position: relative;
+				display: inline-flex;
+				align-items: center;
+				justify-content: flex-start;
+				.cart-qty-input {
+					all: unset;
+					        appearance: textfield;
+					-webkit-appearance: none;
+					   -moz-appearance: textfield;
+					/* Desktop_B1 */
+					font-family: "DM Sans";
+					font-size: 16px;
+					font-weight: 400;
+					font-style: normal;
+					line-height: 21px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 100px;
+					margin: 0;
+					padding: 12px 16px;
+					text-align: center;
+					text-align: center;
+					/* identical to box height */
+					text-align: center;
+					vertical-align: middle;
+					/* Neutral/Black1 */
+
+					color: #0b090a;
+					// height: 40px;
+					/* Neutral/White3 */
+					border: 1px solid #d3d3d3;
+					border-radius: 4px;
+				}
+
+				.qty-decrease {
+					position: absolute;
+					left: 4px;
+					height: 100%;
+				}
+				.qty-increase {
+					position: absolute;
+					right: 4px;
+					height: 100%;
+				}
+				.qty-disabled {
+					cursor: none;
+					opacity: 0.5;
+				}
+			}
+		}
+
+
+		.product-button--addCart {
+			padding: 16px 32px;
+			text-align: center;
+			/* Primary/yellow2 */
+			border: 1px solid #f6ca30;
+			border-radius: 24px;
+
+			/* Inside auto layout */
+			flex: none;
+			order: 1;
+			flex-grow: 1;
+			font-family: "DM Sans";
+			font-style: normal;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 18px;
+			/* identical to box height, or 129% */
+
+			/* Neutral/Black1 */
+			color: #2a2a2a;
+			min-width: 252px;
+		}
+	}
+
+	.buynow {
+	}
+}
