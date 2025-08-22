@@ -4,13 +4,25 @@
     - product (required)
     - form_id (optional): product form id
     - option_blocks (optional): pass section.blocks to configure each option
+
+  Displays:
+    - Swatches or Buttons (buttons replace the old <select> style)
+    - Legend shows "Option name: <selected value>"
+    - Clicking updates selected value text, price, availability, and the product form variant id
 {%- endcomment -%}
 
 {%- assign vp_form_id = form_id | default: '' -%}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
+<div class="vp__price" aria-live="polite">
+  {%- render 'vp-price', product: product, variant: current_variant -%}
+  <div class="vp__price-tax">Tax included</div>
+</div>
+
+<div class="vp__status" aria-live="polite"></div>
+
 {%- comment -%}
-  Build lookup: option_name (downcase) -> display ("swatch"/"select") and custom label.
+  Build lookup: option_name (downcase) -> display ("swatch"/"buttons") and custom label.
 {%- endcomment -%}
 {%- assign opt_map = '' | split: '' -%}
 {%- if option_blocks and option_blocks.size > 0 -%}
@@ -24,13 +36,14 @@
     {%- endif -%}
   {%- endfor -%}
 {%- endif -%}
+
 {%- comment -%}
-  Build wrapper classes that reflect resolved display per option.
+  Build wrapper classes that reflect resolved display per option (BEM modifiers on the block).
 {%- endcomment -%}
 {%- assign extra_classes = '' -%}
 {%- for option in product.options_with_values -%}
   {%- assign opt_key = option.name | downcase | strip -%}
-  {%- assign chosen_display = disp -%}
+  {%- assign chosen_display = 'swatch' -%}
   {%- if opt_map.size > 0 -%}
     {%- for row in opt_map -%}
       {%- assign parts = row | split: '::' -%}
@@ -41,12 +54,13 @@
     {%- endfor -%}
   {%- endif -%}
   {%- assign extra_classes = extra_classes
-    | append: ' vp-has-'
+    | append: ' vp--has-'
     | append: opt_key
     | append: '-'
     | append: chosen_display
   -%}
 {%- endfor -%}
+
 <div
   class="vp{{ extra_classes }}"
   data-product-id="{{ product.id }}"
@@ -57,7 +71,7 @@
 >
   {%- for option in product.options_with_values -%}
     {%- assign opt_key = option.name | downcase | strip -%}
-    {%- assign chosen_display = disp -%}
+    {%- assign chosen_display = 'swatch' -%}
     {%- assign chosen_label = option.name -%}
 
     {%- if opt_map.size > 0 -%}
@@ -75,14 +89,43 @@
     {%- endif -%}
 
     {%- if chosen_display == 'swatch' -%}
-      <!-- Swatch style -->
-      <fieldset class="vp-swatch-group" data-option-index="{{ forloop.index0 }}">
-        <legend class="vp-label">{{ chosen_label }}</legend>
+      <!-- Swatch style (unchanged, but BEM-ified) -->
+      <fieldset class="vp__group vp__group--swatch" data-option-index="{{ forloop.index0 }}">
+        <legend class="vp__label">
+          {{ chosen_label }}:
+          <span class="vp__selected" data-selected-for="{{ forloop.index0 }}">{{ option.selected_value }}</span>
+        </legend>
+        <div class="vp__swatch-group">
+          {%- for val in option.values -%}
+            <label class="vp__swatch">
+              <input
+                type="radio"
+                class="vp__swatch-input"
+                name="options[{{ option.name }}]"
+                value="{{ val | escape }}"
+                data-option-index="{{ forloop.parentloop.index0 }}"
+                {% if option.selected_value == val %}
+                  checked
+                {% endif %}
+              >
+              <span class="vp__swatch-box" title="{{ val }}">{{ val }}</span>
+            </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    {%- else -%}
+      <!-- Button style (replaces old <select>) -->
+      <fieldset class="vp__group vp__group--buttons" data-option-index="{{ forloop.index0 }}">
+        <legend class="vp__label">
+          {{ chosen_label }}:
+          <span class="vp__selected" data-selected-for="{{ forloop.index0 }}">{{ option.selected_value }}</span>
+        </legend>
+
         {%- for val in option.values -%}
-          <label class="vp-swatch">
+          <label class="vp__button">
             <input
               type="radio"
-              class="vp-swatch-input"
+              class="vp__button-input"
               name="options[{{ option.name }}]"
               value="{{ val | escape }}"
               data-option-index="{{ forloop.parentloop.index0 }}"
@@ -90,42 +133,14 @@
                 checked
               {% endif %}
             >
-            <span class="vp-swatch-box" title="{{ val }}">{{ val }}</span>
+            <span class="vp__button-box" title="{{ val }}">{{ val }}</span>
           </label>
         {%- endfor -%}
       </fieldset>
-    {%- else -%}
-      <!-- Select style -->
-      <div class="vp-row">
-        <label class="vp-label" for="vp-opt-{{ forloop.index0 }}">{{ chosen_label }}</label>
-        <select
-          class="vp-select"
-          id="vp-opt-{{ forloop.index0 }}"
-          name="options[{{ option.name }}]"
-          data-option-index="{{ forloop.index0 }}"
-        >
-          {%- for val in option.values -%}
-            <option
-              value="{{ val | escape }}"
-              {% if option.selected_value == val %}
-                selected
-              {% endif %}
-            >
-              {{ val }}
-            </option>
-          {%- endfor -%}
-        </select>
-      </div>
     {%- endif -%}
   {%- endfor -%}
 
-  <div class="vp-price" aria-live="polite">
-    {%- render 'vp-price', product: product, variant: current_variant -%}
-  </div>
-
-  <div class="vp-status" aria-live="polite"></div>
-
-  <script type="application/json" class="vp-variants-json">
+  <script type="application/json" class="vp__variants-json">
     {
       "options": {{ product.options | json }},
       "variants": [
@@ -144,3 +159,132 @@
     }
   </script>
 </div>
+
+<script>
+    (function() {
+      var root = document.currentScript.previousElementSibling; // the .vp container
+      if (!root || !root.classList.contains('vp')) return;
+
+      // Read variants JSON
+      var jsonEl = root.querySelector('.vp__variants-json');
+      if (!jsonEl) return;
+      var data = JSON.parse(jsonEl.textContent || '{}');
+      var variants = data.variants || [];
+      var optionNames = data.options || [];
+
+      // Elements to update
+      var priceWrap = document.querySelector('.vp__price'); // outside the .vp container
+      var statusEl  = document.querySelector('.vp__status');
+
+      // Money formatting using the shop's format
+  var moneyFormat = {{ shop.money_format | json }};
+  function formatMoney(cents) {
+    var value = (typeof cents === 'number') ? cents : parseInt(cents || 0, 10);
+    var amount = (value / 100).toFixed(2);
+    return moneyFormat.replace('{{ amount }}', amount);
+  }
+
+
+      // Hook into product form to set variant id
+      var formId = root.getAttribute('data-form-id');
+      var form = formId ? document.getElementById(formId) : null;
+      var idInput = form ? form.querySelector('input[name="id"]') : null;
+
+      // Helpers
+      function getSelectedOptions() {
+        var result = [];
+        optionNames.forEach(function(name, idx) {
+          var input = root.querySelector('[data-option-index="'+ idx +'"] input[type="radio"]:checked');
+          result[idx] = input ? input.value : '';
+        });
+        return result;
+      }
+
+      function findMatchingVariant(selectedOptions) {
+        for (var i = 0; i < variants.length; i++) {
+          var v = variants[i];
+          if (JSON.stringify(v.options) === JSON.stringify(selectedOptions)) return v;
+        }
+        return null;
+      }
+
+      function syncSelectedLabels() {
+        var groups = root.querySelectorAll('.vp__group');
+        groups.forEach(function(fs) {
+          var idx = fs.getAttribute('data-option-index');
+          var checked = fs.querySelector('input[type="radio"]:checked');
+          var selectedText = fs.querySelector('.vp__selected');
+          if (selectedText) selectedText.textContent = checked ? checked.value : '';
+        });
+      }
+
+      function renderPriceHTML(variant) {
+        if (!variant) return '';
+        var html = '<div class="vp__price-main">' + formatMoney(variant.price) + '</div>';
+        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+          html += '<div class="vp__price-compare">' + formatMoney(variant.compare_at_price) + '</div>';
+        }
+        html += '<div class="vp__price-tax">Tax included</div>';
+        return html;
+      }
+
+      function applyVariant(variant) {
+        if (priceWrap && variant) {
+          priceWrap.innerHTML = renderPriceHTML(variant);
+        }
+
+        if (statusEl) {
+          if (!variant) {
+            statusEl.textContent = 'Please choose a combination.';
+          } else if (!variant.available) {
+            statusEl.textContent = 'Sold out for this combination.';
+          } else {
+            statusEl.textContent = '';
+          }
+        }
+
+        if (idInput && variant) {
+          idInput.value = variant.id;
+          // Trigger change so any theme scripts can react
+          idInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        // If you have a gallery, you can update using variant.featured_media_id here.
+      }
+
+      function onChange() {
+        syncSelectedLabels();
+        var selected = getSelectedOptions();
+        var match = findMatchingVariant(selected);
+        applyVariant(match);
+
+        if (statusEl) {
+          var msg = match
+            ? (match.available ? 'Variant selected.' : 'Variant selected but unavailable.')
+            : 'No matching variant.';
+          statusEl.setAttribute('aria-live', 'polite');
+          statusEl.textContent = msg;
+        }
+      }
+
+      // Change handler for swatches & buttons
+      root.addEventListener('change', function(e) {
+        if (e.target.matches('.vp__swatch-input, .vp__button-input')) onChange();
+      });
+
+      // Click handler on the visual boxes
+      root.addEventListener('click', function(e) {
+        var box = e.target.closest('.vp__swatch-box, .vp__button-box');
+        if (!box) return;
+        var input = box.previousElementSibling;
+        if (input && input.type === 'radio') {
+          input.checked = true;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+
+      // Initialize
+      syncSelectedLabels();
+      onChange();
+    })();
+</script>

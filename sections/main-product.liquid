@@ -4,7 +4,7 @@
   - Uses 'variant-picker' snippet for options (swatches + selects)
   - Simple product form with qty + add to cart
 {% endcomment %}
-<section id="product-{{ section.id }}" class="layout__grid-box product">
+<section id="product-{{ section.id }}" class="layout__grid-box main-product">
   {% if product == blank %}
     <p class="product__empty">No product selected.</p>
     {% comment %} In Theme Editor, choose a product for this section. {% endcomment %}
@@ -59,25 +59,26 @@
           {% render 'variant-picker', product: product, form_id: form_id, option_blocks: section.blocks %}
 
           <div class="product__actions">
-            {% if section.settings.show_quantity %}
-              {% render 'product-qty', section_id: section.id, class: 'product__qty' %}
-            {% endif %}
+            <div class="product__actionWrapper">
+              {% if section.settings.show_quantity %}
+                {% render 'product-qty', section_id: section.id, class: 'product__qty' %}
+              {% endif %}
 
-            <input type="hidden" class="product__input--variant" name="id" value="{{ current_variant.id }}">
+              <input type="hidden" class="product__input--variant" name="id" value="{{ current_variant.id }}">
 
-            <button
-              type="submit"
-              name="add"
-              class="product__btn--add-cart"
-              {% unless current_variant.available %}
-                disabled
-              {% endunless %}
-            >
-              {%- if current_variant.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
-            </button>
+              <button
+                type="submit"
+                name="add"
+                class="product__btn--add-cart"
+                {% unless current_variant.available %}
+                  disabled
+                {% endunless %}
+              >
+                {%- if current_variant.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+              </button>
+            </div>
+            <button type="submit" class="product__btn--buy-now" name="checkout" value="true">Buy Now</button>
           </div>
-
-          <button type="submit" class="product__btn--buy-now" name="checkout" value="true">Buy Now</button>
         {% endform %}
       </div>
     </div>
@@ -87,31 +88,33 @@
 {% assign primary_collection = product.collections | first %}
 
 {% if primary_collection and primary_collection.products_count > 1 %}
-  <h3 class="product__related-title">You may also like</h3>
-  <div class="product__related">
-    {% assign shown = 0 %}
-    {% for related in primary_collection.products %}
-      {% if related.id != product.id %}
-        <div class="product__related-item">
-          <a href="{{ related.url }}">
-            {% if related.featured_image %}
-              <img
-                src="{{ related.featured_image | image_url: width: 300, height: 300, crop: 'center' }}"
-                width="300"
-                height="300"
-                alt="{{ related.title | escape }}"
-              >
-            {% endif %}
-            <p class="product__related-item-title">{{ related.title }}</p>
-          </a>
-        </div>
-        {% assign shown = shown | plus: 1 %}
-        {% if shown >= 4 %}
-          {% break %}
+  <section class="layout__grid-box ">
+    <h3 class="product__related-title">You may also like</h3>
+    <div class="product__related">
+      {% assign shown = 0 %}
+      {% for related in primary_collection.products %}
+        {% if related.id != product.id %}
+          <div class="product__related-item">
+            <a href="{{ related.url }}">
+              {% if related.featured_image %}
+                <img
+                  src="{{ related.featured_image | image_url: width: 300, height: 300, crop: 'center' }}"
+                  width="300"
+                  height="300"
+                  alt="{{ related.title | escape }}"
+                >
+              {% endif %}
+              <p class="product__related-item-title">{{ related.title }}</p>
+            </a>
+          </div>
+          {% assign shown = shown | plus: 1 %}
+          {% if shown >= 4 %}
+            {% break %}
+          {% endif %}
         {% endif %}
-      {% endif %}
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
+  </section>
 {% endif %}
 
 {%- comment -%}

@@ -1,5 +1,38 @@
-<section class="container">
-  <h1>{{ collection.title }}</h1>
+{% if section.settings.show_title %}
+  <h1 class="collection-title">{{ collection.title }}</h1>
+{% endif %}
+
+{% if section.settings.show_template %}
+  <span class="template-name">({{ template.name }})</span>
+{% endif %}
+
+{% if section.settings.show_image and collection.image %}
+  <div class="collection-image">
+    <img
+      src="{{ collection.image | image_url: width: 1600 }}"
+      alt="{{ collection.image.alt | escape }}"
+      width="{{ collection.image.width }}"
+      height="{{ collection.image.height }}"
+      loading="lazy"
+    >
+  </div>
+{% endif %}
+
+{% if section.settings.menu != blank %}
+  <nav class="collection-nav">
+    <ul>
+      {% for link in linklists[section.settings.menu].links %}
+        <li>
+          <a href="{{ link.url }}#main-collection" title="{{ link.title }}">
+            {{ link.title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+{% endif %}
+
+<section id="main-collection" class="layout__grid-box main-collection">
   {% if collection.description != blank %}
     <div class="rte">{{ collection.description }}</div>
   {% endif %}
@@ -11,6 +44,34 @@
     {% endfor %}
   </div>
 </section>
+
 {% schema %}
-{ "name": "Main collection", "settings": [] }
+{
+  "name": "Main collection",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show collection title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_template",
+      "label": "Show template name",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show collection image",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu"
+    }
+  ]
+}
 {% endschema %}

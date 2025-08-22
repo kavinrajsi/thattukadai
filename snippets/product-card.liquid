@@ -1,11 +1,11 @@
 {%- comment -%} Product card snippet {%- endcomment -%}
 <div
-  class="bestsellers__item"
+  class="product-card"
   {% if block %}
     {{- block.shopify_attributes -}}
   {% endif %}
 >
-  <a class="product-card" href="{{ product.url }}">
+  <a class="product-card__link" href="{{ product.url }}">
     <div class="product-card__media">
       {% render 'product-image', product: product %}
     </div>

@@ -1,0 +1,20 @@
+.collection {
+	.grid {
+		display: grid;
+		gap: 20px;
+		grid-template-columns: 1fr;
+		@media(min-width: 768px) {
+			grid-template-columns: 1fr 1fr;
+		}
+		@media(min-width: 928px) {
+			grid-template-columns: 1fr 1fr 1fr 1fr;
+		}
+	}
+	.product-card {
+		.product-card__image-wrapper {
+			picture + picture {
+				display: none;
+			}
+		}
+	}
+}
