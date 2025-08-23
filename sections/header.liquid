@@ -114,6 +114,17 @@
 
   <!-- MOBILE MENU PANEL (Full screen overlay for mobile burger menu) -->
   <div class="mobile-menu" id="mobile-menu-panel" hidden>
+    <div class="mobile-menu__header">
+      <button
+        class="mobile-menu__close"
+        type="button"
+        data-mobile-toggle
+        aria-label="Close menu"
+      >
+        <span>×</span>
+      </button>
+    </div>
+
     <div class="mobile-menu__body">
       <!-- Shop section in mobile -->
       {%- if section.settings.shop_menu != blank -%}
@@ -125,12 +136,7 @@
             type="button"
           >
             <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
-            <span class="mobile-menu__plus" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 14 14">
-                <path fill="#2A2A2A" d="M7 14a.951.951 0 0 1-.951-.951V.95a.951.951 0 1 1 1.902 0v12.1A.951.951 0 0 1 7 14Z"/>
-                <path fill="#2A2A2A" d="M13.049 7.951H.95a.951.951 0 1 1 0-1.902h12.1a.951.951 0 1 1 0 1.902Z"/>
-              </svg>
-            </span>
+            <span class="mobile-menu__plus" aria-hidden="true">+</span>
           </button>
 
           <div class="mobile-menu__submenu" data-mobile-shop-menu hidden>
@@ -138,12 +144,7 @@
             <ul>
               {%- for link in menu.links -%}
                 <li>
-                  <a href="{{ link.url }}">
-                    {{- link.title }}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
-                      <path stroke="#2A2A2A" stroke-linecap="round" stroke-width="1.5" d="m8 5 5.284 4.624a.5.5 0 0 1 0 .752L8 15"/>
-                    </svg>
-                  </a>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
                 </li>
               {%- endfor -%}
             </ul>
@@ -156,9 +157,6 @@
         <div class="mobile-menu__section">
           <a class="mobile-menu__link" href="{{ section.settings.our_story_link }}">
             {{ section.settings.our_story_label | default: 'Our story' }}
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
-              <path stroke="#2A2A2A" stroke-linecap="round" stroke-width="1.5" d="m8 5 5.284 4.624a.5.5 0 0 1 0 .752L8 15"/>
-            </svg>
           </a>
         </div>
       {%- endif -%}
@@ -201,16 +199,17 @@
   <button class="backdrop" type="button" data-backdrop hidden aria-label="Close menu"></button>
 </section>
 
-<!-- SEARCH PANEL (unchanged) -->
+<!-- SEARCH PANEL (with dynamic placeholder) -->
 <section class="site-search" id="site-search" hidden>
   <predictive-search>
     <form action="{{ routes.search_url }}" method="get" role="search">
       <input
         type="search"
         name="q"
-        placeholder="Search for &quot;sweet&quot;"
+        placeholder="Search for &quot;{% if shop.metafields.search_discovery.top_keyword != blank %}{{ shop.metafields.search_discovery.top_keyword }}{% elsif section.settings.fallback_search_text != blank %}{{ section.settings.fallback_search_text }}{% else %}savouries{% endif %}&quot;"
         aria-label="Search"
         autocomplete="off"
+        data-dynamic-placeholder
       >
       <button type="button" class="js-search-close" aria-label="Close search">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
@@ -218,8 +217,7 @@
         </svg>
       </button>
     </form>
-    <!-- Results will be injected here -->
-    <div class="predictive-search-results" class="predictive-search-results" hidden></div>
+    <div class="predictive-search-results" hidden></div>
   </predictive-search>
 </section>
 
@@ -249,6 +247,13 @@
     { "type": "text", "id": "our_story_label", "label": "Our story label", "default": "Our story" },
     { "type": "text", "id": "cta_label", "label": "Panel CTA label", "default": "Contact Us" },
     { "type": "url", "id": "cta_link", "label": "Panel CTA link" },
+    {
+      "type": "textarea",
+      "id": "trending_keywords",
+      "label": "Trending Keywords",
+      "default": "summer collection, bestsellers, new arrivals, trending now",
+      "info": "Comma-separated list of trending search keywords that will rotate in the search placeholder"
+    },
     { "type": "color", "id": "chrome_bg", "label": "Panel chrome background", "default": "#e5e5e5" },
     { "type": "color", "id": "cta_bg", "label": "CTA background", "default": "#FAD75F" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#2b2b2b" }

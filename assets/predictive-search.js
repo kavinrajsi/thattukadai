@@ -8,6 +8,9 @@ class PredictiveSearch extends HTMLElement {
 
     this.input.setAttribute('aria-expanded', 'false');
 
+    // Initialize dynamic placeholder
+    this.initializeDynamicPlaceholder();
+
     this.input.addEventListener(
       'input',
       this.debounce(() => {
@@ -39,6 +42,46 @@ class PredictiveSearch extends HTMLElement {
         this.showDefaultContent();
       }
     });
+  }
+
+  async initializeDynamicPlaceholder() {
+    // Try to get dynamic keyword from Search & Discovery API
+    try {
+      const dynamicKeyword = await this.getTopSearchKeyword();
+      if (dynamicKeyword) {
+        this.updatePlaceholder(dynamicKeyword);
+      }
+    } catch (error) {
+      console.log('Using fallback search placeholder');
+      // Fallback is already set in the liquid template
+    }
+  }
+
+  async getTopSearchKeyword() {
+    // Check if Search & Discovery plugin provides an API endpoint
+    // This is a hypothetical endpoint - adjust based on actual Shopify Search & Discovery API
+    try {
+      const response = await fetch('/search/analytics/top-keywords.json', {
+        headers: { Accept: 'application/json' },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.top_keyword || null;
+      }
+    } catch (error) {
+      // If API doesn't exist or fails, try to get from metafields
+      // which can be set by the Search & Discovery app
+      return null;
+    }
+
+    return null;
+  }
+
+  updatePlaceholder(keyword) {
+    if (keyword && this.input) {
+      this.input.setAttribute('placeholder', `Search for "${keyword}"`);
+    }
   }
 
   getResults(term) {
@@ -112,3 +155,13 @@ class PredictiveSearch extends HTMLElement {
 }
 
 customElements.define('predictive-search', PredictiveSearch);
+
+// Additional utility to update search placeholder globally if needed
+window.updateSearchPlaceholder = function (keyword) {
+  const searchInputs = document.querySelectorAll('[data-dynamic-placeholder]');
+  searchInputs.forEach((input) => {
+    if (keyword) {
+      input.setAttribute('placeholder', `Search for "${keyword}"`);
+    }
+  });
+};
