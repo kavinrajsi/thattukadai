@@ -2421,17 +2421,18 @@ body.product .product-feature__wrap .product-feature__title {
   /* Neutral/Black2 */
   color: #161a1d;
 }
-body.product .image-content--section {
+
+.image-content--section {
   margin-top: 80px;
   padding: 32px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-body.product .image-content--section .image-content__inner {
+.image-content--section .image-content__inner {
   max-width: 525px;
 }
-body.product .image-content--section .image-content__eyebrow {
+.image-content--section .image-content__eyebrow {
   /* Frame 2 */
   display: inline-block;
   margin-bottom: 16px;
@@ -2448,7 +2449,7 @@ body.product .image-content--section .image-content__eyebrow {
   /* Neutral/Black2 */
   color: #161a1d;
 }
-body.product .image-content--section .image-content__title {
+.image-content--section .image-content__title {
   margin-bottom: 16px;
   /* Desktop_H1 */
   font-family: "Neilvard One";
@@ -2460,7 +2461,7 @@ body.product .image-content--section .image-content__title {
   /* Neutral/Black2 */
   color: #161a1d;
 }
-body.product .image-content--section .image-content__text p {
+.image-content--section .image-content__text p {
   /* Desktop_B1 */
   font-family: "DM Sans";
   font-style: normal;
@@ -2470,10 +2471,10 @@ body.product .image-content--section .image-content__text p {
   /* Neutral/Black1 */
   color: #2a2a2a;
 }
-body.product .image-content--section .image-content__text p:not(:last-child) {
+.image-content--section .image-content__text p:not(:last-child) {
   padding-bottom: 8px;
 }
-body.product .image-content--section .image-content__cta {
+.image-content--section .image-content__cta {
   margin-top: 40px;
   padding: 16px 32px;
   /* Primary/yellow2 */

@@ -19,7 +19,7 @@
 {%- assign mods = mods | append: ' image-content--' | append: section.settings.placement -%}
 
 <section
-  class="image-content image-content--section {{ mods }}"
+  class="layout__grid-box image-content image-content--section {{ mods }}"
   aria-labelledby="image-content__title-{{ section.id }}"
   style="
     --pt: {{ section.settings.padding_top_desktop | default: 0 }}px;
