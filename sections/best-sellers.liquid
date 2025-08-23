@@ -1,19 +1,21 @@
 {% comment %}
   Section: Best Sellers (BEM classes)
 {% endcomment %}
-<section class="bestsellers">
+<section class="bestsellers layout__grid-box">
   <div class="bestsellers__container">
-    {% if section.settings.eyebrow != blank %}
-      <div class="bestsellers__eyebrow">{{ section.settings.eyebrow }}</div>
-    {% endif %}
-    {% if section.settings.heading != blank %}
-      <h2 class="bestsellers__title">{{ section.settings.heading }}</h2>
-    {% endif %}
-
+    <div class="asd">
+      {% if section.settings.eyebrow != blank %}
+        <div class="bestsellers__eyebrow">{{ section.settings.eyebrow }}</div>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="bestsellers__title">{{ section.settings.heading }}</h2>
+      {% endif %}
+    </div>
     <div class="bestsellers__scroller">
       <div class="bestsellers__list owl-carousel" id="bestsellers-{{ section.id }}">
         {% if section.settings.source == 'collection' and section.settings.collection != blank %}
-          {% for product in section.settings.collection.products limit: section.settings.product_limit %}
+          {% comment %} {% for product in section.settings.collection.products limit: section.settings.product_limit %} {% endcomment %}
+          {% for product in section.settings.collection.products limit: 4 %}
             {% render 'product-card', product: product %}
           {% endfor %}
         {% else %}
@@ -26,10 +28,7 @@
         {% endif %}
       </div>
 
-      <div class="bestsellers__nav">
-        <button class="bestsellers__btn bestsellers__btn--prev" type="button" aria-label="Previous">‹</button>
-        <button class="bestsellers__btn bestsellers__btn--next" type="button" aria-label="Next">›</button>
-      </div>
+      <div class="bestsellers__nav"></div>
     </div>
   </div>
 </section>
@@ -65,7 +64,7 @@
     {
       "type": "product",
       "name": "Product (manual)",
-      "limit": 20,
+      "limit": 4,
       "settings": [{ "type": "product", "id": "product", "label": "Product" }]
     }
   ],
