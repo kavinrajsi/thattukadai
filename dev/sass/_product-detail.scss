@@ -1,4 +1,6 @@
 .main-product {
+	padding-top: 40px;
+	margin-top: 110px;
 	.product__grid {
 		display: grid;
 		gap: 20px;
@@ -79,6 +81,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+		label.vp__swatch {
+			height: 100%;
+			display: inline-flex;
+		}
 		.vp__label {
 			display: block;
 			text-transform: capitalize;
@@ -112,9 +118,9 @@
 			display: flex;
 			gap: 8px;
 		}
-		.vp__swatch {
+		.vp__swatch-box {
 			padding: 12px 24px;
-
+			cursor: pointer;
 			/* Neutral/White3 */
 			border: 1px solid #d3d3d3;
 			border-radius: 4px;
@@ -128,6 +134,20 @@
 
 			/* Neutral/Black1 */
 			color: #0b090a;
+		}
+		.vp__swatch-input {
+			display: none;
+		}
+
+		.vp__swatch-input:checked + .vp__swatch-box {
+			border-color: var(--color-yellow1);
+			background-color: var(--color-yellow1);
+			color: var(--color-black);
+		}
+
+		/* Optional hover */
+		.vp__swatch-box:hover {
+			border-color: var(--color-yellow1);
 		}
 	}
 	.product__actionWrapper {
@@ -238,5 +258,6 @@
 
 		/* Neutral/Black1 */
 		color: #2a2a2a;
+		max-width: 394px;
 	}
 }

@@ -3,14 +3,14 @@
   {% assign second_image = product.images[1] %}
   <div class="product-card__image-wrapper">
     <picture>
-      <source srcset="{{ product.featured_image | image_url: width: 360, format: 'avif' }}" type="image/avif">
-      <source srcset="{{ product.featured_image | image_url: width: 360, format: 'webp' }}" type="image/webp">
+      {% comment %} <source srcset="{{ product.featured_image | image_url: height: 280, format: 'avif' }}" type="image/avif"> {% endcomment %}
+      <source srcset="{{ product.featured_image | image_url: height: 280, format: 'webp' }}" type="image/webp">
       <img
         class="product-card__image product-card__image--primary"
         src="{{ product.featured_image | image_url: width: 360 }}"
         alt="{{ product.featured_image.alt | escape }}"
-        width="{{ product.featured_image.width }}"
-        height="{{ product.featured_image.height }}"
+        width="266"
+        height="280"
         loading="lazy"
       >
     </picture>

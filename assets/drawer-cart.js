@@ -45,18 +45,21 @@
     for (var i = 0; i < 3; i++) {
       lines +=
         '' +
-        '<div class="skel-item">' +
-        '<div class="skel-img"></div>' +
-        '<div>' +
-        '<div class="skel-line" style="width:65%"></div>' +
-        '<div class="skel-line" style="width:45%"></div>' +
-        '<div class="skel-qty">' +
-        '<div class="skel-btn"></div>' +
-        '<div class="skel-input"></div>' +
-        '<div class="skel-btn"></div>' +
+        '<div class="cart-drawer__skeleton-items-item">' +
+        '<div class="cart-drawer__skeleton-items-item__image"></div>' +
+        '<div class="cart-drawer__skeleton-items-item__meta">' +
+        '<div class="skel skel-line--title"></div>' +
+        '<div class="skel skel-line--variant"></div>' +
+        '<div class="skel skel-line--price"></div>' +
+        '<div class="cart-drawer__skeleton-items-item__meta__action">' +
+        '<div class="cart-drawer__skeleton-items-item__meta__action-qty">' +
+        '<div class="skel skel-btn"></div>' +
+        '<div class="skel skel-input"></div>' +
+        '<div class="skel skel-btn"></div>' +
+        '</div>' +
+        '<div class="skel skel-remove"></div>' +
         '</div>' +
         '</div>' +
-        '<div class="skel-price"></div>' +
         '</div>';
     }
     return '<div class="drawer-skeleton">' + lines + '</div>';

@@ -1,7 +1,11 @@
 header {
 	position: sticky;
+	position: fixed;
 	z-index: 50;
 	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
 	will-change: transform;
 	&.scrolldown {
 		transition: transform 200ms ease;

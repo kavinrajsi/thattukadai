@@ -61,6 +61,7 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: none;
 	text-rendering: optimizeLegibility;
+	background-color: #f6f6f6;
 }
 
 html ,
@@ -193,62 +194,6 @@ p {
 	font-size: 14px;
 	font-style: normal;
 	line-height: 16px;
-}
-
-.pagination {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding-top: 56px;
-
-	&__button--prev svg {
-		transform: rotate(180deg);
-	}
-	&__button--next svg {
-		transform: rotate(-180deg);
-	}
-	&__page {
-		/* Body1 */
-		font: var(--font-400);
-		font-size: 16px;
-		line-height: 20px;
-		display: inline-block;
-		/* identical to box height */
-		display: flex;
-		align-items: center;
-		margin-right: 10px;
-		margin-left: 10px;
-		padding: 2px 8px;
-		cursor: pointer;
-		border: 1px solid transparent;
-		border-radius: 2px;
-
-		&--current {
-			/* Body1 */
-			font-family: var(--font-dm-sans);
-			font-size: 16px;
-			font-weight: 400;
-			font-style: normal;
-			line-height: 20px;
-			display: inline-block;
-			/* identical to box height */
-			display: flex;
-			align-items: center;
-			margin-right: 10px;
-			margin-left: 10px;
-			padding: 2px 8px;
-			cursor: pointer;
-			color: #ffffff;
-			border: 1px solid transparent;
-			border-radius: 2px;
-		}
-		&--decorative {
-			opacity: 0.4;
-			&:hover {
-				color: initial;
-			}
-		}
-	}
 }
 
 .skip-to-content {

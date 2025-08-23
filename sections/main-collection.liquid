@@ -21,6 +21,7 @@
 {% if section.settings.menu != blank %}
   <nav class="collection-nav">
     <ul>
+      <li><span>Filter By</span></li>
       {% for link in linklists[section.settings.menu].links %}
         <li>
           <a href="{{ link.url }}#main-collection" title="{{ link.title }}">
@@ -36,13 +37,57 @@
   {% if collection.description != blank %}
     <div class="rte">{{ collection.description }}</div>
   {% endif %}
-  <div class="grid">
-    {% for product in collection.products %}
-      {% render 'product-card', product: product %}
-    {% else %}
-      <p>No products found.</p>
-    {% endfor %}
-  </div>
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    <div class="grid">
+      {% for product in collection.products %}
+        {% render 'product-card', product: product %}
+      {% else %}
+        <p>No products found.</p>
+      {% endfor %}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" role="navigation" aria-label="Pagination">
+        {%- if paginate.previous -%}
+          <a
+            class="pagination__button pagination__button--prev"
+            href="{{ paginate.previous.url }}#main-collection"
+            rel="prev"
+            aria-label="Previous page"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path fill="#2A2A2A" d="m8.07 12.543 8.36 7.965a.75.75 0 0 0 1.035 0l.009-.01a.691.691 0 0 0 0-1l-7.872-7.5 7.872-7.497a.692.692 0 0 0 0-1l-.01-.01a.75.75 0 0 0-1.034 0l-8.36 7.966a.75.75 0 0 0 0 1.086Z"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        {%- for part in paginate.parts -%}
+          {%- if part.is_link -%}
+            <a class="pagination__page" href="{{ part.url }}#main-collection" aria-label="Page {{ part.title }}">
+              {{ part.title }}
+            </a>
+          {%- elsif part.title == '…' -%}
+            <span class="pagination__page pagination__page--decorative">{{ part.title }}</span>
+          {%- else -%}
+            <span class="pagination__page pagination__page--current" aria-current="page">{{ part.title }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if paginate.next -%}
+          <a
+            class="pagination__button pagination__button--next"
+            href="{{ paginate.next.url }}#main-collection"
+            rel="next"
+            aria-label="Next page"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path fill="#2A2A2A" d="m15.93 12.543-8.36 7.965a.75.75 0 0 1-1.035 0l-.009-.01a.69.69 0 0 1 0-1l7.872-7.5-7.872-7.497a.69.69 0 0 1 0-1l.01-.01a.75.75 0 0 1 1.034 0l8.36 7.966a.75.75 0 0 1 0 1.086Z"/>
+            </svg>
+          </a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
 </section>
 
 {% schema %}

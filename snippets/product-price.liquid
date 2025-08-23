@@ -140,13 +140,15 @@
   {%- endif -%}
 </span>
 
-{%- if show_badges -%}
-  <span class="product-badges">
-    {%- if show_sale_badge and is_on_sale -%}
-      <span class="badge badge--sale" aria-label="On sale">Sale</span>
-    {%- endif -%}
-    {%- if show_sold_out_badge and is_sold_out -%}
-      <span class="badge badge--sold-out" aria-label="Sold out">Sold Out</span>
-    {%- endif -%}
-  </span>
-{%- endif -%}
+{% comment %}
+  {%- if show_badges -%}
+    <span class="product-badges">
+      {%- if show_sale_badge and is_on_sale -%}
+        <span class="badge badge--sale" aria-label="On sale">Sale</span>
+      {%- endif -%}
+      {%- if show_sold_out_badge and is_sold_out -%}
+        <span class="badge badge--sold-out" aria-label="Sold out">Sold Out</span>
+      {%- endif -%}
+    </span>
+  {%- endif -%}
+{% endcomment %}
