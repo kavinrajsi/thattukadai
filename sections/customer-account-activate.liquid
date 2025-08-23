@@ -1,0 +1,39 @@
+{% schema %}
+{
+  "name": "Activate Account",
+  "tag": "section",
+  "class": "activate-account",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Default Activate Account"
+    }
+  ]
+}
+{% endschema %}
+
+<section>
+  <h1>Activate Your Account</h1>
+
+  {% form 'activate_customer_password' %}
+    {% if form.errors %}
+      <ul class="errors" style="color: red;">
+        {% for field in form.errors %}
+          <li>{{ field | capitalize }}: {{ form.errors.messages[field] }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <label for="password">Password</label>
+    <input type="password" name="customer[password]" id="password" required>
+
+    <label for="password_confirmation">Confirm Password</label>
+    <input type="password" name="customer[password_confirmation]" id="password_confirmation" required>
+
+    <button type="submit" class="btn">Activate Account</button>
+  {% endform %}
+
+  <form method="post" action="{{ routes.account_cancel_activation_url }}">
+    <button type="submit" class="btn-secondary">Decline Activation</button>
+  </form>
+</section>

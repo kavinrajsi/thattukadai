@@ -106,32 +106,31 @@
       </button>
     </nav>
   </div>
-
   {%- comment -%} MEGA PANEL {%- endcomment -%}
   {%- if section.settings.shop_menu != blank -%}
     <div class="mega" id="shop-panel" hidden>
-      <div class="mega__chrome">
-        {% comment %}
-          <button
-            class="nav-pill nav-pill--active"
-            data-shop-toggle
-            aria-expanded="true"
-            aria-controls="shop-panel"
-            type="button"
-          >
-            <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
-            <span class="nav-pill__plus" aria-hidden="true">×</span>
-          </button>
-        {% endcomment %}
+      {% comment %}
+        <div class="mega__chrome">
 
-        {% comment %}
-          {%- if section.settings.our_story_link != blank -%}
-            <a class="site-link" href="{{ section.settings.our_story_link }}">
-              {{ section.settings.our_story_label | default: 'Our story' }}
-            </a>
-          {%- endif -%}
-        {% endcomment %}
-      </div>
+            <button
+              class="nav-pill nav-pill--active"
+              data-shop-toggle
+              aria-expanded="true"
+              aria-controls="shop-panel"
+              type="button"
+            >
+              <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
+              <span class="nav-pill__plus" aria-hidden="true">×</span>
+            </button>
+
+            {%- if section.settings.our_story_link != blank -%}
+              <a class="site-link" href="{{ section.settings.our_story_link }}">
+                {{ section.settings.our_story_label | default: 'Our story' }}
+              </a>
+            {%- endif -%}
+
+        </div>
+      {% endcomment %}
 
       <div class="mega__body">
         {%- assign menu = section.settings.shop_menu | linklist -%}
@@ -151,6 +150,8 @@
           </a>
         {%- endif -%}
       </div>
+
+      {%- comment -%} Products preview container (top 8) {%- endcomment -%}
       <div
         class="mega__products"
         id="mega-products"

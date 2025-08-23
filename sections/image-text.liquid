@@ -6,8 +6,8 @@
       image-second => content then <figure>
 {% endcomment %}
 
-{%- assign desktop  = section.settings.desktop_image -%}
-{%- assign mobile   = section.settings.mobile_image | default: desktop -%}
+{%- assign desktop = section.settings.desktop_image -%}
+{%- assign mobile = section.settings.mobile_image | default: desktop -%}
 {%- assign alt_text = section.settings.image_alt | default: desktop.alt -%}
 
 {%- assign mods = '' -%}
@@ -29,28 +29,47 @@
   "
 >
   {%- if section.settings.placement == 'image-first' -%}
-
     <figure class="image-content__media">
       {% if desktop != blank %}
         <picture class="image-content__picture">
-          <source media="(min-width: 750px)" type="image/avif" srcset="
-            {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
-            {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
-            {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
-          " sizes="50vw">
-          <source media="(min-width: 0px)" type="image/avif" srcset="
-            {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
-            {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
-          " sizes="100vw">
-          <source media="(min-width: 750px)" type="image/webp" srcset="
-            {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
-            {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
-            {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
-          " sizes="50vw">
-          <source media="(min-width: 0px)" type="image/webp" srcset="
-            {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
-            {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
-          " sizes="100vw">
+          <source
+            media="(min-width: 750px)"
+            type="image/avif"
+            srcset="
+              {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
+              {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
+              {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
+            "
+            sizes="50vw"
+          >
+          <source
+            media="(min-width: 0px)"
+            type="image/avif"
+            srcset="
+              {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
+              {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
+            "
+            sizes="100vw"
+          >
+          <source
+            media="(min-width: 750px)"
+            type="image/webp"
+            srcset="
+              {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
+              {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
+              {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
+            "
+            sizes="50vw"
+          >
+          <source
+            media="(min-width: 0px)"
+            type="image/webp"
+            srcset="
+              {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
+              {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
+            "
+            sizes="100vw"
+          >
           <img
             class="image-content__image"
             src="{{ desktop | image_url: width: 1600 }}"
@@ -70,6 +89,10 @@
         <div class="image-content__eyebrow-wrapper">
           <span class="image-content__eyebrow">{{ section.settings.eyebrow }}</span>
         </div>
+      {% else %}
+        <div class="image-content__eyebrow-wrapper">
+          <span class="image-content__eyebrow">About us</span>
+        </div>
       {% endif %}
 
       {% if section.settings.title != blank %}
@@ -77,6 +100,10 @@
           <h1 id="image-content__title-{{ section.id }}" class="image-content__title">
             {{ section.settings.title | newline_to_br }}
           </h1>
+        </div>
+      {% else %}
+        <div class="image-content__title-wrapper">
+          <h1 id="image-content__title-{{ section.id }}" class="image-content__title">A Legacy of Taste Since 1956</h1>
         </div>
       {% endif %}
     </header>
@@ -87,6 +114,19 @@
           {{ section.settings.body_text }}
         </div>
       </div>
+    {% else %}
+      <div class="image-content__body-wrapper">
+        <div class="image-content__text">
+          <p>
+            Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering
+            a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured
+            the hearts of many, laying the foundation for what would become a cherished family business.
+          </p>
+          <p>
+            Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.
+          </p>
+        </div>
+      </div>
     {% endif %}
 
     {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
@@ -95,32 +135,55 @@
           {{ section.settings.cta_label }}
         </a>
       </div>
+    {% else %}
+      <div class="image-content__cta-wrapper">
+        <a class="image-content__cta" href="/about"> Learn More </a>
+      </div>
     {% endif %}
   </div>
 
   {%- if section.settings.placement == 'image-second' -%}
-
     <figure class="image-content__media">
       {% if desktop != blank %}
         <picture class="image-content__picture">
-          <source media="(min-width: 750px)" type="image/avif" srcset="
-            {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
-            {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
-            {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
-          " sizes="50vw">
-          <source media="(min-width: 0px)" type="image/avif" srcset="
-            {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
-            {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
-          " sizes="100vw">
-          <source media="(min-width: 750px)" type="image/webp" srcset="
-            {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
-            {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
-            {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
-          " sizes="50vw">
-          <source media="(min-width: 0px)" type="image/webp" srcset="
-            {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
-            {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
-          " sizes="100vw">
+          <source
+            media="(min-width: 750px)"
+            type="image/avif"
+            srcset="
+              {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
+              {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
+              {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
+            "
+            sizes="50vw"
+          >
+          <source
+            media="(min-width: 0px)"
+            type="image/avif"
+            srcset="
+              {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
+              {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
+            "
+            sizes="100vw"
+          >
+          <source
+            media="(min-width: 750px)"
+            type="image/webp"
+            srcset="
+              {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
+              {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
+              {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
+            "
+            sizes="50vw"
+          >
+          <source
+            media="(min-width: 0px)"
+            type="image/webp"
+            srcset="
+              {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
+              {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
+            "
+            sizes="100vw"
+          >
           <img
             class="image-content__image"
             src="{{ desktop | image_url: width: 1600 }}"
@@ -207,19 +270,66 @@
     },
 
     { "type": "header", "content": "Spacing" },
-    { "type": "range", "id": "padding_top_desktop", "label": "Padding top (desktop)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
-    { "type": "range", "id": "padding_bottom_desktop", "label": "Padding bottom (desktop)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 80 },
-    { "type": "range", "id": "padding_top_mobile", "label": "Padding top (mobile)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
-    { "type": "range", "id": "padding_bottom_mobile", "label": "Padding bottom (mobile)", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 40 },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
 
     { "type": "header", "content": "Image" },
     { "type": "image_picker", "id": "desktop_image", "label": "Desktop image" },
     { "type": "image_picker", "id": "mobile_image", "label": "Mobile image (optional)" },
-    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop" },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop"
+    },
 
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "About us" },
-    { "type": "text", "id": "title", "label": "Heading", "info": "Use line breaks to split across lines.", "default": "A LEGACY OF TASTE\nSINCE 1956" },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "info": "Use line breaks to split across lines.",
+      "default": "A LEGACY OF TASTE\nSINCE 1956"
+    },
     {
       "type": "richtext",
       "id": "body_text",

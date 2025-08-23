@@ -3,15 +3,18 @@
     var $toggles = $('[data-shop-toggle]');
     var $panel = $('#shop-panel');
     var $backdrop = $('[data-backdrop]');
-    var $products = $('#mega-products'); // NEW
+    var $products = $('#mega-products'); // products preview container
     if (!$panel.length) return;
 
+    // -------------------------
+    // Panel open/close
+    // -------------------------
     function openPanel() {
       $panel.prop('hidden', false).addClass('is-open');
       $backdrop.prop('hidden', false).addClass('is-open');
       $toggles.attr('aria-expanded', 'true');
       $panel.find('a,button').first().trigger('focus');
-      $('body').addClass('noscroll');
+      $('body').addClass(' menunoscroll'); // lock page scroll
       $(document).on('keydown.headerEsc', onEsc);
     }
 
@@ -19,7 +22,7 @@
       $panel.removeClass('is-open');
       $backdrop.removeClass('is-open');
       $toggles.attr('aria-expanded', 'false');
-      $('body').removeClass('noscroll');
+      $('body').removeClass('menunoscroll'); // unlock scroll
       setTimeout(function () {
         $panel.prop('hidden', true);
         $backdrop.prop('hidden', true);
@@ -47,46 +50,103 @@
     });
 
     // -------------------------
-    // NEW: Collection → Top 8 products
+    // Collection → Top 8 products preview (navigation-safe)
     // -------------------------
     var currency = ($products.data('currency') || 'USD').toString();
 
-    // Delegate clicks from the mega list
-    $panel.on('click', '.mega__list a', function (e) {
-      var href = $(this).attr('href') || '';
-      // Match /collections/<handle>
-      var m = href.match(/\/collections\/([^\/\?\#]+)/i);
-      if (!m) return; // not a collection link → let it navigate normally
+    function getCollectionHandleFromHref(href) {
+      if (!href) return null;
+      try {
+        var u = new URL(href, window.location.origin);
+        var path = u.pathname || '';
+        var m = path.match(/\/collections\/([^\/\?\#]+)/i);
+        return m ? m[1] : null;
+      } catch (e) {
+        var m2 = href.match(/\/collections\/([^\/\?\#]+)/i);
+        return m2 ? m2[1] : null;
+      }
+    }
 
-      e.preventDefault();
-      var handle = m[1];
+    // First activation = preview, second within 5s = navigate
+    function shouldNavigate($link) {
+      return $link.data('previewClicked') === true;
+    }
+    function markClicked($link) {
+      $link.data('previewClicked', true);
+      clearTimeout($link.data('previewTimeout'));
+      var t = setTimeout(function () {
+        $link.removeData('previewClicked');
+      }, 5000);
+      $link.data('previewTimeout', t);
+    }
 
-      // Loading state
-      renderProductsLoading();
+    function handleActivateLink(e, $a) {
+      var href = $a.attr('href') || '';
+      var handle = getCollectionHandleFromHref(href);
+      if (!handle) return; // not a collection link → default behavior
 
-      fetch('/collections/' + encodeURIComponent(handle) + '/products.json?limit=8', {
-        headers: { Accept: 'application/json' },
-        credentials: 'same-origin',
-      })
-        .then(function (r) {
-          return r.json();
+      // Allow new tab/window actions
+      if (e.type === 'click' && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)) {
+        return;
+      }
+
+      if (!shouldNavigate($a)) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        markClicked($a);
+        renderProductsLoading();
+        fetch('/collections/' + encodeURIComponent(handle) + '/products.json?limit=8', {
+          headers: { Accept: 'application/json' },
+          credentials: 'same-origin',
         })
-        .then(function (data) {
-          // data.products is an array
-          if (!data || !Array.isArray(data.products)) {
+          .then(function (r) {
+            return r.json();
+          })
+          .then(function (data) {
+            if (!data || !Array.isArray(data.products)) {
+              renderProductsError();
+              return;
+            }
+            renderProductsGrid(data.products.slice(0, 8));
+          })
+          .catch(function () {
             renderProductsError();
-            return;
-          }
-          renderProductsGrid(data.products.slice(0, 8));
-        })
-        .catch(function () {
-          renderProductsError();
-        });
-    });
+          });
+      } else {
+        // second activation → allow navigation
+      }
+    }
 
+    // Delegate multiple activation types so navigation can’t win the race
+    $panel
+      .on('click', '.mega__list a', function (e) {
+        handleActivateLink(e, $(this));
+      })
+      .on('keydown', '.mega__list a', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) handleActivateLink(e, $(this));
+      })
+      .on('touchstart', '.mega__list a', function (e) {
+        handleActivateLink(e, $(this));
+      });
+
+    // -------------------------
+    // Rendering helpers
+    // -------------------------
     function renderProductsLoading() {
       if (!$products.length) return;
-      $products.prop('hidden', false).html('<div class="mega__grid"><div>Loading…</div></div>');
+
+      var skeleton = '<div class="mega__grid">';
+      for (var i = 0; i < 4; i++) {
+        skeleton += `
+      <div class="mega__card skeleton">
+        <div class="skeleton-text"></div>
+        <div class="skeleton-img"></div>
+      </div>
+    `;
+      }
+      skeleton += '</div>';
+
+      $products.prop('hidden', false).html(skeleton);
     }
 
     function renderProductsError() {
@@ -110,13 +170,20 @@
 
     function firstImageSrc(product) {
       if (product && product.images && product.images.length) {
-        // Shopify CDN supports typical sizing params via _{width}x.
-        // If the URL already has size, leave it; else add 360x
         var src = product.images[0].src;
         if (/_\d+x\./.test(src)) return src;
         return src.replace(/(\.(jpg|jpeg|png|webp))(?:\?.*)?$/i, '_360x$1');
       }
       return null;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
     function renderProductsGrid(products) {
@@ -130,28 +197,20 @@
       products.forEach(function (p) {
         var url = '/products/' + p.handle;
         var img = firstImageSrc(p);
-        var price = p.price || (p.variants && p.variants[0] && p.variants[0].price) || 0;
+        var price =
+          typeof p.price !== 'undefined' ? p.price : (p.variants && p.variants[0] && p.variants[0].price) || 0;
 
         html += '<a class="mega__card" href="' + url + '">';
+        html += '<div class="mega__card-title">' + escapeHtml(p.title) + '</div>';
         if (img) {
           html += '<img src="' + img + '" alt="' + escapeHtml(p.title) + '">';
         }
-        html += '<div class="mega__card-title">' + escapeHtml(p.title) + '</div>';
-        html += '<div class="mega__card-price">' + moneyFormat(price) + '</div>';
+        // html += '<div class="mega__card-price">' + moneyFormat(price) + '</div>';
         html += '</a>';
       });
       html += '</div>';
 
       $products.prop('hidden', false).html(html);
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
     }
   });
 })(window.jQuery);

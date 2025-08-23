@@ -1,0 +1,68 @@
+{% schema %}
+{
+  "name": "Customer Testimonials",
+  "tag": "section",
+  "class": "customer-testimonials",
+  "settings": [
+    {
+      "type": "url",
+      "id": "reviews_api_url",
+      "label": "Backend Reviews API URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Google Testimonials"
+    }
+  ]
+}
+{% endschema %}
+
+{% comment %} GET https://maps.googleapis.com/maps/api/place/details/json?place_id=YOUR_PLACE_ID&fields=rating,reviews&key=YOUR_API_KEY {% endcomment %}
+{% comment %}
+    {
+    "result": {
+      "rating": 4.9,
+      "reviews": [
+        {
+          "author_name": "Sneha",
+          "rating": 5,
+          "text": "The 'Butter Murku' is a must-try!",
+          "relative_time_description": "2 weeks ago",
+          "profile_photo_url": "https://example.com/photo.jpg"
+        },
+        ...
+      ]
+    }
+  }
+{% endcomment %}
+<div id="google-testimonials" class="testimonial-wrapper" style="max-width: 1200px; margin: auto; padding: 2rem;">
+  <h2 style="text-align: center; color: #7c0f13;">Customer Testimonials</h2>
+  <div id="testimonial-list" style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;"></div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('testimonial-list');
+    fetch('{{ section.settings.reviews_api_url }}')
+      .then((res) => res.json())
+      .then((data) => {
+        const reviews = data.result.reviews.slice(0, 6);
+        reviews.forEach((review) => {
+          container.innerHTML += `
+            <div style="background:#f7f7f7; padding:1rem; border-radius:8px; width:300px;">
+              <div>⭐️⭐️⭐️⭐️⭐️</div>
+              <p>${review.text}</p>
+              <hr />
+              <div style="display:flex; align-items:center; gap:10px;">
+                <img src="${review.profile_photo_url}" alt="${review.author_name}" style="width:40px; border-radius:50%;" />
+                <div>
+                  <strong>${review.author_name}</strong><br />
+                  <small>${review.relative_time_description}</small>
+                </div>
+              </div>
+            </div>`;
+        });
+      });
+  });
+</script>

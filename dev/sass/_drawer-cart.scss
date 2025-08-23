@@ -207,6 +207,7 @@ body.index.drawer-open {
 					display: flex;
 					flex-direction: column;
 					gap: 4px;
+					width: 100%;
 
 					.drawer-item__title {
 						font: var(--font-600);
@@ -255,6 +256,7 @@ body.index.drawer-open {
 							.qty-btn {
 								position: absolute;
 								height: 100%;
+								padding: 0 6px;
 								&:first-child {
 									right: initial;
 									left: 0;

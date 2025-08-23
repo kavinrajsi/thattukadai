@@ -9,6 +9,35 @@
 {%- if product_obj and product_obj.media.size > 0 -%}
   <div class="pm-gallery swiper-gallery" id="pm-{{ product_obj.id }}">
     <!-- Main Swiper -->
+
+    {%- if product_obj.media.size > 1 -%}
+      <!-- Thumbs Swiper -->
+      <div class="swiper pm-thumbs-swiper">
+        <div class="swiper-wrapper">
+          {%- for media in product_obj.media -%}
+            {%- assign thumb_alt = media.alt | default: product_obj.title -%}
+            <div class="swiper-slide pm-thumb-slide">
+              {%- if media.media_type == 'image' and media.preview_image -%}
+                <picture>
+                  {% comment %} <source srcset="{{ media.preview_image | image_url: width: 74, format: 'avif' }}" type="image/avif"> {% endcomment %}
+                  <source srcset="{{ media.preview_image | image_url: width: 74, format: 'webp' }}" type="image/webp">
+                  <img
+                    src="{{ media.preview_image | image_url: width: 74, format: 'jpg' }}"
+                    alt="{{ thumb_alt | escape }}"
+                    class="pm-thumb-img"
+                    loading="lazy"
+                    width="74"
+                    height="80"
+                  >
+                </picture>
+              {%- else -%}
+                {{ media | media_tag: image_size: '74', autoplay: false, class: 'pm-thumb-img' }}
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
     <div class="swiper pm-main-swiper">
       <div class="swiper-wrapper">
         {%- for media in product_obj.media -%}
@@ -21,22 +50,22 @@
               {%- when 'image' -%}
                 <a
                   class="pswp-item"
-                  href="{{ media | image_url: width: 4096, format: 'jpg' }}"
+                  href="{{ media | image_url: width: 372, format: 'jpg' }}"
                   data-pswp-width="{{ full_w }}"
                   data-pswp-height="{{ full_h }}"
                   data-pswp-uid="{{ product_obj.id }}-{{ media.id }}"
                   aria-label="Open image zoom: {{ alt_text | escape }}"
                 >
                   <picture>
-                    <source srcset="{{ media | image_url: width: 2048, format: 'avif' }}" type="image/avif">
-                    <source srcset="{{ media | image_url: width: 2048, format: 'webp' }}" type="image/webp">
+                    {% comment %} <source srcset="{{ media | image_url: width: 372, format: 'avif' }}" type="image/avif"> {% endcomment %}
+                    <source srcset="{{ media | image_url: width: 372, format: 'webp' }}" type="image/webp">
                     <img
-                      src="{{ media | image_url: width: 2048, format: 'jpg' }}"
+                      src="{{ media | image_url: width: 372, format: 'jpg' }}"
                       alt="{{ alt_text | escape }}"
                       class="pm-media"
                       loading="lazy"
-                      width="{{ full_w }}"
-                      height="{{ full_h }}"
+                      width="372"
+                      height="392"
                     >
                   </picture>
                 </a>
@@ -45,7 +74,7 @@
                 {{
                   media
                   | media_tag:
-                    image_size: '2048x',
+                    image_size: '372x',
                     class: 'pm-media',
                     autoplay: false,
                     loop: false,
@@ -55,10 +84,10 @@
                 }}
 
               {%- when 'external_video' -%}
-                {{ media | media_tag: image_size: '2048x', class: 'pm-media' }}
+                {{ media | media_tag: image_size: '372x', class: 'pm-media' }}
 
               {%- when 'model' -%}
-                {{ media | media_tag: image_size: '2048x', class: 'pm-media' }}
+                {{ media | media_tag: image_size: '372x', class: 'pm-media' }}
                 <button
                   class="pm-model-btn"
                   data-shopify-xr
@@ -78,34 +107,5 @@
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
     </div>
-
-    {%- if product_obj.media.size > 1 -%}
-      <!-- Thumbs Swiper -->
-      <div class="swiper pm-thumbs-swiper">
-        <div class="swiper-wrapper">
-          {%- for media in product_obj.media -%}
-            {%- assign thumb_alt = media.alt | default: product_obj.title -%}
-            <div class="swiper-slide pm-thumb-slide">
-              {%- if media.media_type == 'image' and media.preview_image -%}
-                <picture>
-                  <source srcset="{{ media.preview_image | image_url: width: 240, format: 'avif' }}" type="image/avif">
-                  <source srcset="{{ media.preview_image | image_url: width: 240, format: 'webp' }}" type="image/webp">
-                  <img
-                    src="{{ media.preview_image | image_url: width: 240, format: 'jpg' }}"
-                    alt="{{ thumb_alt | escape }}"
-                    class="pm-thumb-img"
-                    loading="lazy"
-                    width="72"
-                    height="72"
-                  >
-                </picture>
-              {%- else -%}
-                {{ media | media_tag: image_size: '360x', autoplay: false, class: 'pm-thumb-img' }}
-              {%- endif -%}
-            </div>
-          {%- endfor -%}
-        </div>
-      </div>
-    {%- endif -%}
   </div>
 {%- endif -%}

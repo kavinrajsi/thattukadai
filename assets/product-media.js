@@ -2,6 +2,8 @@
 document.querySelectorAll('.swiper-gallery').forEach((gallery) => {
   const thumbs = new Swiper(gallery.querySelector('.pm-thumbs-swiper'), {
     spaceBetween: 8,
+    slidesPerView: 4,
+    loop: true,
     slidesPerView: 'auto',
     freeMode: true,
     watchSlidesProgress: true,

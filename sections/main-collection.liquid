@@ -6,15 +6,25 @@
   <span class="template-name">({{ template.name }})</span>
 {% endif %}
 
-{% if section.settings.show_image and collection.image %}
+{% if section.settings.show_image %}
   <div class="collection-image">
-    <img
-      src="{{ collection.image | image_url: width: 1600 }}"
-      alt="{{ collection.image.alt | escape }}"
-      width="{{ collection.image.width }}"
-      height="{{ collection.image.height }}"
-      loading="lazy"
-    >
+    {% if collection.image %}
+      <img
+        src="{{ collection.image | image_url: width: 1600 }}"
+        alt="{{ collection.image.alt | escape }}"
+        width="{{ collection.image.width }}"
+        height="{{ collection.image.height }}"
+        loading="lazy"
+      >
+    {% else %}
+      <img
+        src="{{ 'default-collection.png' | asset_url }}"
+        alt="Default collection image"
+        width=""
+        height="520"
+        loading="lazy"
+      >
+    {% endif %}
   </div>
 {% endif %}
 

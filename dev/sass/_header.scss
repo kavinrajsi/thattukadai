@@ -29,6 +29,11 @@ header {
 			border-radius: 6px;
 			background-color: var(--Netrual-White1, #ffffff);
 			box-shadow: 0 0.0625rem 0.25rem #0003;
+			.menunoscroll & {
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+				box-shadow: none;
+			}
 			.site-logo {
 				position: absolute;
 				top: -20px;
@@ -119,13 +124,17 @@ header {
 	}
 }
 
-div.mega.is-open {
+.mega {
+	height: calc(100vh - 24px - 62px - 24px);
+	display: flex;
+	gap: 0;
 	.mega__body {
 		background: var(--color-white1);
 		padding: 24px;
 		border-bottom-left-radius: 10px;
 		border-bottom-right-radius: 10px;
 		max-width: 320px;
+		flex: 0 0 320px;
 
 		.mega__list {
 			li {
@@ -158,6 +167,7 @@ div.mega.is-open {
 			}
 		}
 		.mega__cta {
+			width: 100%;
 			margin-top: 80px;
 			text-align: center;
 			padding: 8px 32px;
@@ -182,34 +192,111 @@ div.mega.is-open {
 		display: none;
 	}
 	.mega__products {
-		padding: 16px 0;
+		overflow-y: scroll;
+		flex: 0 0 calc(100% - 320px);
+		max-width: calc(100% - 320px);
+		background: var(--color-white1);
+		// border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+		padding: 24px;
 	}
 	.mega__grid {
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
-		gap: 16px;
+		gap: 20px;
 	}
 	.mega__card {
 		text-decoration: none;
 		display: block;
+		border-radius: 8px;
+		overflow: hidden;
 	}
 	.mega__card img {
 		width: 100%;
 		height: auto;
 		display: block;
 	}
+
 	.mega__card-title {
-		margin-top: 8px;
+		padding-top: 14px;
+		background: #fff9d8;
+		padding-bottom: 8px;
+		text-align: center;
+		/* Desktop_B2 */
+		font-family: "DM Sans";
+		font-style: normal;
+		font-weight: 600;
 		font-size: 14px;
-		line-height: 1.3;
-	}
-	.mega__card-price {
-		font-size: 14px;
-		opacity: 0.8;
+		line-height: 16px;
+		/* identical to box height, or 114% */
+
+		/* Neutral/Black1 */
+		color: #2a2a2a;
 	}
 	@media (max-width: 900px) {
 		.mega__grid {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
+}
+
+/* Skeleton loading */
+.skeleton {
+	pointer-events: none;
+}
+
+.skeleton-img ,
+.skeleton-text {
+	background: linear-gradient(90deg, #eeeeee 25%, #f5f5f5 37%, #eeeeee 63%);
+	background-size: 400% 100%;
+	animation: shimmer 1.4s ease infinite;
+	border-radius: 4px;
+}
+
+/* Image placeholder height */
+.skeleton-img {
+	width: 100%;
+	height: 206px;
+	margin-bottom: 12px;
+}
+
+/* Info section height (title + price area) */
+.skeleton-info {
+	height: 166px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+/* Fake title and price bars */
+.skeleton-text {
+	height: 14px;
+	margin-bottom: 8px;
+}
+.skeleton-text.short {
+	width: 60%;
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -400px 0;
+	}
+	100% {
+		background-position: 400px 0;
+	}
+}
+
+.backdrop {
+	background-color: rgba(0, 0, 0, 0.5);
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	z-index: -1;
+	left: 0;
+	right: 0;
+}
+
+.mega:has(.mega__products:not([hidden])) .mega__body {
+	border-bottom-right-radius: 0;
 }

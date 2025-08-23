@@ -24,6 +24,9 @@
 		color: #161a1d;
 		text-align: center;
 	}
+	.collection-image {
+		padding-bottom: 40px;
+	}
 	.collection-nav {
 		padding: 40px 0;
 		ul {
@@ -96,7 +99,8 @@
 			.product-card__title {
 				// white-space: nowrap;
 				// overflow: hidden;
-				// text-overflow: ellipsis;
+				text-overflow: ellipsis;
+				text-wrap: nowrap;
 				flex: 0 0 60%;
 				max-width: 60%;
 				overflow: hidden;

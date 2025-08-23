@@ -161,130 +161,140 @@
 </div>
 
 <script>
-    (function() {
-      var root = document.currentScript.previousElementSibling; // the .vp container
-      if (!root || !root.classList.contains('vp')) return;
+  (function() {
+    var root = document.currentScript.previousElementSibling; // the .vp container
+    if (!root || !root.classList.contains('vp')) return;
 
-      // Read variants JSON
-      var jsonEl = root.querySelector('.vp__variants-json');
-      if (!jsonEl) return;
-      var data = JSON.parse(jsonEl.textContent || '{}');
-      var variants = data.variants || [];
-      var optionNames = data.options || [];
+    // Read variants JSON
+    var jsonEl = root.querySelector('.vp__variants-json');
+    if (!jsonEl) return;
+    var data = JSON.parse(jsonEl.textContent || '{}');
+    var variants = data.variants || [];
+    var optionNames = data.options || [];
 
-      // Elements to update
-      var priceWrap = document.querySelector('.vp__price'); // outside the .vp container
-      var statusEl  = document.querySelector('.vp__status');
+    // Elements to update
+    var priceWrap = document.querySelector('.vp__price'); // outside the .vp container
+    var statusEl  = document.querySelector('.vp__status');
 
-      // Money formatting using the shop's format
-  var moneyFormat = {{ shop.money_format | json }};
-  function formatMoney(cents) {
-    var value = (typeof cents === 'number') ? cents : parseInt(cents || 0, 10);
-    var amount = (value / 100).toFixed(2);
-    return moneyFormat.replace('{{ amount }}', amount);
-  }
+    // Money formatting - FIXED VERSION
+    var moneyFormat = {{ shop.money_format | json }};
+    function formatMoney(cents) {
+      var value = (typeof cents === 'number') ? cents : parseInt(cents || 0, 10);
+      var amount = (value / 100).toFixed(2);
 
-
-      // Hook into product form to set variant id
-      var formId = root.getAttribute('data-form-id');
-      var form = formId ? document.getElementById(formId) : null;
-      var idInput = form ? form.querySelector('input[name="id"]') : null;
-
-      // Helpers
-      function getSelectedOptions() {
-        var result = [];
-        optionNames.forEach(function(name, idx) {
-          var input = root.querySelector('[data-option-index="'+ idx +'"] input[type="radio"]:checked');
-          result[idx] = input ? input.value : '';
-        });
-        return result;
+      // Check if moneyFormat contains placeholders that need to be replaced
+      if (moneyFormat.includes('{{amount}}')) {
+        return moneyFormat.replace(/\{\{\s*amount\s*\}\}/g, amount);
+      } else if (moneyFormat.includes('{{ amount }}')) {
+        return moneyFormat.replace(/\{\{\s*amount\s*\}\}/g, amount);
+      } else {
+        // Fallback: assume Rs. prefix format
+        return 'Rs. ' + amount;
       }
+    }
 
-      function findMatchingVariant(selectedOptions) {
-        for (var i = 0; i < variants.length; i++) {
-          var v = variants[i];
-          if (JSON.stringify(v.options) === JSON.stringify(selectedOptions)) return v;
-        }
-        return null;
-      }
+    // Hook into product form to set variant id
+    var formId = root.getAttribute('data-form-id');
+    var form = formId ? document.getElementById(formId) : null;
+    var idInput = form ? form.querySelector('input[name="id"]') : null;
 
-      function syncSelectedLabels() {
-        var groups = root.querySelectorAll('.vp__group');
-        groups.forEach(function(fs) {
-          var idx = fs.getAttribute('data-option-index');
-          var checked = fs.querySelector('input[type="radio"]:checked');
-          var selectedText = fs.querySelector('.vp__selected');
-          if (selectedText) selectedText.textContent = checked ? checked.value : '';
-        });
-      }
-
-      function renderPriceHTML(variant) {
-        if (!variant) return '';
-        var html = '<div class="vp__price-main">' + formatMoney(variant.price) + '</div>';
-        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
-          html += '<div class="vp__price-compare">' + formatMoney(variant.compare_at_price) + '</div>';
-        }
-        html += '<div class="vp__price-tax">Tax included</div>';
-        return html;
-      }
-
-      function applyVariant(variant) {
-        if (priceWrap && variant) {
-          priceWrap.innerHTML = renderPriceHTML(variant);
-        }
-
-        if (statusEl) {
-          if (!variant) {
-            statusEl.textContent = 'Please choose a combination.';
-          } else if (!variant.available) {
-            statusEl.textContent = 'Sold out for this combination.';
-          } else {
-            statusEl.textContent = '';
-          }
-        }
-
-        if (idInput && variant) {
-          idInput.value = variant.id;
-          // Trigger change so any theme scripts can react
-          idInput.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-
-        // If you have a gallery, you can update using variant.featured_media_id here.
-      }
-
-      function onChange() {
-        syncSelectedLabels();
-        var selected = getSelectedOptions();
-        var match = findMatchingVariant(selected);
-        applyVariant(match);
-
-        if (statusEl) {
-          var msg = match
-            ? (match.available ? 'Variant selected.' : 'Variant selected but unavailable.')
-            : 'No matching variant.';
-          statusEl.setAttribute('aria-live', 'polite');
-          statusEl.textContent = msg;
-        }
-      }
-
-      // Change handler for swatches & buttons
-      root.addEventListener('change', function(e) {
-        if (e.target.matches('.vp__swatch-input, .vp__button-input')) onChange();
+    // Helpers
+    function getSelectedOptions() {
+      var result = [];
+      optionNames.forEach(function(name, idx) {
+        var input = root.querySelector('[data-option-index="'+ idx +'"] input[type="radio"]:checked');
+        result[idx] = input ? input.value : '';
       });
+      return result;
+    }
 
-      // Click handler on the visual boxes
-      root.addEventListener('click', function(e) {
-        var box = e.target.closest('.vp__swatch-box, .vp__button-box');
-        if (!box) return;
-        var input = box.previousElementSibling;
-        if (input && input.type === 'radio') {
-          input.checked = true;
-          input.dispatchEvent(new Event('change', { bubbles: true }));
-        }
+    function findMatchingVariant(selectedOptions) {
+      for (var i = 0; i < variants.length; i++) {
+        var v = variants[i];
+        if (JSON.stringify(v.options) === JSON.stringify(selectedOptions)) return v;
+      }
+      return null;
+    }
+
+    function syncSelectedLabels() {
+      var groups = root.querySelectorAll('.vp__group');
+      groups.forEach(function(fs) {
+        var idx = fs.getAttribute('data-option-index');
+        var checked = fs.querySelector('input[type="radio"]:checked');
+        var selectedText = fs.querySelector('.vp__selected');
+        if (selectedText) selectedText.textContent = checked ? checked.value : '';
       });
+    }
 
-      // Initialize
+    function renderPriceHTML(variant) {
+      if (!variant) return '';
+      var html = '<div class="vp__price-mainWapper">';
+       html += '<div class="vp__price-main">' + formatMoney(variant.price) + '</div>';
+      if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+        html += '<div class="vp__price-compare">' + formatMoney(variant.compare_at_price) + '</div>';
+      }
+      html += '</div>';
+      html += '<div class="vp__price-tax">Tax included</div>';
+      return html;
+    }
+
+    function applyVariant(variant) {
+      if (priceWrap && variant) {
+        priceWrap.innerHTML = renderPriceHTML(variant);
+      }
+
+      if (statusEl) {
+        if (!variant) {
+          statusEl.textContent = 'Please choose a combination.';
+        } else if (!variant.available) {
+          statusEl.textContent = 'Sold out for this combination.';
+        } else {
+          statusEl.textContent = '';
+        }
+      }
+
+      if (idInput && variant) {
+        idInput.value = variant.id;
+        // Trigger change so any theme scripts can react
+        idInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      // If you have a gallery, you can update using variant.featured_media_id here.
+    }
+
+    function onChange() {
       syncSelectedLabels();
-      onChange();
-    })();
+      var selected = getSelectedOptions();
+      var match = findMatchingVariant(selected);
+      applyVariant(match);
+
+      if (statusEl) {
+        var msg = match
+          ? (match.available ? 'Variant selected.' : 'Variant selected but unavailable.')
+          : 'No matching variant.';
+        statusEl.setAttribute('aria-live', 'polite');
+        statusEl.textContent = msg;
+      }
+    }
+
+    // Change handler for swatches & buttons
+    root.addEventListener('change', function(e) {
+      if (e.target.matches('.vp__swatch-input, .vp__button-input')) onChange();
+    });
+
+    // Click handler on the visual boxes
+    root.addEventListener('click', function(e) {
+      var box = e.target.closest('.vp__swatch-box, .vp__button-box');
+      if (!box) return;
+      var input = box.previousElementSibling;
+      if (input && input.type === 'radio') {
+        input.checked = true;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+
+    // Initialize
+    syncSelectedLabels();
+    onChange();
+  })();
 </script>
