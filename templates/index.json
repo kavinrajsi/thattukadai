@@ -146,28 +146,6 @@
         "padding_bottom_desktop": 40
       }
     },
-    "promo_cta_j3r8KR": {
-      "type": "promo-cta",
-      "name": "Promo CTA Banner",
-      "settings": {
-        "full_bleed": true,
-        "max_width": 1200,
-        "bg_color": "#F5C62E",
-        "text_color": "#111111",
-        "layout": "image-left",
-        "radius": 24,
-        "pad_y": 24,
-        "pad_x": 24,
-        "gap": 24,
-        "title": "READY TO SHOP",
-        "body": "<p>Find your traditional sweets and savouries here.</p>",
-        "image": "shopify://shop_images/tedt.png",
-        "btn_label": "Shop now",
-        "btn_link": "shopify://collections/all",
-        "btn_bg": "#FFFFFF",
-        "btn_text": "#111111"
-      }
-    },
     "image_text_QyhkJT": {
       "type": "image-text",
       "name": "Image and content",
@@ -182,12 +160,36 @@
         "padding_bottom_desktop": 80,
         "padding_top_mobile": 40,
         "padding_bottom_mobile": 40,
+        "desktop_image": "shopify://shop_images/about.png",
+        "mobile_image": "shopify://shop_images/about.png",
         "image_alt": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop",
         "eyebrow": "About us",
-        "title": "A LEGACY OF TASTE\nSINCE 1956",
+        "title": "A LEGACY OF TASTESINCE 1956",
         "body_text": "<p>Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured the hearts of many, laying the foundation for what would become a cherished family business.</p><p>Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.</p>",
         "cta_label": "Learn More",
         "cta_link": ""
+      }
+    },
+    "promo_cta_j3r8KR": {
+      "type": "promo-cta",
+      "name": "Promo CTA Banner",
+      "settings": {
+        "full_bleed": true,
+        "max_width": 1200,
+        "bg_color": "#f5c62e",
+        "text_color": "#111111",
+        "layout": "image-left",
+        "radius": 24,
+        "pad_y": 24,
+        "pad_x": 24,
+        "gap": 24,
+        "title": "READY TO SHOP",
+        "body": "<p>Find your traditional sweets and savouries here.</p>",
+        "image": "shopify://shop_images/tedt.png",
+        "btn_label": "Shop now",
+        "btn_link": "shopify://collections/all",
+        "btn_bg": "#ffffff",
+        "btn_text": "#111111"
       }
     }
   },
