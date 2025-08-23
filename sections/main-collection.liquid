@@ -32,27 +32,16 @@
   <nav class="collection-nav">
     <ul>
       <li><span>Filter By</span></li>
-      {% if section.settings.menu != blank %}
-        {% for link in linklists[section.settings.menu].links %}
-          <li>
-            <a href="{{ link.url }}#main-collection" title="{{ link.title }}">
-              {{ link.title }}
-            </a>
-          </li>
-        {% endfor %}
-      {% else %}
-        {%- comment -%}
-          Default fallback menu just for /collections/all
-          Add your own links here or point to a fixed linklist
-        {%- endcomment -%}
-        {% for link in linklists['main-menu'].links %}
-          <li>
-            <a href="{{ link.url }}#main-collection" title="{{ link.title }}">
-              {{ link.title }}
-            </a>
-          </li>
-        {% endfor %}
-      {% endif %}
+
+      {% assign nav_menu = section.settings.menu | default: 'main-menu' %}
+
+      {% for link in linklists[nav_menu].links %}
+        <li>
+          <a href="{{ link.url }}#main-collection" title="{{ link.title }}">
+            {{ link.title }}
+          </a>
+        </li>
+      {% endfor %}
     </ul>
   </nav>
 {% endif %}
