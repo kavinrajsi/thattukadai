@@ -74,10 +74,35 @@
         "collection": "best-colleciton",
         "product_limit": 8
       }
+    },
+    "image_text_mh3FgG": {
+      "type": "image-text",
+      "name": "Image and content",
+      "settings": {
+        "width": "narrow",
+        "layout_overlap": "no-overlap",
+        "position": "middle",
+        "align": "left",
+        "align_mobile": "left",
+        "placement": "image-first",
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "desktop_image": "shopify://shop_images/about.png",
+        "mobile_image": "shopify://shop_images/about.png",
+        "image_alt": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop",
+        "eyebrow": "About us",
+        "title": "A LEGACY OF TASTESINCE 1956",
+        "body_text": "<p>Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured the hearts of many, laying the foundation for what would become a cherished family business.</p><p>Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.</p>",
+        "cta_label": "Learn More",
+        "cta_link": "shopify://pages/about-us"
+      }
     }
   },
   "order": [
     "slider",
-    "best_sellers_hULKcC"
+    "best_sellers_hULKcC",
+    "image_text_mh3FgG"
   ]
 }
