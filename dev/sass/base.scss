@@ -11,3 +11,59 @@
 @use "collection";
 @use "pagination";
 @use "account";
+
+.promo-cta--full {
+	background-color: var(--color-yellow2);
+	border-radius: 20px;
+
+	.promo-cta__grid.promo-cta__grid--image-left {
+		display: flex;
+		gap: 20px;
+	}
+	.promo-cta__content {
+		display: flex;
+		gap: 20px;
+		align-items: center;
+		justify-content: space-between;
+		flex: 1;
+
+		.promo-cta__title {
+			font-family: "Neilvard One";
+			font-style: normal;
+			font-weight: 400;
+			font-size: 24px;
+			line-height: 28px;
+			/* identical to box height, or 117% */
+
+			/* Neutral/Black2 */
+			color: #161a1d;
+			padding-bottom: 8px;
+		}
+		.promo-cta__body p {
+			font-family: "DM Sans";
+			font-style: normal;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 21px;
+			/* identical to box height */
+
+			/* Neutral/Black1 */
+			color: #2a2a2a;
+		}
+		.promo-cta__button {
+			padding: 16px 32px;
+			/* Neutral/White1 */
+			background: #ffffff;
+			border-radius: 24px;
+			font-family: "DM Sans";
+			font-style: normal;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 18px;
+			/* identical to box height, or 129% */
+
+			/* Neutral/Black1 */
+			color: #2a2a2a;
+		}
+	}
+}
