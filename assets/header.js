@@ -256,9 +256,11 @@
         if (isExpanded) {
           $toggle.attr('aria-expanded', 'false');
           $menu.prop('hidden', true).removeClass('is-open');
+          $toggle.find('.mobile-menu__plus').text('+');
         } else {
           $toggle.attr('aria-expanded', 'true');
           $menu.prop('hidden', false).addClass('is-open');
+          $toggle.find('.mobile-menu__plus').text('−');
         }
       });
 
@@ -289,6 +291,10 @@
           $searchPanel.prop('hidden', true);
         }, 180);
         $(document).off('keydown.searchEsc', onSearchEsc);
+
+        // Clear search input and results
+        $searchPanel.find('input[type="search"]').val('');
+        $searchPanel.find('.predictive-search-results').html('');
       }
 
       function onSearchEsc(e) {
@@ -298,6 +304,12 @@
       $searchToggle.on('click', function () {
         var isOpen = $searchPanel.hasClass('is-open');
         isOpen ? closeSearch() : openSearch();
+      });
+
+      // Handle close button inside search
+      $(document).on('click', '.js-search-close', function (e) {
+        e.preventDefault();
+        closeSearch();
       });
 
       $(document).on('click.searchOutside', function (e) {

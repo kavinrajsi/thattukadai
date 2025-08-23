@@ -208,13 +208,18 @@
       <input
         type="search"
         name="q"
-        placeholder="Search products..."
+        placeholder="Search for &quot;sweet&quot;"
         aria-label="Search"
         autocomplete="off"
       >
-      <button type="submit">Go</button>
+      <button type="button" class="js-search-close" aria-label="Close search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+          <path stroke="#2A2A2A" stroke-linecap="round" stroke-width="2" d="M15 5 5 15M5 5l10 10"/>
+        </svg>
+      </button>
     </form>
-    <div id="predictive-search" class="predictive-search-results" hidden></div>
+    <!-- Results will be injected here -->
+    <div class="predictive-search-results" class="predictive-search-results" hidden></div>
   </predictive-search>
 </section>
 
