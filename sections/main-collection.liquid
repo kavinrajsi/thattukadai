@@ -28,17 +28,31 @@
   </div>
 {% endif %}
 
-{% if section.settings.menu != blank %}
+{% if section.settings.menu != blank or collection.handle == 'all' %}
   <nav class="collection-nav">
     <ul>
       <li><span>Filter By</span></li>
-      {% for link in linklists[section.settings.menu].links %}
-        <li>
-          <a href="{{ link.url }}#main-collection" title="{{ link.title }}">
-            {{ link.title }}
-          </a>
-        </li>
-      {% endfor %}
+      {% if section.settings.menu != blank %}
+        {% for link in linklists[section.settings.menu].links %}
+          <li>
+            <a href="{{ link.url }}#main-collection" title="{{ link.title }}">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      {% else %}
+        {%- comment -%}
+          Default fallback menu just for /collections/all
+          Add your own links here or point to a fixed linklist
+        {%- endcomment -%}
+        {% for link in linklists['main-menu'].links %}
+          <li>
+            <a href="{{ link.url }}#main-collection" title="{{ link.title }}">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      {% endif %}
     </ul>
   </nav>
 {% endif %}
