@@ -12,21 +12,6 @@
     "slider": {
       "type": "homepage-slider",
       "blocks": {
-        "slide_zGrLLK": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/banner-11.png",
-            "image_mobile": "shopify://shop_images/test-slider-mobile-2.png",
-            "kicker": "",
-            "content_area": "",
-            "button_label": "",
-            "button_url": "shopify://products/ennai-kadalai-parupu",
-            "button_style": "solid",
-            "link_mode": "button_url",
-            "text_color": "#ffffff",
-            "overlay_opacity": 30
-          }
-        },
         "slide_wm3cwY": {
           "type": "slide",
           "settings": {
@@ -41,11 +26,26 @@
             "text_color": "#ffffff",
             "overlay_opacity": 30
           }
+        },
+        "slide_zGrLLK": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/banner-12.png",
+            "image_mobile": "shopify://shop_images/test-slider-mobile-2.png",
+            "kicker": "",
+            "content_area": "",
+            "button_label": "",
+            "button_url": "shopify://products/ennai-kadalai-parupu",
+            "button_style": "solid",
+            "link_mode": "button_url",
+            "text_color": "#ffffff",
+            "overlay_opacity": 30
+          }
         }
       },
       "block_order": [
-        "slide_zGrLLK",
-        "slide_wm3cwY"
+        "slide_wm3cwY",
+        "slide_zGrLLK"
       ],
       "settings": {
         "autoplay": true,
