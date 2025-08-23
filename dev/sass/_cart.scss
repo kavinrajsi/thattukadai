@@ -306,8 +306,13 @@
 			padding-top: 8px;
 			@media (min-width: 568px) {
 				padding-top: 0;
+				width: auto;
 			}
 			.cart-qty-input {
+				all: unset;
+				        appearance: textfield;
+				-webkit-appearance: none;
+				   -moz-appearance: textfield;
 				/* Desktop_B1 */
 				font-family: "DM Sans";
 				font-size: 16px;
@@ -332,12 +337,10 @@
 				/* Neutral/White3 */
 				border: 1px solid #d3d3d3;
 				border-radius: 4px;
-				all: unset;
-				        appearance: textfield;
-				-webkit-appearance: none;
-				   -moz-appearance: textfield;
 			}
-
+			.qty-btn {
+				padding: 0 6px;
+			}
 			.qty-decrease {
 				position: absolute;
 				left: 0;

@@ -403,6 +403,24 @@ summary::marker {
   display: none;
 }
 
+input, textarea, select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0; /* removes the rounded corners on iOS/macOS */
+  outline: none; /* removes the blue outline */
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=search] {
+  -webkit-appearance: none;
+}
+
 :root {
   --color-yellow1: #fad75f;
   --color-yellow2: #f6ca30;
@@ -1773,9 +1791,14 @@ body.index.drawer-open {
 @media (min-width: 568px) {
   .cart-page .qty-col .qty-changer {
     padding-top: 0;
+    width: auto;
   }
 }
 .cart-page .qty-col .qty-changer .cart-qty-input {
+  all: unset;
+  appearance: textfield;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
   /* Desktop_B1 */
   font-family: "DM Sans";
   font-size: 16px;
@@ -1798,10 +1821,9 @@ body.index.drawer-open {
   /* Neutral/White3 */
   border: 1px solid #d3d3d3;
   border-radius: 4px;
-  all: unset;
-  appearance: textfield;
-  -webkit-appearance: none;
-  -moz-appearance: textfield;
+}
+.cart-page .qty-col .qty-changer .qty-btn {
+  padding: 0 6px;
 }
 .cart-page .qty-col .qty-changer .qty-decrease {
   position: absolute;
@@ -2158,10 +2180,16 @@ body.product .main-product .product__info-col .product__title {
   color: #161a1d;
   padding-bottom: 16px;
 }
-body.product .main-product .product__info-col .product__description,
+body.product .main-product .product__info-col .product__description {
+  padding-bottom: 24px;
+  /* Target the table */
+  /* Target all table cells */
+  /* Even rows */
+  /* Hover effect */
+  /* First column styling */
+}
 body.product .main-product .product__info-col .product__description p,
-body.product .main-product .product__info-col .product__description li,
-body.product .main-product .product__info-col .product__description a {
+body.product .main-product .product__info-col .product__description li {
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 400;
@@ -2170,14 +2198,36 @@ body.product .main-product .product__info-col .product__description a {
   /* or 114% */
   /* Neutral/Black1 */
   color: #2a2a2a;
-  padding-bottom: 24px;
 }
-body.product .main-product .product__info-col .product__description .MsoNormal span,
 body.product .main-product .product__info-col .product__description p .MsoNormal span,
-body.product .main-product .product__info-col .product__description li .MsoNormal span,
-body.product .main-product .product__info-col .product__description a .MsoNormal span {
+body.product .main-product .product__info-col .product__description li .MsoNormal span {
   font-family: inherit !important;
   font-size: inherit !important;
+}
+body.product .main-product .product__info-col .product__description ul {
+  margin-left: 8px;
+  padding-left: 12px;
+  padding-top: 14px;
+  list-style-type: disc;
+}
+body.product .main-product .product__info-col .product__description table {
+  width: calc(100% - 30px) !important;
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+body.product .main-product .product__info-col .product__description table td {
+  border: 1px solid #dddddd;
+  padding: 10px;
+  width: calc(50% - 2px - 20px) !important;
+}
+body.product .main-product .product__info-col .product__description table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+body.product .main-product .product__info-col .product__description table tr:hover {
+  background-color: #f1f1f1;
+}
+body.product .main-product .product__info-col .product__description table td:first-child {
+  font-weight: bold;
 }
 body.product .main-product .product__info-col .product__meta {
   display: none;
@@ -2348,6 +2398,9 @@ body.product .main-product .product__info-col .product__actionWrapper .product-q
   /* Neutral/White3 */
   border: 1px solid #d3d3d3;
   border-radius: 4px;
+}
+body.product .main-product .product__info-col .product__actionWrapper .product-qty .qty-changer .qty-btn {
+  padding: 0 6px;
 }
 body.product .main-product .product__info-col .product__actionWrapper .product-qty .qty-changer .qty-decrease {
   position: absolute;

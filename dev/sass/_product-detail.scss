@@ -76,23 +76,57 @@ body.product {
 				color: #161a1d;
 				padding-bottom: 16px;
 			}
-			.product__description ,
-			.product__description p ,
-			.product__description li ,
-			.product__description a {
-				font-family: "DM Sans";
-				font-style: normal;
-				font-weight: 400;
-				font-size: 14px;
-				line-height: 16px;
-				/* or 114% */
-
-				/* Neutral/Black1 */
-				color: #2a2a2a;
+			.product__description {
 				padding-bottom: 24px;
-				.MsoNormal span {
-					font-family: inherit !important;
-					font-size: inherit !important;
+				p ,
+				li {
+					font-family: "DM Sans";
+					font-style: normal;
+					font-weight: 400;
+					font-size: 14px;
+					line-height: 16px;
+					/* or 114% */
+
+					/* Neutral/Black1 */
+					color: #2a2a2a;
+					.MsoNormal span {
+						font-family: inherit !important;
+						font-size: inherit !important;
+					}
+				}
+				ul {
+					margin-left: 8px;
+					padding-left: 12px;
+					padding-top: 14px;
+					list-style-type: disc;
+				}
+				/* Target the table */
+				table {
+					width: calc(100% - 30px) !important;
+					border-collapse: collapse;
+					margin: 15px 0;
+				}
+
+				/* Target all table cells */
+				table td {
+					border: 1px solid #dddddd;
+					padding: 10px;
+					width: calc(50% - 2px - 20px) !important;
+				}
+
+				/* Even rows */
+				table tr:nth-child(even) {
+					background-color: #f9f9f9;
+				}
+
+				/* Hover effect */
+				table tr:hover {
+					background-color: #f1f1f1;
+				}
+
+				/* First column styling */
+				table td:first-child {
+					font-weight: bold;
 				}
 			}
 
@@ -281,7 +315,9 @@ body.product {
 							border: 1px solid #d3d3d3;
 							border-radius: 4px;
 						}
-
+						.qty-btn {
+							padding: 0 6px;
+						}
 						.qty-decrease {
 							position: absolute;
 							left: 4px;

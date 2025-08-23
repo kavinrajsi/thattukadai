@@ -428,3 +428,20 @@ summary {
   border: 0 !important;
   display: none;
 }
+input, textarea, select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0; /* removes the rounded corners on iOS/macOS */
+  outline: none;   /* removes the blue outline */
+}
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="search"] {
+  -webkit-appearance: none;
+}
