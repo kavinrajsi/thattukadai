@@ -7,23 +7,33 @@
     - Content alignment for mobile & desktop
 {% endcomment %}
 
-<div class="product-features-wrapper
-  {% if section.settings.layout == 'contained' %} product-features--contained{% endif %}
-  content-align-mobile-{{ section.settings.content_align_mobile }}
-  content-align-desktop-{{ section.settings.content_align_desktop }}"
+<section
+  class="
+     product-features
+    layout__grid-box
+    product-features-wrapper
+    {% if section.settings.layout == 'contained' %} product-features--contained{% endif %}
+    content-align-mobile-{{ section.settings.content_align_mobile }}
+    content-align-desktop-{{ section.settings.content_align_desktop }}
+  "
 >
-  {% if section.settings.page_title != blank %}
-    <h2 class="product-features__title title-align-{{ section.settings.title_align }}"
-      style="margin-bottom: {{ section.settings.title_padding_bottom_mobile }}px;"
-      data-desktop-title-padding="{{ section.settings.title_padding_bottom_desktop }}"
-    >
-      {{ section.settings.page_title }}
-    </h2>
-  {% endif %}
+  {% comment %}
+    {% if section.settings.page_title != blank %}
+      <h2 class="product-features__title title-align-{{ section.settings.title_align }}"
+        style="margin-bottom: {{ section.settings.title_padding_bottom_mobile }}px;"
+        data-desktop-title-padding="{{ section.settings.title_padding_bottom_desktop }}"
+      >
+        {{ section.settings.page_title }}
+      </h2>
+    {% endif %}
+  {% endcomment %}
 
-  <div class="product-features
-    product-features--mobile-{{ section.settings.mobile_columns }}
-    product-features--desktop-{{ section.settings.desktop_columns }}"
+  <div
+    class="
+        product-feature__wrap
+      product-features--mobile-{{ section.settings.mobile_columns }}
+      product-features--desktop-{{ section.settings.desktop_columns }}
+    "
     style="
       padding-top: {{ section.settings.padding_top_mobile }}px;
       padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
@@ -32,34 +42,52 @@
     data-desktop-padding-bottom="{{ section.settings.padding_bottom_desktop }}"
   >
     {% for block in section.blocks %}
-      <div class="product-features__item">
-        <div class="product-features__icon">
+      <div class="product-feature">
+        <div class="product-feature__image">
           {{ block.settings.icon_svg }}
         </div>
-        <div class="product-features__text">
+        <h2 class="product-feature__title">
           {{ block.settings.text }}
-        </div>
+        </h2>
       </div>
     {% endfor %}
   </div>
-</div>
+</section>
 
 <style>
   /* Title alignment */
-  .title-align-left { text-align: left; }
-  .title-align-center { text-align: center; }
-  .title-align-right { text-align: right; }
+  .title-align-left {
+    text-align: left;
+  }
+  .title-align-center {
+    text-align: center;
+  }
+  .title-align-right {
+    text-align: right;
+  }
 
   /* Mobile content alignment */
-  .content-align-mobile-left { text-align: left; }
-  .content-align-mobile-center { text-align: center; }
-  .content-align-mobile-right { text-align: right; }
+  .content-align-mobile-left {
+    text-align: left;
+  }
+  .content-align-mobile-center {
+    text-align: center;
+  }
+  .content-align-mobile-right {
+    text-align: right;
+  }
 
   /* Desktop content alignment */
   @media (min-width: 768px) {
-    .content-align-desktop-left { text-align: left; }
-    .content-align-desktop-center { text-align: center; }
-    .content-align-desktop-right { text-align: right; }
+    .content-align-desktop-left {
+      text-align: left;
+    }
+    .content-align-desktop-center {
+      text-align: center;
+    }
+    .content-align-desktop-right {
+      text-align: right;
+    }
 
     .product-features {
       padding-top: var(--desktop-padding-top);
@@ -73,13 +101,13 @@
 
 <script>
   /* Set desktop padding values dynamically */
-  document.querySelectorAll('.product-features').forEach(function(el) {
+  document.querySelectorAll('.product-features').forEach(function (el) {
     el.style.setProperty('--desktop-padding-top', el.dataset.desktopPaddingTop + 'px');
     el.style.setProperty('--desktop-padding-bottom', el.dataset.desktopPaddingBottom + 'px');
   });
 
   /* Set desktop title padding dynamically */
-  document.querySelectorAll('.product-features__title').forEach(function(el) {
+  document.querySelectorAll('.product-features__title').forEach(function (el) {
     el.style.setProperty('--desktop-title-padding', el.dataset.desktopTitlePadding + 'px');
   });
 </script>
@@ -126,7 +154,11 @@
       "default": 30
     },
 
-    { "type": "select", "id": "layout", "label": "Layout", "default": "full",
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "full",
       "options": [
         { "value": "full", "label": "Full width" },
         { "value": "contained", "label": "Contained (max-width)" }
@@ -134,7 +166,11 @@
     },
 
     { "type": "header", "content": "Mobile Layout" },
-    { "type": "select", "id": "mobile_columns", "label": "Columns", "default": "1",
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Columns",
+      "default": "1",
       "options": [
         { "value": "1", "label": "1 column" },
         { "value": "2", "label": "2 columns" }
@@ -151,15 +187,33 @@
         { "value": "right", "label": "Right" }
       ]
     },
-    { "type": "range", "id": "padding_top_mobile", "min": 0, "max": 100, "step": 5, "unit": "px",
-      "label": "Padding top", "default": 20
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 20
     },
-    { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "step": 5, "unit": "px",
-      "label": "Padding bottom", "default": 20
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 20
     },
 
     { "type": "header", "content": "Desktop Layout" },
-    { "type": "select", "id": "desktop_columns", "label": "Columns", "default": "4",
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "label": "Columns",
+      "default": "4",
       "options": [
         { "value": "4", "label": "4 columns" },
         { "value": "6", "label": "6 columns" }
@@ -176,11 +230,25 @@
         { "value": "right", "label": "Right" }
       ]
     },
-    { "type": "range", "id": "padding_top_desktop", "min": 0, "max": 200, "step": 5, "unit": "px",
-      "label": "Padding top", "default": 40
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 40
     },
-    { "type": "range", "id": "padding_bottom_desktop", "min": 0, "max": 200, "step": 5, "unit": "px",
-      "label": "Padding bottom", "default": 40
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 40
     }
   ],
   "blocks": [
@@ -194,8 +262,6 @@
     }
   ],
   "max_blocks": 6,
-  "presets": [
-    { "name": "Product Main Features", "category": "Product" }
-  ]
+  "presets": [{ "name": "Product Main Features", "category": "Product" }]
 }
 {% endschema %}
