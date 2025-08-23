@@ -2396,20 +2396,21 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   color: #2a2a2a;
   max-width: 394px;
 }
-body.product .product-feature__wrap {
+
+.product-feature__wrap {
   margin-top: 56px;
   padding: 32px 0;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(6, 1fr);
 }
-body.product .product-feature__wrap .product-feature {
+.product-feature__wrap .product-feature {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-body.product .product-feature__wrap .product-feature__title {
+.product-feature__wrap .product-feature__title {
   padding-top: 16px;
   font-family: "DM Sans";
   font-style: normal;

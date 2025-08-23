@@ -84,7 +84,7 @@
   {%- endif -%}
 
   <div class="image-content__inner">
-    <header class="image-content__header">
+    <div class="image-content__header">
       {% if section.settings.eyebrow != blank %}
         <div class="image-content__eyebrow-wrapper">
           <span class="image-content__eyebrow">{{ section.settings.eyebrow }}</span>
@@ -106,7 +106,7 @@
           <h1 id="image-content__title-{{ section.id }}" class="image-content__title">A Legacy of Taste Since 1956</h1>
         </div>
       {% endif %}
-    </header>
+    </div>
 
     {% if section.settings.body_text != blank %}
       <div class="image-content__body-wrapper">
