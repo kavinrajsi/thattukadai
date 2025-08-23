@@ -187,7 +187,7 @@
         "body": "<p>Find your traditional sweets and savouries here.</p>",
         "image": "shopify://shop_images/tedt.png",
         "btn_label": "Shop now",
-        "btn_link": "",
+        "btn_link": "shopify://collections/all",
         "btn_bg": "#FFFFFF",
         "btn_text": "#111111"
       }
