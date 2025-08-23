@@ -43,24 +43,6 @@
       assign font_extrabold = settings['font-extrabold']
     %}
 
-    {% comment %}
-      {{ h1_font | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ h2_font | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ h3_font | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ h4_font | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ h5_font | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ h6_font | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-
-      {{ b1_font | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ b2_font | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-
-      {{ font_normal | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ font_medium | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ font_semibold | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ font_bold | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-      {{ font_extrabold | font_url: 'woff2' | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
-    {% endcomment %}
-
     {{ 'Neilvard-One.ttf' | asset_url | preload_tag: as: 'font', type: 'font/ttf', crossorigin: true }}
     {{ 'Neilvard-One.otf' | asset_url | preload_tag: as: 'font', type: 'font/otf', crossorigin: true }}
     {{ 'Neilvard-Semibold-One.ttf' | asset_url | preload_tag: as: 'font', type: 'font/ttf', crossorigin: true }}
