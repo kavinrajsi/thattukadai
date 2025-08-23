@@ -111,22 +111,26 @@
   {%- if section.settings.shop_menu != blank -%}
     <div class="mega" id="shop-panel" hidden>
       <div class="mega__chrome">
-        <button
-          class="nav-pill nav-pill--active"
-          data-shop-toggle
-          aria-expanded="true"
-          aria-controls="shop-panel"
-          type="button"
-        >
-          <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
-          <span class="nav-pill__plus" aria-hidden="true">×</span>
-        </button>
+        {% comment %}
+          <button
+            class="nav-pill nav-pill--active"
+            data-shop-toggle
+            aria-expanded="true"
+            aria-controls="shop-panel"
+            type="button"
+          >
+            <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
+            <span class="nav-pill__plus" aria-hidden="true">×</span>
+          </button>
+        {% endcomment %}
 
-        {%- if section.settings.our_story_link != blank -%}
-          <a class="site-link" href="{{ section.settings.our_story_link }}">
-            {{ section.settings.our_story_label | default: 'Our story' }}
-          </a>
-        {%- endif -%}
+        {% comment %}
+          {%- if section.settings.our_story_link != blank -%}
+            <a class="site-link" href="{{ section.settings.our_story_link }}">
+              {{ section.settings.our_story_label | default: 'Our story' }}
+            </a>
+          {%- endif -%}
+        {% endcomment %}
       </div>
 
       <div class="mega__body">
@@ -135,7 +139,7 @@
           {%- for link in menu.links -%}
             <li role="none">
               <a role="menuitem" href="{{ link.url }}">
-                {{ link.title }}
+                <span> {{ link.title }} </span>
               </a>
             </li>
           {%- endfor -%}
@@ -147,6 +151,13 @@
           </a>
         {%- endif -%}
       </div>
+      <div
+        class="mega__products"
+        id="mega-products"
+        aria-live="polite"
+        data-currency="{{ shop.currency }}"
+        hidden
+      ></div>
     </div>
   {%- endif -%}
 

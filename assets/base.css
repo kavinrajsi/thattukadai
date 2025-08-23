@@ -463,6 +463,10 @@ body {
   text-rendering: optimizeLegibility;
   background-color: #f6f6f6;
 }
+body.noscroll {
+  overflow: hidden;
+  height: 100vh;
+}
 
 html,
 body {
@@ -797,6 +801,90 @@ header .site-search form input {
   padding: 12px 32px 12px 12px;
   border: 1px solid #d3d3d3;
   border-radius: 6px;
+}
+
+div.mega.is-open .mega__body {
+  background: var(--color-white1);
+  padding: 24px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  max-width: 320px;
+}
+div.mega.is-open .mega__body .mega__list li a {
+  display: flex;
+  align-items: center;
+  position: relative;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
+  /* Neutral/Black1 */
+  color: #2a2a2a;
+  margin-bottom: 16px;
+  position: relative;
+}
+div.mega.is-open .mega__body .mega__list li a span {
+  flex: 1 0 auto;
+}
+div.mega.is-open .mega__body .mega__list li a:after {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20"><path stroke="%232A2A2A" stroke-linecap="round" stroke-width="1.5" d="m8 5 5.284 4.624a.5.5 0 0 1 0 .752L8 15"/></svg>');
+}
+div.mega.is-open .mega__body .mega__cta {
+  margin-top: 80px;
+  text-align: center;
+  padding: 8px 32px;
+  /* Primary/Yellow */
+  background: #fad75f;
+  border-radius: 24px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  /* identical to box height, or 129% */
+  /* Neutral/Black1 */
+  color: #2a2a2a;
+}
+div.mega.is-open .mega__products[hidden] {
+  display: none;
+}
+div.mega.is-open .mega__products {
+  padding: 16px 0;
+}
+div.mega.is-open .mega__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+div.mega.is-open .mega__card {
+  text-decoration: none;
+  display: block;
+}
+div.mega.is-open .mega__card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+div.mega.is-open .mega__card-title {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.3;
+}
+div.mega.is-open .mega__card-price {
+  font-size: 14px;
+  opacity: 0.8;
+}
+@media (max-width: 900px) {
+  div.mega.is-open .mega__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 body.index.drawer-open {
