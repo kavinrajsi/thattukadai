@@ -1,51 +1,56 @@
 {% comment %}
   sections/header.liquid
-  A self-contained, accessible header with:
-  - Logo (image or store name fallback)
-  - Main navigation (from a menu setting)
-  - Predictive search (powered by /search/suggest.json)
-  - Cart icon with live item count
-{% endcomment %}
-
-{% comment %}
-  Header with centered logo, left/right nav, and a "Shop" mega panel.
-  Settings:
-  - Menu for "Shop" (child links shown in the panel)
-  - Our story link
-  - CTA label + link in panel
-  - Optional logo SVG (inline) or theme logo fallback
+  Updated header structure:
+  Mobile: Burger menu (left) + Logo (center) + Utils (right)
+  Desktop: Shop/Story (left) + Logo (center) + Utils (right)
 {% endcomment %}
 
 <section class="site-header" data-header>
   <div class="site-header__inner">
-    {%- comment -%} LEFT NAV {%- endcomment -%}
+    <!-- LEFT NAVIGATION -->
     <nav class="site-nav site-nav--left">
-      {%- if section.settings.shop_menu != blank -%}
-        <button
-          class="nav-pill"
-          data-shop-toggle
-          aria-expanded="false"
-          aria-controls="shop-panel"
-          type="button"
-        >
-          <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
-          <span class="nav-pill__plus" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" fill="none" viewBox="0 0 14 15">
-              <path fill="#2A2A2A" d="M7 14.75a.951.951 0 0 1-.951-.951V1.7a.951.951 0 1 1 1.902 0v12.1a.951.951 0 0 1-.951.95Z"/>
-              <path fill="#2A2A2A" d="M13.049 8.701H.95a.951.951 0 1 1 0-1.902h12.1a.951.951 0 1 1 0 1.902Z"/>
-            </svg>
-          </span>
-        </button>
-      {%- endif -%}
+      <!-- Mobile: Burger Menu (shows on mobile only) -->
+      <button
+        class="menu-icon mobile-only"
+        type="button"
+        aria-label="{{ section.settings.shop_label | default: 'Open menu' }}"
+        aria-controls="mobile-menu-panel"
+        data-mobile-toggle
+      >
+        <div class="menu-icon__line menu-icon__line--top"></div>
+        <div class="menu-icon__line menu-icon__line--middle"></div>
+        <div class="menu-icon__line menu-icon__line--bottom"></div>
+      </button>
 
-      {%- if section.settings.our_story_link != blank -%}
-        <a class="site-link" href="{{ section.settings.our_story_link }}">
-          {{ section.settings.our_story_label | default: 'Our story' }}
-        </a>
-      {%- endif -%}
+      <!-- Desktop: Shop + Our Story (shows on desktop only) -->
+      <div class="desktop-nav desktop-only">
+        {%- if section.settings.shop_menu != blank -%}
+          <button
+            class="nav-pill"
+            data-shop-toggle
+            aria-expanded="false"
+            aria-controls="shop-panel"
+            type="button"
+          >
+            <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
+            <span class="nav-pill__plus" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" fill="none" viewBox="0 0 14 15">
+                <path fill="#2A2A2A" d="M7 14.75a.951.951 0 0 1-.951-.951V1.7a.951.951 0 1 1 1.902 0v12.1a.951.951 0 0 1-.951.95Z"/>
+                <path fill="#2A2A2A" d="M13.049 8.701H.95a.951.951 0 1 1 0-1.902h12.1a.951.951 0 1 1 0 1.902Z"/>
+              </svg>
+            </span>
+          </button>
+        {%- endif -%}
+
+        {%- if section.settings.our_story_link != blank -%}
+          <a class="site-link" href="{{ section.settings.our_story_link }}">
+            {{ section.settings.our_story_label | default: 'Our story' }}
+          </a>
+        {%- endif -%}
+      </div>
     </nav>
 
-    {%- comment -%} CENTER LOGO {%- endcomment -%}
+    <!-- CENTER LOGO -->
     <a class="site-logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
       {%- if section.settings.logo_svg != blank -%}
         {{ section.settings.logo_svg }}
@@ -62,7 +67,7 @@
       {%- endif -%}
     </a>
 
-    {%- comment -%} RIGHT NAV (search/account/cart) {%- endcomment -%}
+    <!-- RIGHT NAVIGATION (same for mobile and desktop) -->
     <nav class="site-nav site-nav--right" aria-label="Utilities">
       <button class="icon-link js-search-toggle" aria-label="search" type="button">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="none" viewBox="0 0 21 21">
@@ -106,39 +111,68 @@
       </button>
     </nav>
   </div>
-  {%- comment -%} MEGA PANEL {%- endcomment -%}
-  {%- if section.settings.shop_menu != blank -%}
-    <div class="mega" id="shop-panel" hidden>
-      {% comment %}
-        <div class="mega__chrome">
 
-            <button
-              class="nav-pill nav-pill--active"
-              data-shop-toggle
-              aria-expanded="true"
-              aria-controls="shop-panel"
-              type="button"
-            >
-              <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
-              <span class="nav-pill__plus" aria-hidden="true">×</span>
-            </button>
+  <!-- MOBILE MENU PANEL (Full screen overlay for mobile burger menu) -->
+  <div class="mobile-menu" id="mobile-menu-panel" hidden>
+    <div class="mobile-menu__header">
+      <button
+        class="mobile-menu__close"
+        type="button"
+        data-mobile-toggle
+        aria-label="Close menu"
+      >
+        <span>×</span>
+      </button>
+    </div>
 
-            {%- if section.settings.our_story_link != blank -%}
-              <a class="site-link" href="{{ section.settings.our_story_link }}">
-                {{ section.settings.our_story_label | default: 'Our story' }}
-              </a>
-            {%- endif -%}
+    <div class="mobile-menu__body">
+      <!-- Shop section in mobile -->
+      {%- if section.settings.shop_menu != blank -%}
+        <div class="mobile-menu__section">
+          <button
+            class="mobile-menu__toggle"
+            data-mobile-shop-toggle
+            aria-expanded="false"
+            type="button"
+          >
+            <span>{{ section.settings.shop_label | default: 'Shop' }}</span>
+            <span class="mobile-menu__plus" aria-hidden="true">+</span>
+          </button>
 
+          <div class="mobile-menu__submenu" data-mobile-shop-menu hidden>
+            {%- assign menu = section.settings.shop_menu | linklist -%}
+            <ul>
+              {%- for link in menu.links -%}
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
         </div>
-      {% endcomment %}
+      {%- endif -%}
 
+      <!-- Our Story in mobile -->
+      {%- if section.settings.our_story_link != blank -%}
+        <div class="mobile-menu__section">
+          <a class="mobile-menu__link" href="{{ section.settings.our_story_link }}">
+            {{ section.settings.our_story_label | default: 'Our story' }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- DESKTOP SHOP MEGA PANEL (existing shop panel) -->
+  {%- if section.settings.shop_menu != blank -%}
+    <div class="mega desktop-only" id="shop-panel" hidden>
       <div class="mega__body">
         {%- assign menu = section.settings.shop_menu | linklist -%}
         <ul class="mega__list" role="menu" aria-label="{{ section.settings.shop_label | default: 'Shop' }}">
           {%- for link in menu.links -%}
             <li role="none">
               <a role="menuitem" href="{{ link.url }}">
-                <span> {{ link.title }} </span>
+                <span>{{ link.title }}</span>
               </a>
             </li>
           {%- endfor -%}
@@ -151,7 +185,6 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} Products preview container (top 8) {%- endcomment -%}
       <div
         class="mega__products"
         id="mega-products"
@@ -162,10 +195,11 @@
     </div>
   {%- endif -%}
 
+  <!-- BACKDROP -->
   <button class="backdrop" type="button" data-backdrop hidden aria-label="Close menu"></button>
 </section>
 
-<!-- Hidden predictive search bar -->
+<!-- SEARCH PANEL (unchanged) -->
 <section class="site-search" id="site-search" hidden>
   <predictive-search>
     <form action="{{ routes.search_url }}" method="get" role="search">
@@ -178,7 +212,6 @@
       >
       <button type="submit">Go</button>
     </form>
-    <!-- Results will be injected here -->
     <div id="predictive-search" class="predictive-search-results" hidden></div>
   </predictive-search>
 </section>
@@ -203,16 +236,12 @@
       "label": "Header height",
       "default": 88
     },
-
     { "type": "link_list", "id": "shop_menu", "label": "Shop menu", "info": "Child links appear in the mega panel." },
     { "type": "text", "id": "shop_label", "label": "Shop label", "default": "Shop" },
-
     { "type": "url", "id": "our_story_link", "label": "Our story link" },
     { "type": "text", "id": "our_story_label", "label": "Our story label", "default": "Our story" },
-
     { "type": "text", "id": "cta_label", "label": "Panel CTA label", "default": "Contact Us" },
     { "type": "url", "id": "cta_link", "label": "Panel CTA link" },
-
     { "type": "color", "id": "chrome_bg", "label": "Panel chrome background", "default": "#e5e5e5" },
     { "type": "color", "id": "cta_bg", "label": "CTA background", "default": "#FAD75F" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#2b2b2b" }
