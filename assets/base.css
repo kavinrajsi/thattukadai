@@ -3025,4 +3025,32 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   /* Neutral/Black1 */
   color: #2a2a2a;
 }
+
+.homepage-slider__owl {
+  padding-bottom: 48px;
+}
+.homepage-slider__owl .owl-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 84px;
+  gap: 8px;
+}
+.homepage-slider__owl .owl-dot {
+  padding: 0 4px;
+}
+.homepage-slider__owl .owl-dot span {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  /* Neutral/White2 */
+  background: #f6f6f6;
+  border-radius: 50%;
+}
+.homepage-slider__owl .owl-dot.active span {
+  background: #fad75f;
+}
 /*# sourceMappingURL=base.css.map */

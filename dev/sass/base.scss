@@ -67,3 +67,34 @@
 		}
 	}
 }
+
+.homepage-slider__owl {
+	padding-bottom: 48px;
+	.owl-dots {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 84px;
+		gap: 8px;
+	}
+	.owl-dot {
+		padding: 0 4px;
+		span {
+			display: inline-block;
+			width: 14px;
+			height: 14px;
+
+			/* Neutral/White2 */
+			background: #f6f6f6;
+			border-radius: 50%;
+		}
+		&.active {
+			span {
+				background: #fad75f;
+			}
+		}
+	}
+}
