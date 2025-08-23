@@ -256,11 +256,9 @@
         if (isExpanded) {
           $toggle.attr('aria-expanded', 'false');
           $menu.prop('hidden', true).removeClass('is-open');
-          $toggle.find('.mobile-menu__plus').text('+');
         } else {
           $toggle.attr('aria-expanded', 'true');
           $menu.prop('hidden', false).addClass('is-open');
-          $toggle.find('.mobile-menu__plus').text('−');
         }
       });
 
