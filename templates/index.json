@@ -191,6 +191,34 @@
         "btn_bg": "#ffffff",
         "btn_text": "#111111"
       }
+    },
+    "video_snippet_jwfMTx": {
+      "type": "video-snippet",
+      "blocks": {
+        "video_block_LLEAap": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-1.mp4",
+            "video_link": ""
+          }
+        },
+        "video_block_ghpttF": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-2.mp4",
+            "video_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_block_LLEAap",
+        "video_block_ghpttF"
+      ],
+      "name": "Video Snippet",
+      "settings": {
+        "chip_text": "Featured",
+        "title": "Our Latest Videos"
+      }
     }
   },
   "order": [
@@ -198,6 +226,7 @@
     "best_sellers_hULKcC",
     "main_product_features_k3UDje",
     "image_text_QyhkJT",
-    "promo_cta_j3r8KR"
+    "promo_cta_j3r8KR",
+    "video_snippet_jwfMTx"
   ]
 }
