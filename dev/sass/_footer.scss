@@ -107,6 +107,10 @@
 			display: flex;
 			flex-wrap: wrap;
 			gap: 20px;
+			flex-direction: column;
+			@media (min-width: 768px) {
+				flex-direction: row;
+			}
 		}
 		&-menu {
 			@media (min-width: 768px) {
@@ -114,6 +118,7 @@
 				max-width: calc(33.333% - 20px);
 			}
 			&-title {
+				padding-bottom: 8px;
 				font-family: "DM Sans";
 				font-size: 16px;
 				font-weight: 700;
@@ -121,7 +126,6 @@
 				line-height: 21px;
 				/* identical to box height */
 				/* Neutral/Black2 */
-
 				color: #161a1d;
 			}
 			&-link {
@@ -222,6 +226,10 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+			flex-direction: column;
+			@media (min-width: 768px) {
+				flex-direction: row;
+			}
 		}
 
 		&__copyright ,

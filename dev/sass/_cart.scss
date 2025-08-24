@@ -33,6 +33,7 @@
 			display: flex;
 			padding-bottom: 16px;
 			gap: 20px;
+			align-items: flex-end;
 			p {
 				strong {
 					/* Body1 */
@@ -144,7 +145,7 @@
 	.cart-item {
 		display: grid;
 		align-items: center;
-		padding: 24px 0;
+		padding: 24px 24px;
 		border-bottom: 1px solid #d3d3d3;
 		grid-template-columns: calc(100% - 90px) 80px;
 		gap: 0 10px;
@@ -266,7 +267,9 @@
 
 		height: 100%;
 		@media (min-width: 768px) {
-			display: block;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			flex: 0 0 120px;
 			max-width: 120px;
 			max-width: initial;
@@ -294,6 +297,9 @@
 		height: 100%;
 
 		@media (min-width: 768px) {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			max-width: initial;
 			text-align: center;
 		}
@@ -382,6 +388,9 @@
 			/* Neutral/Black2 */
 
 			color: #161a1d;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
 		}
 	}
 }

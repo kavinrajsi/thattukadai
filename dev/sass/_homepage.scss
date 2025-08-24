@@ -3,7 +3,13 @@
 	padding: 32px 0;
 	display: grid;
 	gap: 20px;
-	grid-template-columns: repeat(6, 1fr);
+	align-items: flex-start;
+	justify-content: center;
+	grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+
+	@media (min-width: 768px) {
+		grid-template-columns: repeat(auto-fill, minmax(14%, 1fr));
+	}
 	.product-feature {
 		display: flex;
 		flex-direction: column;
@@ -30,12 +36,24 @@
 
 .image-content--section {
 	margin-top: 80px;
-	padding: 32px 0;
+	padding-top: 32px;
+	padding-bottom: 32px;
 	display: flex;
+	gap: 32px;
 	justify-content: space-between;
 	align-items: center;
+	flex-direction: column;
+
+	@media (min-width: 768px) {
+		flex-direction: row;
+	}
 	.image-content__inner {
+		order: -1;
 		max-width: 525px;
+
+		@media (min-width: 768px) {
+			order: initial;
+		}
 	}
 	.image-content__eyebrow {
 		/* Frame 2 */
@@ -105,17 +123,34 @@
 .promo-cta--full {
 	background-color: var(--color-yellow2);
 	border-radius: 20px;
+	width: calc(100% - 40px);
+	margin: 0 20px;
+	@media (min-width: 968px) {
+		margin: 0 auto;
+	}
 
 	.promo-cta__grid.promo-cta__grid--image-left {
 		display: flex;
 		gap: 20px;
+		flex-direction: column-reverse;
+
+		@media (min-width: 768px) {
+			justify-content: center;
+			flex-direction: row;
+		}
 	}
 	.promo-cta__content {
 		display: flex;
 		gap: 20px;
-		align-items: center;
-		justify-content: space-between;
-		flex: 1;
+		flex-direction: column;
+		align-items: flex-start;
+
+		@media (min-width: 768px) {
+			flex: 1;
+			align-items: center;
+			justify-content: space-between;
+			flex-direction: row;
+		}
 
 		.promo-cta__title {
 			font-family: "Neilvard One";
@@ -156,4 +191,9 @@
 			color: #2a2a2a;
 		}
 	}
+}
+
+
+.video-snippet {
+	display: none;
 }

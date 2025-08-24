@@ -6,7 +6,9 @@ body.product {
 			overflow: hidden;
 			display: grid;
 			gap: 20px;
-			grid-template-columns: 446px calc(100% - 446px);
+			@media (min-width: 968px) {
+				grid-template-columns: 446px calc(100% - 446px);
+			}
 		}
 		.product__image-col {
 			max-width: 446px;
@@ -15,16 +17,22 @@ body.product {
 				gap: 8px;
 				grid-template-columns: 1fr;
 
-				&:has(.pm-thumbs-swiper) {
-					grid-template-columns: 74px 1fr;
+				@media (min-width: 768px) {
+					&:has(.pm-thumbs-swiper) {
+						grid-template-columns: 74px 1fr;
+					}
 				}
 
 				.pm-thumbs-swiper {
 					.swiper-wrapper {
 						display: flex;
-						flex-direction: column;
 						gap: 8px;
+						flex-direction: row;
+						@media (min-width: 768px) {
+							flex-direction: column;
+						}
 						.swiper-slide {
+							width: auto;
 							height: auto;
 						}
 					}
@@ -32,11 +40,16 @@ body.product {
 					picture ,
 					img {
 						border-radius: 8px;
-						width: 100%;
+						width: 74px;
+						display: inline-block;
 					}
 				}
 				.pm-main-swiper {
+					order: -1;
 					width: calc(446px - 74px - 8px);
+					@media (min-width: 768px) {
+						order: initial;
+					}
 					a {
 						display: block;
 						width: 100%;
@@ -47,6 +60,10 @@ body.product {
 						border-radius: 20px;
 						overflow: hidden;
 						width: 100%;
+					}
+					video {
+						width: auto;
+						height: 392px;
 					}
 				}
 
@@ -62,7 +79,9 @@ body.product {
 			}
 		}
 		.product__info-col {
-			padding-left: 64px;
+			@media (min-width: 968px) {
+				padding-left: 64px;
+			}
 			.product__title {
 				/* Desktop_H3 */
 				font-family: "Neilvard One";
@@ -264,8 +283,12 @@ body.product {
 			.product__actionWrapper {
 				display: flex;
 				gap: 8px;
-				align-items: flex-end;
+				flex-direction: column;
 
+				@media (min-width: 768px) {
+					align-items: flex-end;
+					flex-direction: row;
+				}
 				.product-qty {
 					label {
 						display: block;
@@ -370,7 +393,9 @@ body.product {
 
 				/* Neutral/Black1 */
 				color: #2a2a2a;
-				max-width: 394px;
+				@media (min-width: 768px) {
+					max-width: 394px;
+				}
 			}
 		}
 	}

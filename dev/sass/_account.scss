@@ -21,6 +21,7 @@
 	}
 
 	.heading--1 {
+		padding-bottom: 48px;
 		/* Desktop_H2 */
 		font-family: "Neilvard One";
 		font-size: 32px;
@@ -30,12 +31,10 @@
 		padding-bottom: 24px;
 		text-align: left;
 		/* Neutral/Black2 */
-
 		color: #161a1d;
 		@media (min-width: 768px) {
 			text-align: center;
 		}
-		padding-bottom: 48px;
 	}
 	form {
 		label {
