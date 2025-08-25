@@ -10,7 +10,7 @@ document.querySelectorAll('.swiper-gallery').forEach((gallery) => {
   });
 
   new Swiper(gallery.querySelector('.pm-main-swiper'), {
-    spaceBetween: 10,
+    spaceBetween: 0,
     navigation: {
       nextEl: gallery.querySelector('.swiper-button-next'),
       prevEl: gallery.querySelector('.swiper-button-prev'),

@@ -105,3 +105,61 @@ document.addEventListener('DOMContentLoaded', function () {
     },
   });
 });
+
+$(document).ready(function () {
+  var BREAKPOINT = 767;
+
+  function isMobile() {
+    return $(window).width() <= BREAKPOINT;
+  }
+
+  function initAccordion() {
+    $('.footer__navigtion-menu').each(function () {
+      var $menu = $(this);
+      var $trigger = $menu.find('[data-acc-trigger]');
+      var $panel = $menu.find('[data-acc-panel]');
+
+      if (!$trigger.length || !$panel.length) return;
+
+      if (isMobile()) {
+        // collapse all by default
+        $menu.removeClass('is-open');
+        $trigger.attr('aria-expanded', 'false');
+        $panel.attr('hidden', true);
+      } else {
+        // desktop: always open
+        $menu.addClass('is-open');
+        $trigger.attr('aria-expanded', 'true');
+        $panel.removeAttr('hidden');
+      }
+
+      // avoid rebinding multiple times
+      if (!$trigger.data('bound')) {
+        $trigger.on('click', function () {
+          if (!isMobile()) return; // ignore desktop
+          var expanded = $trigger.attr('aria-expanded') === 'true';
+          if (expanded) {
+            $menu.removeClass('is-open');
+            $trigger.attr('aria-expanded', 'false');
+            $panel.attr('hidden', true);
+          } else {
+            $menu.addClass('is-open');
+            $trigger.attr('aria-expanded', 'true');
+            $panel.removeAttr('hidden');
+          }
+        });
+        $trigger.data('bound', true);
+      }
+    });
+  }
+
+  // run on load
+  initAccordion();
+
+  // run again when resizing
+  var resizeTimer;
+  $(window).on('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(initAccordion, 150);
+  });
+});

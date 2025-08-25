@@ -106,9 +106,10 @@
 		&-lists {
 			display: flex;
 			flex-wrap: wrap;
-			gap: 20px;
 			flex-direction: column;
+			gap: 8px;
 			@media (min-width: 768px) {
+				gap: 20px;
 				flex-direction: row;
 			}
 		}
@@ -127,6 +128,23 @@
 				/* identical to box height */
 				/* Neutral/Black2 */
 				color: #161a1d;
+				border-bottom: 1px solid #d3d3d3;
+				margin-bottom: 8px;
+
+				@media (min-width: 768px) {
+					margin-bottom: 0;
+					border-bottom: 0;
+				}
+				.footer__accordion-trigger {
+					display: flex;
+					justify-content: space-between;
+					width: 100%;
+					@media (min-width: 768px) {
+						.footer__accordion-icon {
+							display: none;
+						}
+					}
+				}
 			}
 			&-link {
 				font-family: "DM Sans";

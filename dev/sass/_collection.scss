@@ -51,8 +51,7 @@
 				flex-direction: row;
 			}
 		}
-		li span ,
-		a {
+		li a {
 			padding: 16px 32px;
 			/* Neutral/White1 */
 			background: #ffffff;
@@ -72,13 +71,35 @@
 			@media (min-width: 768px) {
 				text-align: left;
 			}
+			&.active {
+				background-color: var(--color-yellow2);
+			}
 		}
 		li span {
+			padding: 16px 32px;
+			/* Neutral/White1 */
+			background: #ffffff;
+			/* Primary/yellow2 */
+			border: 1px solid #f6ca30;
+			border-radius: 24px;
+			font-family: "DM Sans";
+			font-style: normal;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 18px;
+			/* identical to box height, or 129% */
+			/* Neutral/Black1 */
+			color: #2a2a2a;
+			width: 100%;
 			display: flex;
 			align-items: center;
 			border: 0;
 			background-color: transparent;
 			justify-content: center;
+			text-align: center;
+			@media (min-width: 768px) {
+				text-align: left;
+			}
 		}
 	}
 }
@@ -222,4 +243,8 @@
 			height: 40px;
 		}
 	}
+}
+
+#main-collection {
+	scroll-margin-top: 220px;
 }

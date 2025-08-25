@@ -43,10 +43,27 @@
               <nav class="footer__navigtion-menu" aria-labelledby="footer-menu-{{ forloop.index }}">
                 {% if block.settings.label != blank %}
                   <h4 class="footer__navigtion-menu-title" id="footer-menu-{{ forloop.index }}">
-                    {{ block.settings.label }}
+                    <button
+                      class="footer__accordion-trigger"
+                      type="button"
+                      aria-expanded="false"
+                      aria-controls="footer-panel-{{ forloop.index }}"
+                      data-acc-trigger
+                    >
+                      {{ block.settings.label }}
+                      <span class="footer__accordion-icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="#000" stroke-linecap="round" stroke-width="1.5" d="m5 8 6.624 7.57a.5.5 0 0 0 .752 0L19 8"/>
+                        </svg>
+                      </span>
+                    </button>
                   </h4>
                 {% endif %}
-                <ul class="footer__navigtion-menu-items">
+                <ul
+                  class="footer__navigtion-menu-items"
+                  id="footer-panel-{{ forloop.index }}"
+                  data-acc-panel
+                >
                   {% for link in menu.links %}
                     <li class="footer__navigtion-menu-item">
                       <a class="footer__navigtion-menu-link" href="{{ link.url }}">{{ link.title }}</a>

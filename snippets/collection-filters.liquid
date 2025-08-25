@@ -1,0 +1,568 @@
+<!-- collection.liquid -->
+<div class="collection-container">
+  <!-- Collection Navigation -->
+  <div class="collection-nav">
+    <h3>Collections</h3>
+    <ul class="collection-list">
+      {% for collection in collections %}
+        {% if collection.products.size > 0 %}
+          <li>
+            <a
+              href="#"
+              class="collection-link {% if collection.handle == collection.handle %}active{% endif %}"
+              data-collection-handle="{{ collection.handle }}"
+              data-collection-id="{{ collection.id }}"
+            >
+              {{ collection.title }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Collection Content -->
+  <div class="collection-content" id="collection-content">
+    <!-- Collection Header -->
+    <div class="collection-header">
+      {% if collection.image %}
+        <div class="collection-image">
+          <img
+            src="{{ collection.image | img_url: '800x400' }}"
+            alt="{{ collection.title }}"
+            id="collection-img"
+          >
+        </div>
+      {% endif %}
+
+      <div class="collection-info">
+        <h1 class="collection-title" id="collection-title">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+          <div class="collection-description" id="collection-description">
+            {{ collection.description }}
+          </div>
+        {% endif %}
+        <div class="collection-template" id="collection-template">
+          Template: {{ collection.template_suffix | default: 'Default' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-container" id="products-container">
+      <div class="products-grid" id="products-grid">
+        {% paginate collection.products by 12 %}
+          {% for product in collection.products %}
+            <div class="product-item">
+              <a href="{{ product.url }}">
+                {% if product.featured_image %}
+                  <div class="product-image">
+                    <img
+                      src="{{ product.featured_image | img_url: '300x300' }}"
+                      alt="{{ product.title }}"
+                      loading="lazy"
+                    >
+                  </div>
+                {% endif %}
+                <div class="product-info">
+                  <h3 class="product-title">{{ product.title }}</h3>
+                  <div class="product-price">
+                    {% if product.compare_at_price > product.price %}
+                      <span class="price-compare">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                    <span class="price">{{ product.price | money }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% endpaginate %}
+      </div>
+
+      <!-- Pagination -->
+      {% if paginate.pages > 1 %}
+        <div class="pagination-container" id="pagination-container">
+          <nav class="pagination">
+            {% if paginate.previous %}
+              <a href="#" class="pagination-link" data-page="{{ paginate.previous.url | split: 'page=' | last }}">
+                &laquo; Previous
+              </a>
+            {% endif %}
+
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <a href="#" class="pagination-link" data-page="{{ part.url | split: 'page=' | last }}">
+                  {{ part.title }}
+                </a>
+              {% else %}
+                {% if part.title == paginate.current_page %}
+                  <span class="pagination-current">{{ part.title }}</span>
+                {% else %}
+                  <span class="pagination-gap">{{ part.title }}</span>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+
+            {% if paginate.next %}
+              <a href="#" class="pagination-link" data-page="{{ paginate.next.url | split: 'page=' | last }}">
+                Next &raquo;
+              </a>
+            {% endif %}
+          </nav>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="loading-spinner" id="loading-spinner" style="display: none;">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div>
+</div>
+
+<style>
+  .collection-container {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .collection-nav {
+    flex: 0 0 250px;
+    background: #f8f8f8;
+    padding: 1.5rem;
+    border-radius: 8px;
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+  }
+
+  .collection-nav h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .collection-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .collection-list li {
+    margin-bottom: 0.5rem;
+  }
+
+  .collection-link {
+    display: block;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: #666;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .collection-link:hover {
+    background: #e0e0e0;
+    color: #333;
+  }
+
+  .collection-link.active {
+    background: #007acc;
+    color: white;
+  }
+
+  .collection-content {
+    flex: 1;
+    position: relative;
+  }
+
+  .collection-header {
+    margin-bottom: 2rem;
+  }
+
+  .collection-image {
+    margin-bottom: 1rem;
+  }
+
+  .collection-image img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .collection-info h1 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+    color: #333;
+  }
+
+  .collection-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .collection-template {
+    font-size: 0.9rem;
+    color: #999;
+    font-style: italic;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .product-item {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .product-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .product-info {
+    padding: 1rem;
+  }
+
+  .product-title {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem 0;
+    color: #333;
+  }
+
+  .product-price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .price-compare {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  .price {
+    font-weight: bold;
+    color: #007acc;
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pagination-link {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #007acc;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .pagination-link:hover {
+    background: #007acc;
+    color: white;
+  }
+
+  .pagination-current {
+    padding: 0.5rem 1rem;
+    background: #007acc;
+    color: white;
+    border-radius: 4px;
+  }
+
+  .pagination-gap {
+    padding: 0.5rem;
+    color: #999;
+  }
+
+  .loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 1rem;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007acc;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .collection-container {
+      flex-direction: column;
+    }
+
+    .collection-nav {
+      flex: none;
+      position: static;
+    }
+
+    .products-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .collection-info h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const collectionLinks = document.querySelectorAll('.collection-link');
+    const collectionContent = document.getElementById('collection-content');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    let currentPage = 1;
+    let currentCollection = '';
+
+    // Set initial active collection
+    const currentCollectionHandle = window.location.pathname.split('/collections/')[1] || '';
+    if (currentCollectionHandle) {
+      setActiveCollection(currentCollectionHandle);
+    }
+
+    // Collection link click handler
+    collectionLinks.forEach((link) => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const collectionHandle = this.dataset.collectionHandle;
+
+        if (collectionHandle !== currentCollection) {
+          currentCollection = collectionHandle;
+          currentPage = 1;
+          setActiveCollection(collectionHandle);
+          loadCollection(collectionHandle, 1);
+
+          // Update URL without page reload
+          history.pushState({}, '', `/collections/${collectionHandle}`);
+        }
+      });
+    });
+
+    // Pagination click handler
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('pagination-link')) {
+        e.preventDefault();
+        const page = parseInt(e.target.dataset.page) || 1;
+        if (page !== currentPage && currentCollection) {
+          currentPage = page;
+          loadCollection(currentCollection, page);
+        }
+      }
+    });
+
+    function setActiveCollection(handle) {
+      // Remove active class from all links
+      collectionLinks.forEach((link) => {
+        link.classList.remove('active');
+      });
+
+      // Add active class to current collection
+      const activeLink = document.querySelector(`[data-collection-handle="${handle}"]`);
+      if (activeLink) {
+        activeLink.classList.add('active');
+      }
+    }
+
+    function loadCollection(handle, page = 1) {
+      // Show loading spinner
+      loadingSpinner.style.display = 'block';
+      collectionContent.style.opacity = '0.5';
+
+      // Construct URL with page parameter
+      let url = `/collections/${handle}`;
+      if (page > 1) {
+        url += `?page=${page}`;
+      }
+
+      fetch(url, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then((html) => {
+          // Parse the response HTML
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          // Update collection header
+          updateCollectionHeader(doc);
+
+          // Update products grid
+          updateProductsGrid(doc);
+
+          // Update pagination
+          updatePagination(doc);
+
+          // Hide loading spinner
+          loadingSpinner.style.display = 'none';
+          collectionContent.style.opacity = '1';
+
+          // Scroll to top of collection content
+          collectionContent.scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch((error) => {
+          console.error('Error loading collection:', error);
+          loadingSpinner.style.display = 'none';
+          collectionContent.style.opacity = '1';
+
+          // Show error message
+          const productsGrid = document.getElementById('products-grid');
+          productsGrid.innerHTML =
+            '<div style="text-align: center; padding: 2rem; color: #666;">Error loading collection. Please try again.</div>';
+        });
+    }
+
+    function updateCollectionHeader(doc) {
+      // Update collection image
+      const newImage = doc.querySelector('#collection-img');
+      const currentImage = document.getElementById('collection-img');
+      if (newImage && currentImage) {
+        currentImage.src = newImage.src;
+        currentImage.alt = newImage.alt;
+      } else if (newImage && !currentImage) {
+        // Add image if it doesn't exist
+        const imageContainer = document.querySelector('.collection-image');
+        if (imageContainer) {
+          imageContainer.innerHTML = newImage.outerHTML;
+        }
+      } else if (!newImage && currentImage) {
+        // Remove image if new collection doesn't have one
+        const imageContainer = document.querySelector('.collection-image');
+        if (imageContainer) {
+          imageContainer.remove();
+        }
+      }
+
+      // Update collection title
+      const newTitle = doc.querySelector('#collection-title');
+      const currentTitle = document.getElementById('collection-title');
+      if (newTitle && currentTitle) {
+        currentTitle.textContent = newTitle.textContent;
+      }
+
+      // Update collection description
+      const newDescription = doc.querySelector('#collection-description');
+      const currentDescription = document.getElementById('collection-description');
+      if (newDescription && currentDescription) {
+        currentDescription.innerHTML = newDescription.innerHTML;
+      } else if (newDescription && !currentDescription) {
+        // Add description if it doesn't exist
+        const collectionInfo = document.querySelector('.collection-info');
+        if (collectionInfo) {
+          const titleElement = collectionInfo.querySelector('.collection-title');
+          titleElement.insertAdjacentHTML('afterend', newDescription.outerHTML);
+        }
+      } else if (!newDescription && currentDescription) {
+        // Remove description if new collection doesn't have one
+        currentDescription.remove();
+      }
+
+      // Update collection template
+      const newTemplate = doc.querySelector('#collection-template');
+      const currentTemplate = document.getElementById('collection-template');
+      if (newTemplate && currentTemplate) {
+        currentTemplate.textContent = newTemplate.textContent;
+      }
+    }
+
+    function updateProductsGrid(doc) {
+      const newProductsGrid = doc.querySelector('#products-grid');
+      const currentProductsGrid = document.getElementById('products-grid');
+
+      if (newProductsGrid && currentProductsGrid) {
+        currentProductsGrid.innerHTML = newProductsGrid.innerHTML;
+      }
+    }
+
+    function updatePagination(doc) {
+      const newPagination = doc.querySelector('#pagination-container');
+      const currentPagination = document.getElementById('pagination-container');
+
+      if (newPagination && currentPagination) {
+        currentPagination.innerHTML = newPagination.innerHTML;
+      } else if (newPagination && !currentPagination) {
+        // Add pagination if it doesn't exist
+        const productsContainer = document.getElementById('products-container');
+        productsContainer.insertAdjacentHTML('beforeend', newPagination.outerHTML);
+      } else if (!newPagination && currentPagination) {
+        // Remove pagination if new collection doesn't need it
+        currentPagination.remove();
+      }
+    }
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function (event) {
+      const currentPath = window.location.pathname;
+      const collectionHandle = currentPath.split('/collections/')[1] || '';
+
+      if (collectionHandle && collectionHandle !== currentCollection) {
+        currentCollection = collectionHandle;
+        setActiveCollection(collectionHandle);
+        loadCollection(collectionHandle, 1);
+      }
+    });
+  });
+</script>
