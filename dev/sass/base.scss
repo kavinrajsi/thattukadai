@@ -13,3 +13,12 @@
 @use "homepage";
 @use "account";
 @use "predictive-search";
+@use "policy";
+
+
+.customers-addresses ,
+.customers-account {
+	padding-top: 120px;
+	max-width: 1200px;
+	margin: 0 auto;
+}

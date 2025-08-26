@@ -130,7 +130,7 @@
 				color: #161a1d;
 				border-bottom: 1px solid #d3d3d3;
 				margin-bottom: 8px;
-
+				cursor: normal;
 				@media (min-width: 768px) {
 					margin-bottom: 0;
 					border-bottom: 0;
@@ -140,6 +140,7 @@
 					justify-content: space-between;
 					width: 100%;
 					@media (min-width: 768px) {
+						cursor: normal;
 						.footer__accordion-icon {
 							display: none;
 						}

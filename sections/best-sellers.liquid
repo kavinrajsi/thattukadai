@@ -15,7 +15,7 @@
       <div class="bestsellers__list owl-carousel" id="bestsellers-{{ section.id }}">
         {% if section.settings.source == 'collection' and section.settings.collection != blank %}
           {% comment %} {% for product in section.settings.collection.products limit: section.settings.product_limit %} {% endcomment %}
-          {% for product in section.settings.collection.products limit: 4 %}
+          {% for product in section.settings.collection.products limit: 8 %}
             {% render 'product-card', product: product %}
           {% endfor %}
         {% else %}

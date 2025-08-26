@@ -2175,6 +2175,7 @@ section#shopify-section-template--19912483438815__slider {
   color: #161a1d;
   border-bottom: 1px solid #d3d3d3;
   margin-bottom: 8px;
+  cursor: normal;
 }
 @media (min-width: 768px) {
   .footer__navigtion-menu-title {
@@ -2188,6 +2189,9 @@ section#shopify-section-template--19912483438815__slider {
   width: 100%;
 }
 @media (min-width: 768px) {
+  .footer__navigtion-menu-title .footer__accordion-trigger {
+    cursor: normal;
+  }
   .footer__navigtion-menu-title .footer__accordion-trigger .footer__accordion-icon {
     display: none;
   }
@@ -3694,5 +3698,76 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   display: block;
   opacity: 1;
   pointer-events: all;
+}
+
+.shopify-policy__container {
+  padding-top: 120px;
+  padding-bottom: 40px;
+  padding-bottom: 56px;
+  max-width: 930px;
+  margin: 0 auto;
+}
+.shopify-policy__container .shopify-policy__body {
+  padding-top: 24px;
+  /* Specific typography sizes per heading */
+}
+.shopify-policy__container .shopify-policy__body h1,
+.shopify-policy__container .shopify-policy__body h2,
+.shopify-policy__container .shopify-policy__body h3,
+.shopify-policy__container .shopify-policy__body h4,
+.shopify-policy__container .shopify-policy__body h5,
+.shopify-policy__container .shopify-policy__body h6 {
+  font-style: normal;
+  font-weight: 400;
+  margin: 0 0 20px;
+}
+.shopify-policy__container .shopify-policy__body h1 {
+  font-size: 32px;
+  line-height: 40px;
+}
+.shopify-policy__container .shopify-policy__body h2 {
+  font-size: 28px;
+  line-height: 36px;
+}
+.shopify-policy__container .shopify-policy__body h3 {
+  font-size: 24px;
+  line-height: 32px;
+}
+.shopify-policy__container .shopify-policy__body h4 {
+  font-size: 20px;
+  line-height: 28px;
+}
+.shopify-policy__container .shopify-policy__body h5 {
+  font-size: 18px;
+  line-height: 24px;
+}
+.shopify-policy__container .shopify-policy__body h6 {
+  font-size: 16px;
+  line-height: 20px;
+}
+.shopify-policy__container .shopify-policy__body p,
+.shopify-policy__container .shopify-policy__body span,
+.shopify-policy__container .shopify-policy__body li,
+.shopify-policy__container .shopify-policy__body a,
+.shopify-policy__container .shopify-policy__body div {
+  /* Body1 */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  /* Primary/Red3 */
+}
+.shopify-policy__container .shopify-policy__body li,
+.shopify-policy__container .shopify-policy__body ul,
+.shopify-policy__container .shopify-policy__body ol,
+.shopify-policy__container .shopify-policy__body p:not(:last-child) {
+  margin: 0 0 16px;
+}
+
+.customers-addresses,
+.customers-account {
+  padding-top: 120px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 /*# sourceMappingURL=base.css.map */
