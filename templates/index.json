@@ -208,11 +208,27 @@
             "video": "shopify://files/videos/video-2.mp4",
             "video_link": ""
           }
+        },
+        "video_block_EpFxpa": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-3.mp4",
+            "video_link": ""
+          }
+        },
+        "video_block_x69QAw": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-5.mp4",
+            "video_link": ""
+          }
         }
       },
       "block_order": [
         "video_block_LLEAap",
-        "video_block_ghpttF"
+        "video_block_ghpttF",
+        "video_block_EpFxpa",
+        "video_block_x69QAw"
       ],
       "name": "Video Snippet",
       "settings": {
