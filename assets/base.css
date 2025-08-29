@@ -3211,10 +3211,6 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   color: #2a2a2a;
 }
 
-.video-snippet {
-  display: none;
-}
-
 .page-customer-register,
 .page-customer-login {
   padding-top: 40px;
