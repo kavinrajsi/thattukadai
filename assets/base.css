@@ -1436,16 +1436,21 @@ body.index.drawer-open {
   color: #0b090a;
 }
 
-.homepage-slider__owl {
+.homepage-slider {
+  position: relative;
+  /* Make SVGs fluid */
+  /* Show mobile by default, swap at breakpoint */
+}
+.homepage-slider .homepage-slider__owl {
   padding-bottom: 48px;
 }
-.homepage-slider__owl .owl-item a {
+.homepage-slider .homepage-slider__owl .owl-item a {
   display: block;
 }
-.homepage-slider__owl .homepage-slider__img {
+.homepage-slider .homepage-slider__owl .homepage-slider__img {
   width: 100%;
 }
-.homepage-slider__owl .owl-dots {
+.homepage-slider .homepage-slider__owl .owl-dots {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1455,10 +1460,10 @@ body.index.drawer-open {
   bottom: 160px;
   gap: 8px;
 }
-.homepage-slider__owl .owl-dot {
+.homepage-slider .homepage-slider__owl .owl-dot {
   padding: 0 4px;
 }
-.homepage-slider__owl .owl-dot span {
+.homepage-slider .homepage-slider__owl .owl-dot span {
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -1466,15 +1471,10 @@ body.index.drawer-open {
   background: #f6f6f6;
   border-radius: 50%;
 }
-.homepage-slider__owl .owl-dot.active span {
+.homepage-slider .homepage-slider__owl .owl-dot.active span {
   background: #fad75f;
 }
-
-section#shopify-section-template--19912483438815__slider {
-  position: relative;
-}
-
-.section-divider {
+.homepage-slider .section-divider {
   position: absolute;
   bottom: 40px;
   z-index: 2;
@@ -1484,31 +1484,26 @@ section#shopify-section-template--19912483438815__slider {
   --divider-color: #f6f6f6; /* default color */
   color: var(--divider-color);
 }
-
-/* Make SVGs fluid */
-.section-divider__svg {
+.homepage-slider .section-divider__svg {
   display: block;
   width: 100%;
   height: auto;
 }
-
-/* Show mobile by default, swap at breakpoint */
-.section-divider__svg--desktop {
+.homepage-slider .section-divider__svg--desktop {
   display: none;
 }
-
-.section-divider__svg--mobile {
+.homepage-slider .section-divider__svg--mobile {
   display: block;
 }
-
 @media (min-width: 768px) {
-  .section-divider__svg--desktop {
+  .homepage-slider .section-divider__svg--desktop {
     display: block;
   }
-  .section-divider__svg--mobile {
+  .homepage-slider .section-divider__svg--mobile {
     display: none;
   }
 }
+
 .product-drawer {
   position: fixed;
   z-index: 9999;
@@ -3765,5 +3760,93 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   padding-top: 120px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.video-snippet {
+  background: #f6ca30;
+  position: relative;
+  margin-top: 120px;
+  padding-top: 40px;
+  padding-bottom: 80px;
+  z-index: 0;
+  /* Make SVGs fluid */
+  /* Show mobile by default, swap at breakpoint */
+}
+.video-snippet .section-divider {
+  position: absolute;
+  top: -80px;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  line-height: 0; /* remove stray gaps */
+  --divider-color: #f6ca30; /* default color */
+  color: var(--divider-color);
+}
+.video-snippet .section-divider__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.video-snippet .section-divider__svg--desktop {
+  display: none;
+}
+.video-snippet .section-divider__svg--mobile {
+  display: block;
+}
+@media (min-width: 768px) {
+  .video-snippet .section-divider__svg--desktop {
+    display: block;
+  }
+  .video-snippet .section-divider__svg--mobile {
+    display: none;
+  }
+}
+.video-snippet .video-snippet__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 40px;
+  padding-bottom: 80px;
+}
+.video-snippet .video-snippet__header .video-snippet__chip {
+  padding: 8px 32px;
+  /* Neutral/White1 */
+  background: #ffffff;
+  border-radius: 50px;
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  /* Desktop_B2 */
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  /* identical to box height, or 114% */
+  /* Neutral/Black2 */
+  color: #161a1d;
+  margin-bottom: 16px;
+}
+.video-snippet .video-snippet__header .video-snippet__title {
+  font-family: "Neilvard One";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+.video-snippet .video-snippet__videos {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.video-snippet .video-snippet__videos video {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 9/16;
 }
 /*# sourceMappingURL=base.css.map */

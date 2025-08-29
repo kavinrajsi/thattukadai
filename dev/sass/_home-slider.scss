@@ -1,76 +1,78 @@
-.homepage-slider__owl {
-	padding-bottom: 48px;
-	.owl-item a {
-		display: block;
-	}
 
-	.homepage-slider__img {
-		width: 100%;
-	}
-	.owl-dots {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 160px;
-		gap: 8px;
-	}
-	.owl-dot {
-		padding: 0 4px;
-		span {
-			display: inline-block;
-			width: 14px;
-			height: 14px;
 
-			/* Neutral/White2 */
-			background: #f6f6f6;
-			border-radius: 50%;
+.homepage-slider {
+	position: relative;
+	.homepage-slider__owl {
+		padding-bottom: 48px;
+		.owl-item a {
+			display: block;
 		}
-		&.active {
+
+		.homepage-slider__img {
+			width: 100%;
+		}
+		.owl-dots {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 160px;
+			gap: 8px;
+		}
+		.owl-dot {
+			padding: 0 4px;
 			span {
-				background: #fad75f;
+				display: inline-block;
+				width: 14px;
+				height: 14px;
+
+				/* Neutral/White2 */
+				background: #f6f6f6;
+				border-radius: 50%;
+			}
+			&.active {
+				span {
+					background: #fad75f;
+				}
 			}
 		}
 	}
-}
 
-section#shopify-section-template--19912483438815__slider {
-	position: relative;
-}
 
-.section-divider {
-	position: absolute;
-	bottom: 40px;
-	z-index: 2;
-	left: 0;
-	right: 0;
-	line-height: 0; /* remove stray gaps */
-	--divider-color: #f6f6f6; /* default color */
-	color: var(--divider-color);
-}
+	.section-divider {
+		position: absolute;
+		bottom: 40px;
+		z-index: 2;
+		left: 0;
+		right: 0;
+		line-height: 0; /* remove stray gaps */
+		--divider-color: #f6f6f6; /* default color */
+		color: var(--divider-color);
+	}
 
-/* Make SVGs fluid */
-.section-divider__svg {
-	display: block;
-	width: 100%;
-	height: auto;
-}
-
-/* Show mobile by default, swap at breakpoint */
-.section-divider__svg--desktop {
-	display: none;
-}
-.section-divider__svg--mobile {
-	display: block;
-}
-
-@media (min-width: 768px) {
-	.section-divider__svg--desktop {
+	/* Make SVGs fluid */
+	.section-divider__svg {
 		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	/* Show mobile by default, swap at breakpoint */
+	.section-divider__svg--desktop {
+		display: none;
 	}
 	.section-divider__svg--mobile {
-		display: none;
+		display: block;
+	}
+
+	@media (min-width: 768px) {
+		.section-divider__svg--desktop {
+			display: block;
+		}
+		.section-divider__svg--mobile {
+			display: none;
+		}
 	}
 }

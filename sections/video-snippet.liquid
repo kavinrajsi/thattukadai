@@ -1,32 +1,67 @@
 <section class="video-snippet">
-  <div class="video-snippet__header">
-    <span class="video-snippet__chip">{{ section.settings.chip_text }}</span>
-    <h2 class="video-snippet__title">{{ section.settings.title }}</h2>
+  <!-- Section Divider -->
+  <div class="section-divider" aria-hidden="true">
+    <!-- Mobile shape -->
+    <svg
+      class="section-divider__svg section-divider__svg--mobile"
+      viewBox="0 0 856 58"
+      preserveAspectRatio="xMidYMid meet"
+      role="presentation"
+    >
+      <g transform="translate(0,58) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+        <path d="M3805 573 c-1099 -22 -2368 -141 -3755 -351 l-45 -7 -3 -108 -3 -107
+          4281 0 4281 0 -3 107 -3 107 -212 32 c-1613 244 -3158 356 -4538 327z"></path>
+      </g>
+    </svg>
+
+    <!-- Desktop shape -->
+    <svg
+      class="section-divider__svg section-divider__svg--desktop"
+      viewBox="0 0 2880 160"
+      preserveAspectRatio="xMidYMid meet"
+      role="presentation"
+    >
+      <g transform="translate(0,160) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+        <path d="M13090 1594 c-1208 -29 -1864 -53 -2820 -104 -2993 -162 -6317 -513
+          -9655 -1021 -253 -38 -495 -75 -537 -81 l-78 -11 0 -189 0 -188 14400 0 14400
+          0 0 188 0 188 -142 22 c-79 12 -294 44 -478 72 -3498 530 -6979 889 -10065
+          1039 -624 31 -1020 46 -1815 72 -295 9 -2910 20 -3210 13z"></path>
+      </g>
+    </svg>
   </div>
 
-  <div class="video-snippet__videos">
-    {% for block in section.blocks %}
-      {% if block.settings.video != blank %}
-        <div class="video-snippet__video">
-          {{ block.settings.video | video_tag: autoplay: false, loop: false, controls: true, muted: false }}
-        </div>
-      {% elsif block.settings.video_link != blank %}
-        <div class="video-snippet__video">
-          <iframe
-            class="video-snippet__iframe"
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/{{ block.settings.video_link | split: 'v=' | last }}?controls=0"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          ></iframe>
-        </div>
-      {% endif %}
-    {% endfor %}
+  <div class="layout__grid-box">
+    <div class="video-snippet__header">
+      <span class="video-snippet__chip">{{ section.settings.chip_text }}</span>
+      <h2 class="video-snippet__title">{{ section.settings.title }}</h2>
+    </div>
+
+    <div class="video-snippet__videos">
+      {% for block in section.blocks %}
+        {% if block.settings.video != blank %}
+          <div class="video-snippet__video">
+            {{ block.settings.video | video_tag: autoplay: false, loop: false, controls: true, muted: false }}
+          </div>
+        {% elsif block.settings.video_link != blank %}
+          <div class="video-snippet__video">
+            <iframe
+              class="video-snippet__iframe"
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/{{ block.settings.video_link | split: 'v=' | last }}?controls=0"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
+
+  <div class="layout__grid-box"></div>
 </section>
 
 {% schema %}
@@ -71,43 +106,8 @@
     {
       "name": "Video Snippet",
       "category": "Videos",
-      "blocks": [
-        { "type": "video_block" },
-        { "type": "video_block" }
-      ]
+      "blocks": [{ "type": "video_block" }, { "type": "video_block" }]
     }
   ]
 }
 {% endschema %}
-
-{% stylesheet %}
-.video-snippet {
-  padding: 2rem;
-}
-.video-snippet__header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-.video-snippet__chip {
-  display: inline-block;
-  padding: 0.3rem 0.8rem;
-  background-color: #eee;
-  border-radius: 1rem;
-  font-size: 0.875rem;
-}
-.video-snippet__title {
-  margin-top: 0.5rem;
-  font-size: 2rem;
-}
-.video-snippet__videos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-.video-snippet__video video,
-.video-snippet__iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  display: block;
-}
-{% endstylesheet %}
