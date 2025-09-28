@@ -11,823 +11,322 @@
   - Uses Flickity for better performance
 {%- endcomment -%}
 
-{%- comment -%} Check if this section is being used {%- endcomment -%}
-{%- assign slider_needed = false -%}
-{%- if section.blocks.size > 0 -%}
-  {%- assign slider_needed = true -%}
-{%- endif -%}
-
-{%- comment -%} Preload critical images for performance {%- endcomment -%}
-{%- if slider_needed and section.blocks.size > 0 -%}
-  {%- comment -%} Preload first slide images {%- endcomment -%}
-  {%- assign first_block = section.blocks.first -%}
-  {%- if first_block.settings.image_desktop != blank -%}
-    <link
-      rel="preload"
-      as="image"
-      href="{{ first_block.settings.image_desktop | image_url: width: 1920 }}"
-      fetchpriority="high"
-    >
-  {%- endif -%}
-  {%- if first_block.settings.image_tablet != blank
-    and first_block.settings.image_tablet != first_block.settings.image_desktop
-  -%}
-    <link
-      rel="preload"
-      as="image"
-      href="{{ first_block.settings.image_tablet | image_url: width: 1024 }}"
-      media="(min-width: 768px) and (max-width: 1023px)"
-      fetchpriority="high"
-    >
-  {%- endif -%}
-  {%- if first_block.settings.image_mobile != blank
-    and first_block.settings.image_mobile != first_block.settings.image_desktop
-  -%}
-    <link
-      rel="preload"
-      as="image"
-      href="{{ first_block.settings.image_mobile | image_url: width: 800 }}"
-      media="(max-width: 767px)"
-      fetchpriority="high"
-    >
-  {%- endif -%}
-
-  {%- comment -%} Preload second slide images with lower priority {%- endcomment -%}
-  {%- if section.blocks.size > 1 -%}
-    {%- assign second_block = section.blocks[1] -%}
-    {%- if second_block.settings.image_desktop != blank -%}
-      <link rel="preload" as="image" href="{{ second_block.settings.image_desktop | image_url: width: 1920 }}">
-    {%- endif -%}
-  {%- endif -%}
-{%- endif -%}
-
-{%- comment -%} Load Flickity only when needed {%- endcomment -%}
-{%- if slider_needed -%}
-  {{ 'flickity.min.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'flickity.pkgd.min.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" defer></script>
 <style>
-  /* Flickity Slider Styles with Schema Color Support */
-  .flickity-slider {
-    position: relative;
-    overflow: hidden;
-    --divider-color: {{ section.settings.divider_color | default: '#F6F6F6' }};
-    --nav-color: {{ section.settings.nav_color | default: '#333333' }};
-    --nav-bg-color: {{ section.settings.nav_bg_color | default: '#FFFFFF' }};
-    --dots-color: {{ section.settings.dots_color | default: '#FFFFFF' }};
-    background: #f5f5f5;
-  }
-
-  .flickity-viewport {
-    overflow: hidden;
-    position: relative;
-    height: 100%;
-  }
-
-  .flickity-slider__carousel {
-    height: 100%;
-  }
-
-  /* Slide container - PREVENTS LAYOUT SHIFT */
-  .flickity-slider__slide {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    display: block;
+  .homepage-slider .carousel-cell {
+    width: 100%; /* one slide = full width */
     margin-right: 0;
-
-    /* Key fix: Use aspect ratio with fallback */
-    aspect-ratio: var(--slide-aspect-ratio, 16/9);
-    min-height: 200px;
   }
 
-  @media (min-width: 768px) {
-    .flickity-slider__slide {
-      min-height: 300px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .flickity-slider__slide {
-      min-height: 400px;
-    }
-  }
-
-  /* Link styling */
-  .flickity-slider__slide--link {
-    cursor: pointer;
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .flickity-slider__slide--link:hover .flickity-slider__img {
-    transform: scale(1.02);
-  }
-
-  .flickity-slider__slide--link:focus-visible {
-    outline: 3px solid var(--nav-color, #333333);
-    outline-offset: 4px;
-  }
-
-  /* Picture wrapper */
-  .flickity-slider__media {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-
-  /* Image - LAYOUT SHIFT PREVENTION */
-  .flickity-slider__img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease, opacity 0.3s ease;
-    opacity: 1;
-
-    /* Critical: Prevent expansion */
-    max-width: 100%;
-  }
-
-  /* Placeholder for missing images */
-  .flickity-slider__placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-  }
-
-  .flickity-slider__placeholder svg {
-    width: 60px;
-    height: 60px;
-    opacity: 0.3;
-    color: #cccccc;
-  }
-
-  /* Navigation arrows */
-  .flickity-slider__nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #333333;
-    z-index: 10;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    opacity: 1;
-  }
-
-  .flickity-slider__nav:hover {
-    background: #ffffff;
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
-
-  .flickity-slider__nav:focus-visible {
-    outline: 2px solid #333333;
-    outline-offset: 2px;
-  }
-
-  .flickity-slider__nav--prev {
-    left: 20px;
-  }
-
-  .flickity-slider__nav--next {
-    right: 20px;
-  }
-
-  /* Dots navigation */
-  .flickity-slider__dots {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    z-index: 10;
-    opacity: 1;
-    transition: opacity 0.3s ease;
-  }
-
-  .flickity-slider__dot {
-    width: 12px;
-    height: 12px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0;
-  }
-
-  .flickity-slider__dot.is-selected {
-    background: #ffffff;
-    transform: scale(1.2);
-  }
-
-  .flickity-slider__dot:hover {
-    background: rgba(255, 255, 255, 0.9);
-  }
-
-  /* Section divider */
-  .flickity-slider__divider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    line-height: 0;
-    color: #F6F6F6;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  .flickity-slider__divider-svg {
-    display: block;
-    width: 100%;
+  .homepage-slider .flickity-slider__img {
+    width: 100%; /* image fills the slide */
     height: auto;
-  }
-
-  .flickity-slider__divider-svg--desktop {
-    display: none;
-  }
-
-  .flickity-slider__divider-svg--mobile {
-    display: block;
-  }
-
-  @media (min-width: 768px) {
-    .flickity-slider__divider-svg--desktop {
-      display: block;
-    }
-
-    .flickity-slider__divider-svg--mobile {
-      display: none;
-    }
-  }
-
-  /* Fixed height mode */
-  .flickity-slider[data-height-mode="fixed"] .flickity-slider__slide {
-    height: var(--fixed-height, 400px);
-    aspect-ratio: auto;
-  }
-
-  /* Loading states */
-  .flickity-slider--loading .flickity-slider__img {
-    opacity: 0;
-  }
-
-  .flickity-slider--loaded .flickity-slider__img {
-    opacity: 1;
-  }
-
-  /* Flickity default style overrides */
-  .flickity-enabled {
-    position: relative;
-  }
-
-  .flickity-enabled:focus {
-    outline: none;
-  }
-
-  .flickity-viewport {
-    overflow: hidden;
-    position: relative;
-    height: 100%;
-  }
-
-  .flickity-slider {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Ensure the carousel is visible */
-  .flickity-slider__carousel .flickity-slider__slide {
-    display: block;
-    visibility: visible !important;
-  }
-
-  /* Mobile adjustments */
-  @media (max-width: 767px) {
-    .flickity-slider__nav {
-      width: 36px;
-      height: 36px;
-    }
-
-    .flickity-slider__nav--prev {
-      left: 10px;
-    }
-
-    .flickity-slider__nav--next {
-      right: 10px;
-    }
-
-    .flickity-slider__dots {
-      bottom: 15px;
-    }
-
-    .flickity-slider__dot {
-      width: 10px;
-      height: 10px;
-    }
-
-    .flickity-slider__slide {
-      min-height: 250px;
-    }
+    object-fit: cover;
   }
 </style>
+<div id="homepage-slider-{{ section.id }}" class="homepage-slider main-carousel">
+  {%- for block in section.blocks -%}
+    {% assign img_desktop = block.settings.image_desktop %}
+    {% assign img_tablet = block.settings.image_tablet | default: block.settings.image_desktop %}
+    {% assign img_mobile = block.settings.image_mobile
+      | default: block.settings.image_tablet
+      | default: block.settings.image_desktop
+    %}
+    {% assign img_alt = block.settings.image_alt | default: 'Slide image' %}
 
-<section
-  id="homepage-slider-{{ section.id }}"
-  class="homepage-slider flickity-slider"
-  data-section-id="{{ section.id }}"
-  data-autoplay="{{ section.settings.autoplay }}"
-  data-timeout="{{ section.settings.autoplay_timeout | times: 1000 }}"
-  data-loop="{{ section.settings.loop }}"
-  data-nav="{{ section.settings.nav }}"
-  data-dots="{{ section.settings.dots }}"
-  data-pause-on-hover="{{ section.settings.pause_on_hover }}"
-  data-height-mode="{{ section.settings.height_mode }}"
-  data-fixed-height="{{ section.settings.fixed_height }}"
->
-  {%- if slider_needed -%}
-    <div class="flickity-viewport">
-      <div class="flickity-slider__carousel">
-        {%- for block in section.blocks -%}
-          {% assign img_desktop = block.settings.image_desktop %}
-          {% assign img_tablet = block.settings.image_tablet | default: block.settings.image_desktop %}
-          {% assign img_mobile = block.settings.image_mobile
-            | default: block.settings.image_tablet
-            | default: block.settings.image_desktop
-          %}
-          {% assign img_alt = block.settings.image_alt | default: 'Slide image' %}
-          {% assign img_link = block.settings.image_link %}
-
-          {%- comment -%} Calculate aspect ratio for layout stability {%- endcomment -%}
-          {% assign aspect_ratio = '16/9' %}
-          {% if img_desktop != blank %}
-            {% assign aspect_ratio = img_desktop.aspect_ratio %}
-          {% endif %}
-
-          {%- comment -%} Slide wrapper with optional link {%- endcomment -%}
-          {% if img_link != blank %}
-            <a
-              href="{{ img_link }}"
-              class="flickity-slider__slide flickity-slider__slide--link"
-              aria-label="{{ img_alt | escape }}"
-              style="--slide-aspect-ratio: {{ aspect_ratio }};"
-              {{ block.shopify_attributes }}
-            >
-          {% else %}
-            <div
-              class="flickity-slider__slide"
-              aria-label="{{ img_alt | escape }}"
-              style="--slide-aspect-ratio: {{ aspect_ratio }};"
-              {{ block.shopify_attributes }}
+    <div class="carousel-cell">
+      {% if img_desktop != blank %}
+        <picture class="flickity-slider__media">
+          {% comment %} Mobile image (up to 767px) {% endcomment %}
+          {% if img_mobile and img_mobile != img_desktop %}
+            <source
+              media="(max-width: 767px)"
+              srcset="
+                {{ img_mobile | image_url: width: 800 }} 800w,
+                {{ img_mobile | image_url: width: 1200 }} 1200w
+              "
+              sizes="100vw"
             >
           {% endif %}
 
-          {%- comment -%} Responsive image with mobile, tablet, desktop sources {%- endcomment -%}
-          {% if img_desktop != blank %}
-            <picture class="flickity-slider__media">
-              {% comment %} Mobile image (up to 767px) {% endcomment %}
-              {% if img_mobile and img_mobile != img_desktop %}
-                <source
-                  media="(max-width: 767px)"
-                  srcset="
-                    {{ img_mobile | image_url: width: 800 }} 800w,
-                    {{ img_mobile | image_url: width: 1200 }} 1200w
-                  "
-                  sizes="100vw"
-                >
-              {% endif %}
-
-              {% comment %} Tablet image (768px to 1023px) {% endcomment %}
-              {% if img_tablet and img_tablet != img_desktop %}
-                <source
-                  media="(min-width: 768px) and (max-width: 1023px)"
-                  srcset="
-                    {{ img_tablet | image_url: width: 1024 }} 1024w,
-                    {{ img_tablet | image_url: width: 1536 }} 1536w
-                  "
-                  sizes="100vw"
-                >
-              {% endif %}
-
-              {% comment %} Desktop image (1024px and up) {% endcomment %}
-              <img
-                class="flickity-slider__img"
-                src="{{ img_desktop | image_url: width: 1920 }}"
-                srcset="
-                  {{ img_desktop | image_url: width: 1920 }} 1920w,
-                  {{ img_desktop | image_url: width: 2400 }} 2400w
-                "
-                sizes="100vw"
-                width="{{ img_desktop.width }}"
-                height="{{ img_desktop.height }}"
-                alt="{{ img_alt | escape }}"
-                {% if forloop.first %}
-                  loading="eager"
-                  fetchpriority="high"
-                {% else %}
-                  loading="lazy"
-                {% endif %}
-                decoding="async"
-              >
-            </picture>
-          {% else %}
-            <div class="flickity-slider__placeholder">
-              {{ 'lifestyle-1' | placeholder_svg_tag }}
-            </div>
+          {% comment %} Tablet image (768px to 1023px) {% endcomment %}
+          {% if img_tablet and img_tablet != img_desktop %}
+            <source
+              media="(min-width: 768px) and (max-width: 1023px)"
+              srcset="
+                {{ img_tablet | image_url: width: 1024 }} 1024w,
+                {{ img_tablet | image_url: width: 1536 }} 1536w
+              "
+              sizes="100vw"
+            >
           {% endif %}
 
-          {% if img_link != blank %}</a>{% else %}</div>{% endif %}
-        {%- endfor -%}
-      </div>
+          {% comment %} Desktop image (1024px and up) {% endcomment %}
+          <img
+            class="flickity-slider__img"
+            src="{{ img_desktop | image_url: width: 1920 }}"
+            srcset="
+              {{ img_desktop | image_url: width: 1920 }} 1920w,
+              {{ img_desktop | image_url: width: 2400 }} 2400w
+            "
+            sizes="100vw"
+            width="{{ img_desktop.width }}"
+            height="{{ img_desktop.height }}"
+            alt="{{ img_alt | escape }}"
+            {% if forloop.first %}
+              loading="eager"
+              fetchpriority="high"
+            {% else %}
+              loading="lazy"
+            {% endif %}
+            decoding="async"
+          >
+        </picture>
+      {% endif %}
     </div>
+  {%- endfor -%}
+</div>
 
-    <!-- Navigation arrows -->
-    {% if section.settings.nav %}
-      <button class="flickity-slider__nav flickity-slider__nav--prev" aria-label="Previous slide">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <button class="flickity-slider__nav flickity-slider__nav--next" aria-label="Next slide">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    {% endif %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var sliderEl = document.getElementById('homepage-slider-{{ section.id }}');
+    if (!sliderEl || typeof Flickity === 'undefined') return;
 
-    <!-- Dots navigation -->
-    {% if section.settings.dots %}
-      <div class="flickity-slider__dots" aria-label="Slide navigation dots"></div>
-    {% endif %}
+    new Flickity(sliderEl, {
+      cellAlign: 'center',   // keep slide centered
+      contain: true,         // contain within slider
+      wrapAround: {{ section.settings.loop | json }},
+      prevNextButtons: {{ section.settings.nav | json }},
+      pageDots: {{ section.settings.dots | json }},
+      autoPlay: {{ section.settings.autoplay | json }} ? {{ section.settings.autoplay_timeout | times: 1000 }} : false,
+      pauseAutoPlayOnHover: {{ section.settings.pause_on_hover | json }},
+      imagesLoaded: true,
+      groupCells: 1,         // force one cell at a time
+      draggable: true,       // enable swipe
+      percentPosition: true, // sizing based on %
+    });
+  });
+</script>
 
-    <!-- Section Divider -->
-    <div class="flickity-slider__divider" aria-hidden="true">
-      <!-- Mobile shape -->
-      <svg
-        class="flickity-slider__divider-svg flickity-slider__divider-svg--mobile"
-        viewBox="0 0 856 58"
-        preserveAspectRatio="xMidYMid meet"
-        role="presentation"
-      >
-        <g transform="translate(0,58) scale(0.1,-0.1)" fill="currentColor" stroke="none">
-          <path d="M3805 573 c-1099 -22 -2368 -141 -3755 -351 l-45 -7 -3 -108 -3 -107
-            4281 0 4281 0 -3 107 -3 107 -212 32 c-1613 244 -3158 356 -4538 327z"></path>
-        </g>
-      </svg>
-
-      <!-- Desktop shape -->
-      <svg
-        class="flickity-slider__divider-svg flickity-slider__divider-svg--desktop"
-        viewBox="0 0 2880 160"
-        preserveAspectRatio="xMidYMid meet"
-        role="presentation"
-      >
-        <g transform="translate(0,160) scale(0.1,-0.1)" fill="currentColor" stroke="none">
-          <path d="M13090 1594 c-1208 -29 -1864 -53 -2820 -104 -2993 -162 -6317 -513
-            -9655 -1021 -253 -38 -495 -75 -537 -81 l-78 -11 0 -189 0 -188 14400 0 14400
-            0 0 188 0 188 -142 22 c-79 12 -294 44 -478 72 -3498 530 -6979 889 -10065
-            1039 -624 31 -1020 46 -1815 72 -295 9 -2910 20 -3210 13z"></path>
-        </g>
-      </svg>
-    </div>
-  {%- else -%}
-    <div class="flickity-slider__placeholder" style="height: 400px;">
-      {{ 'lifestyle-1' | placeholder_svg_tag: 'flickity-slider__placeholder-svg' }}
-      <p style="text-align: center; margin-top: 20px; color: #666;">Add slides to the homepage slider</p>
-    </div>
-  {%- endif -%}
-</section>
-
-{%- comment -%} JavaScript - Only loads when section has content {%- endcomment -%}
-{%- if slider_needed -%}
-  <script>
-    (function () {
-      var sectionId = '{{ section.id }}';
-      var el = document.getElementById('homepage-slider-' + sectionId);
-      if (!el) return;
-
-      var flickityInstance = null;
-
-      function bool(val) {
-        return String(val) === 'true';
-      }
-
-      function setupStyles() {
-        var heightMode = el.dataset.heightMode;
-        var fixedHeight = el.dataset.fixedHeight;
-        if (heightMode === 'fixed' && fixedHeight) {
-          el.style.setProperty('--fixed-height', fixedHeight + 'px');
+{% schema %}
+{
+  "name": "Home Page Slider",
+  "tag": "section",
+  "class": "section--homepage-slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_timeout",
+      "label": "Change slide every (seconds)",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop slides",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "nav",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Show dots navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Height Settings"
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Height mode",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto height (based on image)"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed height"
         }
-      }
-
-      function waitForDependencies(callback) {
-        var attempts = 0;
-        var maxAttempts = 50;
-
-        function check() {
-          attempts++;
-          if (typeof Flickity !== 'undefined') {
-            callback();
-          } else if (attempts < maxAttempts) {
-            setTimeout(check, 100);
-          } else {
-            console.warn('Flickity not loaded');
-            // Fallback: show first slide only
-            showStaticFallback();
-          }
-        }
-        check();
-      }
-
-      function showStaticFallback() {
-        var slides = el.querySelectorAll('.flickity-slider__slide');
-        if (slides.length > 0) {
-          // Show only first slide
-          slides.forEach(function (slide, index) {
-            if (index === 0) {
-              slide.style.display = 'block';
-            } else {
-              slide.style.display = 'none';
-            }
-          });
-          // Hide navigation
-          var nav = el.querySelector('.flickity-slider__nav');
-          var dots = el.querySelector('.flickity-slider__dots');
-          if (nav) nav.style.display = 'none';
-          if (dots) dots.style.display = 'none';
-        }
-      }
-
-      function initFlickity() {
-        var carouselEl = el.querySelector('.flickity-slider__carousel');
-        if (!carouselEl) return;
-
-        setupStyles();
-
-        // Set loading state
-        el.classList.add('flickity-slider--loading');
-
-        var config = {
-          cellAlign: 'left',
-          contain: true,
-          wrapAround: bool(el.dataset.loop),
-          prevNextButtons: false, // We use custom buttons
-          pageDots: false, // We use custom dots
-          autoPlay: bool(el.dataset.autoplay) ? parseInt(el.dataset.timeout, 10) || 5000 : false,
-          pauseAutoPlayOnHover: bool(el.dataset.pauseOnHover),
-          imagesLoaded: true,
-          accessibility: true,
-          dragThreshold: 10,
-          selectedAttraction: 0.025,
-          friction: 0.28,
-          on: {
-            ready: function () {
-              // Flickity initialized
-              el.classList.remove('flickity-slider--loading');
-              el.classList.add('flickity-slider--loaded');
-
-              // Initialize custom navigation
-              initCustomNavigation();
-
-              // Handle image loading
-              handleImageLoading();
+      ]
+    },
+    {
+      "type": "range",
+      "id": "fixed_height",
+      "label": "Fixed height (px)",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "default": 400,
+      "info": "Only applies when height mode is set to 'Fixed height'"
+    },
+    {
+      "type": "header",
+      "content": "Section Design"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#F6F6F6"
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Navigation color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg_color",
+      "label": "Navigation background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "dots_color",
+      "label": "Dots color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Image Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Desktop image",
+          "info": "Recommended: 1920x1080px or larger. Used for screens 1024px and up."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_tablet",
+          "label": "Tablet image (optional)",
+          "info": "Recommended: 1024x768px. Used for screens 768px to 1023px. Uses desktop image if not set."
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image (optional)",
+          "info": "Recommended: 800x1200px. Used for screens up to 767px. Uses tablet/desktop image if not set."
+        },
+        {
+          "type": "header",
+          "content": "Settings"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image description (alt text)",
+          "info": "Describe the image for accessibility and SEO. Required for screen readers.",
+          "placeholder": "Describe what's shown in the image"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link (optional)",
+          "info": "Makes the entire image clickable. Leave blank for no link."
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image focal point",
+          "info": "Adjust how the image is positioned when cropped",
+          "default": "center center",
+          "options": [
+            {
+              "value": "top left",
+              "label": "Top Left"
             },
-            change: function (index) {
-              updateDots(index);
-              preloadAdjacentSlides(index);
+            {
+              "value": "top center",
+              "label": "Top Center"
             },
-          },
-        };
-
-        // Check for reduced motion
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          config.autoPlay = false;
-          config.selectedAttraction = 0.1;
-          config.friction = 0.8;
-        }
-
-        // Initialize Flickity
-        try {
-          flickityInstance = new Flickity(carouselEl, config);
-        } catch (error) {
-          console.error('Flickity initialization failed:', error);
-          showStaticFallback();
-        }
-
-        // Keyboard navigation
-        el.addEventListener('keydown', function (e) {
-          if (!flickityInstance) return;
-
-          if (e.key === 'ArrowLeft') {
-            e.preventDefault();
-            flickityInstance.previous();
-          } else if (e.key === 'ArrowRight') {
-            e.preventDefault();
-            flickityInstance.next();
-          } else if (e.key === 'Home') {
-            e.preventDefault();
-            flickityInstance.select(0);
-          } else if (e.key === 'End') {
-            e.preventDefault();
-            flickityInstance.select(flickityInstance.slides.length - 1);
-          }
-        });
-      }
-
-      function initCustomNavigation() {
-        if (!flickityInstance) return;
-
-        // Previous/Next buttons
-        var prevBtn = el.querySelector('.flickity-slider__nav--prev');
-        var nextBtn = el.querySelector('.flickity-slider__nav--next');
-
-        if (prevBtn) {
-          prevBtn.addEventListener('click', function () {
-            flickityInstance.previous();
-          });
-        }
-
-        if (nextBtn) {
-          nextBtn.addEventListener('click', function () {
-            flickityInstance.next();
-          });
-        }
-
-        // Dots navigation
-        var dotsContainer = el.querySelector('.flickity-slider__dots');
-        if (dotsContainer) {
-          createDotsNavigation(dotsContainer);
-        }
-      }
-
-      function createDotsNavigation(container) {
-        if (!flickityInstance) return;
-
-        container.innerHTML = '';
-
-        for (var i = 0; i < flickityInstance.slides.length; i++) {
-          var dot = document.createElement('button');
-          dot.className = 'flickity-slider__dot';
-          dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-          dot.setAttribute('type', 'button');
-
-          dot.addEventListener(
-            'click',
-            (function (index) {
-              return function () {
-                flickityInstance.select(index);
-              };
-            })(i)
-          );
-
-          container.appendChild(dot);
-        }
-
-        // Set initial active dot
-        updateDots(flickityInstance.selectedIndex);
-      }
-
-      function updateDots(index) {
-        var dots = el.querySelectorAll('.flickity-slider__dot');
-        dots.forEach(function (dot, i) {
-          if (i === index) {
-            dot.classList.add('is-selected');
-            dot.setAttribute('aria-current', 'true');
-          } else {
-            dot.classList.remove('is-selected');
-            dot.removeAttribute('aria-current');
-          }
-        });
-      }
-
-      function handleImageLoading() {
-        var images = el.querySelectorAll('.flickity-slider__img');
-        var loaded = 0;
-        var total = images.length;
-
-        if (total === 0) return;
-
-        images.forEach(function (img, i) {
-          if (img.complete) {
-            loaded++;
-            img.style.opacity = '1';
-          } else {
-            img.addEventListener(
-              'load',
-              function () {
-                loaded++;
-                this.style.opacity = '1';
-
-                if (loaded === total) {
-                  // All images loaded
-                  if (flickityInstance) {
-                    flickityInstance.resize();
-                  }
-                }
-              },
-              { once: true }
-            );
-
-            img.addEventListener(
-              'error',
-              function () {
-                loaded++;
-                console.warn('Image failed to load:', this.src);
-              },
-              { once: true }
-            );
-          }
-        });
-
-        if (loaded === total && flickityInstance) {
-          flickityInstance.resize();
-        }
-      }
-
-      function preloadAdjacentSlides(currentIndex) {
-        if (!flickityInstance) return;
-
-        var totalSlides = flickityInstance.slides.length;
-        var nextIndex = (currentIndex + 1) % totalSlides;
-        var prevIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-
-        [nextIndex, prevIndex].forEach(function (index) {
-          var slide = flickityInstance.slides[index];
-          if (slide) {
-            var img = slide.querySelector('.flickity-slider__img');
-            if (img && !img.complete) {
-              // Force load the image
-              var tempImg = new Image();
-              tempImg.src = img.src;
+            {
+              "value": "top right",
+              "label": "Top Right"
+            },
+            {
+              "value": "center left",
+              "label": "Center Left"
+            },
+            {
+              "value": "center center",
+              "label": "Center"
+            },
+            {
+              "value": "center right",
+              "label": "Center Right"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom Center"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom Right"
             }
-          }
-        });
-      }
-
-      function destroy() {
-        if (flickityInstance) {
-          flickityInstance.destroy();
-          flickityInstance = null;
+          ]
         }
-        el.classList.remove('flickity-slider--loading', 'flickity-slider--loaded');
-      }
-
-      // Initialize
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () {
-          waitForDependencies(initFlickity);
-        });
-      } else {
-        waitForDependencies(initFlickity);
-      }
-
-      // Shopify events
-      document.addEventListener('shopify:section:load', function (e) {
-        if (e.detail.sectionId === sectionId) {
-          destroy();
-          waitForDependencies(initFlickity);
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Home Page Slider",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
         }
-      });
-
-      document.addEventListener('shopify:section:unload', function (e) {
-        if (e.detail.sectionId === sectionId) destroy();
-      });
-
-      // Handle resize events
-      window.addEventListener('resize', function () {
-        if (flickityInstance) {
-          flickityInstance.resize();
-        }
-      });
-    })();
-  </script>
-{%- endif -%}
+      ]
+    }
+  ]
+}
+{% endschema %}

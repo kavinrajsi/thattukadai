@@ -101,14 +101,12 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | preload_tag: as: 'style' }}
-    {{ 'flickity.min.css' | asset_url | preload_tag: as: 'style' }}
     {%- if request.page_type == 'product' -%}
       {{ 'photoswipe.css' | asset_url | preload_tag: as: 'style' }}
       {{ 'swiper-bundle.min.css' | asset_url | preload_tag: as: 'style' }}
     {%- endif -%}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'flickity.min.css' | asset_url | stylesheet_tag }}
     {%- if request.page_type == 'product' -%}
       {{ 'photoswipe.css' | asset_url | stylesheet_tag }}
       {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
@@ -116,13 +114,11 @@
 
     {{ 'jquery.min.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'header.js' | asset_url | preload_tag: as: 'script' }}
-    {{ 'flickity.pkgd.min.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'drawer-product.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'drawer-cart.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
 
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
-
     {% comment %} {% render 'social-meta-tags' %} {% endcomment %}
 
     {{ content_for_header }}
@@ -189,7 +185,6 @@
 
     <script src="{{ 'header.js' | asset_url }}" defer></script>
     <script src="{{ 'predictive-search.js' | asset_url }}" defer></script>
-    <script src="{{ 'owl.carousel.js' | asset_url }}" defer></script>
     <script src="{{ 'drawer-product.js' | asset_url }}" defer></script>
     <script src="{{ 'drawer-cart.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
