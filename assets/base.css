@@ -727,13 +727,14 @@ p {
   }
 }
 header {
-  position: fixed;
+  position: sticky;
   z-index: 50;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
   will-change: transform;
+  background: #ffffff;
 }
 @media (min-width: 768px) {
   header {
@@ -742,7 +743,7 @@ header {
 }
 header .site-header {
   overflow: hidden;
-  padding: 24px 20px;
+  padding: 34px 24px 20px;
 }
 header .site-header .site-header__inner {
   position: relative;
@@ -1103,6 +1104,10 @@ header .site-header .site-header__inner .site-nav.site-nav--right .icon-link--ba
   font-size: 14px;
   line-height: 18px;
   color: #2a2a2a;
+}
+
+main#MainContent {
+  margin-top: -120px;
 }
 
 body.index.drawer-open {
