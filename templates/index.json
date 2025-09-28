@@ -15,31 +15,17 @@
         "slide_wm3cwY": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/banner-13.png",
-            "image_mobile": "shopify://shop_images/test-slider-mobile-1.png",
-            "kicker": "",
-            "content_area": "",
-            "button_label": "",
-            "button_url": "shopify://products/andra-muruku",
-            "button_style": "solid",
-            "link_mode": "button_url",
-            "text_color": "#ffffff",
-            "overlay_opacity": 30
+            "image_alt": "",
+            "image_link": "",
+            "image_position": "center center"
           }
         },
         "slide_zGrLLK": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/banner-12.png",
-            "image_mobile": "shopify://shop_images/test-slider-mobile-2.png",
-            "kicker": "",
-            "content_area": "",
-            "button_label": "",
-            "button_url": "shopify://products/ennai-kadalai-parupu",
-            "button_style": "solid",
-            "link_mode": "button_url",
-            "text_color": "#ffffff",
-            "overlay_opacity": 30
+            "image_alt": "",
+            "image_link": "",
+            "image_position": "center center"
           }
         }
       },
@@ -53,26 +39,13 @@
         "loop": true,
         "nav": true,
         "dots": true,
-        "transition_style": "slide",
+        "pause_on_hover": true,
         "height_mode": "auto",
         "fixed_height": 560,
-        "pause_on_hover": true,
-        "lazyload": true,
-        "container_mode": "full",
-        "content_position": "cc",
-        "content_align": "left",
-        "content_align_mobile": "center"
-      }
-    },
-    "best_sellers_hULKcC": {
-      "type": "bestseller",
-      "name": "Best sellers (carousel)",
-      "settings": {
-        "eyebrow": "Our Best Sellers",
-        "heading": "South India’s most‑loved snacks!",
-        "source": "collection",
-        "collection": "best-colleciton",
-        "product_limit": 4
+        "divider_color": "#f6f6f6",
+        "nav_color": "#333333",
+        "nav_bg_color": "#ffffff",
+        "dots_color": "#ffffff"
       }
     },
     "main_product_features_k3UDje": {
@@ -151,11 +124,9 @@
       "name": "Image and content",
       "settings": {
         "width": "narrow",
-        "layout_overlap": "no-overlap",
         "position": "middle",
-        "align": "left",
-        "align_mobile": "left",
         "placement": "image-first",
+        "placement_mobile": "image-first",
         "padding_top_desktop": 80,
         "padding_bottom_desktop": 80,
         "padding_top_mobile": 40,
@@ -168,6 +139,46 @@
         "body_text": "<p>Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured the hearts of many, laying the foundation for what would become a cherished family business.</p><p>Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.</p>",
         "cta_label": "Learn More",
         "cta_link": ""
+      }
+    },
+    "video_snippet_jwfMTx": {
+      "type": "video-snippet",
+      "blocks": {
+        "video_block_LLEAap": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-1.mp4"
+          }
+        },
+        "video_block_ghpttF": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-2.mp4"
+          }
+        },
+        "video_block_EpFxpa": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-3.mp4"
+          }
+        },
+        "video_block_x69QAw": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-4.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "video_block_LLEAap",
+        "video_block_ghpttF",
+        "video_block_EpFxpa",
+        "video_block_x69QAw"
+      ],
+      "name": "Video Snippet",
+      "settings": {
+        "chip_text": "Featured",
+        "title": "Our Latest Videos"
       }
     },
     "promo_cta_j3r8KR": {
@@ -191,58 +202,13 @@
         "btn_bg": "#ffffff",
         "btn_text": "#111111"
       }
-    },
-    "video_snippet_jwfMTx": {
-      "type": "video-snippet",
-      "blocks": {
-        "video_block_LLEAap": {
-          "type": "video_block",
-          "settings": {
-            "video": "shopify://files/videos/video-1.mp4",
-            "video_link": ""
-          }
-        },
-        "video_block_ghpttF": {
-          "type": "video_block",
-          "settings": {
-            "video": "shopify://files/videos/video-2.mp4",
-            "video_link": ""
-          }
-        },
-        "video_block_EpFxpa": {
-          "type": "video_block",
-          "settings": {
-            "video": "shopify://files/videos/video-3.mp4",
-            "video_link": ""
-          }
-        },
-        "video_block_x69QAw": {
-          "type": "video_block",
-          "settings": {
-            "video": "shopify://files/videos/video-4.mp4",
-            "video_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "video_block_LLEAap",
-        "video_block_ghpttF",
-        "video_block_EpFxpa",
-        "video_block_x69QAw"
-      ],
-      "name": "Video Snippet",
-      "settings": {
-        "chip_text": "Featured",
-        "title": "Our Latest Videos"
-      }
     }
   },
   "order": [
     "slider",
-    "best_sellers_hULKcC",
     "main_product_features_k3UDje",
     "image_text_QyhkJT",
-    "promo_cta_j3r8KR",
-    "video_snippet_jwfMTx"
+    "video_snippet_jwfMTx",
+    "promo_cta_j3r8KR"
   ]
 }
