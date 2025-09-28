@@ -1,0 +1,73 @@
+.homepage-sliderWrapper {
+	position: relative;
+
+
+	.homepage-slider .carousel-cell {
+		width: 100%; /* one slide = full width */
+		margin-right: 0;
+	}
+
+	.homepage-slider .flickity-slider__img {
+		width: 100%; /* image fills the slide */
+		height: auto;
+		object-fit: cover;
+	}
+	/* Hide only the slider (but keep its layout size) until Flickity is enabled */
+	.homepage-slider {
+		visibility: hidden; /* prevents flash */
+	}
+	.homepage-slider.flickity-enabled {
+		visibility: visible; /* shown once Flickity attaches */
+	}
+
+	/* Helpful to avoid any pre-init horizontal overflow */
+	.section--homepage-slider {
+		overflow: hidden;
+	}
+
+	.flickity-page-dots {
+		bottom: 96px;
+		.dot {
+			background-color: #f6f6f6;
+			margin: 0 4px;
+			&.is-selected {
+				background-color: #fad75f;
+			}
+		}
+	}
+
+	.section-divider {
+		position: absolute;
+		bottom: 0;
+		z-index: 2;
+		left: 0;
+		right: 0;
+		line-height: 0; /* remove stray gaps */
+		--divider-color: #f6f6f6; /* default color */
+		color: var(--divider-color);
+	}
+
+	/* Make SVGs fluid */
+	.section-divider__svg {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	/* Show mobile by default, swap at breakpoint */
+	.section-divider__svg--desktop {
+		display: none;
+	}
+	.section-divider__svg--mobile {
+		display: block;
+	}
+
+	@media (min-width: 768px) {
+		.section-divider__svg--desktop {
+			display: block;
+		}
+		.section-divider__svg--mobile {
+			display: none;
+		}
+	}
+}

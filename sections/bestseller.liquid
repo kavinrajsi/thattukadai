@@ -5,8 +5,6 @@
 {%- comment -%}
   Include Flickity assets (safe to include here; the guard prevents double init)
 {%- endcomment -%}
-<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-<script defer src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
 <section class="bestsellers layout__grid-box" id="section-{{ section.id }}">
   <div class="bestsellers__container">
@@ -30,9 +28,9 @@
           {
             "cellAlign": "left",
             "contain": true,
-            "pageDots": false,
+            "pageDots": true,
             "prevNextButtons": false,
-            "groupCells": true,
+            "groupCells": 1,
             "wrapAround": true,
             "draggable": true,
             "adaptiveHeight": true,
@@ -59,71 +57,37 @@
       </div>
 
       <div class="bestsellers__nav">
+        <!-- Left / Previous -->
         <button
           class="bestsellers__btn bestsellers__btn--prev"
           type="button"
           aria-label="Previous"
           data-target="bestsellers-{{ section.id }}"
         >
-          &#10094;
+          <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="20" fill="white"/>
+            <path d="M30 20c0-.18-.07-.35-.20-.48a.68.68 0 0 0-.48-.20H13.3l4.27-4.27a.68.68 0 0 0-.96-.96l-5.43 5.43a.68.68 0 0 0 0 .96l5.43 5.43a.68.68 0 0 0 .96-.96L13.3 20.7h16.02c.18 0 .35-.07.48-.20.13-.13.20-.3.20-.48Z" fill="#161A1D"/>
+          </svg>
         </button>
+
+        <!-- Right / Next -->
         <button
           class="bestsellers__btn bestsellers__btn--next"
           type="button"
           aria-label="Next"
           data-target="bestsellers-{{ section.id }}"
         >
-          &#10095;
+          <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="20" fill="white"/>
+            <path d="M30 20c0-.18-.07-.35-.20-.48a.68.68 0 0 0-.48-.20H13.3l4.27-4.27a.68.68 0 0 0-.96-.96l-5.43 5.43a.68.68 0 0 0 0 .96l5.43 5.43a.68.68 0 0 0 .96-.96L13.3 20.7h16.02c.18 0 .35-.07.48-.20.13-.13.20-.3.20-.48Z"
+                  fill="#161A1D"
+                  transform="scale(-1,1) translate(-40,0)"/>
+          </svg>
         </button>
       </div>
     </div>
   </div>
 </section>
-
-<style>
-  /* Minimal, keep your theme styles as-is */
-  .bestsellers__list {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  .bestsellers__list.is-initialized {
-    opacity: 1;
-  }
-  .bestsellers__item {
-    width: 70%;
-    max-width: 360px;
-    margin-right: 16px;
-  }
-  @media (min-width: 480px) {
-    .bestsellers__item {
-      width: 50%;
-    }
-  }
-  @media (min-width: 768px) {
-    .bestsellers__item {
-      width: 33.333%;
-    }
-  }
-  @media (min-width: 1024px) {
-    .bestsellers__item {
-      width: 25%;
-    }
-  }
-
-  .bestsellers__nav {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    margin-top: 12px;
-  }
-  .bestsellers__btn {
-    border: 1px solid currentColor;
-    background: transparent;
-    padding: 6px 10px;
-    cursor: pointer;
-  }
-</style>
-
 <script>
   (function () {
     function initFlickity(root) {
@@ -142,16 +106,24 @@
       slider.classList.add('is-initialized');
 
       // External nav
-      var prevBtn = root.querySelector('.bestsellers__btn--prev');
-      var nextBtn = root.querySelector('.bestsellers__btn--next');
-      if (prevBtn)
-        prevBtn.addEventListener('click', function () {
-          flkty.previous();
+      // External nav (target the specific carousel by data-target)
+      function wireNav(btn, direction) {
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          var targetId = btn.getAttribute('data-target');
+          if (!targetId) return;
+          var targetEl = document.getElementById(targetId);
+          if (targetEl && targetEl._flickity) {
+            if (direction === 'prev') targetEl._flickity.previous();
+            else targetEl._flickity.next();
+          }
         });
-      if (nextBtn)
-        nextBtn.addEventListener('click', function () {
-          flkty.next();
-        });
+      }
+
+      var prevBtn = root.querySelector('.bestsellers__container .bestsellers__btn--prev');
+      var nextBtn = root.querySelector('.bestsellers__container .bestsellers__btn--next');
+      wireNav(prevBtn, 'prev');
+      wireNav(nextBtn, 'next');
 
       // store ref
       slider._flickity = flkty;

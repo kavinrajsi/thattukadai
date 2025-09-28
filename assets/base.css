@@ -3445,6 +3445,72 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   pointer-events: all;
 }
 
+.homepage-sliderWrapper {
+  position: relative;
+  /* Hide only the slider (but keep its layout size) until Flickity is enabled */
+  /* Helpful to avoid any pre-init horizontal overflow */
+  /* Make SVGs fluid */
+  /* Show mobile by default, swap at breakpoint */
+}
+.homepage-sliderWrapper .homepage-slider .carousel-cell {
+  width: 100%; /* one slide = full width */
+  margin-right: 0;
+}
+.homepage-sliderWrapper .homepage-slider .flickity-slider__img {
+  width: 100%; /* image fills the slide */
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.homepage-sliderWrapper .homepage-slider {
+  visibility: hidden; /* prevents flash */
+}
+.homepage-sliderWrapper .homepage-slider.flickity-enabled {
+  visibility: visible; /* shown once Flickity attaches */
+}
+.homepage-sliderWrapper .section--homepage-slider {
+  overflow: hidden;
+}
+.homepage-sliderWrapper .flickity-page-dots {
+  bottom: 96px;
+}
+.homepage-sliderWrapper .flickity-page-dots .dot {
+  background-color: #f6f6f6;
+  margin: 0 4px;
+}
+.homepage-sliderWrapper .flickity-page-dots .dot.is-selected {
+  background-color: #fad75f;
+}
+.homepage-sliderWrapper .section-divider {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  line-height: 0; /* remove stray gaps */
+  --divider-color: #f6f6f6; /* default color */
+  color: var(--divider-color);
+}
+.homepage-sliderWrapper .section-divider__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.homepage-sliderWrapper .section-divider__svg--desktop {
+  display: none;
+}
+.homepage-sliderWrapper .section-divider__svg--mobile {
+  display: block;
+}
+@media (min-width: 768px) {
+  .homepage-sliderWrapper .section-divider__svg--desktop {
+    display: block;
+  }
+  .homepage-sliderWrapper .section-divider__svg--mobile {
+    display: none;
+  }
+}
+
 .image-content {
   margin-top: 80px;
   padding-top: var(--pt-m, 40px);
@@ -3670,6 +3736,9 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   color: #2a2a2a;
 }
 
+.bestsellers__container {
+  /* position dots up a bit */
+}
 .bestsellers__container .bestsellers__header {
   display: flex;
   flex-direction: column;
@@ -3679,11 +3748,9 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   margin-bottom: 40px;
 }
 .bestsellers__container .bestsellers__header .bestsellers__eyebrow {
-  /* Frame 2 */
   display: inline-block;
-  text-align: center;
   padding: 8px 32px;
-  /* Primary/Yellow */
+  text-align: center;
   background: #fad75f;
   border-radius: 50px;
   font-family: "DM Sans";
@@ -3691,31 +3758,72 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   font-weight: 600;
   font-size: 14px;
   line-height: 16px;
-  /* identical to box height, or 114% */
-  /* Neutral/Black2 */
   color: #161a1d;
 }
 .bestsellers__container .bestsellers__header .bestsellers__title {
-  /* South India's Most-Loved Snacks! */
   font-family: "Neilvard One";
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
   line-height: 24px;
   text-align: center;
-  /* Neutral/Black2 */
   color: #161a1d;
 }
 .bestsellers__container .bestsellers__nav {
   display: flex;
   justify-content: flex-end;
-  padding-top: 32px;
   gap: 16px;
+  padding-top: 32px;
 }
-.bestsellers__container .bestsellers__nav .owl-next,
-.bestsellers__container .bestsellers__nav .owl-prev {
+.bestsellers__container .bestsellers__nav .bestsellers__btn {
   width: 40px;
   height: 40px;
+}
+.bestsellers__container .bestsellers__nav .bestsellers__btn[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.bestsellers__container .flickity-page-dots {
+  bottom: -54px;
+  text-align: left;
+  z-index: -1;
+}
+.bestsellers__container .flickity-page-dots .dot {
+  height: 4px;
+  width: 14%;
+  margin: 0;
+  border-radius: 0;
+  background-color: #d3d3d3;
+}
+.bestsellers__container .flickity-page-dots .dot.is-selected {
+  background-color: #f6ca30;
+}
+.bestsellers__container .bestsellers__list {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.bestsellers__container .bestsellers__list.is-initialized {
+  opacity: 1;
+}
+.bestsellers__container .bestsellers__item {
+  width: 70%;
+  max-width: 360px;
+  margin-right: 16px;
+}
+@media (min-width: 480px) {
+  .bestsellers__container .bestsellers__item {
+    width: 50%;
+  }
+}
+@media (min-width: 768px) {
+  .bestsellers__container .bestsellers__item {
+    width: 33.333%;
+  }
+}
+@media (min-width: 1024px) {
+  .bestsellers__container .bestsellers__item {
+    width: 25%;
+  }
 }
 
 .shopify-policy__container {

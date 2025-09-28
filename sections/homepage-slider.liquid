@@ -11,32 +11,6 @@
   - Uses Flickity for better performance
 {%- endcomment -%}
 
-<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" defer></script>
-<style>
-  .homepage-slider .carousel-cell {
-    width: 100%; /* one slide = full width */
-    margin-right: 0;
-  }
-
-  .homepage-slider .flickity-slider__img {
-    width: 100%; /* image fills the slide */
-    height: auto;
-    object-fit: cover;
-  }
-  /* Hide only the slider (but keep its layout size) until Flickity is enabled */
-  .homepage-slider {
-    visibility: hidden; /* prevents flash */
-  }
-  .homepage-slider.flickity-enabled {
-    visibility: visible; /* shown once Flickity attaches */
-  }
-
-  /* Helpful to avoid any pre-init horizontal overflow */
-  .section--homepage-slider {
-    overflow: hidden;
-  }
-</style>
 <noscript>
   <style>
     /* When JS is off, show the images stacked as a graceful fallback */
@@ -51,68 +25,99 @@
   #homepage-slider-{{ section.id }} .flickity-slider__img { height: {{ section.settings.fixed_height }}px; width: 100%;
   object-fit: cover; object-position: {{ block.settings.image_position | default: 'center center' }}; }
 {% endif %}
+<div class="homepage-sliderWrapper">
+  <div id="homepage-slider-{{ section.id }}" class="homepage-slider main-carousel">
+    {%- for block in section.blocks -%}
+      {% assign img_desktop = block.settings.image_desktop %}
+      {% assign img_tablet = block.settings.image_tablet | default: block.settings.image_desktop %}
+      {% assign img_mobile = block.settings.image_mobile
+        | default: block.settings.image_tablet
+        | default: block.settings.image_desktop
+      %}
+      {% assign img_alt = block.settings.image_alt | default: 'Slide image' %}
 
-<div id="homepage-slider-{{ section.id }}" class="homepage-slider main-carousel">
-  {%- for block in section.blocks -%}
-    {% assign img_desktop = block.settings.image_desktop %}
-    {% assign img_tablet = block.settings.image_tablet | default: block.settings.image_desktop %}
-    {% assign img_mobile = block.settings.image_mobile
-      | default: block.settings.image_tablet
-      | default: block.settings.image_desktop
-    %}
-    {% assign img_alt = block.settings.image_alt | default: 'Slide image' %}
-
-    <div class="carousel-cell">
-      {% if img_desktop != blank %}
-        <picture class="flickity-slider__media">
-          {% comment %} Mobile image (up to 767px) {% endcomment %}
-          {% if img_mobile and img_mobile != img_desktop %}
-            <source
-              media="(max-width: 767px)"
-              srcset="
-                {{ img_mobile | image_url: width: 800 }} 800w,
-                {{ img_mobile | image_url: width: 1200 }} 1200w
-              "
-              sizes="100vw"
-            >
-          {% endif %}
-
-          {% comment %} Tablet image (768px to 1023px) {% endcomment %}
-          {% if img_tablet and img_tablet != img_desktop %}
-            <source
-              media="(min-width: 768px) and (max-width: 1023px)"
-              srcset="
-                {{ img_tablet | image_url: width: 1024 }} 1024w,
-                {{ img_tablet | image_url: width: 1536 }} 1536w
-              "
-              sizes="100vw"
-            >
-          {% endif %}
-
-          {% comment %} Desktop image (1024px and up) {% endcomment %}
-          <img
-            class="flickity-slider__img"
-            src="{{ img_desktop | image_url: width: 1920 }}"
-            srcset="
-              {{ img_desktop | image_url: width: 1920 }} 1920w,
-              {{ img_desktop | image_url: width: 2400 }} 2400w
-            "
-            sizes="100vw"
-            width="{{ img_desktop.width }}"
-            height="{{ img_desktop.height }}"
-            alt="{{ img_alt | escape }}"
-            {% if forloop.first %}
-              loading="eager"
-              fetchpriority="high"
-            {% else %}
-              loading="lazy"
+      <div class="carousel-cell">
+        {% if img_desktop != blank %}
+          <picture class="flickity-slider__media">
+            {% comment %} Mobile image (up to 767px) {% endcomment %}
+            {% if img_mobile and img_mobile != img_desktop %}
+              <source
+                media="(max-width: 767px)"
+                srcset="
+                  {{ img_mobile | image_url: width: 800 }} 800w,
+                  {{ img_mobile | image_url: width: 1200 }} 1200w
+                "
+                sizes="100vw"
+              >
             {% endif %}
-            decoding="async"
-          >
-        </picture>
-      {% endif %}
-    </div>
-  {%- endfor -%}
+
+            {% comment %} Tablet image (768px to 1023px) {% endcomment %}
+            {% if img_tablet and img_tablet != img_desktop %}
+              <source
+                media="(min-width: 768px) and (max-width: 1023px)"
+                srcset="
+                  {{ img_tablet | image_url: width: 1024 }} 1024w,
+                  {{ img_tablet | image_url: width: 1536 }} 1536w
+                "
+                sizes="100vw"
+              >
+            {% endif %}
+
+            {% comment %} Desktop image (1024px and up) {% endcomment %}
+            <img
+              class="flickity-slider__img"
+              src="{{ img_desktop | image_url: width: 1920 }}"
+              srcset="
+                {{ img_desktop | image_url: width: 1920 }} 1920w,
+                {{ img_desktop | image_url: width: 2400 }} 2400w
+              "
+              sizes="100vw"
+              width="{{ img_desktop.width }}"
+              height="{{ img_desktop.height }}"
+              alt="{{ img_alt | escape }}"
+              {% if forloop.first %}
+                loading="eager"
+                fetchpriority="high"
+              {% else %}
+                loading="lazy"
+              {% endif %}
+              decoding="async"
+            >
+          </picture>
+        {% endif %}
+      </div>
+    {%- endfor -%}
+  </div>
+  <!-- Section Divider -->
+  <div class="section-divider" aria-hidden="true">
+    <!-- Mobile shape -->
+    <svg
+      class="section-divider__svg section-divider__svg--mobile"
+      viewBox="0 0 856 58"
+      preserveAspectRatio="xMidYMid meet"
+      role="presentation"
+    >
+      <g transform="translate(0,58) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+        <path d="M3805 573 c-1099 -22 -2368 -141 -3755 -351 l-45 -7 -3 -108 -3 -107
+          4281 0 4281 0 -3 107 -3 107 -212 32 c-1613 244 -3158 356 -4538 327z"></path>
+      </g>
+    </svg>
+
+    <!-- Desktop shape -->
+    <svg
+      class="section-divider__svg section-divider__svg--desktop"
+      viewBox="0 0 2880 160"
+      preserveAspectRatio="xMidYMid meet"
+      role="presentation"
+    >
+      <g transform="translate(0,160) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+        <path d="M13090 1594 c-1208 -29 -1864 -53 -2820 -104 -2993 -162 -6317 -513
+          -9655 -1021 -253 -38 -495 -75 -537 -81 l-78 -11 0 -189 0 -188 14400 0 14400
+          0 0 188 0 188 -142 22 c-79 12 -294 44 -478 72 -3498 530 -6979 889 -10065
+          1039 -624 31 -1020 46 -1815 72 -295 9 -2910 20 -3210 13z"></path>
+      </g>
+    </svg>
+  </div>
 </div>
 
 <script>
@@ -135,9 +140,9 @@
     });
 
     // Optional: if you used a custom class like 'is-ready'
-    // flkty.on('ready', function () {
-    //   sliderEl.classList.add('is-ready');
-    // });
+    flkty.on('ready', function () {
+      sliderEl.classList.add('is-ready');
+    });
   });
 </script>
 

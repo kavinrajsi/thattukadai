@@ -118,6 +118,9 @@
     {{ 'drawer-cart.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
 
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <script defer src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
     {% comment %} {% render 'social-meta-tags' %} {% endcomment %}
 
