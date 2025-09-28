@@ -1,0 +1,191 @@
+.image-content {
+	margin-top: 80px;
+
+	// Use CSS custom properties for dynamic padding from section settings
+	padding-top: var(--pt-m, 40px); // fallback to 40px if custom property not set
+	padding-bottom: var(--pb-m, 40px); // fallback to 40px if custom property not set
+
+	display: flex;
+	gap: 32px;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: column;
+
+	@media (min-width: 768px) {
+		flex-direction: row;
+
+		// Use desktop padding values on larger screens
+		padding-top: var(--pt, 80px); // fallback to 80px if custom property not set
+		padding-bottom: var(--pb, 80px); // fallback to 80px if custom property not set
+	}
+
+	// Desktop placement control
+	&--image-second {
+		@media (min-width: 768px) {
+			.image-content__media {
+				order: 2; // Move image after content
+			}
+			.image-content__content {
+				order: 1; // Move content before image
+			}
+		}
+	}
+
+	// Mobile placement control
+	&--m-image-second {
+		@media (max-width: 767px) {
+			.image-content__media {
+				order: 2; // Move image after content
+			}
+			.image-content__content {
+				order: 1; // Move content before image
+			}
+		}
+	}
+
+	// Width modifiers
+	&--narrow {
+		max-width: 1200px;
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	&--full {
+		width: 100%;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	// Vertical position modifiers
+	&--pos-top {
+		align-items: flex-start;
+	}
+
+	&--pos-middle {
+		align-items: center;
+	}
+
+	&--pos-bottom {
+		align-items: flex-end;
+	}
+
+	&__content {
+		flex: 1;
+		max-width: 525px;
+
+		@media (min-width: 768px) {
+			order: initial;
+		}
+	}
+
+	&__media {
+		flex: 1;
+
+		// Use the actual aspect ratio from the image
+		aspect-ratio: var(--aspect-ratio, 3/2);
+
+		@media (max-width: 767px) {
+			order: -1; // Image first by default on mobile
+		}
+	}
+
+	&__picture {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	&__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+
+		// Smooth transition when image loads
+		opacity: 0;
+		transition: opacity 0.3s ease;
+
+		&.loaded ,
+		&:not([src=""]) {
+			opacity: 1;
+		}
+	}
+
+	&__eyebrow {
+		/* Frame 2 */
+		display: inline-block;
+		margin-bottom: 16px;
+		padding: 8px 32px;
+
+		/* Primary/Yellow */
+		background: #fad75f;
+		border-radius: 50px;
+		font-family: "DM Sans";
+		font-style: normal;
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 16px;
+		/* identical to box height, or 114% */
+
+		/* Neutral/Black2 */
+		color: #161a1d;
+	}
+
+	&__title {
+		margin-bottom: 16px;
+		/* Desktop_H1 */
+		font-family: "Neilvard One";
+		font-style: normal;
+		font-weight: 400;
+		font-size: 36px;
+		line-height: 40px;
+		/* or 111% */
+
+		/* Neutral/Black2 */
+		color: #161a1d;
+	}
+
+	&__text {
+		p {
+			/* Desktop_B1 */
+			font-family: "DM Sans";
+			font-style: normal;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 21px;
+
+			/* Neutral/Black1 */
+			color: #2a2a2a;
+
+			&:not(:last-child) {
+				padding-bottom: 8px;
+			}
+		}
+	}
+
+	&__cta {
+		display: inline-block;
+		margin-top: 40px;
+		padding: 16px 32px;
+		/* Primary/yellow2 */
+		background: #f6ca30;
+		border-radius: 24px;
+		font-family: "DM Sans";
+		font-style: normal;
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 18px;
+		/* identical to box height, or 129% */
+		text-decoration: none;
+
+		/* Neutral/Black1 */
+		color: #2a2a2a;
+
+		&:hover {
+			background: #f0c12a;
+			transition: background-color 0.2s ease;
+		}
+	}
+}

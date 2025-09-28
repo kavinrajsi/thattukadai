@@ -1436,74 +1436,6 @@ body.index.drawer-open {
   color: #0b090a;
 }
 
-.homepage-slider {
-  position: relative;
-  /* Make SVGs fluid */
-  /* Show mobile by default, swap at breakpoint */
-}
-.homepage-slider .homepage-slider__owl {
-  padding-bottom: 48px;
-}
-.homepage-slider .homepage-slider__owl .owl-item a {
-  display: block;
-}
-.homepage-slider .homepage-slider__owl .homepage-slider__img {
-  width: 100%;
-}
-.homepage-slider .homepage-slider__owl .owl-dots {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 160px;
-  gap: 8px;
-}
-.homepage-slider .homepage-slider__owl .owl-dot {
-  padding: 0 4px;
-}
-.homepage-slider .homepage-slider__owl .owl-dot span {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  /* Neutral/White2 */
-  background: #f6f6f6;
-  border-radius: 50%;
-}
-.homepage-slider .homepage-slider__owl .owl-dot.active span {
-  background: #fad75f;
-}
-.homepage-slider .section-divider {
-  position: absolute;
-  bottom: 40px;
-  z-index: 2;
-  left: 0;
-  right: 0;
-  line-height: 0; /* remove stray gaps */
-  --divider-color: #f6f6f6; /* default color */
-  color: var(--divider-color);
-}
-.homepage-slider .section-divider__svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.homepage-slider .section-divider__svg--desktop {
-  display: none;
-}
-.homepage-slider .section-divider__svg--mobile {
-  display: block;
-}
-@media (min-width: 768px) {
-  .homepage-slider .section-divider__svg--desktop {
-    display: block;
-  }
-  .homepage-slider .section-divider__svg--mobile {
-    display: none;
-  }
-}
-
 .product-drawer {
   position: fixed;
   z-index: 9999;
@@ -2903,54 +2835,6 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   display: none;
 }
 
-.bestsellers__container .asd {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 40px;
-}
-.bestsellers__container .asd .bestsellers__eyebrow {
-  /* Frame 2 */
-  display: inline-block;
-  text-align: center;
-  padding: 8px 32px;
-  /* Primary/Yellow */
-  background: #fad75f;
-  border-radius: 50px;
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 16px;
-  /* identical to box height, or 114% */
-  /* Neutral/Black2 */
-  color: #161a1d;
-}
-.bestsellers__container .asd .bestsellers__title {
-  /* South India's Most-Loved Snacks! */
-  font-family: "Neilvard One";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 24px;
-  text-align: center;
-  /* Neutral/Black2 */
-  color: #161a1d;
-}
-.bestsellers__container .bestsellers__nav {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 32px;
-  gap: 16px;
-}
-.bestsellers__container .bestsellers__nav .owl-next,
-.bestsellers__container .bestsellers__nav .owl-prev {
-  width: 40px;
-  height: 40px;
-}
-
 #main-collection {
   scroll-margin-top: 220px;
 }
@@ -3050,160 +2934,6 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   text-align: center;
   /* Neutral/Black2 */
   color: #161a1d;
-}
-
-.image-content--section {
-  margin-top: 80px;
-  padding-top: 32px;
-  padding-bottom: 32px;
-  display: flex;
-  gap: 32px;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-}
-@media (min-width: 768px) {
-  .image-content--section {
-    flex-direction: row;
-  }
-}
-.image-content--section .image-content__inner {
-  order: -1;
-  max-width: 525px;
-}
-@media (min-width: 768px) {
-  .image-content--section .image-content__inner {
-    order: initial;
-  }
-}
-.image-content--section .image-content__eyebrow {
-  /* Frame 2 */
-  display: inline-block;
-  margin-bottom: 16px;
-  padding: 8px 32px;
-  /* Primary/Yellow */
-  background: #fad75f;
-  border-radius: 50px;
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 16px;
-  /* identical to box height, or 114% */
-  /* Neutral/Black2 */
-  color: #161a1d;
-}
-.image-content--section .image-content__title {
-  margin-bottom: 16px;
-  /* Desktop_H1 */
-  font-family: "Neilvard One";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 36px;
-  line-height: 40px;
-  /* or 111% */
-  /* Neutral/Black2 */
-  color: #161a1d;
-}
-.image-content--section .image-content__text p {
-  /* Desktop_B1 */
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 21px;
-  /* Neutral/Black1 */
-  color: #2a2a2a;
-}
-.image-content--section .image-content__text p:not(:last-child) {
-  padding-bottom: 8px;
-}
-.image-content--section .image-content__cta {
-  margin-top: 40px;
-  padding: 16px 32px;
-  /* Primary/yellow2 */
-  background: #f6ca30;
-  border-radius: 24px;
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 18px;
-  /* identical to box height, or 129% */
-  /* Neutral/Black1 */
-  color: #2a2a2a;
-}
-
-.promo-cta--full {
-  background-color: var(--color-yellow2);
-  border-radius: 20px;
-  width: calc(100% - 40px);
-  margin: 0 20px;
-}
-@media (min-width: 968px) {
-  .promo-cta--full {
-    margin: 0 auto;
-  }
-}
-.promo-cta--full .promo-cta__grid.promo-cta__grid--image-left {
-  display: flex;
-  gap: 20px;
-  flex-direction: column-reverse;
-}
-@media (min-width: 768px) {
-  .promo-cta--full .promo-cta__grid.promo-cta__grid--image-left {
-    justify-content: center;
-    flex-direction: row;
-  }
-}
-.promo-cta--full .promo-cta__content {
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
-  align-items: flex-start;
-}
-@media (min-width: 768px) {
-  .promo-cta--full .promo-cta__content {
-    flex: 1;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-  }
-}
-.promo-cta--full .promo-cta__content .promo-cta__title {
-  font-family: "Neilvard One";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 28px;
-  /* identical to box height, or 117% */
-  /* Neutral/Black2 */
-  color: #161a1d;
-  padding-bottom: 8px;
-}
-.promo-cta--full .promo-cta__content .promo-cta__body p {
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 21px;
-  /* identical to box height */
-  /* Neutral/Black1 */
-  color: #2a2a2a;
-}
-.promo-cta--full .promo-cta__content .promo-cta__button {
-  padding: 16px 32px;
-  /* Neutral/White1 */
-  background: #ffffff;
-  border-radius: 24px;
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 18px;
-  /* identical to box height, or 129% */
-  /* Neutral/Black1 */
-  color: #2a2a2a;
 }
 
 .page-customer-register,
@@ -3689,6 +3419,279 @@ body.product .main-product .product__info-col .product__btn--buy-now {
   display: block;
   opacity: 1;
   pointer-events: all;
+}
+
+.image-content {
+  margin-top: 80px;
+  padding-top: var(--pt-m, 40px);
+  padding-bottom: var(--pb-m, 40px);
+  display: flex;
+  gap: 32px;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+@media (min-width: 768px) {
+  .image-content {
+    flex-direction: row;
+    padding-top: var(--pt, 80px);
+    padding-bottom: var(--pb, 80px);
+  }
+}
+@media (min-width: 768px) {
+  .image-content--image-second .image-content__media {
+    order: 2;
+  }
+  .image-content--image-second .image-content__content {
+    order: 1;
+  }
+}
+@media (max-width: 767px) {
+  .image-content--m-image-second .image-content__media {
+    order: 2;
+  }
+  .image-content--m-image-second .image-content__content {
+    order: 1;
+  }
+}
+.image-content--narrow {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.image-content--full {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.image-content--pos-top {
+  align-items: flex-start;
+}
+.image-content--pos-middle {
+  align-items: center;
+}
+.image-content--pos-bottom {
+  align-items: flex-end;
+}
+.image-content__content {
+  flex: 1;
+  max-width: 525px;
+}
+@media (min-width: 768px) {
+  .image-content__content {
+    order: initial;
+  }
+}
+.image-content__media {
+  flex: 1;
+  aspect-ratio: var(--aspect-ratio, 3/2);
+}
+@media (max-width: 767px) {
+  .image-content__media {
+    order: -1;
+  }
+}
+.image-content__picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.image-content__image {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.image-content__image.loaded, .image-content__image:not([src=""]) {
+  opacity: 1;
+}
+.image-content__eyebrow {
+  /* Frame 2 */
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 8px 32px;
+  /* Primary/Yellow */
+  background: #fad75f;
+  border-radius: 50px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  /* identical to box height, or 114% */
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+.image-content__title {
+  margin-bottom: 16px;
+  /* Desktop_H1 */
+  font-family: "Neilvard One";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 40px;
+  /* or 111% */
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+.image-content__text p {
+  /* Desktop_B1 */
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  /* Neutral/Black1 */
+  color: #2a2a2a;
+}
+.image-content__text p:not(:last-child) {
+  padding-bottom: 8px;
+}
+.image-content__cta {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 16px 32px;
+  /* Primary/yellow2 */
+  background: #f6ca30;
+  border-radius: 24px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  /* identical to box height, or 129% */
+  text-decoration: none;
+  /* Neutral/Black1 */
+  color: #2a2a2a;
+}
+.image-content__cta:hover {
+  background: #f0c12a;
+  transition: background-color 0.2s ease;
+}
+
+.promo-cta--full {
+  background-color: var(--color-yellow2);
+  border-radius: 20px;
+  width: calc(100% - 40px);
+  margin: 0 20px;
+}
+@media (min-width: 968px) {
+  .promo-cta--full {
+    margin: 0 auto;
+  }
+}
+.promo-cta--full .promo-cta__grid.promo-cta__grid--image-left {
+  display: flex;
+  gap: 20px;
+  flex-direction: column-reverse;
+}
+@media (min-width: 768px) {
+  .promo-cta--full .promo-cta__grid.promo-cta__grid--image-left {
+    justify-content: center;
+    flex-direction: row;
+  }
+}
+.promo-cta--full .promo-cta__content {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+@media (min-width: 768px) {
+  .promo-cta--full .promo-cta__content {
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+}
+.promo-cta--full .promo-cta__content .promo-cta__title {
+  font-family: "Neilvard One";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  /* identical to box height, or 117% */
+  /* Neutral/Black2 */
+  color: #161a1d;
+  padding-bottom: 8px;
+}
+.promo-cta--full .promo-cta__content .promo-cta__body p {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  /* identical to box height */
+  /* Neutral/Black1 */
+  color: #2a2a2a;
+}
+.promo-cta--full .promo-cta__content .promo-cta__button {
+  padding: 16px 32px;
+  /* Neutral/White1 */
+  background: #ffffff;
+  border-radius: 24px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  /* identical to box height, or 129% */
+  /* Neutral/Black1 */
+  color: #2a2a2a;
+}
+
+.bestsellers__container .bestsellers__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.bestsellers__container .bestsellers__header .bestsellers__eyebrow {
+  /* Frame 2 */
+  display: inline-block;
+  text-align: center;
+  padding: 8px 32px;
+  /* Primary/Yellow */
+  background: #fad75f;
+  border-radius: 50px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  /* identical to box height, or 114% */
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+.bestsellers__container .bestsellers__header .bestsellers__title {
+  /* South India's Most-Loved Snacks! */
+  font-family: "Neilvard One";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+.bestsellers__container .bestsellers__nav {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 32px;
+  gap: 16px;
+}
+.bestsellers__container .bestsellers__nav .owl-next,
+.bestsellers__container .bestsellers__nav .owl-prev {
+  width: 40px;
+  height: 40px;
 }
 
 .shopify-policy__container {

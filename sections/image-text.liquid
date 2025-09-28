@@ -12,192 +12,102 @@
 
 {%- assign mods = '' -%}
 {%- assign mods = mods | append: ' image-content--' | append: section.settings.width -%}
-{%- assign mods = mods | append: ' image-content--' | append: section.settings.layout_overlap -%}
 {%- assign mods = mods | append: ' image-content--pos-' | append: section.settings.position -%}
-{%- assign mods = mods | append: ' image-content--align-' | append: section.settings.align -%}
-{%- assign mods = mods | append: ' image-content--align-m-' | append: section.settings.align_mobile -%}
 {%- assign mods = mods | append: ' image-content--' | append: section.settings.placement -%}
+{%- assign mods = mods | append: ' image-content--m-' | append: section.settings.placement_mobile -%}
 
 <section
-  class="layout__grid-box image-content image-content--section {{ mods }}"
+  class="layout__grid-box image-content {{ mods }}"
   aria-labelledby="image-content__title-{{ section.id }}"
-  {% comment %}
-    style="
-      --pt: {{ section.settings.padding_top_desktop | default: 0 }}px;
-      --pb: {{ section.settings.padding_bottom_desktop | default: 0 }}px;
-      --pt-m: {{ section.settings.padding_top_mobile | default: 0 }}px;
-      --pb-m: {{ section.settings.padding_bottom_mobile | default: 0 }}px;
-    "
-  {% endcomment %}
+  style="
+    --pt: {{ section.settings.padding_top_desktop | default: 80 }}px;
+    --pb: {{ section.settings.padding_bottom_desktop | default: 80 }}px;
+    --pt-m: {{ section.settings.padding_top_mobile | default: 40 }}px;
+    --pb-m: {{ section.settings.padding_bottom_mobile | default: 40 }}px;
+  "
 >
-  {%- if section.settings.placement == 'image-first' -%}
-    <figure class="image-content__media">
-      {% if desktop != blank %}
-        <picture class="image-content__picture">
-          <source
-            media="(min-width: 750px)"
-            type="image/avif"
-            srcset="
-              {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
-              {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
-              {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
-            "
-            sizes="50vw"
-          >
-          <source
-            media="(min-width: 0px)"
-            type="image/avif"
-            srcset="
-              {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
-              {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
-            "
-            sizes="100vw"
-          >
-          <source
-            media="(min-width: 750px)"
-            type="image/webp"
-            srcset="
-              {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
-              {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
-              {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
-            "
-            sizes="50vw"
-          >
-          <source
-            media="(min-width: 0px)"
-            type="image/webp"
-            srcset="
-              {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
-              {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
-            "
-            sizes="100vw"
-          >
-          <img
-            class="image-content__image"
-            src="{{ desktop | image_url: width: 1600 }}"
-            alt="{{ alt_text | escape }}"
-            width="{{ desktop.width }}"
-            height="{{ desktop.height }}"
-            loading="lazy"
-          >
-        </picture>
-      {% endif %}
-    </figure>
-  {%- endif -%}
+  <figure class="image-content__media" style="--aspect-ratio: {{ desktop.aspect_ratio }};">
+    {% if desktop != blank %}
+      <picture class="image-content__picture">
+        <source
+          media="(min-width: 750px)"
+          type="image/avif"
+          srcset="
+            {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
+            {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
+            {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
+          "
+          sizes="50vw"
+        >
+        <source
+          media="(min-width: 0px)"
+          type="image/avif"
+          srcset="
+            {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
+            {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
+          "
+          sizes="100vw"
+        >
+        <source
+          media="(min-width: 750px)"
+          type="image/webp"
+          srcset="
+            {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
+            {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
+            {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
+          "
+          sizes="50vw"
+        >
+        <source
+          media="(min-width: 0px)"
+          type="image/webp"
+          srcset="
+            {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
+            {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
+          "
+          sizes="100vw"
+        >
+        <img
+          class="image-content__image"
+          src="{{ desktop | image_url: width: 1600 }}"
+          alt="{{ alt_text | escape }}"
+          width="{{ desktop.width }}"
+          height="{{ desktop.height }}"
+          loading="lazy"
+          decoding="async"
+        >
+      </picture>
+    {% endif %}
+  </figure>
 
-  <div class="image-content__inner">
+  <div class="image-content__content">
     <div class="image-content__header">
-      {% if section.settings.eyebrow != blank %}
-        <div class="image-content__eyebrow-wrapper">
-          <span class="image-content__eyebrow">{{ section.settings.eyebrow }}</span>
-        </div>
-      {% else %}
-        <div class="image-content__eyebrow-wrapper">
-          <span class="image-content__eyebrow">About us</span>
-        </div>
-      {% endif %}
+      <div class="image-content__eyebrow-wrapper">
+        <span class="image-content__eyebrow">{{ section.settings.eyebrow | default: 'About us' }}</span>
+      </div>
 
-      {% if section.settings.title != blank %}
-        <div class="image-content__title-wrapper">
-          <h1 id="image-content__title-{{ section.id }}" class="image-content__title">
-            {{ section.settings.title | newline_to_br }}
-          </h1>
-        </div>
-      {% else %}
-        <div class="image-content__title-wrapper">
-          <h1 id="image-content__title-{{ section.id }}" class="image-content__title">A Legacy of Taste Since 1956</h1>
-        </div>
-      {% endif %}
+      <div class="image-content__title-wrapper">
+        <h1 id="image-content__title-{{ section.id }}" class="image-content__title">
+          {{ section.settings.title | default: 'A Legacy of Taste Since 1956' | newline_to_br }}
+        </h1>
+      </div>
     </div>
 
-    {% if section.settings.body_text != blank %}
-      <div class="image-content__body-wrapper">
-        <div class="image-content__text">
-          {{ section.settings.body_text }}
-        </div>
+    <div class="image-content__body-wrapper">
+      <div class="image-content__text">
+        {{
+          section.settings.body_text
+          | default: '<p>Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured the hearts of many, laying the foundation for what would become a cherished family business.</p><p>Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.</p>'
+        }}
       </div>
-    {% else %}
-      <div class="image-content__body-wrapper">
-        <div class="image-content__text">
-          <p>
-            Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering
-            a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured
-            the hearts of many, laying the foundation for what would become a cherished family business.
-          </p>
-          <p>
-            Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.
-          </p>
-        </div>
-      </div>
-    {% endif %}
+    </div>
 
-    {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
-      <div class="image-content__cta-wrapper">
-        <a class="image-content__cta" href="{{ section.settings.cta_link }}">
-          {{ section.settings.cta_label }}
-        </a>
-      </div>
-    {% else %}
-      <div class="image-content__cta-wrapper">
-        <a class="image-content__cta" href="/about"> Learn More </a>
-      </div>
-    {% endif %}
+    <div class="image-content__cta-wrapper">
+      <a class="image-content__cta" href="{{ section.settings.cta_link | default: '/about' }}">
+        {{ section.settings.cta_label | default: 'Learn More' }}
+      </a>
+    </div>
   </div>
-
-  {%- if section.settings.placement == 'image-second' -%}
-    <figure class="image-content__media">
-      {% if desktop != blank %}
-        <picture class="image-content__picture">
-          <source
-            media="(min-width: 750px)"
-            type="image/avif"
-            srcset="
-              {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
-              {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
-              {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
-            "
-            sizes="50vw"
-          >
-          <source
-            media="(min-width: 0px)"
-            type="image/avif"
-            srcset="
-              {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
-              {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
-            "
-            sizes="100vw"
-          >
-          <source
-            media="(min-width: 750px)"
-            type="image/webp"
-            srcset="
-              {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
-              {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
-              {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
-            "
-            sizes="50vw"
-          >
-          <source
-            media="(min-width: 0px)"
-            type="image/webp"
-            srcset="
-              {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
-              {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
-            "
-            sizes="100vw"
-          >
-          <img
-            class="image-content__image"
-            src="{{ desktop | image_url: width: 1600 }}"
-            alt="{{ alt_text | escape }}"
-            width="{{ desktop.width }}"
-            height="{{ desktop.height }}"
-            loading="lazy"
-          >
-        </picture>
-      {% endif %}
-    </figure>
-  {%- endif -%}
 </section>
 
 {% schema %}
@@ -219,16 +129,6 @@
     },
     {
       "type": "select",
-      "id": "layout_overlap",
-      "label": "Layout",
-      "default": "no-overlap",
-      "options": [
-        { "value": "no-overlap", "label": "No overlap" },
-        { "value": "overlap", "label": "Overlap" }
-      ]
-    },
-    {
-      "type": "select",
       "id": "position",
       "label": "Vertical position",
       "default": "middle",
@@ -240,30 +140,18 @@
     },
     {
       "type": "select",
-      "id": "align",
-      "label": "Alignment (desktop)",
-      "default": "left",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "align_mobile",
-      "label": "Mobile alignment",
-      "default": "left",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
-    {
-      "type": "select",
       "id": "placement",
-      "label": "Placement",
+      "label": "Placement (desktop)",
+      "default": "image-first",
+      "options": [
+        { "value": "image-first", "label": "Image first" },
+        { "value": "image-second", "label": "Image second" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "placement_mobile",
+      "label": "Placement (mobile)",
       "default": "image-first",
       "options": [
         { "value": "image-first", "label": "Image first" },

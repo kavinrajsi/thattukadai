@@ -65,7 +65,7 @@
       }
     },
     "best_sellers_hULKcC": {
-      "type": "best-sellers",
+      "type": "bestseller",
       "name": "Best sellers (carousel)",
       "settings": {
         "eyebrow": "Our Best Sellers",

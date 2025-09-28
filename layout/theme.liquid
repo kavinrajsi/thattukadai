@@ -101,16 +101,14 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | preload_tag: as: 'style' }}
-    {{ 'owl.carousel.css' | asset_url | preload_tag: as: 'style' }}
-    {{ 'owl.theme.default.css' | asset_url | preload_tag: as: 'style' }}
+    {{ 'flickity.min.css' | asset_url | preload_tag: as: 'style' }}
     {%- if request.page_type == 'product' -%}
       {{ 'photoswipe.css' | asset_url | preload_tag: as: 'style' }}
       {{ 'swiper-bundle.min.css' | asset_url | preload_tag: as: 'style' }}
     {%- endif -%}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'owl.carousel.css' | asset_url | stylesheet_tag }}
-    {{ 'owl.theme.default.css' | asset_url | stylesheet_tag }}
+    {{ 'flickity.min.css' | asset_url | stylesheet_tag }}
     {%- if request.page_type == 'product' -%}
       {{ 'photoswipe.css' | asset_url | stylesheet_tag }}
       {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
@@ -118,7 +116,7 @@
 
     {{ 'jquery.min.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'header.js' | asset_url | preload_tag: as: 'script' }}
-    {{ 'owl.carousel.js' | asset_url | preload_tag: as: 'script' }}
+    {{ 'flickity.pkgd.min.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'drawer-product.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'drawer-cart.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
@@ -168,7 +166,7 @@
         "@type": "Organization",
         "name": {{ shop.name | json }},
         {% if settings.brand_logo != blank %}
-        "logo": "https://cdn.shopify.com/s/files/1/0490/1158/9282/files/sundari-silks-logo.png",
+        "logo": "",
         {% endif %}
         "sameAs": [
           {{ settings.social_twitter_link | json }},

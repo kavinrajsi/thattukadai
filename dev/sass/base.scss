@@ -3,7 +3,6 @@
 @use "announcement";
 @use "header";
 @use "drawer-cart";
-@use "home-slider";
 @use "drawer-product";
 @use "cart";
 @use "footer";
@@ -13,8 +12,12 @@
 @use "homepage";
 @use "account";
 @use "predictive-search";
+@use "homepage-slider";
+@use "image-text";
+@use "promo-cta";
+@use "bestseller";
 @use "policy";
-
+@use "product-feature";
 
 .customers-addresses ,
 .customers-account {
