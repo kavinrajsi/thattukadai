@@ -111,16 +111,29 @@
             credentials: 'same-origin',
           })
             .then(function (r) {
+              // Handle non-2xx
+              if (!r.ok) {
+                throw new Error('HTTP ' + r.status + ' on products.json');
+              }
+              // Ensure JSON response (avoid HTML/password page)
+              var ct = (r.headers.get('content-type') || '').toLowerCase();
+              if (ct.indexOf('application/json') === -1 && ct.indexOf('json') === -1) {
+                throw new Error('Non-JSON response (content-type: ' + ct + ')');
+              }
               return r.json();
             })
             .then(function (data) {
               if (!data || !Array.isArray(data.products)) {
-                renderProductsError();
-                return;
+                throw new Error('Unexpected payload shape');
               }
-              renderProductsGrid(data.products.slice(0, 8));
+              // pass handle so we can render "View more"
+              renderProductsGrid(data.products.slice(0, 8), handle);
             })
-            .catch(function () {
+            .catch(function (err) {
+              // Optional: log for debugging; safe no-op in production
+              if (window && window.console) {
+                console.warn('[mega-preview] Load failed for handle "' + handle + '":', err);
+              }
               renderProductsError();
             });
         }
@@ -186,10 +199,20 @@
           .replace(/'/g, '&#039;');
       }
 
-      function renderProductsGrid(products) {
+      function renderProductsGrid(products, handle) {
         if (!$products.length) return;
         if (!products.length) {
-          $products.prop('hidden', false).html('<div>No products found.</div>');
+          // If you want, you can still show a link to the collection even when empty:
+          var emptyHtml = '<div>No products found.</div>';
+          if (handle) {
+            emptyHtml +=
+              '<div class="mega__more">' +
+              '<a class="mega__cta" href="/collections/' +
+              encodeURIComponent(handle) +
+              '#main-collection">View more</a>' +
+              '</div>';
+          }
+          $products.prop('hidden', false).html(emptyHtml);
           return;
         }
 
@@ -208,6 +231,16 @@
           html += '</a>';
         });
         html += '</div>';
+
+        // ↓ Add the "View more" button after the grid
+        if (handle) {
+          html +=
+            '<div class="mega__more">' +
+            '<a class="mega__cta" href="/collections/' +
+            encodeURIComponent(handle) +
+            '#main-collection">View more</a>' +
+            '</div>';
+        }
 
         $products.prop('hidden', false).html(html);
       }

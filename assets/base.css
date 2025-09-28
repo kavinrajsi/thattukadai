@@ -1086,6 +1086,25 @@ header .site-header .site-header__inner .site-nav.site-nav--right .icon-link--ba
     background-position: 400px 0;
   }
 }
+.mega__more {
+  margin-top: 12px;
+  text-align: center;
+}
+.mega__more .mega__cta {
+  width: 100%;
+  margin-top: 80px;
+  text-align: center;
+  padding: 8px 32px;
+  background: #fad75f;
+  border-radius: 24px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  color: #2a2a2a;
+}
+
 body.index.drawer-open {
   overflow: hidden;
 }
