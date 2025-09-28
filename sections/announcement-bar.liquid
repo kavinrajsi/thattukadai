@@ -1,45 +1,25 @@
 {% comment %}
   ANNOUNCEMENT BAR (Multi-instance)
-  ------------------------------------------------------------------
-  PURPOSE:
-  - Displays one or more announcement bars on the site (stacked vertically if multiple).
-  - Each bar can:
-      - Have its own message, colors, scroll effect, and dismiss button.
-      - Be shown only on the homepage or across the site.
-      - Be displayed only between specific dates.
-      - Remember dismissals via session cookies (no expiry date set).
+  - Dates removed. Bars show whenever enabled (optionally homepage-only).
+  - Dismissal remembered via session cookie.
 {% endcomment %}
 
-{% assign today = 'now' | date: '%Y-%m-%d' %}
 {% assign has_active_announcement = false %}
 
 {%- for block in section.blocks -%}
   {%- if block.settings.showOnlyOnHome and request.page_type != 'index' -%}
     {%- continue -%}
   {%- endif -%}
-
-  {%- assign start = block.settings.startDate | default: '' -%}
-  {%- assign end = block.settings.endDate | default: '' -%}
-  {%- if start != '' and today < start -%}{%- continue -%}{%- endif -%}
-  {%- if end != '' and today > end -%}{%- continue -%}{%- endif -%}
-
   {% assign has_active_announcement = true %}
   {%- break -%}
 {%- endfor -%}
 
 {% if section.settings.enableAnnouncement and has_active_announcement %}
   <div class="announcement-bars" style="--ab-gap: {{ section.settings.stackGap }}px;">
-    {% assign today = 'now' | date: '%Y-%m-%d' %}
-
     {% for block in section.blocks %}
       {% if block.settings.showOnlyOnHome and request.page_type != 'index' %}
         {% continue %}
       {% endif %}
-
-      {% assign start = block.settings.startDate | default: '' %}
-      {% assign end = block.settings.endDate | default: '' %}
-      {% if start != '' and today < start %}{% continue %}{% endif %}
-      {% if end != '' and today > end %}{% continue %}{% endif %}
 
       {% assign key = 'announcement_bar_' | append: section.id | append: '_' | append: block.id %}
 
@@ -51,8 +31,6 @@
         style="--ab-bg: {{ block.settings.bgColor }}; --ab-text: {{ block.settings.textColor }};"
         data-key="{{ key }}"
         data-enable-dismiss="{{ block.settings.enableDismiss }}"
-        data-start-date="{{ block.settings.startDate }}"
-        data-end-date="{{ block.settings.endDate }}"
         {{ block.shopify_attributes }}
       >
         <div class="announcement-bar__inner">
@@ -128,8 +106,6 @@
         { "type": "color", "id": "bgColor", "label": "Background color", "default": "#111827" },
         { "type": "color", "id": "textColor", "label": "Text color", "default": "#ffffff" },
         { "type": "checkbox", "id": "enableDismiss", "label": "Allow dismiss", "default": true },
-        { "type": "text", "id": "startDate", "label": "Show from date (YYYY-MM-DD)" },
-        { "type": "text", "id": "endDate", "label": "Show until date (YYYY-MM-DD)" },
         { "type": "checkbox", "id": "showOnlyOnHome", "label": "Show only on homepage", "default": false }
       ]
     }

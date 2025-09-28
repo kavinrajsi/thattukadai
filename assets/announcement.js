@@ -21,40 +21,17 @@
   }
 
   /**
-   * Initialize a single announcement bar
+   * Initialize a single announcement bar (date gating removed)
    */
   function initBar(bar) {
     if (!bar) return;
-
-    // JS date gating (to ensure bars also hide dynamically if needed)
-    var startDateStr = bar.getAttribute('data-start-date');
-    var endDateStr = bar.getAttribute('data-end-date');
-    var today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (startDateStr) {
-      var startDate = new Date(startDateStr);
-      startDate.setHours(0, 0, 0, 0);
-      if (today < startDate) {
-        bar.style.display = 'none';
-        return;
-      }
-    }
-    if (endDateStr) {
-      var endDate = new Date(endDateStr);
-      endDate.setHours(0, 0, 0, 0);
-      if (today > endDate) {
-        bar.style.display = 'none';
-        return;
-      }
-    }
 
     // Handle dismissal via session cookies
     var enableDismiss = bar.getAttribute('data-enable-dismiss') === 'true';
     var key = bar.getAttribute('data-key');
 
     if (enableDismiss && getCookie(key) === 'true') {
-      bar.style.display = 'block';
+      bar.style.display = 'none';
       return;
     }
 
