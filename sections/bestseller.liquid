@@ -1,7 +1,14 @@
 {% comment %}
-  Section: Best Sellers (BEM classes)
+  Section: Best Sellers (Flickity slider + BEM classes)
 {% endcomment %}
-<section class="bestsellers layout__grid-box">
+
+{%- comment -%}
+  Include Flickity assets (safe to include here; the guard prevents double init)
+{%- endcomment -%}
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<script defer src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+<section class="bestsellers layout__grid-box" id="section-{{ section.id }}">
   <div class="bestsellers__container">
     <div class="bestsellers__header">
       {% if section.settings.eyebrow != blank %}
@@ -11,26 +18,175 @@
         <h2 class="bestsellers__title">{{ section.settings.heading }}</h2>
       {% endif %}
     </div>
+
     <div class="bestsellers__scroller">
-      <div class="bestsellers__list owl-carousel" id="bestsellers-{{ section.id }}">
+      {%- comment -%}
+        NOTE: Each child is a Flickity "cell".
+      {%- endcomment -%}
+      <div
+        class="bestsellers__list"
+        id="bestsellers-{{ section.id }}"
+        data-flickity='
+          {
+            "cellAlign": "left",
+            "contain": true,
+            "pageDots": false,
+            "prevNextButtons": false,
+            "groupCells": true,
+            "wrapAround": true,
+            "draggable": true,
+            "adaptiveHeight": true,
+            "watchCSS": false
+          }
+        '
+      >
         {% if section.settings.source == 'collection' and section.settings.collection != blank %}
           {% for product in section.settings.collection.products limit: section.settings.product_limit %}
-            {% render 'product-card', product: product %}
+            <div class="bestsellers__item">
+              {% render 'product-card', product: product %}
+            </div>
           {% endfor %}
         {% else %}
           {% for block in section.blocks %}
             {% assign product = block.settings.product %}
             {% if product %}
-              {% render 'product-card', product: product, block: block %}
+              <div class="bestsellers__item">
+                {% render 'product-card', product: product, block: block %}
+              </div>
             {% endif %}
           {% endfor %}
         {% endif %}
       </div>
 
-      <div class="bestsellers__nav"></div>
+      <div class="bestsellers__nav">
+        <button
+          class="bestsellers__btn bestsellers__btn--prev"
+          type="button"
+          aria-label="Previous"
+          data-target="bestsellers-{{ section.id }}"
+        >
+          &#10094;
+        </button>
+        <button
+          class="bestsellers__btn bestsellers__btn--next"
+          type="button"
+          aria-label="Next"
+          data-target="bestsellers-{{ section.id }}"
+        >
+          &#10095;
+        </button>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* Minimal, keep your theme styles as-is */
+  .bestsellers__list {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .bestsellers__list.is-initialized {
+    opacity: 1;
+  }
+  .bestsellers__item {
+    width: 70%;
+    max-width: 360px;
+    margin-right: 16px;
+  }
+  @media (min-width: 480px) {
+    .bestsellers__item {
+      width: 50%;
+    }
+  }
+  @media (min-width: 768px) {
+    .bestsellers__item {
+      width: 33.333%;
+    }
+  }
+  @media (min-width: 1024px) {
+    .bestsellers__item {
+      width: 25%;
+    }
+  }
+
+  .bestsellers__nav {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+  .bestsellers__btn {
+    border: 1px solid currentColor;
+    background: transparent;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  (function () {
+    function initFlickity(root) {
+      var slider = root.querySelector('.bestsellers__list');
+      if (!slider || typeof Flickity === 'undefined') return;
+
+      // Prevent double init
+      if (slider._flickity) return;
+
+      var options = {};
+      try {
+        options = JSON.parse(slider.getAttribute('data-flickity') || '{}');
+      } catch (e) {}
+
+      var flkty = new Flickity(slider, options);
+      slider.classList.add('is-initialized');
+
+      // External nav
+      var prevBtn = root.querySelector('.bestsellers__btn--prev');
+      var nextBtn = root.querySelector('.bestsellers__btn--next');
+      if (prevBtn)
+        prevBtn.addEventListener('click', function () {
+          flkty.previous();
+        });
+      if (nextBtn)
+        nextBtn.addEventListener('click', function () {
+          flkty.next();
+        });
+
+      // store ref
+      slider._flickity = flkty;
+    }
+
+    function destroyFlickity(root) {
+      var slider = root.querySelector('.bestsellers__list');
+      if (slider && slider._flickity) {
+        slider._flickity.destroy();
+        slider._flickity = null;
+        slider.classList.remove('is-initialized');
+      }
+    }
+
+    var section = document.getElementById('section-{{ section.id }}');
+    if (section) {
+      // If Flickity loaded already, init immediately; otherwise wait for load
+      if (typeof Flickity !== 'undefined') {
+        initFlickity(section);
+      } else {
+        window.addEventListener('load', function () {
+          initFlickity(section);
+        });
+      }
+    }
+
+    // Theme Editor support
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.target && e.target.id === 'section-{{ section.id }}') initFlickity(e.target);
+    });
+    document.addEventListener('shopify:section:unload', function (e) {
+      if (e.target && e.target.id === 'section-{{ section.id }}') destroyFlickity(e.target);
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -46,7 +202,7 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "South India's most‑loved snacks!"
+      "default": "South India's most-loved snacks!"
     },
     {
       "type": "radio",

@@ -24,7 +24,34 @@
     height: auto;
     object-fit: cover;
   }
+  /* Hide only the slider (but keep its layout size) until Flickity is enabled */
+  .homepage-slider {
+    visibility: hidden; /* prevents flash */
+  }
+  .homepage-slider.flickity-enabled {
+    visibility: visible; /* shown once Flickity attaches */
+  }
+
+  /* Helpful to avoid any pre-init horizontal overflow */
+  .section--homepage-slider {
+    overflow: hidden;
+  }
 </style>
+<noscript>
+  <style>
+    /* When JS is off, show the images stacked as a graceful fallback */
+    .homepage-slider {
+      visibility: visible !important;
+    }
+  </style>
+</noscript>
+
+{% if section.settings.height_mode == 'fixed' %}
+  #homepage-slider-{{ section.id }} .flickity-viewport { height: {{ section.settings.fixed_height }}px !important; }
+  #homepage-slider-{{ section.id }} .flickity-slider__img { height: {{ section.settings.fixed_height }}px; width: 100%;
+  object-fit: cover; object-position: {{ block.settings.image_position | default: 'center center' }}; }
+{% endif %}
+
 <div id="homepage-slider-{{ section.id }}" class="homepage-slider main-carousel">
   {%- for block in section.blocks -%}
     {% assign img_desktop = block.settings.image_desktop %}
@@ -93,19 +120,24 @@
     var sliderEl = document.getElementById('homepage-slider-{{ section.id }}');
     if (!sliderEl || typeof Flickity === 'undefined') return;
 
-    new Flickity(sliderEl, {
-      cellAlign: 'center',   // keep slide centered
-      contain: true,         // contain within slider
+    var flkty = new Flickity(sliderEl, {
+      cellAlign: 'center',
+      contain: true,
       wrapAround: {{ section.settings.loop | json }},
       prevNextButtons: {{ section.settings.nav | json }},
       pageDots: {{ section.settings.dots | json }},
       autoPlay: {{ section.settings.autoplay | json }} ? {{ section.settings.autoplay_timeout | times: 1000 }} : false,
       pauseAutoPlayOnHover: {{ section.settings.pause_on_hover | json }},
       imagesLoaded: true,
-      groupCells: 1,         // force one cell at a time
-      draggable: true,       // enable swipe
-      percentPosition: true, // sizing based on %
+      groupCells: 1,
+      draggable: true,
+      percentPosition: true
     });
+
+    // Optional: if you used a custom class like 'is-ready'
+    // flkty.on('ready', function () {
+    //   sliderEl.classList.add('is-ready');
+    // });
   });
 </script>
 

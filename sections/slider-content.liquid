@@ -1,5 +1,12 @@
+{% comment %}
+  Section: Promo Slider (Flickity)
+  Renders a carousel where each block is one promo-card__inner slide.
+{% endcomment %}
+
+<link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" defer></script>
+
 <section class="promo">
-  <!-- Promo card appended after the videos -->
   <div
     class="video-snippet__promo"
     style="
@@ -15,75 +22,136 @@
   >
     <div class="promo-card">
       <div class="promo-card__surface">
-        <div class="promo-card__inner">
-          <div class="promo-card__media">
-            {% if section.settings.promo_image != blank %}
-              {% assign promo = section.settings.promo_image %}
-              {{
-                promo
-                | image_url: width: 1200
-                | image_tag:
-                  alt: section.settings.promo_title,
-                  widths: '600,900,1200',
-                  sizes: '(min-width: 1000px) 560px, 100vw',
-                  loading: 'lazy',
-                  decoding: 'async',
-                  class: 'promo-card__img',
-                  width: promo.width,
-                  height: promo.height
-              }}
-            {% else %}
-              <div class="promo-card__ph">
-                {{ 'image' | placeholder_svg_tag }}
+        <div
+          id="promo-slider-{{ section.id }}"
+          class="promo-card__slider"
+          data-autoplay="{{ section.settings.autoplay }}"
+          data-timeout="{{ section.settings.autoplay_timeout | times: 1000 }}"
+          data-wrap="{{ section.settings.loop }}"
+          data-nav="{{ section.settings.nav }}"
+          data-dots="{{ section.settings.dots }}"
+          data-hover="{{ section.settings.pause_on_hover }}"
+        >
+          {% if section.blocks.size > 0 %}
+            {% for block in section.blocks %}
+              <div class="promo-card__inner" {{ block.shopify_attributes }}>
+                <div class="promo-card__media">
+                  {% if block.settings.promo_image != blank %}
+                    {% assign promo = block.settings.promo_image %}
+                    {{
+                      promo
+                      | image_url: width: 1200
+                      | image_tag:
+                        alt: block.settings.promo_title,
+                        widths: '600,900,1200',
+                        sizes: '(min-width: 1000px) 560px, 100vw',
+                        loading: 'lazy',
+                        decoding: 'async',
+                        class: 'promo-card__img',
+                        width: promo.width,
+                        height: promo.height
+                    }}
+                  {% else %}
+                    <div class="promo-card__ph">
+                      {{ 'image' | placeholder_svg_tag }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="promo-card__content">
+                  {% if block.settings.promo_tag != blank %}
+                    <span class="promo-card__tag">{{ block.settings.promo_tag }}</span>
+                  {% endif %}
+
+                  {% if block.settings.promo_title != blank %}
+                    <h3 class="promo-card__title">{{ block.settings.promo_title }}</h3>
+                  {% endif %}
+
+                  {% if block.settings.promo_text != blank %}
+                    <div class="promo-card__text rte">{{ block.settings.promo_text }}</div>
+                  {% endif %}
+
+                  {% if block.settings.promo_btn_label != blank and block.settings.promo_btn_link != blank %}
+                    <a class="promo-card__button" href="{{ block.settings.promo_btn_link }}">
+                      {{- block.settings.promo_btn_label -}}
+                    </a>
+                  {% endif %}
+                </div>
               </div>
-            {% endif %}
-          </div>
-
-          <div class="promo-card__content">
-            {% if section.settings.promo_tag != blank %}
-              <span class="promo-card__tag">{{ section.settings.promo_tag }}</span>
-            {% endif %}
-
-            {% if section.settings.promo_title != blank %}
-              <h3 class="promo-card__title">{{ section.settings.promo_title }}</h3>
-            {% endif %}
-
-            {% if section.settings.promo_text != blank %}
-              <div class="promo-card__text rte">{{ section.settings.promo_text }}</div>
-            {% endif %}
-
-            {% if section.settings.promo_btn_label != blank and section.settings.promo_btn_link != blank %}
-              <a class="promo-card__button" href="{{ section.settings.promo_btn_link }}">
-                {{- section.settings.promo_btn_label -}}
-              </a>
-            {% endif %}
-          </div>
+            {% endfor %}
+          {% else %}
+            {%- comment -%} Fallback slide when no blocks are added {%- endcomment -%}
+            <div class="promo-card__inner">
+              <div class="promo-card__media">
+                <div class="promo-card__ph">{{ 'image' | placeholder_svg_tag }}</div>
+              </div>
+              <div class="promo-card__content">
+                <span class="promo-card__tag">Sample Tag</span>
+                <h3 class="promo-card__title">Sample Promo Title</h3>
+                <div class="promo-card__text rte">
+                  <p>Add promo blocks to populate this slider.</p>
+                </div>
+                <a class="promo-card__button" href="#">Learn more</a>
+              </div>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
-  <!-- /promo -->
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var sliderEl = document.getElementById('promo-slider-{{ section.id }}');
+    if (!sliderEl || typeof Flickity === 'undefined') return;
+
+    // Read data-* attributes (lets us keep Liquid tidy)
+    var auto = sliderEl.getAttribute('data-autoplay') === 'true';
+    var timeout = parseInt(sliderEl.getAttribute('data-timeout'), 10) || 0;
+    var wrap = sliderEl.getAttribute('data-wrap') === 'true';
+    var nav = sliderEl.getAttribute('data-nav') === 'true';
+    var dots = sliderEl.getAttribute('data-dots') === 'true';
+    var hoverPause = sliderEl.getAttribute('data-hover') === 'true';
+
+    new Flickity(sliderEl, {
+      cellAlign: 'center',
+      contain: true,
+      wrapAround: wrap,
+      prevNextButtons: nav,
+      pageDots: dots,
+      autoPlay: auto ? timeout : false,
+      pauseAutoPlayOnHover: hoverPause,
+      imagesLoaded: true,
+      groupCells: 1,
+      draggable: true,
+      percentPosition: true,
+    });
+  });
+</script>
 
 {% schema %}
 {
-  "name": "Slider Content",
+  "name": "Promo Slider",
+  "tag": "section",
   "settings": [
-
-    { "type": "header", "content": "Promo card" },
-    { "id": "promo_image", "type": "image_picker", "label": "Promo image" },
-    { "id": "promo_tag", "type": "text", "label": "Promo tag", "default": "Traditional Sweets" },
-    { "id": "promo_title", "type": "text", "label": "Promo title", "default": "A FAMILY TRADITION ROOTED IN FLAVOR" },
+    { "type": "header", "content": "Slider options" },
+    { "id": "loop", "type": "checkbox", "label": "Loop slides (wrap around)", "default": true },
+    { "id": "nav", "type": "checkbox", "label": "Show prev/next buttons", "default": true },
+    { "id": "dots", "type": "checkbox", "label": "Show page dots", "default": true },
+    { "id": "autoplay", "type": "checkbox", "label": "Autoplay", "default": true },
     {
-      "id": "promo_text",
-      "type": "richtext",
-      "label": "Promo text",
-      "default": "<p>Today, the legacy continues with thriving outlets across Sivakasi, proudly run by the next generations.</p>"
+      "id": "autoplay_timeout",
+      "type": "range",
+      "label": "Autoplay delay (seconds)",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "default": 5
     },
-    { "id": "promo_btn_label", "type": "text", "label": "Button label", "default": "View More" },
-    { "id": "promo_btn_link", "type": "url", "label": "Button link" },
+    { "id": "pause_on_hover", "type": "checkbox", "label": "Pause on hover", "default": true },
 
-    { "type": "header", "content": "Promo colors" },
+    { "type": "header", "content": "Promo colors (applies to all slides)" },
     { "id": "promo_bg", "type": "color", "label": "Surface background", "default": "#F2C635" },
     { "id": "promo_card_bg", "type": "color", "label": "Card background", "default": "#FFFFFF" },
     { "id": "promo_chip_bg", "type": "color", "label": "Chip background", "default": "#EFEFEF" },
@@ -93,10 +161,35 @@
     { "id": "promo_btn_bg", "type": "color", "label": "Button background", "default": "#F2C635" },
     { "id": "promo_btn_fg", "type": "color", "label": "Button text color", "default": "#111111" }
   ],
+  "blocks": [
+    {
+      "type": "promo",
+      "name": "Promo item",
+      "settings": [
+        { "id": "promo_image", "type": "image_picker", "label": "Promo image" },
+        { "id": "promo_tag", "type": "text", "label": "Promo tag", "default": "Traditional Sweets" },
+        {
+          "id": "promo_title",
+          "type": "text",
+          "label": "Promo title",
+          "default": "A FAMILY TRADITION ROOTED IN FLAVOR"
+        },
+        {
+          "id": "promo_text",
+          "type": "richtext",
+          "label": "Promo text",
+          "default": "<p>Today, the legacy continues with thriving outlets across Sivakasi, proudly run by the next generations.</p>"
+        },
+        { "id": "promo_btn_label", "type": "text", "label": "Button label", "default": "View More" },
+        { "id": "promo_btn_link", "type": "url", "label": "Button link" }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Slider Content",
-      "category": "Image"
+      "name": "Promo Slider",
+      "category": "Image",
+      "blocks": [{ "type": "promo" }, { "type": "promo" }]
     }
   ]
 }
@@ -113,17 +206,27 @@
     border-radius: 18px;
     padding: clamp(12px, 2vw, 20px);
   }
+
+  /* Flickity container: each child .promo-card__inner is a cell */
+  .promo-card__slider {
+    width: 100%;
+  }
+
+  /* Each slide */
   .promo-card__inner {
     display: grid;
     gap: clamp(16px, 3vw, 28px);
     grid-template-columns: 1fr;
+    width: 100%;
   }
   @media (min-width: 900px) {
     .promo-card__inner {
       grid-template-columns: 1.2fr 1fr;
       align-items: center;
+      width: calc(100% - 16px); /* small gutter inside Flickity */
     }
   }
+
   .promo-card__media {
     overflow: hidden;
     border-radius: 18px;
@@ -176,5 +279,13 @@
   }
   .promo-card__button:hover {
     opacity: 0.92;
+  }
+
+  /* Optional: better spacing for Flickity dots/buttons */
+  .flickity-page-dots {
+    bottom: -18px;
+  }
+  .flickity-button {
+    box-shadow: none;
   }
 {% endstyle %}

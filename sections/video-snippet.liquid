@@ -35,26 +35,11 @@
       <span class="video-snippet__chip">{{ section.settings.chip_text }}</span>
       <h2 class="video-snippet__title">{{ section.settings.title }}</h2>
     </div>
-
     <div class="video-snippet__videos">
       {% for block in section.blocks %}
         {% if block.settings.video != blank %}
           <div class="video-snippet__video">
-            {{ block.settings.video | video_tag: autoplay: false, loop: false, controls: true, muted: false }}
-          </div>
-        {% elsif block.settings.video_link != blank %}
-          <div class="video-snippet__video">
-            <iframe
-              class="video-snippet__iframe"
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/{{ block.settings.video_link | split: 'v=' | last }}?controls=0"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
-            ></iframe>
+            {{ block.settings.video | video_tag: autoplay: true, loop: true, controls: true, muted: true }}
           </div>
         {% endif %}
       {% endfor %}
@@ -64,6 +49,25 @@
   <div class="layout__grid-box"></div>
 </section>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const videos = document.querySelectorAll('.custom-video');
+
+    videos.forEach((video) => {
+      const btn = video.parentElement.querySelector('.video-toggle');
+
+      btn.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+          btn.textContent = 'Pause';
+        } else {
+          video.pause();
+          btn.textContent = 'Play';
+        }
+      });
+    });
+  });
+</script>
 {% schema %}
 {
   "name": "Video Snippet",
@@ -93,10 +97,10 @@
           "info": "Upload or choose a video file hosted on Shopify."
         },
         {
-          "type": "url",
-          "id": "video_link",
-          "label": "YouTube video link",
-          "info": "Paste a YouTube link (including Shorts) here."
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Upload or choose a image file hosted on Shopify."
         }
       ]
     }
