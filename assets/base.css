@@ -735,6 +735,7 @@ header {
   width: 100%;
   will-change: transform;
   background: #ffffff;
+  background-color: transparent;
 }
 @media (min-width: 768px) {
   header {
@@ -3665,14 +3666,15 @@ body.product .main-product .product__info-col .product__btn--buy-now {
 }
 
 .promo-cta--full {
+  padding-top: 32px;
   background-color: var(--color-yellow2);
   border-radius: 20px;
   width: calc(100% - 40px);
-  margin: 0 20px;
+  margin: 80px 20px 0;
 }
 @media (min-width: 968px) {
   .promo-cta--full {
-    margin: 0 auto;
+    margin: 80px auto 0;
   }
 }
 .promo-cta--full .promo-cta__grid.promo-cta__grid--image-left {
@@ -3977,11 +3979,28 @@ body.product .main-product .product__info-col .product__btn--buy-now {
 .video-snippet .video-snippet__videos {
   display: grid;
   gap: 20px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
 }
 .video-snippet .video-snippet__videos video {
   width: 100%;
   height: 100%;
   aspect-ratio: 9/16;
+}
+
+/* Tablet & mobile: make it horizontal scroll */
+@media (max-width: 1024px) {
+  .video-snippet__videos {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 10px;
+  }
+  .video-snippet__videos video {
+    flex: 0 0 auto;
+    width: 250px; /* adjust to your design */
+    scroll-snap-align: start;
+  }
 }
 /*# sourceMappingURL=base.css.map */

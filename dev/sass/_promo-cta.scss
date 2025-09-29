@@ -1,12 +1,13 @@
 
 
 .promo-cta--full {
+	padding-top: 32px;
 	background-color: var(--color-yellow2);
 	border-radius: 20px;
 	width: calc(100% - 40px);
-	margin: 0 20px;
+	margin: 80px 20px 0;
 	@media (min-width: 968px) {
-		margin: 0 auto;
+		margin: 80px auto 0;
 	}
 
 	.promo-cta__grid.promo-cta__grid--image-left {
