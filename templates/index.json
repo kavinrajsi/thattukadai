@@ -26,9 +26,9 @@
         "slide_zGrLLK": {
           "type": "slide",
           "settings": {
-            "image_desktop": "shopify://shop_images/banner-3-desktop.png",
-            "image_tablet": "shopify://shop_images/banner-3-desktop.png",
-            "image_mobile": "shopify://shop_images/banner-3-mobile.png",
+            "image_desktop": "shopify://shop_images/banner-2-desktop.png",
+            "image_tablet": "shopify://shop_images/banner-2-desktop.png",
+            "image_mobile": "shopify://shop_images/banner-1-mobile.png",
             "image_alt": "",
             "image_link": "",
             "image_position": "center center"
