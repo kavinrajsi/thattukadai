@@ -43,7 +43,7 @@
         "autoplay": true,
         "autoplay_timeout": 5,
         "loop": true,
-        "nav": true,
+        "nav": false,
         "dots": true,
         "pause_on_hover": true,
         "height_mode": "auto",
