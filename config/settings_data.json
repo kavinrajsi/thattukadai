@@ -39,9 +39,7 @@
               "scrollAmount": 6,
               "bgColor": "#f6ca30",
               "textColor": "#161a1d",
-              "enableDismiss": true,
-              "startDate": "2025-Aug-16",
-              "endDate": "",
+              "enableDismiss": false,
               "showOnlyOnHome": false
             }
           }
