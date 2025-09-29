@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "favicon": "shopify://shop_images/logo.png",
     "black_color_1": "#2a2a2a",
     "white_color_2": "#f6f6f6",
     "heading-1": "dm_sans_n5",
@@ -20,6 +21,7 @@
     "font-normal": "dm_sans_n4",
     "font-medium": "dm_sans_n5",
     "font-extrabold": "dm_sans_n8",
+    "brand_logo": "shopify://shop_images/logo.png",
     "social_twitter_link": "https://x.com",
     "social_facebook_link": "https://facebook.com",
     "social_pinterest_link": "https://pinterest.com/",
