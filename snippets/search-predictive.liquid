@@ -1,0 +1,20 @@
+<section class="site-search" id="site-search">
+  <predictive-search>
+    <form action="{{ routes.search_url }}" method="get" role="search">
+      <input
+        type="search"
+        name="q"
+        placeholder="Search for &quot;{% if shop.metafields.search_discovery.top_keyword != blank %}{{ shop.metafields.search_discovery.top_keyword }}{% elsif section.settings.fallback_search_text != blank %}{{ section.settings.fallback_search_text }}{% else %}savouries{% endif %}&quot;"
+        aria-label="Search"
+        autocomplete="off"
+        data-dynamic-placeholder
+      >
+      <button type="button" class="js-search-close" aria-label="Close search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+          <path stroke="#2A2A2A" stroke-linecap="round" stroke-width="2" d="M15 5 5 15M5 5l10 10"/>
+        </svg>
+      </button>
+    </form>
+    <div class="predictive-search-results" hidden></div>
+  </predictive-search>
+</section>

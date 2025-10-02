@@ -1,25 +1,6 @@
 // Basic starter JS for thattukadai theme
 console.log('thattukadai theme loaded');
 
-document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.querySelector('.js-search-toggle');
-  const searchBar = document.querySelector('#site-search');
-  const searchInput = searchBar?.querySelector("input[type='search']");
-
-  if (toggleBtn && searchBar) {
-    toggleBtn.addEventListener('click', () => {
-      const isHidden = searchBar.hasAttribute('hidden');
-
-      if (isHidden) {
-        searchBar.removeAttribute('hidden');
-        searchInput?.focus();
-      } else {
-        searchBar.setAttribute('hidden', '');
-      }
-    });
-  }
-});
-
 (function () {
   // Find the header once the DOM is ready
   var header = document.querySelector('header');

@@ -1,0 +1,161 @@
+{% comment %}
+  snippets/header-desktop.liquid
+  New desktop-only header
+{% endcomment %}
+
+<div class="header header--desktop" data-header-desktop>
+  {% comment %} NOTE : we can add container {% endcomment %}
+  <div class="header--desktop__container">
+    <nav class="header__nav header__nav--left">
+      <div class="header__menu">
+        <button
+          class="menu-icon mobile-only"
+          type="button"
+          aria-label="Shop"
+          aria-controls="mobile-menu-panel"
+          data-mobile-menu-button
+        >
+          <div class="menu-icon__line menu-icon__line--top"></div>
+          <div class="menu-icon__line menu-icon__line--middle"></div>
+          <div class="menu-icon__line menu-icon__line--bottom"></div>
+        </button>
+
+        {%- if section.settings.shop_menu != blank -%}
+          <button
+            class="header__nav-pill"
+            data-desktop-menu-button
+            aria-expanded="false"
+            aria-controls="mega-products"
+            type="button"
+          >
+            <span class="header__nav-label">{{ section.settings.shop_label | default: 'Shop' }}</span>
+            <span class="header__nav-icon header__nav-icon--plus" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" fill="none" viewBox="0 0 14 15">
+                <path fill="#2A2A2A" d="M7 14.75a.951.951 0 0 1-.951-.951V1.7a.951.951 0 1 1 1.902 0v12.1a.951.951 0 0 1-.951.95Z"/>
+                <path fill="#2A2A2A" d="M13.049 8.701H.95a.951.951 0 1 1 0-1.902h12.1a.951.951 0 1 1 0 1.902Z"/>
+              </svg>
+            </span>
+          </button>
+        {%- endif -%}
+
+        {%- if section.settings.our_story_link != blank -%}
+          <a class="header__link" href="{{ section.settings.our_story_link }}">
+            {{ section.settings.our_story_label | default: 'Our story' }}
+          </a>
+        {%- endif -%}
+      </div>
+    </nav>
+
+    <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+      {%- if section.settings.logo_svg != blank -%}
+        {{ section.settings.logo_svg }}
+      {%- elsif settings.logo -%}
+        <img
+          src="{{ settings.logo | image_url: width: 146 }}"
+          width="{{ settings.logo.width }}"
+          height="{{ settings.logo.height }}"
+          alt="{{ shop.name }}"
+          loading="eager"
+        >
+      {%- else -%}
+        <span class="header__logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="header__nav header__nav--right" aria-label="Utilities">
+      <button class="header__icon header__icon--search js-search-toggle" aria-label="search" type="button">
+        {% render 'icon-search' %}
+      </button>
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="header__icon header__icon--account" href="{{ routes.account_url }}" aria-label="account">
+          {% render 'icon-user' %}
+        </a>
+      {%- endif -%}
+
+      <button class="header__icon header__icon--cart" type="button" aria-label="Open cart" aria-controls="cart-drawer">
+        {% render 'icon-cart' %}
+        <span class="header__cart-badge" data-cart-count aria-label="{{ cart.item_count }} items in cart">
+          {{- cart.item_count -}}
+        </span>
+      </button>
+    </nav>
+  </div>
+
+  <div
+    class="mega__products"
+    id="mega-products"
+    aria-live="polite"
+    data-desktop-menu-toggle
+  >
+    {% comment %} <div class="desktop--menu__submenu"> {% endcomment %}
+    <div class="mega__body">
+      {%- assign menu = section.settings.shop_menu | linklist -%}
+      <ul>
+        {%- for link in menu.links -%}
+          {%- if link.type == 'collection_link' -%}
+            {%- assign collection_handle = link.url | split: '/collections/' | last -%}
+            {%- assign current_collection = collections[collection_handle] -%}
+            <li>
+              <a
+                href="javascript:void(0)"
+                data-collection-title="{{ current_collection.title | escape }}"
+                data-collection-handle="{{ current_collection.handle }}"
+              >
+                {{ link.title }}
+              </a>
+            </li>
+          {%- else -%}
+            <li>
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      <a class="mega__cta" href="/pages/contact">Contact Us</a>
+    </div>
+
+    <div class="mega__body--product">
+      {%- assign menu = section.settings.shop_menu | linklist -%}
+
+      {%- for link in menu.links -%}
+        {%- if link.type == 'collection_link' -%}
+          {%- assign collection_handle = link.url | split: '/collections/' | last -%}
+          {%- assign current_collection = collections[collection_handle] -%}
+
+          {%- if current_collection != blank -%}
+            <div
+              class="mega__collection-block"
+              data-collection-handle="{{ current_collection.handle }}"
+              data-collection-title="{{ current_collection.title | escape }}"
+            >
+              {%- assign reversed_products = current_collection.products | reverse -%}
+              <ul class="mega__product-list">
+                {%- for product in reversed_products limit: 8 -%}
+                  <li class="mega__product-item">
+                    <a href="{{ product.url }}">
+                      <span class="mega__product-title">{{ product.title }}</span>
+                      {%- if product.featured_image -%}
+                        <img
+                          src="{{ product.featured_image | image_url: width: 200 }}"
+                          alt="{{ product.title | escape }}"
+                          loading="lazy"
+                          width="200"
+                          height="200"
+                          class="mega__product-img"
+                        >
+                      {%- endif -%}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+              <a class="mega__collection-button" href="{{ link.url }}">View all {{ link.title }}</a>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {% comment %} </div> {% endcomment %}
+  </div>
+</div>

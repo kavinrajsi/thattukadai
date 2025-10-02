@@ -267,14 +267,3 @@
 		}
 	}
 }
-
-/* ===== SEARCH OPEN STATE ===== */
-.search-open {
-	overflow: hidden;
-}
-
-.site-search.is-open {
-	display: block;
-	opacity: 1;
-	pointer-events: all;
-}
