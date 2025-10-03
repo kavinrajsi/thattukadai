@@ -1,0 +1,109 @@
+.bestsellers__container {
+	padding-top: 56px;
+
+	.bestsellers__header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		margin-bottom: 40px;
+
+		.bestsellers__eyebrow {
+			font-family: "DM Sans";
+			font-style: normal;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 16px;
+			color: #161a1d;
+			padding: 8px 32px;
+			/* Primary/Yellow */
+			background: #fad75f;
+			border-radius: 50px;
+		}
+
+		.bestsellers__title {
+			font-family: "Neilvard One";
+			font-style: normal;
+			font-weight: 400;
+			font-size: 24px;
+			line-height: 24px;
+			text-align: center;
+			/* Neutral/Black2 */
+			color: #161a1d;
+		}
+	}
+
+	.bestsellers__list {
+		opacity: 0;
+		transition: opacity 0.2s ease;
+
+		&.is-initialized {
+			opacity: 1;
+		}
+	}
+
+	.bestsellers__item {
+		width: 70%;
+		max-width: 360px;
+		margin-right: 16px;
+
+		@media (min-width: 480px) {
+			width: 50%;
+		}
+		@media (min-width: 768px) {
+			width: 33.333%;
+		}
+		@media (min-width: 1024px) {
+			width: 25%;
+		}
+	}
+
+	.bestsellers__controller {
+		padding-top: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+	}
+	.bestsellers__controller--nav {
+		display: flex;
+		gap: 16px;
+
+		.bestsellers__btn {
+			width: 40px;
+			height: 40px;
+			cursor: pointer;
+
+			&[disabled] {
+				opacity: 0.4;
+				pointer-events: none;
+			}
+		}
+	}
+
+	.bestsellers__controller--dots {
+		flex: 1;
+
+		/* position dots up a bit */
+		.flickity-page-dots {
+			max-width: 930px;
+			bottom: -54px;
+			text-align: left;
+			z-index: -1;
+			.dot {
+				height: 4px;
+				margin: 0;
+				border-radius: 0;
+				background-color: #d3d3d3;
+				width: 8%;
+				@media (min-width: 480px) {
+					width: 10%;
+				}
+				&.is-selected {
+					background-color: #f6ca30;
+				}
+			}
+		}
+	}
+}

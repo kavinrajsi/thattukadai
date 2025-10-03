@@ -1,20 +1,15 @@
-@use "reset";
-@use "common";
+
 @use "drawer-cart";
 @use "drawer-product";
-@use "cart";
 @use "product-detail";
 @use "homepage";
 @use "account";
-@use "predictive-search";
 @use "homepage-slider";
 @use "image-text";
 @use "promo-cta";
-@use "bestseller";
-@use "policy";
 @use "product-feature";
 
-
+@use "reset";
 @use "common/common";
 @use "common/heading";
 @use "common/header";
@@ -22,6 +17,7 @@
 @use "common/grid";
 @use "common/product";
 @use "common/pagination";
+@use "common/bestseller";
 @use "common/footer";
 @use "common/predictive-search";
 
