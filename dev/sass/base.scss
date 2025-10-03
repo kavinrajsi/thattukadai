@@ -1,13 +1,9 @@
 @use "reset";
 @use "common";
-@use "announcement";
-@use "header";
 @use "drawer-cart";
 @use "drawer-product";
 @use "cart";
-@use "footer";
 @use "product-detail";
-@use "collection";
 @use "homepage";
 @use "account";
 @use "predictive-search";
@@ -18,13 +14,28 @@
 @use "policy";
 @use "product-feature";
 
+
+@use "common/common";
+@use "common/heading";
+@use "common/header";
+@use "common/announcement";
 @use "common/grid";
+@use "common/product";
 @use "common/pagination";
+@use "common/footer";
+@use "common/predictive-search";
+
 @use "page/template-index";
-@use "page/template-search";
 @use "page/template-collection";
 @use "page/template-product";
 @use "page/template-cart";
+@use "page/template-search";
+@use "page/template-404";
+@use "page/template-blog";
+@use "page/template-blog-detail";
+@use "page/template-customers-login";
+@use "page/template-customers-register";
+@use "page/template-policy";
 
 .customers-addresses ,
 .customers-account {

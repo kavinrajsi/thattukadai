@@ -1,0 +1,29 @@
+.template-404 {
+	.page__content {
+		padding-top: 56px;
+		padding-bottom: 56px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		.button {
+			display: inline-block;
+			margin: 24px auto 0;
+			// width: 100%;
+			padding: 12px 24px;
+			/* Neutral/White1 */
+			background-color: #c61d23;
+			border-radius: 4px;
+			/* Select Option */
+			font-family: var(--font-header);
+			font-style: normal;
+			font-weight: 500;
+			font-size: 12px;
+			line-height: 15px;
+			/* identical to box height */
+			text-align: center;
+			color: #ffffff;
+		}
+	}
+}

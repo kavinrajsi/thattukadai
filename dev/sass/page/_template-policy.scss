@@ -1,9 +1,21 @@
 .shopify-policy__container {
-	padding-top: 120px;
-	padding-bottom: 40px;
+	padding-top: 56px;
 	padding-bottom: 56px;
 	max-width: 930px;
 	margin: 0 auto;
+
+	.shopify-policy__title h1 {
+		padding-bottom: 24px;
+		/* Heading2 */
+		font-family: "Minion Pro Cond Capt";
+		// font-style: italic;
+		font-weight: 700;
+		font-size: 36px;
+		line-height: 36px;
+		/* identical to box height, or 100% */
+		/* Primary/Red1 */
+		color: #c61d23;
+	}
 
 	.shopify-policy__body {
 		padding-top: 24px;
@@ -14,8 +26,10 @@
 		h4 ,
 		h5 ,
 		h6 {
+			font-family: "Instrument Sans", sans-serif;
 			font-style: normal;
 			font-weight: 400;
+			color: var(--color-red3);
 			margin: 0 0 20px;
 		}
 		/* Specific typography sizes per heading */
@@ -55,17 +69,26 @@
 		a ,
 		div {
 			/* Body1 */
+			font-family: var(--font-header);
 			font-style: normal;
 			font-weight: 400;
 			font-size: 16px;
 			line-height: 20px;
 			/* Primary/Red3 */
+			color: var(--color-red3);
 		}
 		li ,
 		ul ,
 		ol ,
 		p:not(:last-child) {
 			margin: 0 0 16px;
+		}
+		strong {
+			font-weight: bold;
+			display: block;
+		}
+		p br {
+			display: none;
 		}
 	}
 }
