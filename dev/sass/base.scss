@@ -19,6 +19,13 @@
 @use "policy";
 @use "product-feature";
 
+
+
+
+@use "common/grid";
+@use "page/template-search";
+@use "page/template-collection";
+
 .customers-addresses ,
 .customers-account {
 	padding-top: 120px;

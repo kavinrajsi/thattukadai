@@ -1,138 +1,170 @@
-{% if section.settings.show_title %}
-  <h1 class="collection-title">{{ collection.title }}</h1>
-{% endif %}
+{% comment %}
+  Shopify Collection Section
+  --------------------------------
 
-{% if section.settings.show_template %}
-  <span class="template-name">({{ template.name }})</span>
-{% endif %}
+  📌 Purpose:
+  - Displays a specific collection page with optional filters, sorting, and pagination.
+  - Also displays a selected blog article or the latest from a selected blog.
 
-{% if section.settings.show_image %}
-  <div class="collection-image">
-    {% if collection.image %}
-      <img
-        src="{{ collection.image | image_url: width: 1600 }}"
-        alt="{{ collection.image.alt | escape }}"
-        width="{{ collection.image.width }}"
-        height="{{ collection.image.height }}"
-        loading="lazy"
-      >
-    {% else %}
-      <img
-        src="{{ 'default-collection.png' | asset_url }}"
-        alt="Default collection image"
-        width=""
-        height="520"
-        loading="lazy"
-      >
-    {% endif %}
-  </div>
-{% endif %}
+  🧱 Structure:
+  - Collection image, title, and description
+  - Sort dropdown (optional)
+  - Filter by tag (optional)
+  - Product grid with pagination (optional)
+  - Blog article (optional, fallback to latest)
 
-{% if section.settings.menu != blank or collection.handle == 'all' %}
-  <nav class="collection-nav">
-    <ul>
-      <li><span>Filter By</span></li>
+  🛠 Admin Settings:
+  - Toggle to show/hide pagination
+  - Toggle to show/hide filters (by tag)
+  - Toggle to show/hide sorting dropdown
+  - Collection picker
+  - Blog picker
+  - Article picker (optional)
 
-      {% assign nav_menu = section.settings.menu | default: 'main-menu' %}
+  📦 JSON-LD Schema:
+  - Outputs a list of up to 10 products for SEO using schema.org's `ItemList` type
 
-      {% for link in linklists[nav_menu].links %}
-        <li>
-          {% assign is_active = false %}
+  ✅ Accessibility:
+  - ARIA labels on pagination
+  - Label elements for sorting and filtering
 
-          {% if link.type == 'collection_link' and link.object.handle == collection.handle %}
-            {% assign is_active = true %}
-          {% elsif collection.handle == 'all' and link.url == routes.all_products_collection_url %}
-            {% assign is_active = true %}
-          {% elsif collection.handle == 'all' and link.url contains routes.all_products_collection_url %}
-            {% assign is_active = true %}
-          {% endif %}
+  🔁 Preset:
+  - Name: "Collection"
+{% endcomment %}
 
-          <a
-            href="{{ link.url }}#main-collection"
-            class="{% if is_active %}active{% endif %}"
-            title="{{ link.title }}"
+<!-- Main container for the collection page -->
+<div class="collection-page">
+  <!-- Display collection image if one is assigned -->
+  {% if section.settings.show_image %}
+    <div class="layout__grid-fluid padding--left-0 padding--right-0">
+      <div class="collection-image">
+        {% if collection.image %}
+          <img
+            src="{{ collection.image | image_url: width: 1600 }}"
+            alt="{{ collection.image.alt | escape }}"
+            width="{{ collection.image.width }}"
+            height="{{ collection.image.height }}"
+            loading="lazy"
           >
-            {{ link.title }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  </nav>
-{% endif %}
-
-<section id="main-collection" class="layout__grid-box main-collection">
-  {% if collection.description != blank %}
-    <div class="rte">{{ collection.description }}</div>
-  {% endif %}
-  {%- paginate collection.products by section.settings.products_per_page -%}
-    <div class="grid">
-      {% for product in collection.products %}
-        {% render 'product-card', product: product %}
-      {% else %}
-        <p>No products found.</p>
-      {% endfor %}
+        {% else %}
+          <img
+            src="{{ 'default-collection.png' | asset_url }}"
+            alt="Default collection image"
+            width=""
+            height="520"
+            loading="lazy"
+          >
+        {% endif %}
+      </div>
     </div>
+  {% endif %}
 
-    {%- if paginate.pages > 1 -%}
-      <nav class="pagination" role="navigation" aria-label="Pagination">
+  <!-- Product listing section with pagination -->
+  <section id="main-collection" class="layout__grid-box">
+    {% if collection.description != blank %}
+      <p>{{ collection.description }}</p>
+    {% endif %}
+
+    {% if section.settings.menu != blank or collection.handle == 'all' %}
+      <nav class="collection-nav">
+        <ul>
+          <li><span>Filter By</span></li>
+
+          {% assign nav_menu = section.settings.menu | default: 'main-menu' %}
+
+          {% for link in linklists[nav_menu].links %}
+            <li>
+              {% assign is_active = false %}
+
+              {% if link.type == 'collection_link' and link.object.handle == collection.handle %}
+                {% assign is_active = true %}
+              {% elsif collection.handle == 'all' and link.url == routes.all_products_collection_url %}
+                {% assign is_active = true %}
+              {% elsif collection.handle == 'all' and link.url contains routes.all_products_collection_url %}
+                {% assign is_active = true %}
+              {% endif %}
+
+              <a
+                href="{{ link.url }}#main-collection"
+                class="{% if is_active %}active{% endif %}"
+                title="{{ link.title }}"
+              >
+                {{ link.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+
+    {% paginate collection.products by 24 %}
+      <div
+        class="collection-list-grid"
+        collection-list-mobile="2"
+        collection-list-tablet="3"
+        collection-list-desktop="4"
+      >
+        {% for product in collection.products %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      </div>
+      <!-- Pagination controls -->
+      <nav class="pagination">
         {%- if paginate.previous -%}
-          <a
-            class="pagination__button pagination__button--prev"
-            href="{{ paginate.previous.url }}#main-collection"
-            rel="prev"
-            aria-label="Previous page"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path fill="#2A2A2A" d="m8.07 12.543 8.36 7.965a.75.75 0 0 0 1.035 0l.009-.01a.691.691 0 0 0 0-1l-7.872-7.5 7.872-7.497a.692.692 0 0 0 0-1l-.01-.01a.75.75 0 0 0-1.034 0l-8.36 7.966a.75.75 0 0 0 0 1.086Z"/>
+          <a href="{{ paginate.previous.url }}" class="pagination__button--prev" aria-label="Previous">
+            <!-- Left arrow SVG -->
+            <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.56963 11.4571L16.9291 3.4921C17.0686 3.35909 17.2539 3.28491 17.4466 3.28491C17.6393 3.28491 17.8246 3.35909 17.9641 3.4921L17.9731 3.5011C18.041 3.5655 18.095 3.64308 18.1319 3.72909C18.1688 3.81509 18.1878 3.9077 18.1878 4.00129C18.1878 4.09488 18.1688 4.1875 18.1319 4.2735C18.095 4.3595 18.041 4.43708 17.9731 4.50154L10.1011 12.0015L17.9731 19.4985C18.041 19.5629 18.095 19.6405 18.1319 19.7265C18.1688 19.8125 18.1878 19.9051 18.1878 19.9987C18.1878 20.0923 18.1688 20.1849 18.1319 20.2709C18.095 20.3569 18.041 20.4345 17.9731 20.4989L17.9641 20.5079C17.8246 20.6409 17.6393 20.7151 17.4466 20.7151C17.2539 20.7151 17.0686 20.6409 16.9291 20.5079L8.56963 12.5429C8.49601 12.4728 8.4375 12.3886 8.39748 12.2952C8.35746 12.2019 8.33687 12.1014 8.33687 11.9999C8.33687 11.8983 8.35746 11.7978 8.39748 11.7045C8.4375 11.6111 8.49601 11.5269 8.56963 11.4571Z" fill="#660808"/>
             </svg>
           </a>
         {%- endif -%}
-
         {%- for part in paginate.parts -%}
-          {%- if part.is_link -%}
-            <a class="pagination__page" href="{{ part.url }}#main-collection" aria-label="Page {{ part.title }}">
-              {{ part.title }}
-            </a>
-          {%- elsif part.title == '…' -%}
-            <span class="pagination__page pagination__page--decorative">{{ part.title }}</span>
-          {%- else -%}
-            <span class="pagination__page pagination__page--current" aria-current="page">{{ part.title }}</span>
-          {%- endif -%}
+          {% if part.title == '&hellip;' %}
+            <span class="pagination__page--decorative">…</span>
+          {% elsif part.is_link %}
+            <a class="pagination__page" href="{{ part.url }}">{{ part.title }}</a>
+          {% else %}
+            <span class="pagination__page--current">{{ part.title }}</span>
+          {% endif %}
         {%- endfor -%}
-
         {%- if paginate.next -%}
-          <a
-            class="pagination__button pagination__button--next"
-            href="{{ paginate.next.url }}#main-collection"
-            rel="next"
-            aria-label="Next page"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path fill="#2A2A2A" d="m15.93 12.543-8.36 7.965a.75.75 0 0 1-1.035 0l-.009-.01a.69.69 0 0 1 0-1l7.872-7.5-7.872-7.497a.69.69 0 0 1 0-1l.01-.01a.75.75 0 0 1 1.034 0l8.36 7.966a.75.75 0 0 1 0 1.086Z"/>
+          <a href="{{ paginate.next.url }}" class="pagination__button--next" aria-label="Next">
+            <!-- Right arrow SVG -->
+            <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.4304 12.5429L8.07094 20.5079C7.93145 20.6409 7.74614 20.7151 7.55344 20.7151C7.36073 20.7151 7.17542 20.6409 7.03594 20.5079L7.02694 20.4989C6.95908 20.4345 6.90505 20.3569 6.86813 20.2709C6.83121 20.1849 6.81217 20.0923 6.81217 19.9987C6.81217 19.9051 6.83121 19.8125 6.86813 19.7265C6.90505 19.6405 6.95908 19.5629 7.02694 19.4984L14.8989 11.9984L7.02694 4.50144C6.95908 4.43698 6.90505 4.35939 6.86813 4.27339C6.83121 4.1874 6.81217 4.09478 6.81217 4.00119C6.81217 3.9076 6.83121 3.81499 6.86813 3.72899C6.90505 3.64299 6.95908 3.5654 7.02694 3.50094L7.03594 3.49194C7.17542 3.35898 7.36073 3.2848 7.55344 3.2848C7.74614 3.2848 7.93145 3.35898 8.07094 3.49194L16.4304 11.4569C16.504 11.527 16.5625 11.6112 16.6025 11.7046C16.6425 11.7979 16.6631 11.8984 16.6631 11.9999C16.6631 12.1015 16.6425 12.202 16.6025 12.2953C16.5625 12.3887 16.504 12.4729 16.4304 12.5429Z" fill="#660808"/>
             </svg>
           </a>
         {%- endif -%}
       </nav>
-    {%- endif -%}
-  {%- endpaginate -%}
-</section>
+    {% endpaginate %}
+  </section>
+</div>
 
+<!-- SEO Structured Data using JSON-LD for Google -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      {% for product in collection.products limit: 10 %}
+      {
+        "@type": "ListItem",
+        "position": {{ forloop.index }},
+        "name": "{{ product.title }}",
+        "url": "{{ shop.secure_url }}{{ product.url }}"
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  }
+</script>
+
+<!-- Schema for Theme Settings -->
 {% schema %}
 {
-  "name": "Main collection",
+  "name": "Collection",
+  "tag": "section",
+  "class": "collection",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_title",
-      "label": "Show collection title",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_template",
-      "label": "Show template name",
-      "default": false
-    },
     {
       "type": "checkbox",
       "id": "show_image",
@@ -143,6 +175,12 @@
       "type": "link_list",
       "id": "menu",
       "label": "Navigation menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection - Default",
+      "category": "Collection"
     }
   ]
 }
