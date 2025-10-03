@@ -54,6 +54,17 @@
         "dots_color": "#ffffff"
       }
     },
+    "bestseller_HMAJzc": {
+      "type": "bestseller",
+      "name": "Best sellers (carousel)",
+      "settings": {
+        "eyebrow": "Our Best Sellers",
+        "heading": "South India's most-loved snacks!",
+        "source": "collection",
+        "collection": "potato",
+        "product_limit": 8
+      }
+    },
     "main_product_features_k3UDje": {
       "type": "main-product-features",
       "blocks": {
@@ -172,6 +183,7 @@
   },
   "order": [
     "slider",
+    "bestseller_HMAJzc",
     "main_product_features_k3UDje",
     "image_text_QyhkJT",
     "promo_cta_j3r8KR"
