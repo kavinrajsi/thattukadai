@@ -18,14 +18,13 @@
 @use "policy";
 @use "product-feature";
 
-
-
-
 @use "common/grid";
 @use "common/pagination";
+@use "page/template-index";
 @use "page/template-search";
 @use "page/template-collection";
 @use "page/template-product";
+@use "page/template-cart";
 
 .customers-addresses ,
 .customers-account {
