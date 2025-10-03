@@ -493,39 +493,6 @@ body.index.drawer-open {
   margin-top: 10px;
 }
 
-.product-feature__wrap {
-  margin-top: 56px;
-  padding: 32px 0;
-  display: grid;
-  gap: 20px;
-  align-items: flex-start;
-  justify-content: center;
-  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
-}
-@media (min-width: 768px) {
-  .product-feature__wrap {
-    grid-template-columns: repeat(auto-fill, minmax(14%, 1fr));
-  }
-}
-.product-feature__wrap .product-feature {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.product-feature__wrap .product-feature__title {
-  padding-top: 16px;
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  /* or 125% */
-  text-align: center;
-  /* Neutral/Black2 */
-  color: #161a1d;
-}
-
 .page-customer-register,
 .page-customer-login {
   padding-top: 40px;
@@ -2227,6 +2194,46 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+}
+
+.product-feature__wrap {
+  margin-top: 56px;
+  margin-bottom: 80px;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  display: grid;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+}
+@media (min-width: 768px) {
+  .product-feature__wrap {
+    grid-template-columns: repeat(auto-fill, minmax(14%, 1fr));
+  }
+}
+.product-feature__wrap .product-feature {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.product-feature__wrap .product-feature__image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+.product-feature__wrap .product-feature__title {
+  padding-top: 16px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  /* or 125% */
+  text-align: center;
+  /* Neutral/Black2 */
+  color: #161a1d;
 }
 
 .layout__grid-box {

@@ -1,6 +1,8 @@
 .product-feature__wrap {
 	margin-top: 56px;
-	padding: 32px 0;
+	margin-bottom: 80px;
+	padding-top: 32px;
+	padding-bottom: 32px;
 	display: grid;
 	gap: 20px;
 	align-items: flex-start;
@@ -17,6 +19,9 @@
 		align-items: center;
 	}
 	.product-feature__image {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
 	}
 	.product-feature__title {
 		padding-top: 16px;
