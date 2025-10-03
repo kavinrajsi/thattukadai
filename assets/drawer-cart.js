@@ -164,11 +164,53 @@
   }
 
   /* =========================
+     Track which submit button triggered the form
+  ========================== */
+  function isCheckoutSubmit($form, event) {
+    var submitterName = '';
+
+    if (event && event.originalEvent && event.originalEvent.submitter) {
+      submitterName = event.originalEvent.submitter.name || '';
+    }
+
+    if (!submitterName) {
+      submitterName = $form.data('submitter-name') || '';
+    }
+
+    var isCheckout = submitterName === 'checkout' || $form.data('skip-ajax') === true;
+
+    // Always clear tracking data after determining the intent
+    $form.removeData('submitter-name');
+    $form.removeData('skip-ajax');
+
+    return isCheckout;
+  }
+
+  $(document).on('click', 'form[action*="/cart/add"] button[type="submit"]', function () {
+    var $form = $(this).closest('form');
+    if (!$form.length) return;
+
+    var name = this.name || '';
+    $form.data('submitter-name', name);
+
+    if (name === 'checkout') {
+      $form.data('skip-ajax', true);
+    } else {
+      $form.removeData('skip-ajax');
+    }
+  });
+
+  /* =========================
      Product form AJAX add-to-cart
   ========================== */
   $(document).on('submit', 'form[action*="/cart/add"]', function (e) {
-    e.preventDefault();
     var $form = $(this);
+    if (isCheckoutSubmit($form, e)) {
+      // Let Shopify handle checkout submissions (Buy Now)
+      return;
+    }
+
+    e.preventDefault();
     var $btn = $form.find('button[type="submit"], .product-atc').first();
     var $id = $form.find('input[name="id"]');
     var $qty = $form.find('[name="quantity"]');

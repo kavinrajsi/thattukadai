@@ -18,8 +18,13 @@
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
+
     <link rel="dns-prefetch" href="https://cdn.shopify.com">
-    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+
+    {% if settings.is_local_dev != true %}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {% endif %}
+
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
     {% liquid
@@ -50,19 +55,21 @@
 
     {% style %}
       /* Emit @font-face for each chosen variant */
-      {{ h1_font | font_face: font_display: 'swap' }}
-      {{ h2_font | font_face: font_display: 'swap' }}
-      {{ h3_font | font_face: font_display: 'swap' }}
-      {{ h4_font | font_face: font_display: 'swap' }}
-      {{ h5_font | font_face: font_display: 'swap' }}
-      {{ h6_font | font_face: font_display: 'swap' }}
-      {{ b1_font | font_face: font_display: 'swap' }}
-      {{ b2_font | font_face: font_display: 'swap' }}
-      {{ font_normal | font_face: font_display: 'swap' }}
-      {{ font_medium | font_face: font_display: 'swap' }}
-      {{ font_semibold| font_face: font_display: 'swap' }}
-      {{ font_bold | font_face: font_display: 'swap' }}
-      {{ font_extrabold | font_face: font_display: 'swap' }}
+      {% unless is_local_dev %}
+        {{ h1_font | font_face: font_display: 'swap' }}
+        {{ h2_font | font_face: font_display: 'swap' }}
+        {{ h3_font | font_face: font_display: 'swap' }}
+        {{ h4_font | font_face: font_display: 'swap' }}
+        {{ h5_font | font_face: font_display: 'swap' }}
+        {{ h6_font | font_face: font_display: 'swap' }}
+        {{ b1_font | font_face: font_display: 'swap' }}
+        {{ b2_font | font_face: font_display: 'swap' }}
+        {{ font_normal | font_face: font_display: 'swap' }}
+        {{ font_medium | font_face: font_display: 'swap' }}
+        {{ font_semibold | font_face: font_display: 'swap' }}
+        {{ font_bold | font_face: font_display: 'swap' }}
+        {{ font_extrabold | font_face: font_display: 'swap' }}
+      {% endunless %}
 
       @font-face {
         font-family: "Neilvard One";

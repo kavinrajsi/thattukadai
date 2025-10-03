@@ -8,7 +8,6 @@
 @use "footer";
 @use "product-detail";
 @use "collection";
-@use "pagination";
 @use "homepage";
 @use "account";
 @use "predictive-search";
@@ -23,8 +22,10 @@
 
 
 @use "common/grid";
+@use "common/pagination";
 @use "page/template-search";
 @use "page/template-collection";
+@use "page/template-product";
 
 .customers-addresses ,
 .customers-account {
