@@ -84,13 +84,15 @@
 
 	.bestsellers__controller--dots {
 		flex: 1;
+		display: flex;
+		align-items: center;
 
 		/* position dots up a bit */
 		.flickity-page-dots {
-			max-width: 930px;
-			bottom: -54px;
-			text-align: left;
-			z-index: -1;
+		position: static;
+		margin: 0;
+		max-width: 930px;
+		text-align: left;
 			.dot {
 				height: 4px;
 				margin: 0;

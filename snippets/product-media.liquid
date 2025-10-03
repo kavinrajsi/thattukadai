@@ -19,7 +19,6 @@
             <div class="swiper-slide pm-thumb-slide">
               {%- if media.media_type == 'image' and media.preview_image -%}
                 <picture>
-                  {% comment %} <source srcset="{{ media.preview_image | image_url: width: 74, format: 'avif' }}" type="image/avif"> {% endcomment %}
                   <source srcset="{{ media.preview_image | image_url: width: 74, format: 'webp' }}" type="image/webp">
                   <img
                     src="{{ media.preview_image | image_url: width: 74, format: 'jpg' }}"
@@ -38,6 +37,7 @@
         </div>
       </div>
     {%- endif -%}
+
     <div class="swiper pm-main-swiper">
       <div class="swiper-wrapper">
         {%- for media in product_obj.media -%}
@@ -57,7 +57,6 @@
                   aria-label="Open image zoom: {{ alt_text | escape }}"
                 >
                   <picture>
-                    {% comment %} <source srcset="{{ media | image_url: width: 372, format: 'avif' }}" type="image/avif"> {% endcomment %}
                     <source srcset="{{ media | image_url: width: 372, format: 'webp' }}" type="image/webp">
                     <img
                       src="{{ media | image_url: width: 372, format: 'jpg' }}"
@@ -104,6 +103,23 @@
       </div>
 
       <!-- Swiper navigation -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+
+{%- else -%}
+  <div class="pm-gallery swiper-gallery is-placeholder" id="pm-{{ product_obj.id }}">
+    <div class="swiper pm-main-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide pm-slide is-placeholder">
+          <div class="pm-media pm-media--placeholder" aria-label="No product media available">
+            {{ 'product-5' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Keep nav for consistent layout; you can hide via CSS if unwanted -->
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
     </div>

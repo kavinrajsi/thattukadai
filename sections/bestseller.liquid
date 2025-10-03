@@ -1,11 +1,3 @@
-{% comment %}
-  Section: Best Sellers (Flickity slider + BEM classes)
-{% endcomment %}
-
-{%- comment -%}
-  Include Flickity assets (safe to include here; the guard prevents double init)
-{%- endcomment -%}
-
 <section class="bestsellers layout__grid-box" id="section-{{ section.id }}">
   <div class="bestsellers__container">
     <div class="bestsellers__header">
@@ -18,9 +10,6 @@
     </div>
 
     <div class="bestsellers__scroller">
-      {%- comment -%}
-        NOTE: Each child is a Flickity "cell".
-      {%- endcomment -%}
       <div
         class="bestsellers__list"
         id="bestsellers-{{ section.id }}"
@@ -49,7 +38,7 @@
             {% assign product = block.settings.product %}
             {% if product %}
               <div class="bestsellers__item">
-                {% render 'product-card', product: product, block: block %}
+                {% render 'product-card', product: product %}
               </div>
             {% endif %}
           {% endfor %}
@@ -105,43 +94,60 @@
       } catch (e) {}
 
       var flkty = new Flickity(slider, options);
+      slider._flickity = flkty;
       slider.classList.add('is-initialized');
 
+      var controller = root.querySelector('.bestsellers__controller');
+      if (!controller) return;
+
+      controller.addEventListener('click', function (e) {
+        e.stopPropagation();
+      });
+
+      var dotsTarget = controller.querySelector('.bestsellers__controller--dots');
       function moveDots() {
-        var dotsContainer = root.querySelector('.bestsellers__controller--dots');
-        if (!dotsContainer || !flkty.pageDots) return;
-        dotsContainer.innerHTML = '';
-        dotsContainer.appendChild(flkty.pageDots.element);
+        if (!dotsTarget) return;
+        var dots = slider.querySelector('.flickity-page-dots');
+        if (!dots && flkty.pageDots) {
+          dots = flkty.pageDots.element;
+        }
+        if (!dots || typeof dots.nodeType !== 'number') return;
+        if (!dotsTarget.contains(dots)) {
+          dotsTarget.innerHTML = '';
+          dotsTarget.appendChild(dots);
+        }
       }
 
       if (flkty.on) {
         flkty.on('ready', moveDots);
-        flkty.on('change', moveDots);
+        flkty.on('resize', moveDots);
       }
       moveDots();
 
-      // External nav
-      // External nav (target the specific carousel by data-target)
-      function wireNav(btn, direction) {
+      var prevBtn = controller.querySelector('.bestsellers__btn--prev');
+      var nextBtn = controller.querySelector('.bestsellers__btn--next');
+
+      function handleNav(btn, direction) {
         if (!btn) return;
         btn.addEventListener('click', function () {
-          var targetId = btn.getAttribute('data-target');
-          if (!targetId) return;
-          var targetEl = document.getElementById(targetId);
-          if (targetEl && targetEl._flickity) {
-            if (direction === 'prev') targetEl._flickity.previous();
-            else targetEl._flickity.next();
-          }
+          if (direction === 'prev') flkty.previous();
+          else flkty.next();
         });
       }
 
-      var prevBtn = root.querySelector('.bestsellers__container .bestsellers__btn--prev');
-      var nextBtn = root.querySelector('.bestsellers__container .bestsellers__btn--next');
-      wireNav(prevBtn, 'prev');
-      wireNav(nextBtn, 'next');
+      handleNav(prevBtn, 'prev');
+      handleNav(nextBtn, 'next');
 
-      // store ref
-      slider._flickity = flkty;
+      function syncArrows() {
+        var wrap = !!flkty.options.wrapAround;
+        if (prevBtn) prevBtn.disabled = !wrap && flkty.selectedIndex === 0;
+        if (nextBtn) nextBtn.disabled = !wrap && flkty.selectedIndex === flkty.slides.length - 1;
+      }
+
+      if (flkty.on) {
+        flkty.on('select', syncArrows);
+      }
+      syncArrows();
     }
 
     function destroyFlickity(root) {

@@ -1,17 +1,29 @@
-<article class="card card--page">
-  <h3 class="card__title">
-    <a href="{{ page.url }}">{{ page.title }}</a>
-  </h3>
-  <p class="card__excerpt">{{ page.content | strip_html | truncate: 120 }}</p>
-  <a class="card__link" href="{{ page.url }}">View page</a>
-</article>
+{%- comment -%} Product card snippet {%- endcomment -%}
+<div
+  class="product-card"
+  {% if block %}
+    {{- block.shopify_attributes -}}
+  {% endif %}
+>
+  <div class="product-card__media">
+    <a class="product-card__link" href="{{ product.url }}">
+      {% render 'product-image', product: product %}
+    </a>
+  </div>
+  <div class="product-card__body">
+    <div class="product-card__title">{{ product.title }}</div>
+    {% render 'product-price', product: product %}
 
-<style>
-  .card--page {
-    padding: 0.9rem;
-  }
-  .card--page .card__title {
-    margin: 0 0 0.25rem;
-    font-size: 1rem;
-  }
-</style>
+    {%- comment -%} Hover CTA (opens drawer) {%- endcomment -%}
+    <button
+      class="product-card__cta"
+      type="button"
+      data-product-handle="{{ product.handle }}"
+      data-product-url="{{ product.url }}"
+      aria-haspopup="dialog"
+      aria-controls="product-drawer"
+    >
+      Select options
+    </button>
+  </div>
+</div>

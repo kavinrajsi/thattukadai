@@ -96,10 +96,10 @@ $(document).ready(function () {
   });
 
   // --- Click outside anywhere to close/reset ---
-  $(document).on('click', function () {
-    console.log('🌍 Click outside detected, closing menus');
-    closeAllMenus();
-  });
+  // $(document).on('click', function () {
+  //   console.log('🌍 Click outside detected, closing menus');
+  //   closeAllMenus();
+  // });
 
   // --- Search toggle ---
   $('.js-search-toggle').on('click', function () {
@@ -113,7 +113,7 @@ $(document).ready(function () {
   $(document).on('keydown', function (e) {
     if (e.key === 'Escape') {
       console.log('⎋ ESC pressed, closing menus + search');
-      closeAllMenus();
+      // closeAllMenus();
       $body.removeClass('active-search');
     }
   });

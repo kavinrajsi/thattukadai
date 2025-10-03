@@ -33,6 +33,18 @@
 @use "page/template-customers-register";
 @use "page/template-policy";
 
+
+.pm-media--placeholder svg {
+	width: 372px;
+	height: 392px;
+	display: block;
+}
+.is-placeholder .pm-thumbs-swiper {
+	display: none;
+} /* hide thumbs when only placeholder */
+
+
+
 .customers-addresses ,
 .customers-account {
 	padding-top: 120px;

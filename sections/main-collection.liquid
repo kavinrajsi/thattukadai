@@ -32,6 +32,31 @@
   - Name: "Collection"
 {% endcomment %}
 
+<!-- Preload product imagery for the current collection page -->
+{% if collection.products_count > 0 %}
+  {% for product in collection.products %}
+    {% if product.featured_image %}
+      <link
+        rel="preload"
+        as="image"
+        href="{{ product.featured_image | image_url: width: 530, height: 640, crop: 'center', format: 'jpg' }}"
+        imagesrcset="{{ product.featured_image | image_url: width: 265, height: 320, crop: 'center', format: 'jpg' }} 265w, {{ product.featured_image | image_url: width: 530, height: 640, crop: 'center', format: 'jpg' }} 530w"
+        imagesizes="(max-width: 749px) 50vw, (max-width: 999px) 33vw, 25vw"
+      >
+    {% endif %}
+    {% assign second_image = product.images[1] %}
+    {% if second_image %}
+      <link
+        rel="preload"
+        as="image"
+        href="{{ second_image | image_url: width: 530, height: 640, crop: 'center', format: 'jpg' }}"
+        imagesrcset="{{ second_image | image_url: width: 265, height: 320, crop: 'center', format: 'jpg' }} 265w, {{ second_image | image_url: width: 530, height: 640, crop: 'center', format: 'jpg' }} 530w"
+        imagesizes="(max-width: 749px) 50vw, (max-width: 999px) 33vw, 25vw"
+      >
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 <!-- Main container for the collection page -->
 <div class="collection-page">
   <!-- Display collection image if one is assigned -->
