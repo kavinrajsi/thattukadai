@@ -142,7 +142,7 @@
       "settings": {
         "width": "narrow",
         "position": "middle",
-        "placement": "image-first",
+        "placement": "image-second",
         "placement_mobile": "image-first",
         "padding_top_desktop": 80,
         "padding_bottom_desktop": 80,
