@@ -793,7 +793,7 @@ body.index.drawer-open {
   }
 }
 
-.promo-cta--full {
+.promo-cta--full.layout__grid-box {
   padding-top: 32px;
   background-color: var(--color-yellow2);
   border-radius: 20px;
@@ -801,36 +801,36 @@ body.index.drawer-open {
   margin: 80px 20px 0;
 }
 @media (min-width: 968px) {
-  .promo-cta--full {
+  .promo-cta--full.layout__grid-box {
     margin: 80px auto 0;
   }
 }
-.promo-cta--full .promo-cta__grid.promo-cta__grid--image-left {
+.promo-cta--full.layout__grid-box .promo-cta__grid.promo-cta__grid--image-left {
   display: flex;
   gap: 20px;
   flex-direction: column-reverse;
 }
 @media (min-width: 768px) {
-  .promo-cta--full .promo-cta__grid.promo-cta__grid--image-left {
+  .promo-cta--full.layout__grid-box .promo-cta__grid.promo-cta__grid--image-left {
     justify-content: center;
     flex-direction: row;
   }
 }
-.promo-cta--full .promo-cta__content {
+.promo-cta--full.layout__grid-box .promo-cta__content {
   display: flex;
   gap: 20px;
   flex-direction: column;
   align-items: flex-start;
 }
 @media (min-width: 768px) {
-  .promo-cta--full .promo-cta__content {
+  .promo-cta--full.layout__grid-box .promo-cta__content {
     flex: 1;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
   }
 }
-.promo-cta--full .promo-cta__content .promo-cta__title {
+.promo-cta--full.layout__grid-box .promo-cta__content .promo-cta__title {
   font-family: "Neilvard One";
   font-style: normal;
   font-weight: 400;
@@ -841,7 +841,7 @@ body.index.drawer-open {
   color: #161a1d;
   padding-bottom: 8px;
 }
-.promo-cta--full .promo-cta__content .promo-cta__body p {
+.promo-cta--full.layout__grid-box .promo-cta__content .promo-cta__body p {
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 400;
@@ -851,7 +851,7 @@ body.index.drawer-open {
   /* Neutral/Black1 */
   color: #2a2a2a;
 }
-.promo-cta--full .promo-cta__content .promo-cta__button {
+.promo-cta--full.layout__grid-box .promo-cta__content .promo-cta__button {
   padding: 16px 32px;
   /* Neutral/White1 */
   background: #ffffff;
@@ -2112,6 +2112,14 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
 }
 @media (min-width: 1400px) {
   .layout__grid-box {
+    max-width: 1120px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+@media (min-width: 1800px) {
+  .layout__grid-box {
+    max-width: 1120px;
     padding-left: 160px;
     padding-right: 160px;
   }
@@ -2691,6 +2699,16 @@ body.template-product .footer {
   flex-direction: column;
   gap: 32px 20px;
 }
+@media (min-width: 1400px) {
+  .image-content-Outside {
+    max-width: 1120px;
+  }
+}
+@media (min-width: 1800px) {
+  .image-content-Outside {
+    max-width: 1120px;
+  }
+}
 .image-content-Outside .image-content__media {
   flex: 0 0 100%;
   max-width: 100%;
@@ -2703,8 +2721,8 @@ body.template-product .footer {
 }
 @media (min-width: 992px) {
   .image-content-Outside .image-content__media {
-    flex: 0 0 calc(100% - 525px);
-    max-width: calc(100% - 525px);
+    flex: 1 0 auto;
+    max-width: auto;
   }
 }
 .image-content-Outside .image-content__content {

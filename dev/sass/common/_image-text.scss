@@ -4,6 +4,13 @@
 	justify-content: center;
 	flex-direction: column;
 	gap: 32px 20px;
+	@media (min-width: 1400px) {
+		max-width: 1120px;
+	}
+	@media (min-width: 1800px) {
+		max-width: 1120px;
+	}
+
 	.image-content__media {
 		flex: 0 0 100%;
 		max-width: 100%;
@@ -12,8 +19,8 @@
 			max-width: 50%;
 		}
 		@media (min-width: 992px) {
-			flex: 0 0 calc(100% - 525px);
-			max-width: calc(100% - 525px);
+			flex: 1 0 auto;
+			max-width: auto;
 		}
 	}
 	.image-content__content {

@@ -20,6 +20,12 @@
 		padding-right: 80px;
 	}
 	@media (min-width: 1400px) {
+		max-width: 1120px;
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+	@media (min-width: 1800px) {
+		max-width: 1120px;
 		padding-left: 160px;
 		padding-right: 160px;
 	}
