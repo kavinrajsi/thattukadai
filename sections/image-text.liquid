@@ -1,9 +1,7 @@
 {% comment %}
   Section: Image and content (content outside)
-  - Uses ONLY min-width media queries (you add CSS)
-  - Placement controls overall order:
-      image-first  => <figure> then content
-      image-second => content then <figure>
+  - Uses BEM naming
+  - All <source media> elements removed (single <img> only)
 {% endcomment %}
 
 {%- assign desktop = section.settings.desktop_image -%}
@@ -11,13 +9,13 @@
 {%- assign alt_text = section.settings.image_alt | default: desktop.alt -%}
 
 {%- assign mods = '' -%}
-{%- assign mods = mods | append: ' image-content--' | append: section.settings.width -%}
-{%- assign mods = mods | append: ' image-content--pos-' | append: section.settings.position -%}
-{%- assign mods = mods | append: ' image-content--' | append: section.settings.placement -%}
-{%- assign mods = mods | append: ' image-content--m-' | append: section.settings.placement_mobile -%}
+{%- assign mods = mods | append: ' image-content--width-' | append: section.settings.width -%}
+{%- assign mods = mods | append: ' image-content--position-' | append: section.settings.position -%}
+{%- assign mods = mods | append: ' image-content--placement-' | append: section.settings.placement -%}
+{%- assign mods = mods | append: ' image-content--placement-mobile-' | append: section.settings.placement_mobile -%}
 
 <section
-  class="layout__grid-box image-content {{ mods }}"
+  class="image-content{{ mods }}"
   aria-labelledby="image-content__title-{{ section.id }}"
   style="
     --pt: {{ section.settings.padding_top_desktop | default: 80 }}px;
@@ -26,47 +24,9 @@
     --pb-m: {{ section.settings.padding_bottom_mobile | default: 40 }}px;
   "
 >
-  <figure class="image-content__media" style="--aspect-ratio: {{ desktop.aspect_ratio }};">
-    {% if desktop != blank %}
-      <picture class="image-content__picture">
-        <source
-          media="(min-width: 750px)"
-          type="image/avif"
-          srcset="
-            {{ desktop | image_url: width: 1200, format: 'avif' }} 1200w,
-            {{ desktop | image_url: width: 1600, format: 'avif' }} 1600w,
-            {{ desktop | image_url: width: 2000, format: 'avif' }} 2000w
-          "
-          sizes="50vw"
-        >
-        <source
-          media="(min-width: 0px)"
-          type="image/avif"
-          srcset="
-            {{ mobile | image_url: width: 750,  format: 'avif' }} 750w,
-            {{ mobile | image_url: width: 1100, format: 'avif' }} 1100w
-          "
-          sizes="100vw"
-        >
-        <source
-          media="(min-width: 750px)"
-          type="image/webp"
-          srcset="
-            {{ desktop | image_url: width: 1200, format: 'webp' }} 1200w,
-            {{ desktop | image_url: width: 1600, format: 'webp' }} 1600w,
-            {{ desktop | image_url: width: 2000, format: 'webp' }} 2000w
-          "
-          sizes="50vw"
-        >
-        <source
-          media="(min-width: 0px)"
-          type="image/webp"
-          srcset="
-            {{ mobile | image_url: width: 750,  format: 'webp' }} 750w,
-            {{ mobile | image_url: width: 1100, format: 'webp' }} 1100w
-          "
-          sizes="100vw"
-        >
+  <div class="layout__grid-box image-content-Outside">
+    <figure class="image-content__media" style="--aspect-ratio: {{ desktop.aspect_ratio }};">
+      {% if desktop != blank %}
         <img
           class="image-content__image"
           src="{{ desktop | image_url: width: 1600 }}"
@@ -76,36 +36,36 @@
           loading="lazy"
           decoding="async"
         >
-      </picture>
-    {% endif %}
-  </figure>
+      {% endif %}
+    </figure>
 
-  <div class="image-content__content">
-    <div class="image-content__header">
-      <div class="image-content__eyebrow-wrapper">
-        <span class="image-content__eyebrow">{{ section.settings.eyebrow | default: 'About us' }}</span>
+    <div class="image-content__content">
+      <div class="image-content__header">
+        <div class="image-content__eyebrow-wrapper">
+          <span class="image-content__eyebrow">{{ section.settings.eyebrow | default: 'About us' }}</span>
+        </div>
+
+        <div class="image-content__title-wrapper">
+          <h1 id="image-content__title-{{ section.id }}" class="image-content__title">
+            {{ section.settings.title | default: 'A Legacy of Taste Since 1956' | newline_to_br }}
+          </h1>
+        </div>
       </div>
 
-      <div class="image-content__title-wrapper">
-        <h1 id="image-content__title-{{ section.id }}" class="image-content__title">
-          {{ section.settings.title | default: 'A Legacy of Taste Since 1956' | newline_to_br }}
-        </h1>
+      <div class="image-content__body-wrapper">
+        <div class="image-content__text">
+          {{
+            section.settings.body_text
+            | default: '<p>Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured the hearts of many, laying the foundation for what would become a cherished family business.</p><p>Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.</p>'
+          }}
+        </div>
       </div>
-    </div>
 
-    <div class="image-content__body-wrapper">
-      <div class="image-content__text">
-        {{
-          section.settings.body_text
-          | default: '<p>Our story traces back to 1956, when C. Velayutha Nadar began his humble venture as a street vendor, offering a selection of sweets and savory treats. Thanks to their exceptional taste, these delights quickly captured the hearts of many, laying the foundation for what would become a cherished family business.</p><p>Today, the legacy continues with five thriving outlets across Sivakasi, proudly run by the next generations.</p>'
-        }}
+      <div class="image-content__cta-wrapper">
+        <a class="image-content__cta" href="{{ section.settings.cta_link | default: '/about' }}">
+          {{ section.settings.cta_label | default: 'Learn More' }}
+        </a>
       </div>
-    </div>
-
-    <div class="image-content__cta-wrapper">
-      <a class="image-content__cta" href="{{ section.settings.cta_link | default: '/about' }}">
-        {{ section.settings.cta_label | default: 'Learn More' }}
-      </a>
     </div>
   </div>
 </section>
@@ -114,7 +74,7 @@
 {
   "name": "Image and content",
   "tag": "section",
-  "class": "section image-content-section",
+  "class": "image-content",
   "settings": [
     { "type": "header", "content": "Layout" },
     {

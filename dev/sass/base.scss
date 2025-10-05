@@ -4,7 +4,6 @@
 @use "product-detail";
 @use "account";
 @use "homepage-slider";
-@use "image-text";
 @use "promo-cta";
 
 @use "reset";
@@ -18,6 +17,7 @@
 @use "common/pagination";
 @use "common/bestseller";
 @use "common/footer";
+@use "common/image-text";
 @use "common/predictive-search";
 
 @use "page/template-index";
