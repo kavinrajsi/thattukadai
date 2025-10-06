@@ -1521,6 +1521,7 @@ p {
 
 header {
   position: sticky;
+  position: fixed;
   z-index: 50;
   top: 0;
   left: 0;
@@ -1676,6 +1677,7 @@ header .header--mobile .mobile-menu .mobile-menu__link {
 }
 header .header--desktop {
   overflow: hidden;
+  position: relative;
   z-index: 1;
 }
 header .header--desktop .header--desktop__container {
@@ -1855,8 +1857,8 @@ header .header--desktop .mega__products .mega__body {
   position: relative;
   background-color: #ffffff;
   padding: 20px 0;
-  height: 528px;
   height: 100%;
+  height: 528px;
   transform: translateY(-10px);
   visibility: hidden;
   will-change: trasform, height, visibility;
@@ -3059,12 +3061,7 @@ body.template-product .footer {
   margin-top: 16px;
 }
 
-.template-index main {
-  margin-top: -156px;
-}
-
 .template-collection main {
-  margin-top: -156px;
   margin-bottom: 80px;
 }
 .template-collection .collection-image img,

@@ -1,6 +1,7 @@
 
 header {
 	position: sticky;
+	position: fixed;
 	z-index: 50;
 	top: 0;
 	left: 0;
@@ -156,6 +157,7 @@ header {
 	}
 	.header--desktop {
 		overflow: hidden;
+		position: relative;
 		z-index: 1;
 		.header--desktop__container {
 			border-radius: 6px;
@@ -320,8 +322,8 @@ header {
 				position: relative;
 				background-color: #ffffff;
 				padding: 20px 0;
-				height: 528px;
 				height: 100%;
+				height: 528px;
 				transform: translateY(-10px);
 				visibility: hidden;
 				will-change: trasform, height, visibility;
