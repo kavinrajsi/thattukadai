@@ -110,7 +110,7 @@
               {% endif %}
 
               <a
-                href="{{ link.url }}#main-collection"
+                href="{{ link.url }}"
                 class="{% if is_active %}active{% endif %}"
                 title="{{ link.title }}"
               >
@@ -162,7 +162,7 @@
         {%- endif -%}
       </nav>
     {% endpaginate %}
-</section>
+  </section>
 </div>
 
 <!-- SEO Structured Data using JSON-LD for Google -->
