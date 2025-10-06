@@ -1,4 +1,141 @@
 (function ($) {
+  function formatMoney(cents) {
+    try {
+      if (window.Shopify && typeof Shopify.formatMoney === 'function') {
+        return Shopify.formatMoney(cents);
+      }
+    } catch (err) {}
+    var amount = (parseInt(cents, 10) || 0) / 100;
+    return 'Rs. ' + amount.toFixed(2);
+  }
+
+  function renderLineVariants(item) {
+    if (item.options_with_values && item.options_with_values.length) {
+      return item.options_with_values
+        .filter(function (ov) {
+          return ov && ov.value && ov.value !== 'Default Title';
+        })
+        .map(function (ov) {
+          return (
+            '<div class="drawer-item__variant"><span class="opt-name">' +
+            ov.name +
+            ':</span> <span class="opt-val">' +
+            ov.value +
+            '</span></div>'
+          );
+        })
+        .join('');
+    }
+
+    if (item.variant_title && item.variant_title !== 'Default Title') {
+      return '<div class="drawer-item__variant">' + item.variant_title + '</div>';
+    }
+
+    return '';
+  }
+
+  function renderLineProperties(item) {
+    var props = item.properties;
+    if (!props) return '';
+
+    var propHtml = Object.keys(props)
+      .filter(function (key) {
+        if (!Object.prototype.hasOwnProperty.call(props, key)) return false;
+        if (key.charAt(0) === '_') return false;
+        var value = props[key];
+        return value !== null && value !== undefined && String(value).trim() !== '';
+      })
+      .map(function (key) {
+        var value = props[key];
+        return (
+          '<li><span>' +
+          key +
+          ':</span> <span>' +
+          value +
+          '</span></li>'
+        );
+      })
+      .join('');
+
+    if (!propHtml) return '';
+
+    return '<ul class="drawer-item__props">' + propHtml + '</ul>';
+  }
+
+  function renderCartHTML(cart) {
+    if (!cart || !cart.items || cart.items.length === 0) {
+      return '<div class="drawer-empty">Your cart is empty.</div>';
+    }
+
+    var itemsHtml = cart.items
+      .map(function (item, idx) {
+        var line = idx + 1;
+        var variantsHtml = renderLineVariants(item);
+        var propsHtml = renderLineProperties(item);
+        var savingsHtml = '';
+        if (item.original_line_price > item.final_line_price) {
+          savingsHtml =
+            '<div class="drawer-item__savings">Saved ' +
+            formatMoney(item.original_line_price - item.final_line_price) +
+            '</div>';
+        }
+
+        var altText = item.title || item.product_title || '';
+
+        return (
+          '<li class="drawer-item" data-line="' +
+          line +
+          '">' +
+          '<img class="drawer-item__image" src="' +
+          (item.image || '') +
+          '" alt="' +
+          altText.replace(/"/g, '&quot;') +
+          '" width="95" height="100" loading="lazy">' +
+          '<div class="drawer-item__meta">' +
+          '<a href="' +
+          item.url +
+          '" class="drawer-item__title">' +
+          item.product_title +
+          '</a>' +
+          variantsHtml +
+          propsHtml +
+          '<div class="drawer-item__price">' +
+          formatMoney(item.final_line_price) +
+          savingsHtml +
+          '</div>' +
+          '<div class="drawer-item__action">' +
+          '<div class="drawer-item__qty">' +
+          '<button type="button" class="qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>' +
+          '<input class="qty-input" type="number" min="1" inputmode="numeric" value="' +
+          item.quantity +
+          '" aria-label="Quantity">' +
+          '<button type="button" class="qty-btn" data-qty-plus aria-label="Increase quantity">+</button>' +
+          '</div>' +
+          '<button type="button" class="drawer-item__remove" data-line-remove title="Remove">Remove</button>' +
+          '</div>' +
+          '</div>' +
+          '</li>'
+        );
+      })
+      .join('');
+
+    return (
+      '<div class="drawer-content">' +
+      '<ul class="drawer-items">' +
+      itemsHtml +
+      '</ul>' +
+      '<div class="drawer-summary">' +
+      '<div class="drawer-subtotal">' +
+      '<span>Subtotal</span>' +
+      '<strong>' +
+      formatMoney(cart.total_price) +
+      '</strong>' +
+      '</div>' +
+      '</div>' +
+      '</div>'
+    );
+  }
+
   /* =========================
      Drawer open / close
   ========================== */
@@ -31,10 +168,6 @@
     $.getJSON('/cart.js', function (cart) {
       updateCartCount(cart.item_count);
     });
-    var link = document.createElement('link');
-    link.rel = 'prefetch';
-    link.href = '/cart?view=drawer';
-    document.head.appendChild(link);
   });
 
   /* =========================
@@ -69,72 +202,13 @@
      Refresh drawer HTML
   ========================== */
   function refreshCartDrawer() {
-    return $.get('/cart?view=drawer')
-      .done(function (html) {
-        $('#cart-drawer .cart-drawer__body').html(html);
+    return $.getJSON('/cart.js')
+      .done(function (cart) {
+        $('#cart-drawer .cart-drawer__body').html(renderCartHTML(cart));
+        updateCartCount(cart.item_count);
       })
       .fail(function () {
-        // Fallback render with /cart.js if drawer view missing
-        $.getJSON('/cart.js', function (cart) {
-          if (!cart || !cart.items) return;
-          var html = '<ul class="drawer-items">';
-          cart.items.forEach(function (it, idx) {
-            // Build variant HTML from options_with_values (robust vs "Default Title")
-            var variantHTML = '';
-            if (it.options_with_values && it.options_with_values.length) {
-              variantHTML = it.options_with_values
-                .filter(function (ov) {
-                  return ov && ov.value && ov.value !== 'Default Title';
-                })
-                .map(function (ov) {
-                  return (
-                    '<div class="drawer-item__variant"><span class="opt-name">' +
-                    ov.name +
-                    ':</span> <span class="opt-val">' +
-                    ov.value +
-                    '</span></div>'
-                  );
-                })
-                .join('');
-            } else if (it.variant_title && it.variant_title !== 'Default Title') {
-              variantHTML = '<div class="drawer-item__variant">' + it.variant_title + '</div>';
-            }
-
-            html +=
-              '<li class="drawer-item" data-line="' +
-              (idx + 1) +
-              '">' +
-              '<img class="drawer-item__image" src="' +
-              (it.image || '') +
-              '" width="60" height="60" alt=""/>' +
-              '<div class="drawer-item__meta">' +
-              '<a href="' +
-              it.url +
-              '" class="drawer-item__title">' +
-              it.product_title +
-              '</a>' +
-              variantHTML +
-              '<div class="drawer-item__qty">' +
-              '<button type="button" class="qty-btn" data-qty-minus aria-label="Decrease quantity">−</button>' +
-              '<input class="qty-input" type="number" min="1" inputmode="numeric" value="' +
-              it.quantity +
-              '" aria-label="Quantity" />' +
-              '<button type="button" class="qty-btn" data-qty-plus aria-label="Increase quantity">+</button>' +
-              '<button type="button" class="drawer-item__remove" data-line-remove title="Remove">Remove</button>' +
-              '</div>' +
-              '</div>' +
-              '<div class="drawer-item__price">' +
-              (window.Shopify && Shopify.formatMoney ? Shopify.formatMoney(it.final_line_price) : it.final_line_price) +
-              '</div>' +
-              '</li>';
-          });
-          html += '</ul>';
-          html +=
-            '<div class="drawer-summary"><div class="drawer-subtotal"><span>Subtotal</span><strong>' +
-            (window.Shopify && Shopify.formatMoney ? Shopify.formatMoney(cart.total_price) : cart.total_price) +
-            '</strong></div><p class="drawer-note">Taxes and shipping calculated at checkout.</p></div>';
-          $('#cart-drawer .cart-drawer__body').html(html);
-        });
+        $('#cart-drawer .cart-drawer__body').html('<div class="drawer-empty">Unable to load cart.</div>');
       });
   }
 

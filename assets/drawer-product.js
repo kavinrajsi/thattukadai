@@ -243,6 +243,8 @@
       .done(function (data) {
         $addBtn.text('Added ✓');
         $noteEl.text('Added to cart.');
+        // Ensure the product drawer is hidden before the mini cart opens
+        closeDrawer();
         // Broadcast cart update for any header/cart components listening
         document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
       })
