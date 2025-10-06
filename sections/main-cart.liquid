@@ -284,6 +284,16 @@
           {% endif %}
         {% endif %}
       </div>
+
+      {% assign first_cart_item = cart.items | first %}
+      {% if first_cart_item %}
+        <div class="cart-recs" data-cart-page-recs data-product-id="{{ first_cart_item.product_id }}">
+          <h2 class="cart-recs__title">{{ section.settings.recommendations_heading }}</h2>
+          <div class="cart-recs__list" data-cart-recs-list>
+            <div class="cart-recs__loading">Loading recommendations…</div>
+          </div>
+        </div>
+      {% endif %}
     {% endif %}
   </div>
 </section>
@@ -319,6 +329,74 @@
     const showLoader = () => (loader.style.display = 'block');
     const hideLoader = () => (loader.style.display = 'none');
 
+    const loadCartPageRecommendations = () => {
+      const container = document.querySelector('[data-cart-page-recs]');
+      if (!container) return;
+      const productId = container.getAttribute('data-product-id');
+      if (!productId) {
+        container.setAttribute('hidden', 'hidden');
+        return;
+      }
+
+      const list = container.querySelector('[data-cart-recs-list]');
+      const loading = container.querySelector('.cart-recs__loading');
+
+      const money = (cents) => {
+        try {
+          if (typeof Shopify !== 'undefined' && typeof Shopify.formatMoney === 'function') {
+            return Shopify.formatMoney(cents);
+          }
+        } catch (err) {}
+        const amount = (parseInt(cents, 10) || 0) / 100;
+        return '₹' + amount.toFixed(2);
+      };
+
+      fetch('/recommendations/products.json?product_id=' + encodeURIComponent(productId) + '&limit=4')
+        .then((res) => {
+          if (!res.ok) throw new Error('Network');
+          return res.json();
+        })
+        .then((data) => {
+          if (!data || !data.products || !data.products.length) {
+            container.setAttribute('hidden', 'hidden');
+            return;
+          }
+          container.removeAttribute('hidden');
+          const html = data.products
+            .map((product) => {
+              if (!product) return '';
+              const url = product.url || '/products/' + (product.handle || '');
+              const title = product.title || '';
+              const image = product.featured_image
+                ? '<img src="' + product.featured_image + '" alt="' + title.replace(/"/g, '&quot;') + '" loading="lazy">'
+                : '';
+              const compare = product.compare_at_price && product.compare_at_price > product.price
+                ? '<s>' + money(product.compare_at_price) + '</s>'
+                : '';
+              const priceHtml =
+                '<div class="cart-recs__price">' +
+                '<span>' + money(product.price) + '</span>' +
+                (compare ? ' ' + compare : '') +
+                '</div>';
+              return (
+                '<article class="cart-recs__item">' +
+                '<a class="cart-recs__link" href="' + url + '">' +
+                image +
+                '<h3 class="cart-recs__name">' + title + '</h3>' +
+                priceHtml +
+                '</a>' +
+                '</article>'
+              );
+            })
+            .join('');
+          if (loading) loading.remove();
+          list.innerHTML = html;
+        })
+        .catch(() => {
+          container.setAttribute('hidden', 'hidden');
+        });
+    };
+
     // Refreshes the whole cart section after cart update
     const refreshCart = () => {
       fetch(window.location.href)
@@ -333,6 +411,7 @@
           }
           hideLoader();
           rebindCartEvents(); // Rebind events after replacing HTML
+          loadCartPageRecommendations();
         })
         .catch((e) => {
           console.error('Cart refresh error:', e);
@@ -404,6 +483,7 @@
 
     // Initial bind on page load
     rebindCartEvents();
+    loadCartPageRecommendations();
   });
 </script>
 
@@ -437,6 +517,12 @@
       "type": "collection",
       "id": "upsell_tag_base",
       "label": "Search within collection by tag."
+    },
+    {
+      "type": "text",
+      "id": "recommendations_heading",
+      "label": "Recommendations heading",
+      "default": "People also bought"
     }
   ],
 

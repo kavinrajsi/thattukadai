@@ -30,14 +30,14 @@
   // ---- Helpers ----
 
   /**
-   * Format money in INR like "Rs. 210.00"
+   * Format money in INR like "₹210.00"
    * Falls back if Shopify.formatMoney isn't available.
    */
   function money(cents) {
     try {
-      return Shopify && Shopify.formatMoney ? Shopify.formatMoney(cents) : 'Rs. ' + (cents / 100).toFixed(2);
+      return Shopify && Shopify.formatMoney ? Shopify.formatMoney(cents) : '₹' + (cents / 100).toFixed(2);
     } catch (e) {
-      return 'Rs. ' + (cents / 100).toFixed(2);
+      return '₹' + (cents / 100).toFixed(2);
     }
   }
 

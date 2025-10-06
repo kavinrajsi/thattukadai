@@ -191,8 +191,8 @@
       } else if (moneyFormat.includes('{{ amount }}')) {
         return moneyFormat.replace(/\{\{\s*amount\s*\}\}/g, amount);
       } else {
-        // Fallback: assume Rs. prefix format
-        return 'Rs. ' + amount;
+        // Fallback: assume INR format
+        return '₹' + amount;
       }
     }
 

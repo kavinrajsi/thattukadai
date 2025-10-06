@@ -6,7 +6,7 @@
       }
     } catch (err) {}
     var amount = (parseInt(cents, 10) || 0) / 100;
-    return 'Rs. ' + amount.toFixed(2);
+    return '₹' + amount.toFixed(2);
   }
 
   function renderLineVariants(item) {
@@ -206,9 +206,101 @@
       .done(function (cart) {
         $('#cart-drawer .cart-drawer__body').html(renderCartHTML(cart));
         updateCartCount(cart.item_count);
+        if (cart && cart.items && cart.items.length) {
+          loadCartRecommendations(cart.items[0].product_id);
+        } else {
+          $('#cart-drawer [data-cart-recommendations]').prop('hidden', true);
+        }
       })
       .fail(function () {
         $('#cart-drawer .cart-drawer__body').html('<div class="drawer-empty">Unable to load cart.</div>');
+      });
+  }
+
+  var lastRecommendationProductId = null;
+
+  function renderRecommendationCard(product) {
+    if (!product) return '';
+    var image = product.featured_image || '';
+    var title = product.title || '';
+    var url = product.url || ('/products/' + (product.handle || ''));
+    var priceHtml = '<div class="cart-drawer__recommendation-price">' + formatMoney(product.price) + '</div>';
+    if (product.compare_at_price && product.compare_at_price > product.price) {
+      priceHtml =
+        '<div class="cart-drawer__recommendation-price">' +
+        '<span>' + formatMoney(product.price) + '</span> ' +
+        '<s>' + formatMoney(product.compare_at_price) + '</s>' +
+        '</div>';
+    }
+
+    var availableVariant = null;
+    if (product.variants && product.variants.length) {
+      for (var i = 0; i < product.variants.length; i++) {
+        if (product.variants[i].available) {
+          availableVariant = product.variants[i];
+          break;
+        }
+      }
+      if (!availableVariant) availableVariant = product.variants[0];
+    }
+
+    var imageMarkup = image
+      ? '<img src="' + image + '" alt="' + title.replace(/"/g, '&quot;') + '" loading="lazy">'
+      : '';
+
+    var actionMarkup = '';
+    if (availableVariant && availableVariant.available) {
+      actionMarkup =
+        '<button class="cart-drawer__recommendation-button" type="button" data-recommendation-add data-variant-id="' +
+        availableVariant.id +
+        '" data-product-id="' +
+        product.id +
+        '">Add to cart</button>';
+    } else {
+      actionMarkup =
+        '<a class="cart-drawer__recommendation-button cart-drawer__recommendation-button--link" href="' +
+        url +
+        '">View product</a>';
+    }
+
+    return (
+      '<div class="cart-drawer__recommendation">' +
+      imageMarkup +
+      '<h5 class="cart-drawer__recommendation-title">' + title + '</h5>' +
+      priceHtml +
+      actionMarkup +
+      '</div>'
+    );
+  }
+
+  function loadCartRecommendations(productId) {
+    if (!productId) return;
+    var $wrap = $('#cart-drawer [data-cart-recommendations]');
+    if (!$wrap.length) return;
+
+    if (productId === lastRecommendationProductId && !$wrap.prop('hidden')) {
+      return;
+    }
+    lastRecommendationProductId = productId;
+
+    var $list = $wrap.find('.cart-drawer__recommendations-list');
+    $wrap.prop('hidden', true);
+    $list.empty();
+
+    var url = '/recommendations/products.json?product_id=' + encodeURIComponent(productId) + '&limit=4';
+
+    $.getJSON(url)
+      .done(function (data) {
+        if (!data || !data.products || !data.products.length) {
+          $wrap.prop('hidden', true);
+          return;
+        }
+        var html = data.products.map(renderRecommendationCard).join('');
+        $list.html(html);
+        $wrap.prop('hidden', false);
+      })
+      .fail(function () {
+        $wrap.prop('hidden', true);
       });
   }
 
@@ -306,7 +398,8 @@
       data: { id: $id.val(), quantity: $qty.length ? $qty.val() || 1 : 1 },
       dataType: 'json',
     })
-      .done(function () {
+      .done(function (data) {
+        var addedProductId = data && data.items && data.items.length ? data.items[0].product_id : null;
         // Update count fast
         $.getJSON('/cart.js', function (cart) {
           updateCartCount(cart.item_count);
@@ -315,6 +408,9 @@
         $('#cart-drawer .cart-drawer__body').html(drawerSkeletonHTML());
         openCartDrawer();
         refreshCartDrawer();
+        if (addedProductId) {
+          loadCartRecommendations(addedProductId);
+        }
       })
       .fail(function (xhr) {
         var msg = 'Unable to add to cart.';
@@ -402,13 +498,59 @@
   ========================== */
   $(document).ajaxSuccess(function (evt, xhr, settings) {
     if (settings && settings.url && settings.url.indexOf('/cart/add.js') === 0) {
+      var responseData = xhr && (xhr.responseJSON || (xhr.responseText ? (function () {
+        try {
+          return JSON.parse(xhr.responseText);
+        } catch (err) {
+          return null;
+        }
+      })() : null));
+      var addedProductId = responseData && responseData.items && responseData.items.length ? responseData.items[0].product_id : null;
       $.getJSON('/cart.js', function (cart) {
         updateCartCount(cart.item_count);
       });
       $('#cart-drawer .cart-drawer__body').html(drawerSkeletonHTML());
       openCartDrawer();
       refreshCartDrawer();
+      if (addedProductId) {
+        loadCartRecommendations(addedProductId);
+      }
     }
+  });
+
+  $('#cart-drawer').on('click', '[data-recommendation-add]', function () {
+    var $btn = $(this);
+    var variantId = $btn.data('variant-id');
+    var productId = $btn.data('product-id');
+    if (!variantId) return;
+
+    var originalText = $btn.text();
+    $btn.prop('disabled', true).text('Adding…');
+
+    $.ajax({
+      type: 'POST',
+      url: '/cart/add.js',
+      data: { id: variantId, quantity: 1 },
+      dataType: 'json',
+    })
+      .done(function (data) {
+        $btn.text('Added ✓');
+        $.getJSON('/cart.js', function (cart) {
+          updateCartCount(cart.item_count);
+        });
+        openCartDrawer();
+        refreshCartDrawer().done(function () {
+          if (productId) loadCartRecommendations(productId);
+        });
+      })
+      .fail(function () {
+        alert('Unable to add item. Please try again.');
+      })
+      .always(function () {
+        setTimeout(function () {
+          $btn.prop('disabled', false).text(originalText);
+        }, 900);
+      });
   });
 
   $(document).on('mousedown', function (e) {

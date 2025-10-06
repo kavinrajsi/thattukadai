@@ -5,6 +5,10 @@
       <button type="button" class="cart-drawer__close" data-drawer-close aria-label="Close cart">&times;</button>
     </header>
     <div class="cart-drawer__body"><!-- content injected by /cart?view=drawer --></div>
+    <div class="cart-drawer__recommendations" data-cart-recommendations hidden>
+      <h4 class="cart-drawer__recommendations-title">You may also like</h4>
+      <div class="cart-drawer__recommendations-list"></div>
+    </div>
     <footer class="cart-drawer__footer">
       <a href="/checkout" class="button button--primary">Checkout</a>
       <a href="{{routes.cart_url}}" class="button button--view-cart">View cart</a>

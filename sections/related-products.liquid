@@ -1,0 +1,235 @@
+{% comment %}
+  Product recommendations section styled to match the Best Sellers carousel.
+{% endcomment %}
+
+{% assign limit = section.settings.products_to_show | default: 4 %}
+
+<product-recommendations
+  class="bestsellers layout__grid-box related-products"
+  id="section-{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}"
+>
+  {% assign has_recommendations = false %}
+  {% if recommendations.performed and recommendations.products_count > 0 %}
+    {% assign has_recommendations = true %}
+  {% endif %}
+
+  <div class="bestsellers__container">
+    <div class="bestsellers__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="bestsellers__title">{{ section.settings.heading }}</h2>
+      {% endif %}
+    </div>
+
+    {% if has_recommendations %}
+      <div class="bestsellers__scroller">
+        <div
+          class="bestsellers__list"
+          id="related-list-{{ section.id }}"
+          data-flickity='
+            {
+              "cellAlign": "left",
+              "contain": true,
+              "pageDots": true,
+              "prevNextButtons": false,
+              "groupCells": 1,
+              "wrapAround": true,
+              "draggable": true,
+              "adaptiveHeight": true,
+              "watchCSS": false
+            }
+          '
+        >
+          {% for recommendation in recommendations.products limit: limit %}
+            <div class="bestsellers__item">
+              {% render 'product-card', product: recommendation %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="bestsellers__controller">
+          <div class="bestsellers__controller--dots"></div>
+          <div class="bestsellers__controller--nav">
+            <button
+              class="bestsellers__btn bestsellers__btn--prev"
+              type="button"
+              aria-label="Previous recommendation"
+            >
+              <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="20" fill="white"/>
+                <path d="M30 20c0-.18-.07-.35-.20-.48a.68.68 0 0 0-.48-.20H13.3l4.27-4.27a.68.68 0 0 0-.96-.96l-5.43 5.43a.68.68 0 0 0 0 .96l5.43 5.43a.68.68 0 0 0 .96-.96L13.3 20.7h16.02c.18 0 .35-.07.48-.20.13-.13.20-.3.20-.48Z" fill="#161A1D"/>
+              </svg>
+            </button>
+
+            <button
+              class="bestsellers__btn bestsellers__btn--next"
+              type="button"
+              aria-label="Next recommendation"
+            >
+              <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="20" fill="white"/>
+                <path d="M30 20c0-.18-.07-.35-.20-.48a.68.68 0 0 0-.48-.20H13.3l4.27-4.27a.68.68 0 0 0-.96-.96l-5.43 5.43a.68.68 0 0 0 0 .96l5.43 5.43a.68.68 0 0 0 .96-.96L13.3 20.7h16.02c.18 0 .35-.07.48-.20.13-.13.20-.3.20-.48Z" fill="#161A1D" transform="scale(-1,1) translate(-40,0)"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="bestsellers__empty" aria-hidden="true"></div>
+    {% endif %}
+  </div>
+</product-recommendations>
+
+<script>
+  (function () {
+    var sectionId = 'section-{{ section.id }}';
+    var section = document.getElementById(sectionId);
+    if (!section) return;
+
+    function initSlider(root) {
+      var slider = root.querySelector('.bestsellers__list');
+      if (!slider || typeof Flickity === 'undefined' || slider._flickity) return;
+
+      var options = {};
+      try {
+        options = JSON.parse(slider.getAttribute('data-flickity') || '{}');
+      } catch (e) {}
+
+      var flkty = new Flickity(slider, options);
+      slider._flickity = flkty;
+      slider.classList.add('is-initialized');
+
+      var controller = root.querySelector('.bestsellers__controller');
+      if (!controller) return;
+
+      var dotsTarget = controller.querySelector('.bestsellers__controller--dots');
+      function moveDots() {
+        if (!dotsTarget) return;
+        var dots = slider.querySelector('.flickity-page-dots');
+        if (!dots && flkty.pageDots) dots = flkty.pageDots.element;
+        if (!dots || typeof dots.nodeType !== 'number') return;
+        if (!dotsTarget.contains(dots)) {
+          dotsTarget.innerHTML = '';
+          dotsTarget.appendChild(dots);
+        }
+      }
+
+      moveDots();
+      if (flkty.on) {
+        flkty.on('ready', moveDots);
+        flkty.on('resize', moveDots);
+      }
+
+      function bindNav(btn, dir) {
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          if (dir === 'prev') flkty.previous();
+          else flkty.next();
+        });
+      }
+
+      bindNav(controller.querySelector('.bestsellers__btn--prev'), 'prev');
+      bindNav(controller.querySelector('.bestsellers__btn--next'), 'next');
+
+      function syncArrows() {
+        var wrap = !!flkty.options.wrapAround;
+        var prev = controller.querySelector('.bestsellers__btn--prev');
+        var next = controller.querySelector('.bestsellers__btn--next');
+        if (prev) prev.disabled = !wrap && flkty.selectedIndex === 0;
+        if (next) next.disabled = !wrap && flkty.selectedIndex === flkty.slides.length - 1;
+      }
+
+      syncArrows();
+      if (flkty.on) flkty.on('select', syncArrows);
+    }
+
+    function destroySlider(root) {
+      var slider = root.querySelector('.bestsellers__list');
+      if (slider && slider._flickity) {
+        slider._flickity.destroy();
+        slider._flickity = null;
+        slider.classList.remove('is-initialized');
+      }
+    }
+
+    function ensureSlider(root) {
+      if (typeof Flickity !== 'undefined') {
+        initSlider(root);
+      } else {
+        window.addEventListener(
+          'load',
+          function handleLoad() {
+            initSlider(root);
+          },
+          { once: true }
+        );
+      }
+    }
+
+    function renderRecommendations(html) {
+      var doc = document.createElement('div');
+      doc.innerHTML = html;
+      var fresh = doc.querySelector('product-recommendations');
+      if (!fresh) return;
+      section.innerHTML = fresh.innerHTML;
+      ensureSlider(section);
+    }
+
+    if (section.querySelector('.bestsellers__list .bestsellers__item')) {
+      ensureSlider(section);
+      return;
+    }
+
+    var url = section.getAttribute('data-url');
+    if (!url) return;
+
+    fetch(url)
+      .then(function (response) {
+        if (!response.ok) throw new Error('Network error');
+        return response.text();
+      })
+      .then(renderRecommendations)
+      .catch(function (err) {
+        console.warn('Recommendations fetch failed', err);
+      });
+
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.target && event.target.id === sectionId) {
+        ensureSlider(event.target);
+      }
+    });
+
+    document.addEventListener('shopify:section:unload', function (event) {
+      if (event.target && event.target.id === sectionId) {
+        destroySlider(event.target);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Related products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}
