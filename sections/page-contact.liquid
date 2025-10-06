@@ -1,0 +1,222 @@
+{% comment %}
+  Section: Contact – Map + Info + Form
+  Drops into any page. Uses Shopify's native contact form endpoint.
+{% endcomment %}
+
+<section id="contact-{{ section.id }}" class="contact-wrap color-{{ section.settings.color_scheme }}">
+  <div class="contact-inner page-width">
+    {% if section.settings.cta_label != blank or section.settings.heading != blank %}
+      <div class="contact-head">
+        {% if section.settings.cta_label != blank %}
+          <a
+            {% if section.settings.cta_link != blank %}
+              href="{{ section.settings.cta_link }}"
+            {% endif %}
+            class="contact-cta"
+          >
+            {{- section.settings.cta_label -}}
+          </a>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="contact-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.map_iframe != blank %}
+      <div class="contact-map">
+        {{ section.settings.map_iframe }}
+      </div>
+    {% endif %}
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        {% if section.settings.address_title != blank %}
+          <h3 class="info-title">{{ section.settings.address_title }}</h3>
+        {% endif %}
+        <p class="info-lines">
+          {{ section.settings.address_line_1 -}}
+          <br>
+          {{ section.settings.address_line_2 }}
+        </p>
+
+        {% if section.settings.info_title != blank %}
+          <h3 class="info-title">{{ section.settings.info_title }}</h3>
+        {% endif %}
+        <p class="info-lines">
+          {% if section.settings.phone != blank %}
+            <a href="tel:{{ section.settings.phone | strip | replace: ' ', '' }}">{{ section.settings.phone }}</a><br>
+          {% endif %}
+          {% if section.settings.email != blank %}
+            <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+          {% endif %}
+        </p>
+
+        {% if section.settings.social_title != blank %}
+          <h3 class="info-title">{{ section.settings.social_title }}</h3>
+        {% endif %}
+        <div class="social-row" aria-label="Social media">
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" class="social-icon" aria-label="Instagram">
+              <!-- Instagram -->
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5zM18 6.8a1.2 1.2 0 1 0 1.2 1.2A1.2 1.2 0 0 0 18 6.8z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.facebook_url != blank %}
+            <a href="{{ section.settings.facebook_url }}" class="social-icon" aria-label="Facebook">
+              <!-- Facebook -->
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path d="M13 22v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2h-3a5 5 0 0 0-5 5v3H6v4h3v8z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.youtube_url != blank %}
+            <a href="{{ section.settings.youtube_url }}" class="social-icon" aria-label="YouTube">
+              <!-- YouTube -->
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path d="M23 7.5a3 3 0 0 0-2.1-2.1C19 5 12 5 12 5s-7 0-8.9.4A3 3 0 0 0 1 7.5 49 49 0 0 0 1 16.5a3 3 0 0 0 2.1 2.1C5 19 12 19 12 19s7 0 8.9-.4A3 3 0 0 0 23 16.5a49 49 0 0 0 0-9zM10 15.5v-7l6 3.5z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        {% form 'contact', id: 'ContactForm' %}
+          {% if form.posted_successfully? %}
+            <p class="form-success" role="status">{{ 'general.contact.form.post_success' | t }}</p>
+          {% endif %}
+          {% if form.errors %}
+            <div class="form-errors" role="alert">
+              {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
+
+          <div class="field-pair">
+            <label class="visually-hidden" for="ContactForm-name">Full name</label>
+            <input id="ContactForm-name" type="text" name="contact[name]" placeholder="Full Name*" required>
+            <label class="visually-hidden" for="ContactForm-email">Email</label>
+            <input id="ContactForm-email" type="email" name="contact[email]" placeholder="Email Address*" required>
+          </div>
+
+          <label class="visually-hidden" for="ContactForm-phone">Phone</label>
+          <input id="ContactForm-phone" type="tel" name="contact[phone]" placeholder="Phone Number*">
+
+          <label class="visually-hidden" for="ContactForm-message">Message</label>
+          <textarea id="ContactForm-message" name="contact[body]" rows="6" placeholder="Message"></textarea>
+
+          <button type="submit" class="btn-primary">
+            {{ section.settings.submit_label }}
+          </button>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #contact-{{ section.id }}{
+      --bg: {{ section.settings.bg | default: '#f5f5f5' }};
+      --card: #ffffff;
+      --muted: #fef6dc;
+      --text: #1c1c1c;
+      --accent: {{ section.settings.accent | default: '#f2c41e' }};
+      background: var(--bg);
+      padding: 48px 0 72px;
+    }
+    #contact-{{ section.id }} .page-width{max-width:1160px;margin:0 auto;padding:0 16px;}
+    #contact-{{ section.id }} .contact-head{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:18px;}
+    #contact-{{ section.id }} .contact-cta{
+      display:inline-block;padding:10px 18px;border-radius:24px;background:var(--accent);font-weight:600;text-decoration:none;color:#2b2b2b;
+    }
+    #contact-{{ section.id }} .contact-title{margin:0;font-size:22px;letter-spacing:.04em;text-align:center;}
+    #contact-{{ section.id }} .contact-map{border-radius:14px;overflow:hidden;background:#eaeaea;}
+    #contact-{{ section.id }} .contact-map iframe{width:100%;height:340px;border:0;display:block;}
+
+    #contact-{{ section.id }} .contact-grid{
+      display:grid;grid-template-columns:1fr;gap:22px;margin-top:22px;
+    }
+    #contact-{{ section.id }} .contact-info{padding:8px 4px;}
+    #contact-{{ section.id }} .info-title{margin:20px 0 6px;font-size:18px;}
+    #contact-{{ section.id }} .info-lines{margin:0 0 8px;line-height:1.6;}
+    #contact-{{ section.id }} .social-row{display:flex;gap:16px;margin-top:8px;}
+    #contact-{{ section.id }} .social-icon{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px #e6e6e6;transition:transform .15s;}
+    #contact-{{ section.id }} .social-icon:hover{transform:translateY(-1px);}
+    #contact-{{ section.id }} .social-icon svg{display:block;fill:#111;}
+
+    #contact-{{ section.id }} .contact-form-card{
+      background:var(--card);border-radius:14px;padding:18px 18px 22px;box-shadow:0 1px 0 rgba(0,0,0,.03);
+    }
+    #contact-{{ section.id }} .field-pair{display:grid;grid-template-columns:1fr;gap:10px;}
+    #contact-{{ section.id }} input, #contact-{{ section.id }} textarea{
+      width:100%;border:1px solid #eee;border-radius:6px;padding:12px 14px;background:var(--muted);outline:none;
+    }
+    #contact-{{ section.id }} textarea{min-height:140px;resize:vertical;}
+    #contact-{{ section.id }} .btn-primary{
+      margin-top:12px;display:inline-block;padding:10px 18px;border-radius:24px;background:var(--accent);
+      border:none;cursor:pointer;font-weight:700;
+    }
+    #contact-{{ section.id }} .form-errors{color:#b42318;margin-bottom:10px;}
+    #contact-{{ section.id }} .form-success{color:#087443;margin-bottom:10px;}
+    #contact-{{ section.id }} .visually-hidden{position:absolute !important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;}
+
+    /* Desktop layout */
+    @media (min-width: 992px){
+      #contact-{{ section.id }} .contact-title{font-size:16px; letter-spacing:.1em;}
+      #contact-{{ section.id }} .contact-map iframe{height:360px;}
+      #contact-{{ section.id }} .contact-grid{
+        grid-template-columns: 1fr 1.2fr; gap:26px; align-items:flex-start;
+      }
+      #contact-{{ section.id }} .field-pair{grid-template-columns:1fr 1fr;gap:12px;}
+      #contact-{{ section.id }} .contact-form-card{padding:18px;}
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "Contact – Map + Form",
+  "settings": [
+    { "type": "text", "id": "cta_label", "label": "Small button label", "default": "Contact Us" },
+    { "type": "url", "id": "cta_link", "label": "Small button link" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "WE'D LOVE TO HEAR FROM YOU" },
+
+    { "type": "textarea", "id": "map_iframe", "label": "Google Map iframe (paste embed code here)" },
+
+    { "type": "text", "id": "address_title", "label": "Address title", "default": "Address" },
+    { "type": "text", "id": "address_line_1", "label": "Address line 1", "default": "6, 957, Srivilliputhur Main Rd," },
+    {
+      "type": "text",
+      "id": "address_line_2",
+      "label": "Address line 2",
+      "default": "Satchiyapuram, Sivakasi, Tamil Nadu 626124"
+    },
+
+    { "type": "text", "id": "info_title", "label": "Informations title", "default": "Informations" },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "8072225338" },
+    { "type": "text", "id": "email", "label": "Email", "default": "velayuthanadarsweets@gmail.com" },
+
+    { "type": "text", "id": "social_title", "label": "Social title", "default": "Social Media" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "facebook_url", "label": "Facebook URL" },
+    { "type": "url", "id": "youtube_url", "label": "YouTube URL" },
+
+    { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Submit" },
+
+    { "type": "color", "id": "bg", "label": "Background", "default": "#f7f7f6" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#f0c51f" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Theme text color",
+      "default": "background-1",
+      "options": [
+        { "label": "Default", "value": "background-1" },
+        { "label": "Inverse", "value": "inverse" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Contact – Map + Form" }]
+}
+{% endschema %}
