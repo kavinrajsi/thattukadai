@@ -1,14 +1,15 @@
 
 .site-search {
 	display: none;
-	z-index: 52;
+	z-index: 0;
 	position: fixed;
-	top: 0;
-	width: 100%;
-	height: 100vh;
+	top: 134px;
+	width: calc(100% - 24px - 24px);
+	height: calc(100vh - 154px);
 	padding: 24px 20px;
 	background-color: #ffffff;
 	overflow-y: auto;
+	margin: 0 24px;
 	.active-search & {
 		display: block;
 	}

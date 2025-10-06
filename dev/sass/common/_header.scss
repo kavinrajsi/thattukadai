@@ -8,6 +8,15 @@ body.active-desktop-menu::before {
 	pointer-events: none;
 }
 
+body.active-search::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: 30;
+	pointer-events: none;
+}
+
 header {
 	position: sticky;
 	position: fixed;
@@ -178,6 +187,7 @@ header {
 			justify-content: space-between;
 			background-color: #ffffff;
 			margin: 20px 16px;
+			.active-search & ,
 			.active-desktop-menu & {
 				border-bottom-left-radius: 0;
 				border-bottom-right-radius: 0;

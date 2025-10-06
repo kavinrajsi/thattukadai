@@ -190,38 +190,29 @@ $(document).ready(function () {
     }
   });
 
-  // --- Collection-nav links (Filter By nav) ---
+  // Collection filter links: scroll to top when staying on same page
   $(document).on('click', '.collection-nav a', function (e) {
     var href = $(this).attr('href') || '';
+    if (!href) return;
+
     var parts = href.split('#');
-    var urlPart = parts[0]; // e.g. /collections/sale
-    var hashPart = parts[1] || ''; // e.g. main-collection
+    var urlPart = parts[0];
+    var hashPart = parts[1] || '';
 
-    var targetId = hashPart || '';
-    var $target = targetId ? $('#' + targetId) : $();
+    var currentPath = window.location.pathname.replace(/\/+$/, '');
+    var targetPath = urlPart.replace(/\/+$/, '');
 
-    var isSamePage = urlPart === '' || urlPart.replace(/\/+$/, '') === window.location.pathname.replace(/\/+$/, '');
-
-    if (isSamePage && targetId && $target.length) {
+    if (!urlPart || targetPath === currentPath) {
       e.preventDefault();
-      scrollToWithOffset($target, 180);
-      history.pushState(null, '', '#' + targetId);
-    } else {
-      // different page: allow normal navigation
+
+      var image = document.querySelector('.collection-image');
+      var offset = image ? image.offsetHeight : 0;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+
+      if (hashPart) {
+        history.pushState(null, '', '#' + hashPart);
+      }
     }
   });
 
-  // --- On page load: scroll to hash with offset if present ---
-  function scrollHashIfPresent() {
-    if (window.location.hash) {
-      var id = window.location.hash.slice(1);
-      var $el = $('#' + id);
-      if ($el.length) {
-        setTimeout(function () {
-          scrollToWithOffset($el, 80);
-        }, 0);
-      }
-    }
-  }
-  scrollHashIfPresent();
 });
