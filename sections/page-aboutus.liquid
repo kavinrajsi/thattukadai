@@ -117,6 +117,7 @@
           </div>
 
         {% when 'timeline' %}
+          {% assign milestones = section.blocks | where: 'type', 'timeline_milestone' %}
           <div class="timeline" {{ block.shopify_attributes }}>
             {% if block.settings.eyebrow != blank %}
               <div class="eyebrow">{{ block.settings.eyebrow }}</div>
@@ -124,30 +125,32 @@
             {% if block.settings.heading != blank %}
               <h2 class="h2">{{ block.settings.heading | escape }}</h2>
             {% endif %}
-            <div class="timeline__rail">
-              {% for item in block.blocks %}
-                <article class="t-card" {{ item.shopify_attributes }}>
-                  {% if item.settings.year != blank %}
-                    <div class="t-year">{{ item.settings.year }}</div>
-                  {% endif %}
-                  {% if item.settings.title != blank %}
-                    <div class="t-title">{{ item.settings.title }}</div>
-                  {% endif %}
-                  {% if item.settings.text != blank %}
-                    <div class="t-desc">{{ item.settings.text }}</div>
-                  {% endif %}
-                  {% if item.settings.image != blank %}
-                    <div class="t-media">
-                      <img
-                        src="{{ item.settings.image | image_url: width: 700 }}"
-                        alt="{{ item.settings.image.alt | escape }}"
-                        loading="lazy"
-                      >
-                    </div>
-                  {% endif %}
-                </article>
-              {% endfor %}
-            </div>
+            {% if milestones.size > 0 %}
+              <div class="timeline__rail">
+                {% for item in milestones %}
+                  <article class="t-card" {{ item.shopify_attributes }}>
+                    {% if item.settings.year != blank %}
+                      <div class="t-year">{{ item.settings.year }}</div>
+                    {% endif %}
+                    {% if item.settings.title != blank %}
+                      <div class="t-title">{{ item.settings.title }}</div>
+                    {% endif %}
+                    {% if item.settings.text != blank %}
+                      <div class="t-desc">{{ item.settings.text }}</div>
+                    {% endif %}
+                    {% if item.settings.image != blank %}
+                      <div class="t-media">
+                        <img
+                          src="{{ item.settings.image | image_url: width: 700 }}"
+                          alt="{{ item.settings.image.alt | escape }}"
+                          loading="lazy"
+                        >
+                      </div>
+                    {% endif %}
+                  </article>
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
 
         {% when 'commitments' %}
@@ -284,6 +287,7 @@
     {
       "type": "timeline",
       "name": "Timeline",
+      "limit": 1,
       "settings": [
         { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our growth timeline" },
         {
@@ -292,23 +296,21 @@
           "label": "Heading",
           "default": "Over the decades, we’ve expanded steadily while preserving our roots"
         }
-      ],
-      "blocks": [
+      ]
+    },
+    {
+      "type": "timeline_milestone",
+      "name": "Timeline milestone",
+      "settings": [
+        { "type": "text", "id": "year", "label": "Year", "default": "1955" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Our humble beginnings" },
         {
-          "type": "milestone",
-          "name": "Milestone",
-          "settings": [
-            { "type": "text", "id": "year", "label": "Year", "default": "1970" },
-            { "type": "text", "id": "title", "label": "Title", "default": "New storefront" },
-            {
-              "type": "textarea",
-              "id": "text",
-              "label": "Description",
-              "default": "Continuing to serve the same authentic taste with care, tradition and integrity."
-            },
-            { "type": "image_picker", "id": "image", "label": "Image" }
-          ]
-        }
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Velayutha Nadar starts crafting hand-made savouries in Sivakasi, Tamil Nadu."
+        },
+        { "type": "image_picker", "id": "image", "label": "Image" }
       ]
     },
     {
@@ -411,10 +413,11 @@
       "blocks": [
         { "type": "hero" },
         { "type": "story" },
-        {
-          "type": "timeline",
-          "blocks": [{ "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" }]
-        },
+        { "type": "timeline" },
+        { "type": "timeline_milestone" },
+        { "type": "timeline_milestone" },
+        { "type": "timeline_milestone" },
+        { "type": "timeline_milestone" },
         { "type": "commitments" },
         { "type": "trust" }
       ]

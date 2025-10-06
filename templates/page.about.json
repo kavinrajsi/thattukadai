@@ -1,17 +1,110 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
       "type": "page-aboutus",
+      "blocks": {
+        "hero": {
+          "type": "hero",
+          "settings": {
+            "eyebrow": "Authentic crunch, straight from the South!",
+            "heading": "Authentic crunch, straight from the South!",
+            "lead": "Discover hand-crafted traditional snacks like Pakoda, Thattai & Milagu Sev.",
+            "image": null
+          }
+        },
+        "story": {
+          "type": "story",
+          "settings": {
+            "eyebrow": "About us",
+            "heading": "Crafting tradition since 1955",
+            "richtext": "<p>Thattukadai C. Velayutha Nadar Sweets is more than a brand—it’s a story of humble beginnings, lasting values, and a taste generations love. Our journey began in 1955 in Sivakasi, Tamil Nadu. Today, under the guidance of the fourth generation, we continue the legacy with the same authentic recipes, care and integrity.</p>",
+            "image": null
+          }
+        },
+        "timeline": {
+          "type": "timeline",
+          "settings": {
+            "eyebrow": "Our growth timeline",
+            "heading": "Over the decades, we’ve expanded steadily while preserving our roots"
+          }
+        },
+        "milestone-1": {
+          "type": "timeline_milestone",
+          "settings": {
+            "year": "1955",
+            "title": "Our humble beginnings",
+            "text": "Velayutha Nadar starts crafting hand-made savouries in Sivakasi, Tamil Nadu.",
+            "image": null
+          }
+        },
+        "milestone-2": {
+          "type": "timeline_milestone",
+          "settings": {
+            "year": "1970",
+            "title": "New storefront",
+            "text": "Continuing to serve the same authentic taste with care, tradition and integrity.",
+            "image": null
+          }
+        },
+        "milestone-3": {
+          "type": "timeline_milestone",
+          "settings": {
+            "year": "1995",
+            "title": "Expanding the menu",
+            "text": "Introduced signature sweets and savouries inspired by heirloom recipes.",
+            "image": null
+          }
+        },
+        "milestone-4": {
+          "type": "timeline_milestone",
+          "settings": {
+            "year": "2020",
+            "title": "Nationwide delivery",
+            "text": "Launched online orders with temperature-controlled packaging for freshness.",
+            "image": null
+          }
+        },
+        "commitments": {
+          "type": "commitments",
+          "settings": {
+            "eyebrow": "What we stand for",
+            "heading": "At the core of everything we do",
+            "b1": "Authentic recipes passed down through generations.",
+            "b2": "Fresh, high-quality ingredients sourced locally.",
+            "b3": "Strict hygiene practices across kitchens and production.",
+            "b4": "Customer-first service — in-store and online.",
+            "b5": "Every bite should reflect love, tradition and craftsmanship."
+          }
+        },
+        "trust": {
+          "type": "trust",
+          "settings": {
+            "eyebrow": "Why customers choose us",
+            "heading": "Thousands of customers across generations trust us",
+            "p1": "Iconic South Indian pakodas—irresistibly crispy and flavour-packed.",
+            "p2": "Wide selection of traditional sweets, cakes, and snacks.",
+            "p3": "Customised gift boxes for all occasions—from Diwali to weddings.",
+            "p4": "Pan-India delivery and international shipping.",
+            "p5": "Order online or visit any outlet for the same authentic taste.",
+            "p6": "Family-run brand guided by fourth-generation craftsmanship.",
+            "image": null
+          }
+        }
+      },
+      "block_order": [
+        "hero",
+        "story",
+        "timeline",
+        "milestone-1",
+        "milestone-2",
+        "milestone-3",
+        "milestone-4",
+        "commitments",
+        "trust"
+      ],
       "settings": {
+        "bg_accent": "#cfeff3",
+        "brand_color": "#0b8f8f"
       }
     }
   },

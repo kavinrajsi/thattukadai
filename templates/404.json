@@ -1,8 +1,43 @@
 {
   "sections": {
     "main": {
-      "type": "main-page",
-      "settings": {}
+      "type": "main-404",
+      "blocks": {
+        "link-1": {
+          "type": "quick_link",
+          "settings": {
+            "link_label": "Shop bestsellers",
+            "link": "/collections/all"
+          }
+        },
+        "link-2": {
+          "type": "quick_link",
+          "settings": {
+            "link_label": "View latest arrivals",
+            "link": "/collections/new-arrivals"
+          }
+        }
+      },
+      "block_order": [
+        "link-1",
+        "link-2"
+      ],
+      "settings": {
+        "heading": "404: That page has been taken off the menu",
+        "description": "<p>Looks like this dish sold out! Use the search bar or explore the links below to keep browsing.</p>",
+        "show_badge": true,
+        "badge_text": "Oops, wrong table",
+        "enable_search": true,
+        "search_label": "Search our store",
+        "search_placeholder": "Try &quot;spice blends&quot; or &quot;gift set&quot;",
+        "search_cta": "Search",
+        "primary_label": "Back to home",
+        "links_title": "Popular destinations",
+        "background": "#f8fafc",
+        "text_color": "#0f172a",
+        "muted_color": "#475569",
+        "accent_color": "#0b8f8f"
+      }
     }
   },
   "order": [
