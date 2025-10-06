@@ -37,16 +37,81 @@ $(document).ready(function () {
   });
 
   // --- Desktop: Shop (+) button ---
+  function openDesktopMenu() {
+    if ($body.hasClass('active-desktop-menu')) return;
+    $body.addClass('active-desktop-menu');
+    $desktopBtn.attr('aria-expanded', 'true');
+  }
+
+  function closeDesktopMenu() {
+    if (!$body.hasClass('active-desktop-menu')) return;
+    $body.removeClass('active-desktop-menu');
+    $desktopBtn.attr('aria-expanded', 'false');
+    $('.mega__collection-block').removeClass('active');
+    $('.mega__body li').removeClass('is-active');
+  }
+
+  var desktopHoverTimer = null;
+
+  function activateCollection(handle) {
+    var $blocks = $('.mega__collection-block');
+    if (!handle) {
+      $blocks.removeClass('active');
+      return;
+    }
+
+    var $targetBlock = $blocks.filter(function () {
+      return $(this).data('collection-handle') === handle;
+    });
+
+    if (!$targetBlock.length) return;
+
+    $blocks.removeClass('active');
+    $targetBlock.addClass('active');
+  }
+
+  function setActiveMenuItem($link) {
+    var $items = $('.mega__body li');
+    $items.removeClass('is-active');
+    if ($link && $link.length) {
+      $link.closest('li').addClass('is-active');
+    }
+  }
+
+  $desktopBtn.on('mouseenter focus', function () {
+    console.log('🖥️ Desktop button hover/focus');
+    clearTimeout(desktopHoverTimer);
+    openDesktopMenu();
+  });
+
   $desktopBtn.on('click', function (e) {
     console.log('🖥️ Desktop button clicked');
     e.stopPropagation();
 
-    $body.toggleClass('active-desktop-menu');
-    console.log('Desktop menu active?', $body.hasClass('active-desktop-menu'));
+    if ($body.hasClass('active-desktop-menu')) {
+      closeDesktopMenu();
+    } else {
+      openDesktopMenu();
+    }
+  });
 
-    var expanded = $(this).attr('aria-expanded') === 'true';
-    $(this).attr('aria-expanded', String(!expanded));
-    console.log('Desktop aria-expanded:', !expanded);
+  $megaProducts.on('mouseenter', function () {
+    clearTimeout(desktopHoverTimer);
+    openDesktopMenu();
+  });
+
+  $('.header--desktop').on('mouseleave', function () {
+    desktopHoverTimer = setTimeout(function () {
+      closeDesktopMenu();
+    }, 150);
+  });
+
+  $desktopBtn.on('blur', function () {
+    desktopHoverTimer = setTimeout(function () {
+      if (!$megaProducts.is(':hover')) {
+        closeDesktopMenu();
+      }
+    }, 150);
   });
 
   // --- Mobile: main menu button ---
@@ -80,20 +145,27 @@ $(document).ready(function () {
   });
 
   // --- Collection link click (inside mega menu) ---
+  $(document).on('mouseenter focus', '.mega__body a', function () {
+    var $link = $(this);
+    var handle = $link.data('collection-handle');
+    setActiveMenuItem($link);
+    if (handle) {
+      activateCollection(handle);
+    } else {
+      activateCollection(null);
+    }
+  });
+
   $(document).on('click', '.mega__body [data-collection-handle]', function (e) {
     console.log('📦 Collection link clicked');
     e.preventDefault();
     e.stopPropagation();
-
-    var handle = $(this).data('collection-handle');
-    console.log('Collection handle clicked:', handle);
-
-    var $targetBlock = $(".mega__collection-block[data-collection-handle='" + handle + "']");
-
-    $('.mega__collection-block').removeClass('active');
-    $targetBlock.addClass('active');
-    console.log('Activated block for:', handle);
+    var $link = $(this);
+    var handle = $link.data('collection-handle');
+    setActiveMenuItem($link);
+    activateCollection(handle);
   });
+
 
   // --- Click outside anywhere to close/reset ---
   // $(document).on('click', function () {

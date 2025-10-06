@@ -1,4 +1,13 @@
 
+body.active-desktop-menu::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.4);
+	z-index: 30;
+	pointer-events: none;
+}
+
 header {
 	position: sticky;
 	position: fixed;
@@ -225,10 +234,26 @@ header {
 					background: #f6f6f6;
 					display: none;
 					@media (min-width: 768px) {
-						display: inline-block;
+						display: inline-flex;
+						align-items: center;
+						justify-content: space-between;
+					}
+					.header__nav-label {
+						font: var(--font-600);
+						font-size: 14px;
+						font-style: normal;
+						line-height: 16px;
+						color: #2a2a2a;
+					}
+					.header__nav-icon {
+						padding-left: 4px;
 					}
 					&:hover {
 						background-color: #fad75f;
+						.header__nav-icon--plus {
+							transform: rotate(46deg);
+							display: inline-block;
+						}
 					}
 				}
 				.header__link {
@@ -315,19 +340,24 @@ header {
 			.mega__body {
 				display: flex;
 				flex-direction: column;
-				flex: 0 0 220px;
-				width: 220px;
+				flex: 0 0 25%;
+				width: 25%;
 				border-bottom-left-radius: 6px;
 				border-bottom-right-radius: 6px;
 				position: relative;
 				background-color: #ffffff;
-				padding: 20px 0;
+				padding: 20px 20px;
 				height: 100%;
 				height: 528px;
+				// height: calc(100vh - 156px);
 				transform: translateY(-10px);
 				visibility: hidden;
 				will-change: trasform, height, visibility;
 				transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
+
+				@media(min-width: 1768px) {
+					height: 540px;
+				}
 				.active-desktop-menu & {
 					transform: translateY(0px);
 					visibility: visible;
@@ -349,6 +379,9 @@ header {
 						line-height: 24px;
 						color: #2a2a2a;
 						position: relative;
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
 						&:after {
 							content: "";
 							display: flex;
@@ -359,15 +392,19 @@ header {
 							background-repeat: no-repeat;
 							background-image: url("data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"none\" viewBox=\"0 0 20 20\"><path stroke=\"%232A2A2A\" stroke-linecap=\"round\" stroke-width=\"1.5\" d=\"m8 5 5.284 4.624a.5.5 0 0 1 0 .752L8 15\"/></svg>");
 						}
+						&:hover {
+							background: #fad75f;
+							border-radius: 24px;
+						}
 					}
 				}
 
 				.mega__cta {
-					width: calc(100% - 16px - 16px);
+					// width: calc(100% - 16px - 16px);
 					margin-top: 80px;
 					text-align: center;
-					margin: 0 16px;
-					padding: 8px 32px;
+					// margin: 0 16px;
+					padding: 16px 16px;
 					background: #fad75f;
 					border-radius: 24px;
 					font-family: DM Sans;
@@ -379,13 +416,15 @@ header {
 				}
 			}
 			.mega__body--product {
-				width: 100%;
+				flex: 0 0 calc(100% - 25%);
+				width: calc(100% - 25%);
 				.mega__collection-block {
 					display: none;
 					padding: 20px;
 					width: 100%;
-					height: 528px;
 					height: 100%;
+					height: 528px;
+					overflow-y: scroll;
 					align-items: flex-start;
 					flex: 1 0 auto;
 					display: none;
@@ -395,18 +434,23 @@ header {
 						display: flex;
 						flex-direction: column;
 					}
+					@media(min-width: 1768px) {
+						height: 540px;
+					}
 				}
 				.mega__product-list {
 					flex: 1;
 					width: 100%;
 					display: grid;
 					gap: 20px;
-					grid-template-columns: repeat(4, 1fr);
+					grid-template-columns: repeat(5, 1fr);
+					grid-template-columns: repeat(5,minmax(0,1fr));
 					.mega__product-item {
 						background-color: #fff9d8;
 						border-radius: 8px;
 						overflow: hidden;
 						padding: 14px 0 0;
+						height: 208px;
 						a {
 							display: block;
 						}
@@ -423,19 +467,26 @@ header {
 							padding-bottom: 8px;
 						}
 						.mega__product-img {
+							overflow: hidden;
 							border-radius: 8px;
-							width: 110px;
-							margin: 0 auto;
+							// margin: 0 16px 16px;
+							// width: 110px;
+							// height: 180px;
+							width: 100%;
+							height: 100%;
+							height: 180px;
+							object-fit: cover;
+							object-position: center;
 							display: block;
 						}
 					}
 				}
 
 				.mega__collection-button {
-					width: calc(100% - 16px - 16px);
+					// width: calc(100% - 16px - 16px);
 					text-align: center;
-					margin: 20px 16px 0;
-					padding: 8px 32px;
+					margin: 20px auto;
+					padding: 16px 32px;
 					background: #fad75f;
 					border-radius: 24px;
 					font-family: DM Sans;
