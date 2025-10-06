@@ -2029,13 +2029,6 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   color: #2a2a2a;
 }
 
-.site-search {
-  display: none;
-}
-.active-search .site-search {
-  display: block;
-}
-
 .announcement-bars {
   display: flex;
   flex-direction: column;
@@ -2899,6 +2892,8 @@ body.template-product .footer {
 }
 
 .site-search {
+  display: none;
+  z-index: 52;
   position: fixed;
   top: 0;
   width: 100%;
@@ -2906,6 +2901,9 @@ body.template-product .footer {
   padding: 24px 20px;
   background-color: #ffffff;
   overflow-y: auto;
+}
+.active-search .site-search {
+  display: block;
 }
 .site-search form {
   display: flex;

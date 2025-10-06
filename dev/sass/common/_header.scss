@@ -500,10 +500,3 @@ header {
 		}
 	}
 }
-
-.site-search {
-	display: none;
-	.active-search & {
-		display: block;
-	}
-}

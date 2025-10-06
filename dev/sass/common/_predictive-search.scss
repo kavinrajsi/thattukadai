@@ -1,5 +1,7 @@
 
 .site-search {
+	display: none;
+	z-index: 52;
 	position: fixed;
 	top: 0;
 	width: 100%;
@@ -7,6 +9,9 @@
 	padding: 24px 20px;
 	background-color: #ffffff;
 	overflow-y: auto;
+	.active-search & {
+		display: block;
+	}
 
 	form {
 		display: flex;
