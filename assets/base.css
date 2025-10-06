@@ -2082,15 +2082,6 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   /* Neutral/Black2 */
   color: #161a1d;
 }
-.product-feature__wrap .product-feature__subtitle {
-  margin-top: 8px;
-  font-family: "DM Sans";
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
-  color: #6b7280;
-}
-
 .layout__grid-box {
   display: block;
   width: 100%;

@@ -84,49 +84,6 @@
     </div>
   {% endif %}
 </section>
-
-{% assign has_feature_metaobjects = false %}
-{% for idx in (1..6) %}
-  {% assign feature_key = 'feature_' | append: idx %}
-  {% assign feature_meta = section.settings[feature_key] %}
-  {% if feature_meta %}
-    {% assign has_feature_metaobjects = true %}
-    {% break %}
-  {% endif %}
-{% endfor %}
-
-{% if has_feature_metaobjects %}
-  <section class="product-features layout__grid-box">
-    <div class="product-feature__wrap">
-      {% for idx in (1..6) %}
-        {% assign feature_key = 'feature_' | append: idx %}
-        {% assign feature_meta = section.settings[feature_key] %}
-        {% if feature_meta %}
-          <article class="product-feature">
-            {% if feature_meta.icon %}
-              <div class="product-feature__image">
-                <img
-                  src="{{ feature_meta.icon | image_url: width: 120 }}"
-                  alt="{{ feature_meta.title.value | default: feature_meta.handle | escape }}"
-                  loading="lazy"
-                  width="120"
-                  height="120"
-                >
-              </div>
-            {% endif %}
-            {% if feature_meta.title %}
-              <h2 class="product-feature__title">{{ feature_meta.title.value }}</h2>
-            {% endif %}
-            {% if feature_meta.subtitle and feature_meta.subtitle.value != blank %}
-              <p class="product-feature__subtitle">{{ feature_meta.subtitle.value }}</p>
-            {% endif %}
-          </article>
-        {% endif %}
-      {% endfor %}
-    </div>
-  </section>
-{% endif %}
-
 {% schema %}
 {
   "name": "Main product (custom)",
@@ -173,50 +130,6 @@
       "id": "show_description",
       "label": "Show product description",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Product features"
-    },
-    {
-      "type": "paragraph",
-      "content": "Select up to six feature metaobjects with icon and text."
-    },
-    {
-      "type": "metaobject",
-      "id": "feature_1",
-      "label": "Feature 1",
-      "metaobject_type": "product_feature"
-    },
-    {
-      "type": "metaobject",
-      "id": "feature_2",
-      "label": "Feature 2",
-      "metaobject_type": "product_feature"
-    },
-    {
-      "type": "metaobject",
-      "id": "feature_3",
-      "label": "Feature 3",
-      "metaobject_type": "product_feature"
-    },
-    {
-      "type": "metaobject",
-      "id": "feature_4",
-      "label": "Feature 4",
-      "metaobject_type": "product_feature"
-    },
-    {
-      "type": "metaobject",
-      "id": "feature_5",
-      "label": "Feature 5",
-      "metaobject_type": "product_feature"
-    },
-    {
-      "type": "metaobject",
-      "id": "feature_6",
-      "label": "Feature 6",
-      "metaobject_type": "product_feature"
     }
   ],
   "blocks": [
