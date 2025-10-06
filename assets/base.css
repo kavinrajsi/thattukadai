@@ -2082,6 +2082,7 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   /* Neutral/Black2 */
   color: #161a1d;
 }
+
 .layout__grid-box {
   display: block;
   width: 100%;
@@ -3311,15 +3312,14 @@ body.template-product .footer {
   display: none;
   padding-bottom: 24px;
 }
-.template-product .main-product .product__info-col .vp__price-mainWapper {
+.template-product .main-product .product__info-col .vp__price-values {
   display: flex;
   gap: 4px;
 }
 .template-product .main-product .product__info-col .vp__price {
   padding-bottom: 24px;
 }
-.template-product .main-product .product__info-col .vp__price .vp-price-current,
-.template-product .main-product .product__info-col .vp__price .vp__price-main {
+.template-product .main-product .product__info-col .vp__price .price-block__current {
   /* Desktop_H4 */
   font-family: "DM Sans";
   font-style: normal;
@@ -3330,8 +3330,7 @@ body.template-product .footer {
   /* Neutral/Black1 */
   color: #0b090a;
 }
-.template-product .main-product .product__info-col .vp__price s,
-.template-product .main-product .product__info-col .vp__price .vp__price-compare {
+.template-product .main-product .product__info-col .vp__price .price-block__compare {
   /* Desktop_H4 */
   font-family: "DM Sans";
   font-style: normal;
@@ -3354,9 +3353,39 @@ body.template-product .footer {
   /* Neutral/Black1 */
   color: #0b090a;
 }
+.price-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-block__compare {
+  margin-left: 4px;
+}
+
 .template-product .main-product .product__info-col .vp__status {
   display: none;
 }
+
+.related-products {
+  margin: 64px auto;
+  max-width: 1200px;
+  padding: 0 16px;
+}
+.related-products__heading {
+  font-family: "DM Sans";
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.related-products__grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
 .template-product .main-product .product__info-col .vp__group.vp__group--swatch {
   padding-bottom: 24px;
   display: flex;

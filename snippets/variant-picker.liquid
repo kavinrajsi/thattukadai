@@ -15,7 +15,9 @@
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
 <div class="vp__price" aria-live="polite">
-  {%- render 'vp-price', product: product, variant: current_variant -%}
+  <div class="vp__price-values">
+    {%- render 'price', product: product, variant: current_variant -%}
+  </div>
   <div class="vp__price-tax">Tax included</div>
 </div>
 
@@ -173,8 +175,9 @@
     var optionNames = data.options || [];
 
     // Elements to update
-    var priceWrap = document.querySelector('.vp__price'); // outside the .vp container
-    var statusEl  = document.querySelector('.vp__status');
+    var statusEl = root.previousElementSibling;
+    var priceContainer = statusEl ? statusEl.previousElementSibling : null;
+    var priceWrap = priceContainer ? priceContainer.querySelector('.vp__price-values') : null;
 
     // Money formatting - FIXED VERSION
     var moneyFormat = {{ shop.money_format | json }};
@@ -228,19 +231,22 @@
 
     function renderPriceHTML(variant) {
       if (!variant) return '';
-      var html = '<div class="vp__price-mainWapper">';
-       html += '<div class="vp__price-main">' + formatMoney(variant.price) + '</div>';
-      if (variant.compare_at_price && variant.compare_at_price > variant.price) {
-        html += '<div class="vp__price-compare">' + formatMoney(variant.compare_at_price) + '</div>';
+      var compareActive = variant.compare_at_price && variant.compare_at_price > variant.price;
+      var classes = 'price-block';
+      if (compareActive) classes += ' price-block--on-sale';
+
+      var html = '<span class="' + classes + '">';
+      html += '<span class="price-block__current">' + formatMoney(variant.price) + '</span>';
+      if (compareActive) {
+        html += '<s class="price-block__compare">' + formatMoney(variant.compare_at_price) + '</s>';
       }
-      html += '</div>';
-      html += '<div class="vp__price-tax">Tax included</div>';
+      html += '</span>';
       return html;
     }
 
     function applyVariant(variant) {
-      if (priceWrap && variant) {
-        priceWrap.innerHTML = renderPriceHTML(variant);
+      if (priceWrap) {
+        priceWrap.innerHTML = variant ? renderPriceHTML(variant) : '';
       }
 
       if (statusEl) {

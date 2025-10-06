@@ -161,14 +161,13 @@
 				display: none;
 				padding-bottom: 24px;
 			}
-			.vp__price-mainWapper {
+			.vp__price-values {
 				display: flex;
 				gap: 4px;
 			}
 			.vp__price {
 				padding-bottom: 24px;
-				.vp-price-current ,
-				.vp__price-main {
+				.price-block__current {
 					/* Desktop_H4 */
 					font-family: "DM Sans";
 					font-style: normal;
@@ -181,8 +180,7 @@
 					color: #0b090a;
 					// padding-bottom: 8px;
 				}
-				s ,
-				.vp__price-compare {
+				.price-block__compare {
 					/* Desktop_H4 */
 					font-family: "DM Sans";
 					font-style: normal;

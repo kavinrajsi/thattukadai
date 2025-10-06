@@ -1,7 +1,35 @@
-{% if product.compare_at_price_max > product.price %}
-  <span class="price"
-    ><s>{{ product.compare_at_price_min | money }}</s> {{ product.price | money -}}
-  </span>
-{% else %}
-  <span class="price">{{ product.price | money }}</span>
-{% endif %}
+{%- comment -%}
+  Renders a price block for a product or variant.
+  Accepts optional `variant` param; falls back to selected/first available variant.
+{%- endcomment -%}
+
+{%- assign price_subject = variant -%}
+{%- if price_subject == blank and product != blank -%}
+  {%- assign price_subject = product.selected_or_first_available_variant -%}
+{%- endif -%}
+
+{%- assign price_value = nil -%}
+{%- assign compare_value = nil -%}
+
+{%- if price_subject -%}
+  {%- assign price_value = price_subject.price -%}
+  {%- assign compare_value = price_subject.compare_at_price -%}
+{%- elsif product -%}
+  {%- assign price_value = product.price -%}
+  {%- assign compare_value = product.compare_at_price_max -%}
+{%- endif -%}
+
+{%- assign has_compare = compare_value and compare_value > price_value -%}
+{%- assign price_classes = 'price-block' -%}
+{%- if has_compare -%}
+  {%- assign price_classes = price_classes | append: ' price-block--on-sale' -%}
+{%- endif -%}
+
+<span class="{{ price_classes }}">
+  {%- if price_value -%}
+    <span class="price-block__current">{{ price_value | money }}</span>
+  {%- endif -%}
+  {%- if has_compare -%}
+    <s class="price-block__compare">{{ compare_value | money }}</s>
+  {%- endif -%}
+</span>

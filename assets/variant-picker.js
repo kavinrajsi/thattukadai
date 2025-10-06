@@ -59,19 +59,29 @@
 
   function renderPriceHTML(v) {
     if (!v) return '';
-    var now = formatMoney(v.price);
-    var cmp = v.compare_at_price;
-    var cmpHtml = cmp && cmp > v.price ? '<s class="vp-price-compare">' + formatMoney(cmp) + '</s>' : '';
-    return '<span class="vp-price-current">' + now + '</span>' + cmpHtml;
+    var cmpActive = v.compare_at_price && v.compare_at_price > v.price;
+    var classes = 'price-block';
+    if (cmpActive) classes += ' price-block--on-sale';
+
+    var html = '<span class="' + classes + '">';
+    html += '<span class="price-block__current">' + formatMoney(v.price) + '</span>';
+    if (cmpActive) {
+      html += '<s class="price-block__compare">' + formatMoney(v.compare_at_price) + '</s>';
+    }
+    html += '</span>';
+    return html;
   }
 
   function updatePrice($vp, v) {
-    var $wrap = $vp.find('.vp-price').first();
+    var $wrap = $vp.prevAll('.vp__price').first().find('.vp__price-values').first();
     if ($wrap.length) $wrap.html(renderPriceHTML(v));
   }
 
   function updateStatus($vp, text) {
-    var $s = $vp.find('.vp-status').first();
+    var $s = $vp.prevAll('.vp__status').first();
+    if (!$s.length) {
+      $s = $vp.find('.vp-status').first();
+    }
     if ($s.length) $s.text(text || '');
   }
 
