@@ -2242,6 +2242,7 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   display: none;
 }
 .product-card .product-card__body {
+  z-index: 2;
   background-color: #ffffff;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -2291,7 +2292,33 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   }
 }
 .product-card .product-card__cta {
-  display: none;
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -100%;
+  transform: translateY(-100%);
+  margin: 0 12px;
+  padding: 8px 32px;
+  /* Primary/yellow2 */
+  background: #f6ca30;
+  border-radius: 24px;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  color: #2a2a2a;
+  visibility: hidden;
+  transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
+  will-change: bottom, transform, visibility;
+}
+.product-card:hover .product-card__cta {
+  transform: translateY(0px);
+  visibility: visible;
+  bottom: 60px;
+  transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
+  will-change: bottom, transform, visibility;
 }
 
 .pagination {
