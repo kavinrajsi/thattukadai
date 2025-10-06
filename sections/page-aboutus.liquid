@@ -1,0 +1,424 @@
+{% comment %}
+  About Us — Mobile-first section
+  - OS 2.0 dynamic, fully editable
+  - Blocks: Hero, Story, Timeline, Commitments, Trust, Image Feature
+  - Add multiple sections to build the full page
+{% endcomment %}
+
+<section class="about about--{{ section.id }}">
+  <style>
+    .about--{{ section.id }} {
+      --bg-accent: {{ section.settings.bg_accent | default: '#d6f7ff' }};
+      --text: #0f172a;
+      --muted: #475569;
+      --card: #ffffff;
+      --brand: {{ section.settings.brand_color | default: '#0b8f8f' }};
+      --radius: 16px;
+      --shadow: 0 8px 28px rgba(2, 8, 23, .08);
+      color: var(--text);
+      font-family: inherit;
+    }
+    .about--{{ section.id }} .wrap{max-width:1100px;margin-inline:auto;padding:clamp(20px,3.5vw,40px) 16px;}
+    .about-hero{
+      background: var(--bg-accent);
+      border-radius: var(--radius);
+      overflow: clip;
+      display:grid; gap:16px;
+      box-shadow: var(--shadow);
+    }
+    .about-hero__media{order:2}
+    .about-hero__media img{width:100%; height:auto; display:block}
+    .about-hero__copy{order:1; padding:20px 16px}
+    .eyebrow{font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:var(--brand); font-weight:700}
+    .h1{font-size:clamp(24px,5.4vw,44px); line-height:1.1; margin:.4rem 0 0.75rem}
+    .lead{color:var(--muted); font-size:1rem}
+    /* Story */
+    .story{display:grid; gap:18px; margin-top:28px}
+    .story__media img{width:100%; border-radius:var(--radius); box-shadow: var(--shadow)}
+    .prose{color:var(--muted); line-height:1.7; font-size:0.95rem}
+    /* Timeline */
+    .timeline{margin-top:36px}
+    .timeline__rail{display:grid; gap:14px}
+    .t-card{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px}
+    .t-year{font-weight:800; font-size:0.9rem; color:var(--brand); letter-spacing:.08em}
+    .t-title{font-weight:700; margin:.3rem 0 .35rem}
+    .t-desc{color:var(--muted); font-size:.95rem}
+    .t-media{margin-top:12px}
+    .t-media img{width:100%; height:auto; border-radius:12px}
+    /* Commitments */
+    .commit{margin-top:36px; background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px}
+    .commit ul{padding-left:1.2rem; margin:0}
+    .commit li{margin:.5rem 0; color:var(--muted)}
+    /* Trust */
+    .trust{margin-top:36px; display:grid; gap:16px}
+    .trust__points{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px}
+    .trust__points li{margin:.45rem 0; color:var(--muted)}
+    /* Image feature */
+    .feature{margin-top:22px}
+    .feature img{width:100%; height:auto; border-radius:var(--radius); box-shadow:var(--shadow)}
+    /* Headings */
+    .h2{font-size:clamp(20px,4.6vw,30px); margin:0 0 .5rem; line-height:1.2}
+    /* Desktop */
+    @media (min-width: 900px){
+      .about-hero{grid-template-columns: 1.1fr 1fr; align-items:center; padding:0}
+      .about-hero__copy{padding:40px 40px 40px 48px}
+      .about-hero__media{order:2}
+      .story{grid-template-columns: 1fr 1.1fr; gap:28px}
+      .timeline__rail{grid-template-columns: repeat(4, 1fr); gap:16px}
+      .trust{grid-template-columns: 1.1fr 1fr; align-items:center}
+    }
+  </style>
+
+  <div class="wrap">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'hero' %}
+          <div class="about-hero" {{ block.shopify_attributes }}>
+            <div class="about-hero__copy">
+              {% if block.settings.eyebrow != blank %}
+                <div class="eyebrow">{{ block.settings.eyebrow }}</div>
+              {% endif %}
+              <h1 class="h1">{{ block.settings.heading | escape }}</h1>
+              {% if block.settings.lead %}
+                <p class="lead">{{ block.settings.lead }}</p>
+              {% endif %}
+            </div>
+            {% if block.settings.image != blank %}
+              <div class="about-hero__media">
+                <img
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                  sizes="(max-width: 899px) 100vw, 50vw"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+          </div>
+
+        {% when 'story' %}
+          <div class="story" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <div class="story__media">
+                <img
+                  src="{{ block.settings.image | image_url: width: 1000 }}"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+            <div class="story__copy">
+              {% if block.settings.eyebrow != blank %}
+                <div class="eyebrow">{{ block.settings.eyebrow }}</div>
+              {% endif %}
+              <h2 class="h2">{{ block.settings.heading | escape }}</h2>
+              <div class="prose">{{ block.settings.richtext }}</div>
+            </div>
+          </div>
+
+        {% when 'timeline' %}
+          <div class="timeline" {{ block.shopify_attributes }}>
+            {% if block.settings.eyebrow != blank %}
+              <div class="eyebrow">{{ block.settings.eyebrow }}</div>
+            {% endif %}
+            {% if block.settings.heading != blank %}
+              <h2 class="h2">{{ block.settings.heading | escape }}</h2>
+            {% endif %}
+            <div class="timeline__rail">
+              {% for item in block.blocks %}
+                <article class="t-card" {{ item.shopify_attributes }}>
+                  {% if item.settings.year != blank %}
+                    <div class="t-year">{{ item.settings.year }}</div>
+                  {% endif %}
+                  {% if item.settings.title != blank %}
+                    <div class="t-title">{{ item.settings.title }}</div>
+                  {% endif %}
+                  {% if item.settings.text != blank %}
+                    <div class="t-desc">{{ item.settings.text }}</div>
+                  {% endif %}
+                  {% if item.settings.image != blank %}
+                    <div class="t-media">
+                      <img
+                        src="{{ item.settings.image | image_url: width: 700 }}"
+                        alt="{{ item.settings.image.alt | escape }}"
+                        loading="lazy"
+                      >
+                    </div>
+                  {% endif %}
+                </article>
+              {% endfor %}
+            </div>
+          </div>
+
+        {% when 'commitments' %}
+          <div class="commit" {{ block.shopify_attributes }}>
+            {% if block.settings.eyebrow != blank %}
+              <div class="eyebrow">{{ block.settings.eyebrow }}</div>
+            {% endif %}
+            <h2 class="h2">{{ block.settings.heading | escape }}</h2>
+            <ul>
+              {% if block.settings.b1 != blank %}
+                <li>{{ block.settings.b1 }}</li>
+              {% endif %}
+              {% if block.settings.b2 != blank %}
+                <li>{{ block.settings.b2 }}</li>
+              {% endif %}
+              {% if block.settings.b3 != blank %}
+                <li>{{ block.settings.b3 }}</li>
+              {% endif %}
+              {% if block.settings.b4 != blank %}
+                <li>{{ block.settings.b4 }}</li>
+              {% endif %}
+              {% if block.settings.b5 != blank %}
+                <li>{{ block.settings.b5 }}</li>
+              {% endif %}
+            </ul>
+          </div>
+
+        {% when 'trust' %}
+          <div class="trust" {{ block.shopify_attributes }}>
+            <div>
+              {% if block.settings.eyebrow != blank %}
+                <div class="eyebrow">{{ block.settings.eyebrow }}</div>
+              {% endif %}
+              <h2 class="h2">{{ block.settings.heading | escape }}</h2>
+              <div class="trust__points">
+                <ul>
+                  {% if block.settings.p1 != blank %}
+                    <li>{{ block.settings.p1 }}</li>
+                  {% endif %}
+                  {% if block.settings.p2 != blank %}
+                    <li>{{ block.settings.p2 }}</li>
+                  {% endif %}
+                  {% if block.settings.p3 != blank %}
+                    <li>{{ block.settings.p3 }}</li>
+                  {% endif %}
+                  {% if block.settings.p4 != blank %}
+                    <li>{{ block.settings.p4 }}</li>
+                  {% endif %}
+                  {% if block.settings.p5 != blank %}
+                    <li>{{ block.settings.p5 }}</li>
+                  {% endif %}
+                  {% if block.settings.p6 != blank %}
+                    <li>{{ block.settings.p6 }}</li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+            {% if block.settings.image != blank %}
+              <div class="feature">
+                <img
+                  src="{{ block.settings.image | image_url: width: 1100 }}"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  loading="lazy"
+                >
+              </div>
+            {% endif %}
+          </div>
+
+        {% when 'image_feature' %}
+          <div class="feature" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | image_url: width: 1400 }}"
+                alt="{{ block.settings.image.alt | escape }}"
+                loading="lazy"
+              >
+            {% endif %}
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About — Us",
+  "tag": "section",
+  "settings": [
+    { "type": "color", "id": "bg_accent", "label": "Accent background", "default": "#CFEFF3" },
+    { "type": "color", "id": "brand_color", "label": "Brand color", "default": "#0B8F8F" }
+  ],
+  "blocks": [
+    {
+      "type": "hero",
+      "name": "Hero",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "Authentic crunch, straight from the South!"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Authentic crunch, straight from the South!"
+        },
+        {
+          "type": "textarea",
+          "id": "lead",
+          "label": "Lead",
+          "default": "Discover hand-crafted traditional snacks like Pakoda, Thattai & Milagu Sev."
+        },
+        { "type": "image_picker", "id": "image", "label": "Right image" }
+      ]
+    },
+    {
+      "type": "story",
+      "name": "Our Story",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "About us" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Crafting tradition since 1955" },
+        {
+          "type": "richtext",
+          "id": "richtext",
+          "label": "Text",
+          "default": "<p>Thattukadai C. Velayutha Nadar Sweets is more than a brand—it’s a story of humble beginnings, lasting values, and a taste generations love. Our journey began in 1955 in Sivakasi, Tamil Nadu. Today, under the guidance of the fourth generation, we continue the legacy with the same authentic recipes, care and integrity.</p>"
+        },
+        { "type": "image_picker", "id": "image", "label": "Side image" }
+      ]
+    },
+    {
+      "type": "timeline",
+      "name": "Timeline",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our growth timeline" },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Over the decades, we’ve expanded steadily while preserving our roots"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "milestone",
+          "name": "Milestone",
+          "settings": [
+            { "type": "text", "id": "year", "label": "Year", "default": "1970" },
+            { "type": "text", "id": "title", "label": "Title", "default": "New storefront" },
+            {
+              "type": "textarea",
+              "id": "text",
+              "label": "Description",
+              "default": "Continuing to serve the same authentic taste with care, tradition and integrity."
+            },
+            { "type": "image_picker", "id": "image", "label": "Image" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "commitments",
+      "name": "Commitments",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What we stand for" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "At the core of everything we do" },
+        {
+          "type": "textarea",
+          "id": "b1",
+          "label": "Point 1",
+          "default": "Authentic recipes passed down through generations."
+        },
+        {
+          "type": "textarea",
+          "id": "b2",
+          "label": "Point 2",
+          "default": "Fresh, high-quality ingredients sourced locally."
+        },
+        {
+          "type": "textarea",
+          "id": "b3",
+          "label": "Point 3",
+          "default": "Strict hygiene practices across kitchens and production."
+        },
+        {
+          "type": "textarea",
+          "id": "b4",
+          "label": "Point 4",
+          "default": "Customer-first service — in-store and online."
+        },
+        {
+          "type": "textarea",
+          "id": "b5",
+          "label": "Point 5",
+          "default": "Every bite should reflect love, tradition and craftsmanship."
+        }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Why customers choose us",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why customers choose us" },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Thousands of customers across generations trust us"
+        },
+        {
+          "type": "textarea",
+          "id": "p1",
+          "label": "Point 1",
+          "default": "Iconic South Indian pakodas—irresistibly crispy and flavour-packed."
+        },
+        {
+          "type": "textarea",
+          "id": "p2",
+          "label": "Point 2",
+          "default": "Wide selection of traditional sweets, cakes, and snacks."
+        },
+        {
+          "type": "textarea",
+          "id": "p3",
+          "label": "Point 3",
+          "default": "Customised gift boxes for all occasions—from Diwali to weddings."
+        },
+        {
+          "type": "textarea",
+          "id": "p4",
+          "label": "Point 4",
+          "default": "Pan-India delivery and international shipping."
+        },
+        {
+          "type": "textarea",
+          "id": "p5",
+          "label": "Point 5",
+          "default": "Order online or visit any outlet for the same authentic taste."
+        },
+        {
+          "type": "textarea",
+          "id": "p6",
+          "label": "Point 6",
+          "default": "Family-run brand guided by fourth-generation craftsmanship."
+        },
+        { "type": "image_picker", "id": "image", "label": "Right image" }
+      ]
+    },
+    {
+      "type": "image_feature",
+      "name": "Image feature",
+      "settings": [{ "type": "image_picker", "id": "image", "label": "Image" }]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About — Us",
+      "blocks": [
+        { "type": "hero" },
+        { "type": "story" },
+        {
+          "type": "timeline",
+          "blocks": [{ "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" }, { "type": "milestone" }]
+        },
+        { "type": "commitments" },
+        { "type": "trust" }
+      ]
+    }
+  ]
+}
+{% endschema %}
