@@ -1836,7 +1836,7 @@ header .header--desktop .header--desktop__container .header__logo svg {
 header .header--desktop .mega__products {
   padding: 0 0 20px;
   margin: -20px 24px 20px;
-  z-index: 1;
+  z-index: -1;
   position: relative;
   display: none;
 }
@@ -1848,7 +1848,6 @@ header .header--desktop .mega__products {
 header .header--desktop .mega__products .mega__body {
   display: flex;
   flex-direction: column;
-  height: 100%;
   flex: 0 0 220px;
   width: 220px;
   border-bottom-left-radius: 6px;
@@ -1856,7 +1855,8 @@ header .header--desktop .mega__products .mega__body {
   position: relative;
   background-color: #ffffff;
   padding: 20px 0;
-  height: 448px;
+  height: 528px;
+  height: 100%;
   transform: translateY(-10px);
   visibility: hidden;
   will-change: trasform, height, visibility;
@@ -1917,8 +1917,8 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   display: none;
   padding: 20px;
   width: 100%;
+  height: 528px;
   height: 100%;
-  height: 448px;
   align-items: flex-start;
   flex: 1 0 auto;
   display: none;
