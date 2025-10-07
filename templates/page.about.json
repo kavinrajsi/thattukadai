@@ -66,11 +66,57 @@
         "cta_label": "",
         "cta_link": ""
       }
+    },
+    "image_text_wGXUMJ": {
+      "type": "image-text",
+      "name": "Image and content",
+      "settings": {
+        "width": "narrow",
+        "position": "middle",
+        "placement": "image-first",
+        "placement_mobile": "image-first",
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "desktop_image": "shopify://shop_images/about-legacy.png",
+        "mobile_image": "shopify://shop_images/about-legacy.png",
+        "image_alt": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop",
+        "eyebrow": "What We Stand For",
+        "title": "At the core of everything we do is our commitment to:",
+        "body_text": "<ul><li>Authentic recipes passed down through generations</li><li>Fresh and high-quality ingredients sourced locally</li><li>Strict hygiene practices across our kitchens and production units</li><li>Customer-first service — in-store and online</li></ul><p>We believe every bite should reflect love, tradition, and craftsmanship.</p>",
+        "cta_label": "",
+        "cta_link": ""
+      }
+    },
+    "image_text_x8c6Wx": {
+      "type": "image-text",
+      "name": "Image and content",
+      "settings": {
+        "width": "narrow",
+        "position": "middle",
+        "placement": "image-second",
+        "placement_mobile": "image-first",
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "desktop_image": "shopify://shop_images/about-legacy.png",
+        "mobile_image": "shopify://shop_images/about-legacy.png",
+        "image_alt": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop",
+        "eyebrow": "Why Customers Choose Us",
+        "title": "Thousands of customers across generations trust us because:",
+        "body_text": "<ul><li>Our iconic South Indian pakkodas are irresistibly crispy and flavour-packed</li><li>We offer a wide selection of traditional sweets, cakes, and snacks </li><li>Our customized gift boxes are perfect for all occasions — from Diwali to weddings</li><li>You can order online for home delivery across India</li><li>We offer pan-India and international shipping</li></ul><p>Whether you’re celebrating a festival or simply craving something nostalgic  we’re here to serve you.</p>",
+        "cta_label": "",
+        "cta_link": ""
+      }
     }
   },
   "order": [
     "main",
     "homepage_slider_jVAXgd",
-    "image_text_qUt3z3"
+    "image_text_qUt3z3",
+    "image_text_wGXUMJ",
+    "image_text_x8c6Wx"
   ]
 }
