@@ -15,20 +15,8 @@
         "slide_wm3cwY": {
           "type": "slide",
           "settings": {
-            "image_desktop": "shopify://shop_images/banner-1-desktop.png",
-            "image_tablet": "shopify://shop_images/banner-1-desktop.png",
-            "image_mobile": "shopify://shop_images/banner-1-mobile.png",
-            "image_alt": "",
-            "image_link": "",
-            "image_position": "center center"
-          }
-        },
-        "slide_zGrLLK": {
-          "type": "slide",
-          "settings": {
-            "image_desktop": "shopify://shop_images/banner-2-desktop.png",
-            "image_tablet": "shopify://shop_images/banner-2-desktop.png",
-            "image_mobile": "shopify://shop_images/banner-1-mobile.png",
+            "image_desktop": "shopify://shop_images/vsthattukadai-home-banner.webp",
+            "image_tablet": "shopify://shop_images/vsthattukadai-home-banner.webp",
             "image_alt": "",
             "image_link": "",
             "image_position": "center center"
@@ -36,8 +24,7 @@
         }
       },
       "block_order": [
-        "slide_wm3cwY",
-        "slide_zGrLLK"
+        "slide_wm3cwY"
       ],
       "settings": {
         "autoplay": true,
