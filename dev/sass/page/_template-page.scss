@@ -358,3 +358,16 @@
 		height: auto;
 	}
 }
+
+
+.template-page.about-us {
+	.image-content {
+		padding-top: var(--pt-m);
+		padding-bottom: var(--pb-m);
+
+		@media(min-width: 768px) {
+			padding-top: var(--pt);
+			padding-bottom: var(-pb);
+		}
+	}
+}

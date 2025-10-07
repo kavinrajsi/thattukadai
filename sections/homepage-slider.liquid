@@ -125,12 +125,14 @@
     var sliderEl = document.getElementById('homepage-slider-{{ section.id }}');
     if (!sliderEl || typeof Flickity === 'undefined') return;
 
+    var hasMultipleSlides = sliderEl.querySelectorAll('.carousel-cell').length > 1;
+
     var flkty = new Flickity(sliderEl, {
       cellAlign: 'center',
       contain: true,
       wrapAround: {{ section.settings.loop | json }},
-      prevNextButtons: {{ section.settings.nav | json }},
-      pageDots: {{ section.settings.dots | json }},
+      prevNextButtons: hasMultipleSlides ? {{ section.settings.nav | json }} : false,
+      pageDots: hasMultipleSlides ? {{ section.settings.dots | json }} : false,
       autoPlay: {{ section.settings.autoplay | json }} ? {{ section.settings.autoplay_timeout | times: 1000 }} : false,
       pauseAutoPlayOnHover: {{ section.settings.pause_on_hover | json }},
       imagesLoaded: true,
