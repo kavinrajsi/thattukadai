@@ -158,8 +158,47 @@
             "year": "1994",
             "image": "shopify://shop_images/1994.png",
             "image_alt": "1994",
-            "title": "1994",
+            "title": "2nd Outlet Opened",
             "text": "",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "entry_geczHK": {
+          "type": "entry",
+          "name": "2000",
+          "settings": {
+            "year": "2000",
+            "image": "shopify://shop_images/2000.png",
+            "image_alt": "2000",
+            "title": "3rd Outlet Opened",
+            "text": "",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "entry_qBJMWY": {
+          "type": "entry",
+          "name": "2011",
+          "settings": {
+            "year": "2011",
+            "image": "shopify://shop_images/2011.png",
+            "image_alt": "2011",
+            "title": "4th Outlet Opened",
+            "text": "",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "entry_9DFCFV": {
+          "type": "entry",
+          "name": "2013",
+          "settings": {
+            "year": "2013",
+            "image": "shopify://shop_images/2013.png",
+            "image_alt": "2013",
+            "title": "5th Outlet Opened",
+            "text": "<p>Short description.</p>",
             "link_url": "",
             "link_text": ""
           }
@@ -167,7 +206,10 @@
       },
       "block_order": [
         "entry_4eghnP",
-        "entry_RkRV3D"
+        "entry_RkRV3D",
+        "entry_geczHK",
+        "entry_qBJMWY",
+        "entry_9DFCFV"
       ],
       "name": "Timeline Carousel",
       "settings": {
