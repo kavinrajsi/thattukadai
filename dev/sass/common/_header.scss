@@ -35,6 +35,7 @@ header {
 		left: 0;
 		right: 0;
 		height: 100vh;
+		z-index: 52;
 		transform: translateX(-101%);
 		visibility: hidden;
 		will-change: trasform, height, visibility;

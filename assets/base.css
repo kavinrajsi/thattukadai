@@ -1676,6 +1676,7 @@ header .header--mobile {
   left: 0;
   right: 0;
   height: 100vh;
+  z-index: 52;
   transform: translateX(-101%);
   visibility: hidden;
   will-change: trasform, height, visibility;
@@ -2444,12 +2445,14 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
   will-change: bottom, transform, visibility;
 }
-.product-card:hover .product-card__cta {
-  transform: translateY(0px);
-  visibility: visible;
-  bottom: 60px;
-  transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
-  will-change: bottom, transform, visibility;
+@media (min-with: 768px) and (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-card__cta {
+    transform: translateY(0px);
+    visibility: visible;
+    bottom: 60px;
+    transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
+    will-change: bottom, transform, visibility;
+  }
 }
 
 .pagination {
