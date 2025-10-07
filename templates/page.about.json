@@ -134,6 +134,49 @@
         "btn_bg": "#FFFFFF",
         "btn_text": "#111111"
       }
+    },
+    "timeline_B4VpC6": {
+      "type": "timeline",
+      "blocks": {
+        "entry_4eghnP": {
+          "type": "entry",
+          "name": "1970",
+          "settings": {
+            "year": "1970",
+            "image": "shopify://shop_images/1970.png",
+            "image_alt": "",
+            "title": "1st Outlet Opened",
+            "text": "",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "entry_RkRV3D": {
+          "type": "entry",
+          "name": "1994",
+          "settings": {
+            "year": "1994",
+            "image": "shopify://shop_images/1994.png",
+            "image_alt": "1994",
+            "title": "1994",
+            "text": "",
+            "link_url": "",
+            "link_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "entry_4eghnP",
+        "entry_RkRV3D"
+      ],
+      "name": "Timeline Carousel",
+      "settings": {
+        "heading": "Our Story",
+        "aria_label": "Product history timeline",
+        "cards_per_view": 1,
+        "slide_padding": "1rem",
+        "image_first": true
+      }
     }
   },
   "order": [
@@ -142,6 +185,7 @@
     "image_text_qUt3z3",
     "image_text_wGXUMJ",
     "image_text_x8c6Wx",
-    "promo_cta_wWC8DW"
+    "promo_cta_wWC8DW",
+    "timeline_B4VpC6"
   ]
 }
