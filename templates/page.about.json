@@ -19,7 +19,9 @@
         "slide_xiwTiQ": {
           "type": "slide",
           "settings": {
-            "image_desktop": "shopify://shop_images/thattukadai-banner-about.png",
+            "image_desktop": "shopify://shop_images/vsthattukadai-banner-about.png",
+            "image_tablet": "shopify://shop_images/vsthattukadai-banner-about.png",
+            "image_mobile": "shopify://shop_images/vsthattukadai-banner-about.png",
             "image_alt": "",
             "image_link": "",
             "image_position": "center center"
@@ -39,10 +41,10 @@
         "pause_on_hover": true,
         "height_mode": "auto",
         "fixed_height": 400,
-        "divider_color": "#F6F6F6",
+        "divider_color": "#f6f6f6",
         "nav_color": "#333333",
-        "nav_bg_color": "#FFFFFF",
-        "dots_color": "#FFFFFF"
+        "nav_bg_color": "#ffffff",
+        "dots_color": "#ffffff"
       }
     },
     "image_text_qUt3z3": {
