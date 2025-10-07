@@ -4176,33 +4176,70 @@ body.template-product .footer {
     text-align: center;
   }
 }
-.template-cart .cart-recs .cart-recs__loading {
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-  /* or 114% */
-  /* Neutral/Black1 */
-  color: #2a2a2a;
-}
-.template-cart .cart-recs .cart-recs__list-grid {
+.template-cart .cart-recs .cart-recs__list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
-@media (min-width: 768px) {
-  .template-cart .cart-recs .cart-recs__list-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.template-cart .cart-recs .product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
-@media (min-width: 992px) {
-  .template-cart .cart-recs .cart-recs__list-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+.template-cart .cart-recs .product-card .product-card__body {
+  margin-top: 16px;
+}
+.template-cart .cart-recs .product-card .product-card__cta {
+  margin-top: 16px;
+}
+.template-cart .cart-recs .product-card--skeleton {
+  pointer-events: none;
+}
+.template-cart .cart-recs .cart-recs__loading .cart-recs__skeleton-list {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.template-cart .cart-recs .cart-recs__loading .product-card__media {
+  height: 200px;
+}
+.template-cart .cart-recs .cart-recs__loading .skeleton-box {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #f6f6f6 37%, #f0f0f0 63%);
+  background-size: 400% 100%;
+  animation: cart-recs-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+.template-cart .cart-recs .cart-recs__loading .skeleton-box--media {
+  height: 100%;
+  border-radius: 16px;
+}
+.template-cart .cart-recs .cart-recs__loading .skeleton-box--title {
+  height: 18px;
+  margin-top: 16px;
+  border-radius: 6px;
+}
+.template-cart .cart-recs .cart-recs__loading .skeleton-box--price {
+  height: 14px;
+  margin-top: 10px;
+  width: 60%;
+  border-radius: 6px;
+}
+.template-cart .cart-recs .cart-recs__loading .skeleton-box--cta {
+  height: 40px;
+  margin-top: 20px;
+  border-radius: 999px;
 }
 
+@keyframes cart-recs-skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
 .template-search main {
   padding-top: 190px;
 }

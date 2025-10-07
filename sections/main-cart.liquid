@@ -289,8 +289,23 @@
       {% if first_cart_item %}
         <div class="cart-recs" data-cart-page-recs data-product-id="{{ first_cart_item.product_id }}">
           <h2 class="cart-recs__title">{{ section.settings.recommendations_heading }}</h2>
-          <div class="cart-recs__list-grid" data-cart-recs-list>
-            <div class="cart-recs__loading">Loading recommendations…</div>
+          <div class="cart-recs__list" data-cart-recs-list>
+            <div class="cart-recs__loading" aria-hidden="true">
+              <div class="cart-recs__skeleton-list">
+                {% for i in (1..4) %}
+                  <div class="product-card product-card--skeleton">
+                    <div class="product-card__media">
+                      <div class="skeleton-box skeleton-box--media"></div>
+                    </div>
+                    <div class="product-card__body">
+                      <div class="skeleton-box skeleton-box--title"></div>
+                      <div class="skeleton-box skeleton-box--price"></div>
+                    </div>
+                    <div class="skeleton-box skeleton-box--cta"></div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
           </div>
         </div>
       {% endif %}
@@ -400,7 +415,7 @@
                 product.variants.length === 1 &&
                 product.variants[0] &&
                 product.variants[0].available
-                  ? 'Add to cart'
+                  ? 'Select options'
                   : 'Select options';
               const ctaButton = handle
                 ? '<button class="product-card__cta" type="button" data-product-handle="' +

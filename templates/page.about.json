@@ -31,7 +31,7 @@
       "block_order": [
         "slide_xiwTiQ"
       ],
-      "name": "Home Page Slider",
+      "name": "Slider",
       "settings": {
         "autoplay": true,
         "autoplay_timeout": 5,
@@ -108,7 +108,7 @@
         "image_alt": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop",
         "eyebrow": "Why Customers Choose Us",
         "title": "Thousands of customers across generations trust us because:",
-        "body_text": "<ul><li>Our iconic South Indian pakkodas are irresistibly crispy and flavour-packed</li><li>We offer a wide selection of traditional sweets, cakes, and snacks </li><li>Our customized gift boxes are perfect for all occasions — from Diwali to weddings</li><li>You can order online for home delivery across India</li><li>We offer pan-India and international shipping</li></ul><p>Whether you’re celebrating a festival or simply craving something nostalgic  we’re here to serve you.</p>",
+        "body_text": "<ul><li>Our iconic South Indian pakkodas are irresistibly crispy and flavour-packed</li><li>We offer a wide selection of traditional sweets, cakes, and snacks</li><li>Our customized gift boxes are perfect for all occasions — from Diwali to weddings</li><li>You can order online for home delivery across India</li><li>We offer pan-India and international shipping</li></ul><p>Whether you’re celebrating a festival or simply craving something nostalgic  we’re here to serve you.</p>",
         "cta_label": "",
         "cta_link": ""
       }
