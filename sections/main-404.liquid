@@ -1,155 +1,4 @@
 <section class="not-found not-found--{{ section.id }}">
-  <style>
-    .not-found--{{ section.id }} {
-      --nf-bg: {{ section.settings.background | default: '#f8fafc' }};
-      --nf-text: {{ section.settings.text_color | default: '#0f172a' }};
-      --nf-muted: {{ section.settings.muted_color | default: '#475569' }};
-      --nf-accent: {{ section.settings.accent_color | default: '#0b8f8f' }};
-      --nf-radius: 20px;
-      background: var(--nf-bg);
-      color: var(--nf-text);
-      padding: clamp(64px, 12vw, 140px) 16px;
-    }
-    .not-found--{{ section.id }} .not-found__wrap {
-      max-width: 640px;
-      margin-inline: auto;
-      text-align: center;
-      display: grid;
-      gap: 24px;
-    }
-    .not-found--{{ section.id }} .not-found__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--nf-accent) 12%, white 88%);
-      color: var(--nf-accent);
-      font-weight: 600;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      justify-self: center;
-    }
-    .not-found--{{ section.id }} .not-found__heading {
-      font-size: clamp(38px, 6vw, 56px);
-      line-height: 1.05;
-      margin: 0;
-    }
-    .not-found--{{ section.id }} .not-found__copy {
-      font-size: 1.05rem;
-      color: var(--nf-muted);
-      line-height: 1.7;
-    }
-    .not-found--{{ section.id }} .not-found__actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-    }
-    .not-found--{{ section.id }} .not-found__button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 24px;
-      border-radius: 999px;
-      font-weight: 600;
-      border: 2px solid transparent;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-      text-decoration: none;
-    }
-    .not-found--{{ section.id }} .not-found__button--primary {
-      background: var(--nf-accent);
-      color: #fff;
-      box-shadow: 0 8px 20px rgba(11, 143, 143, 0.18);
-    }
-    .not-found--{{ section.id }} .not-found__button--primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(11, 143, 143, 0.24);
-    }
-    .not-found--{{ section.id }} .not-found__button--ghost {
-      background: transparent;
-      color: var(--nf-accent);
-      border-color: color-mix(in srgb, var(--nf-accent) 30%, transparent 70%);
-    }
-    .not-found--{{ section.id }} .not-found__button--ghost:hover {
-      transform: translateY(-2px);
-    }
-    .not-found--{{ section.id }} .not-found__search {
-      display: grid;
-      gap: 10px;
-      text-align: left;
-      background: color-mix(in srgb, #fff 92%, var(--nf-accent) 8%);
-      padding: 18px;
-      border-radius: var(--nf-radius);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    }
-    .not-found--{{ section.id }} .not-found__search label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--nf-muted);
-    }
-    .not-found--{{ section.id }} .not-found__search .search-field {
-      display: flex;
-      gap: 8px;
-    }
-    .not-found--{{ section.id }} .not-found__search input[type="search"] {
-      flex: 1;
-      border: 1px solid rgba(15, 23, 42, 0.12);
-      border-radius: 999px;
-      padding: 12px 18px;
-      font-size: 1rem;
-    }
-    .not-found--{{ section.id }} .not-found__search button {
-      border: none;
-      border-radius: 999px;
-      background: var(--nf-accent);
-      color: #fff;
-      font-weight: 600;
-      padding: 12px 20px;
-      cursor: pointer;
-      transition: background 0.18s ease, transform 0.18s ease;
-    }
-    .not-found--{{ section.id }} .not-found__search button:hover {
-      background: color-mix(in srgb, var(--nf-accent) 82%, black 18%);
-      transform: translateY(-1px);
-    }
-    .not-found--{{ section.id }} .not-found__links {
-      display: grid;
-      gap: 12px;
-    }
-    .not-found--{{ section.id }} .not-found__links-title {
-      font-weight: 700;
-      color: var(--nf-text);
-      margin: 0;
-    }
-    .not-found--{{ section.id }} .not-found__links-list {
-      display: grid;
-      gap: 8px;
-    }
-    .not-found--{{ section.id }} .not-found__link a {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      color: var(--nf-accent);
-      font-weight: 600;
-    }
-    .not-found--{{ section.id }} .not-found__link a svg {
-      width: 16px;
-      height: 16px;
-    }
-    .not-found--{{ section.id }} .not-found__visual {
-      justify-self: center;
-    }
-    .not-found--{{ section.id }} .not-found__visual img {
-      max-width: clamp(220px, 45vw, 320px);
-      width: 100%;
-      height: auto;
-    }
-  </style>
-
   <div class="not-found__wrap">
     {% if section.settings.show_badge and section.settings.badge_text != blank %}
       <div class="not-found__badge">{{ section.settings.badge_text | escape }}</div>
@@ -166,11 +15,18 @@
     {% endif %}
 
     <h1 class="not-found__heading">{{ section.settings.heading | default: 'Page not found' }}</h1>
-    <div class="not-found__copy">{{ section.settings.description | default: 'We just redesigned our kitchen, so a few old recipes might have moved. Try searching or head back to the main menu.' }}</div>
+    <div class="not-found__copy">
+      {{
+        section.settings.description
+        | default: 'We just redesigned our kitchen, so a few old recipes might have moved. Try searching or head back to the main menu.'
+      }}
+    </div>
 
     {% if section.settings.enable_search %}
       <form action="{{ routes.search_url }}" method="get" role="search" class="not-found__search">
-        <label for="NotFoundSearch-{{ section.id }}">{{ section.settings.search_label | default: 'Search our store' }}</label>
+        <label for="NotFoundSearch-{{ section.id }}">
+          {{- section.settings.search_label | default: 'Search our store' -}}
+        </label>
         <div class="search-field">
           <input
             id="NotFoundSearch-{{ section.id }}"
@@ -186,7 +42,10 @@
     {% endif %}
 
     <div class="not-found__actions">
-      <a class="not-found__button not-found__button--primary" href="{{ section.settings.primary_link | default: routes.root_url }}">
+      <a
+        class="not-found__button not-found__button--primary"
+        href="{{ section.settings.primary_link | default: routes.root_url }}"
+      >
         {{ section.settings.primary_label | default: 'Back to home' }}
       </a>
       {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
