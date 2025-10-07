@@ -160,7 +160,9 @@
 		background: #ffffff;
 		color: #161a1d;
 		cursor: pointer;
-		transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+		transition: background-color 0.2s ease,
+		border-color 0.2s ease,
+		color 0.2s ease;
 
 		&:focus-visible {
 			outline: 2px solid #111111;
@@ -179,42 +181,76 @@
 		}
 	}
 
-		&__quantity {
-			margin: 12px 0;
+	&__quantity {
+		margin: 12px 0;
 
-			.product-qty {
-				label {
-					display: block;
-					margin-bottom: 8px;
-					font-size: 12px;
-					font-weight: 700;
-					letter-spacing: 0.06em;
-					text-transform: uppercase;
-					color: #555555;
-				}
+		.product-qty {
+			label {
+				display: block;
+				/* Desktop_B2 */
+				font-family: "DM Sans";
+				font-style: normal;
+				font-weight: 600;
+				font-size: 14px;
+				line-height: 16px;
+				/* identical to box height, or 114% */
+				/* Neutral/Black1 */
+				color: #0b090a;
+				padding-bottom: 8px;
 			}
-
-			.qty-wrapper {
+			.qty-changer {
+				position: relative;
 				display: inline-flex;
 				align-items: center;
-				gap: 8px;
+				justify-content: flex-start;
+				.cart-qty-input {
+					all: unset;
+					        appearance: textfield;
+					-webkit-appearance: none;
+					   -moz-appearance: textfield;
+					/* Desktop_B1 */
+					font-family: "DM Sans";
+					font-size: 16px;
+					font-weight: 400;
+					font-style: normal;
+					line-height: 21px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 100px;
+					margin: 0;
+					padding: 12px 16px;
+					text-align: center;
+					text-align: center;
+					/* identical to box height */
+					text-align: center;
+					vertical-align: middle;
+					/* Neutral/Black1 */
+
+					color: #0b090a;
+					// height: 40px;
+					/* Neutral/White3 */
+					border: 1px solid #d3d3d3;
+					border-radius: 4px;
+				}
+				.qty-btn {
+					padding: 0 6px;
+				}
+				.qty-decrease {
+					position: absolute;
+					left: 4px;
+					height: 100%;
+				}
+				.qty-increase {
+					position: absolute;
+					right: 4px;
+					height: 100%;
+				}
+				.qty-disabled {
+					cursor: none;
+					opacity: 0.5;
+				}
 			}
-
-			.qty-btn {
-				width: 36px;
-				height: 36px;
-				cursor: pointer;
-				border: 1px solid #dddddd;
-			border-radius: 8px;
-			background: #ffffff;
-		}
-
-		.qty-input {
-			width: 56px;
-			height: 36px;
-			text-align: center;
-			border: 1px solid #dddddd;
-			border-radius: 8px;
 		}
 	}
 
@@ -253,8 +289,6 @@
 		}
 	}
 }
-
-
 
 .product-drawer__close-btn {
 	font-size: 30px;

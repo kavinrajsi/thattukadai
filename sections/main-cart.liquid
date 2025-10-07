@@ -289,7 +289,7 @@
       {% if first_cart_item %}
         <div class="cart-recs" data-cart-page-recs data-product-id="{{ first_cart_item.product_id }}">
           <h2 class="cart-recs__title">{{ section.settings.recommendations_heading }}</h2>
-          <div class="cart-recs__list" data-cart-recs-list>
+          <div class="cart-recs__list-grid" data-cart-recs-list>
             <div class="cart-recs__loading">Loading recommendations…</div>
           </div>
         </div>
@@ -365,27 +365,67 @@
           const html = data.products
             .map((product) => {
               if (!product) return '';
-              const url = product.url || '/products/' + (product.handle || '');
-              const title = product.title || '';
-              const image = product.featured_image
-                ? '<img src="' + product.featured_image + '" alt="' + title.replace(/"/g, '&quot;') + '" loading="lazy">'
+              const handle = product.handle || '';
+              const url = product.url || '/products/' + handle;
+              const title = (product.title || '').trim();
+              const safeTitle = title.replace(/"/g, '&quot;');
+              const titleHtml = title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              const imgSrc = product.featured_image || (product.images && product.images[0]) || '';
+              const imageHtml = imgSrc
+                ? '<div class="product-card__media">' +
+                  '<div class="product-card__image-wrapper">' +
+                  '<picture>' +
+                  '<img class="product-card__image product-card__image--primary" src="' +
+                  imgSrc +
+                  '" alt="' +
+                  safeTitle +
+                  '" loading="lazy">' +
+                  '</picture>' +
+                  '</div>' +
+                  '</div>'
                 : '';
-              const compare = product.compare_at_price && product.compare_at_price > product.price
-                ? '<s>' + money(product.compare_at_price) + '</s>'
+              const hasCompare = product.compare_at_price && product.compare_at_price > product.price;
+              const compareHtml = hasCompare
+                ? '<span class="price-compare">' + money(product.compare_at_price) + '</span>'
                 : '';
               const priceHtml =
-                '<div class="cart-recs__price">' +
-                '<span>' + money(product.price) + '</span>' +
-                (compare ? ' ' + compare : '') +
-                '</div>';
+                '<span class="product-price" data-price-mode="variant">' +
+                '<span class="price-single">' +
+                money(product.price) +
+                '</span>' +
+                (compareHtml ? compareHtml : '') +
+                '</span>';
+              const buttonLabel =
+                product.variants &&
+                product.variants.length === 1 &&
+                product.variants[0] &&
+                product.variants[0].available
+                  ? 'Add to cart'
+                  : 'Select options';
+              const ctaButton = handle
+                ? '<button class="product-card__cta" type="button" data-product-handle="' +
+                  handle +
+                  '" data-product-url="' +
+                  url +
+                  '" aria-haspopup="dialog" aria-controls="product-drawer">' +
+                  buttonLabel +
+                  '</button>'
+                : '';
               return (
-                '<article class="cart-recs__item">' +
-                '<a class="cart-recs__link" href="' + url + '">' +
-                image +
-                '<h3 class="cart-recs__name">' + title + '</h3>' +
+                '<div class="product-card">' +
+                '<a class="product-card__link" href="' +
+                url +
+                '">' +
+                imageHtml +
+                '<div class="product-card__body">' +
+                '<div class="product-card__title">' +
+                titleHtml +
+                '</div>' +
                 priceHtml +
+                '</div>' +
                 '</a>' +
-                '</article>'
+                ctaButton +
+                '</div>'
               );
             })
             .join('');

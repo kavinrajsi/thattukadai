@@ -398,4 +398,53 @@
 			}
 		}
 	}
+
+	.cart-recs {
+		padding-top: 40px;
+		// padding-bottom: 40px;
+		@media (min-width: 768px) {
+			padding-top: 80px;
+			// padding-bottom: 80px;
+		}
+		.cart-recs__title {
+			/* Desktop_H2 */
+			font-family: "Neilvard One";
+			font-size: 32px;
+			font-weight: 400;
+			font-style: normal;
+			line-height: 36px;
+			padding-bottom: 24px;
+			text-align: left;
+			/* Neutral/Black2 */
+
+			color: #161a1d;
+			@media (min-width: 768px) {
+				text-align: center;
+			}
+		}
+
+		.cart-recs__loading {
+			font-family: "DM Sans";
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 16px;
+			/* or 114% */
+
+			/* Neutral/Black1 */
+			color: #2a2a2a;
+		}
+		.cart-recs__list-grid {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 20px;
+			grid-template-columns: repeat(2, 1fr);
+			@media (min-width: 768px) {
+				grid-template-columns: repeat(3, 1fr);
+			}
+			@media (min-width: 992px) {
+				grid-template-columns: repeat(4, 1fr);
+			}
+		}
+	}
 }
