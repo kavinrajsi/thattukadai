@@ -21,11 +21,6 @@
     </button>
 
     <div class="product-drawer__body">
-      <!-- Media -->
-      <div class="product-drawer__media">
-        <img class="product-drawer__image" alt="" hidden>
-      </div>
-
       <!-- Details -->
       <div class="product-drawer__details">
         <!-- Title -->
@@ -34,54 +29,59 @@
         <!-- Price -->
         <div class="product-drawer__price" aria-live="polite"></div>
 
+        <!-- Media -->
+        <div class="product-drawer__media">
+          <img class="product-drawer__image" alt="" hidden>
+        </div>
+
         <!-- Description -->
-        <div class="product-drawer__description"></div>
+        <div class="product-drawer__desc"></div>
 
         <!-- Variants -->
         <div class="product-drawer__variants" hidden>
-          <div class="product-drawer__label product-drawer__label--size">Size</div>
-          <div
-            class="product-drawer__variant-group"
-            role="radiogroup"
-            aria-label="Size options"
-          ></div>
+          <div class="product-drawer__size-label">Size</div>
+          <div class="product-drawer__size-group" role="radiogroup" aria-label="Size options"></div>
         </div>
 
         <!-- Quantity -->
         <div class="product-drawer__quantity">
-          <div class="product-drawer__label product-drawer__label--quantity">Quantity</div>
-          <div class="product-drawer__qty-control">
-            <button
-              type="button"
-              class="product-drawer__qty-btn product-drawer__qty-btn--decrease"
-              data-qty="decr"
-              aria-label="Decrease quantity"
-            >
-              −
-            </button>
-            <input
-              type="number"
-              class="product-drawer__qty-input"
-              value="1"
-              min="1"
-              inputmode="numeric"
-              aria-label="Quantity"
-            >
-            <button
-              type="button"
-              class="product-drawer__qty-btn product-drawer__qty-btn--increase"
-              data-qty="incr"
-              aria-label="Increase quantity"
-            >
-              +
-            </button>
+          <div class="product-qty" data-qty-inited="true">
+            <label for="product-drawer-qty-input">Quantity</label>
+            <div class="qty-wrapper qty-changer">
+              <button
+                type="button"
+                class="qty-btn qty-minus qty-decrease minus-btn product-drawer__qty-btn"
+                data-qty="decr"
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <input
+                id="product-drawer-qty-input"
+                class="qty-input cart-qty-input quantity-input product-drawer__qty-input"
+                type="number"
+                name="quantity"
+                min="1"
+                value="1"
+                inputmode="numeric"
+                aria-label="Quantity"
+              >
+              <button
+                type="button"
+                class="qty-btn qty-increase qty-plus plus-btn product-drawer__qty-btn"
+                data-qty="incr"
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
           </div>
         </div>
 
         <!-- Actions -->
         <div class="product-drawer__actions">
-          <button type="button" class="product-drawer__add-btn">Add to cart</button>
-          <a class="product-drawer__view-link" target="_self" rel="nofollow">View details</a>
+          <button type="button" class="product-drawer__add">Add to cart</button>
+          <a class="product-drawer__view" target="_self" rel="nofollow">View details</a>
         </div>
 
         <!-- Status / errors -->

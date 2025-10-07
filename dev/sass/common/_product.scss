@@ -31,6 +31,17 @@
 		}
 	}
 
+	.product-drawer__desc {
+		p {
+			font-family: "DM Sans";
+			font-style: normal;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 16px;
+			color: #2a2a2a;
+		}
+	}
+
 	.product-card__body {
 		z-index: 2;
 		background-color: #ffffff;
@@ -99,7 +110,6 @@
 		transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
 		will-change: bottom, transform, visibility;
 	}
-
 
 	&:hover {
 		.product-card__cta {
