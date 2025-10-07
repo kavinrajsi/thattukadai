@@ -21,7 +21,7 @@
           "settings": {
             "image_desktop": "shopify://shop_images/vsthattukadai-banner-about-desktop.webp",
             "image_tablet": "shopify://shop_images/vsthattukadai-banner-about-desktop.webp",
-            "image_mobile": "shopify://shop_images/vsthattukadai-banner-about-desktop.webp",
+            "image_mobile": "shopify://shop_images/vsthattukadai-banner-about-mobile.webp",
             "image_alt": "",
             "image_link": "",
             "image_position": "center center"
