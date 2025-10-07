@@ -4,7 +4,7 @@
 {% endcomment %}
 
 <section id="contact-{{ section.id }}" class="contact-section">
-  <div class="contact-container page-width">
+  <div class="contact-container layout__grid-box">
     <!-- Heading -->
     <div class="contact-header">
       <a href="{{ section.settings.cta_link }}" class="contact-btn">{{ section.settings.cta_label }}</a>
@@ -19,55 +19,59 @@
     <!-- Info + Form -->
     <div class="contact-grid">
       <div class="contact-info">
-        <h3>Address</h3>
-        <p>
-          {{ section.settings.address_line_1 -}}
-          <br>
-          {{ section.settings.address_line_2 }}
-        </p>
+        <div class="contact-info-address">
+          <h3>Address</h3>
+          <p>
+            {{ section.settings.address_line_1 -}}
+            <br>
+            {{ section.settings.address_line_2 }}
+          </p>
+        </div>
+        <div class="contact-info-contact">
+          <h3>Informations</h3>
+          <p>
+            <a href="tel:{{ section.settings.phone }}">{{ section.settings.phone }}</a><br>
+            <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+          </p>
+        </div>
+        <div class="contact-info-social-icons">
+          <h3>Social Media</h3>
+          <div class="icons">
+            {% if section.settings.instagram_url != blank %}
+              <a href="{{ section.settings.instagram_url }}" target="_blank" aria-label="Instagram">
+                {% if section.settings.instagram_svg != blank %}
+                  {{ section.settings.instagram_svg }}
+                {% else %}
+                  <div class="social-placeholder"></div>
+                {% endif %}
+              </a>
+            {% endif %}
 
-        <h3>Informations</h3>
-        <p>
-          <a href="tel:{{ section.settings.phone }}">{{ section.settings.phone }}</a><br>
-          <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
-        </p>
+            {% if section.settings.facebook_url != blank %}
+              <a href="{{ section.settings.facebook_url }}" target="_blank" aria-label="Facebook">
+                {% if section.settings.facebook_svg != blank %}
+                  {{ section.settings.facebook_svg }}
+                {% else %}
+                  <div class="social-placeholder"></div>
+                {% endif %}
+              </a>
+            {% endif %}
 
-        <h3>Social Media</h3>
-        <div class="social-icons">
-          {% if section.settings.instagram_url != blank %}
-            <a href="{{ section.settings.instagram_url }}" target="_blank" aria-label="Instagram">
-              {% if section.settings.instagram_svg != blank %}
-                {{ section.settings.instagram_svg }}
-              {% else %}
-                <div class="social-placeholder"></div>
-              {% endif %}
-            </a>
-          {% endif %}
-
-          {% if section.settings.facebook_url != blank %}
-            <a href="{{ section.settings.facebook_url }}" target="_blank" aria-label="Facebook">
-              {% if section.settings.facebook_svg != blank %}
-                {{ section.settings.facebook_svg }}
-              {% else %}
-                <div class="social-placeholder"></div>
-              {% endif %}
-            </a>
-          {% endif %}
-
-          {% if section.settings.youtube_url != blank %}
-            <a href="{{ section.settings.youtube_url }}" target="_blank" aria-label="YouTube">
-              {% if section.settings.youtube_svg != blank %}
-                {{ section.settings.youtube_svg }}
-              {% else %}
-                <div class="social-placeholder"></div>
-              {% endif %}
-            </a>
-          {% endif %}
+            {% if section.settings.youtube_url != blank %}
+              <a href="{{ section.settings.youtube_url }}" target="_blank" aria-label="YouTube">
+                {% if section.settings.youtube_svg != blank %}
+                  {{ section.settings.youtube_svg }}
+                {% else %}
+                  <div class="social-placeholder"></div>
+                {% endif %}
+              </a>
+            {% endif %}
+          </div>
         </div>
       </div>
 
       <!-- Contact Form -->
-      <div class="contact-form">
+      <div class="contact-contactForm">
         {% form 'contact' %}
           {% if form.posted_successfully? %}
             <p class="form-success">Thank you! Your message has been sent.</p>

@@ -1,6 +1,7 @@
 .template-product {
 	main {
-		padding-top: 70px;
+		padding-top: 188px;
+		padding-bottom: 80px;
 	}
 	.main-product {
 		// padding-top: 40px;
@@ -68,6 +69,10 @@
 						border-radius: 20px;
 						overflow: hidden;
 						width: 100%;
+						display: block;
+						// width: 372px;
+						height: 392px;
+						object-fit: cover;
 					}
 					video {
 						width: auto;

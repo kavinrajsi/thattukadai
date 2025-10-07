@@ -50,16 +50,16 @@
               {%- when 'image' -%}
                 <a
                   class="pswp-item"
-                  href="{{ media | image_url: width: 372, format: 'jpg' }}"
+                  href="{{ media | image_url: width: 1080, height: 1080, format: 'jpg' }}"
                   data-pswp-width="{{ full_w }}"
                   data-pswp-height="{{ full_h }}"
                   data-pswp-uid="{{ product_obj.id }}-{{ media.id }}"
                   aria-label="Open image zoom: {{ alt_text | escape }}"
                 >
                   <picture>
-                    <source srcset="{{ media | image_url: width: 372, format: 'webp' }}" type="image/webp">
+                    <source srcset="{{ media | image_url: width: 372, height: 392, format: 'webp' }}" type="image/webp">
                     <img
-                      src="{{ media | image_url: width: 372, format: 'jpg' }}"
+                      src="{{ media | image_url: width: 372, height: 392, format: 'jpg' }}"
                       alt="{{ alt_text | escape }}"
                       class="pm-media"
                       loading="lazy"
