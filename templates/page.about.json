@@ -112,6 +112,28 @@
         "cta_label": "",
         "cta_link": ""
       }
+    },
+    "promo_cta_wWC8DW": {
+      "type": "promo-cta",
+      "name": "Promo CTA Banner",
+      "settings": {
+        "full_bleed": true,
+        "max_width": 1200,
+        "bg_color": "#F5C62E",
+        "text_color": "#111111",
+        "layout": "image-left",
+        "radius": 24,
+        "pad_y": 24,
+        "pad_x": 24,
+        "gap": 24,
+        "title": "READY TO SHOP",
+        "body": "<p>Find your traditional sweets and savouries here.</p>",
+        "image": "shopify://shop_images/tedt.png",
+        "btn_label": "Shop now",
+        "btn_link": "shopify://collections/all",
+        "btn_bg": "#FFFFFF",
+        "btn_text": "#111111"
+      }
     }
   },
   "order": [
@@ -119,6 +141,7 @@
     "homepage_slider_jVAXgd",
     "image_text_qUt3z3",
     "image_text_wGXUMJ",
-    "image_text_x8c6Wx"
+    "image_text_x8c6Wx",
+    "promo_cta_wWC8DW"
   ]
 }
