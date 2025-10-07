@@ -61,11 +61,13 @@
         </div>
       </div>
 
-      <div class="image-content__cta-wrapper">
-        <a class="image-content__cta" href="{{ section.settings.cta_link | default: '/about' }}">
-          {{ section.settings.cta_label | default: 'Learn More' }}
-        </a>
-      </div>
+      {% if section.settings.cta_link != blank %}
+        <div class="image-content__cta-wrapper">
+          <a class="image-content__cta" href="{{ section.settings.cta_link }}">
+            {{ section.settings.cta_label | default: 'Learn More' }}
+          </a>
+        </div>
+      {% endif %}
     </div>
   </div>
 </section>
