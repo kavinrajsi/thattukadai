@@ -2,11 +2,9 @@
 	main {
 		padding-top: 204px;
 	}
-
 	.cart-page {
 		padding-top: 56px;
 		padding-bottom: 40px;
-
 		.page-title {
 			/* Desktop_H2 */
 			font-family: "Neilvard One";
@@ -17,13 +15,11 @@
 			padding-bottom: 24px;
 			text-align: left;
 			/* Neutral/Black2 */
-
 			color: #161a1d;
 			@media (min-width: 768px) {
 				text-align: center;
 			}
 		}
-
 		.cart-footer {
 			max-width: 408px;
 			margin-right: initial;
@@ -49,7 +45,6 @@
 						display: block;
 						/* identical to box height */
 						/* Primary/Red3 */
-
 						color: var(--color-red3);
 					}
 					small {
@@ -61,7 +56,6 @@
 						display: block;
 						/* identical to box height */
 						/* Primary/Red3 */
-
 						color: var(--color-red3);
 					}
 				}
@@ -76,7 +70,6 @@
 				margin-bottom: 8px;
 				padding: 12px 16px;
 				/* identical to box height */
-
 				text-align: center;
 				/* Neutral/White1 */
 				/* Neutral/Black1 */
@@ -92,15 +85,12 @@
 				line-height: 17px;
 				display: block;
 				/* identical to box height */
-
 				text-align: center;
 				/* Primary/Red3 */
-
 				color: var(--color-red3);
 				text-decoration-line: underline;
 			}
 		}
-
 		.cart-header {
 			display: grid;
 			padding: 8px 24px;
@@ -122,7 +112,6 @@
 				display: none;
 				/* identical to box height, or 114% */
 				/* Neutral/Black2 */
-
 				color: #161a1d;
 				&:first-child {
 					display: block;
@@ -132,7 +121,6 @@
 					display: block;
 					text-align: right;
 				}
-
 				@media (min-width: 768px) {
 					&:nth-last-child(2) {
 						display: block;
@@ -145,7 +133,6 @@
 				}
 			}
 		}
-
 		.cart-item {
 			display: grid;
 			align-items: center;
@@ -160,7 +147,6 @@
 				gap: 0;
 				grid-template-columns: calc(100% - 25%) 25%;
 			}
-
 			.wrapper {
 				// background-color: lightblue;
 				overflow: hidden;
@@ -169,7 +155,6 @@
 					align-items: center;
 					justify-content: space-between;
 				}
-
 				@media (min-width: 768px) {
 					display: grid;
 					align-items: center;
@@ -178,7 +163,6 @@
 				}
 			}
 		}
-
 		.product-col {
 			// background-color: orange;
 			@media (min-width: 568px) {
@@ -190,7 +174,6 @@
 				max-width: 100%;
 				max-width: initial;
 			}
-
 			.product-info {
 				display: flex;
 				align-items: center;
@@ -207,7 +190,6 @@
 				.product-text {
 					flex: 0 0 calc(100% - 95px - 16px);
 					max-width: calc(100% - 95px - 16px);
-
 					.product-titleWrapper a {
 						font-family: "DM Sans";
 						font-size: 16px;
@@ -217,7 +199,6 @@
 						display: block;
 						/* identical to box height */
 						/* Neutral/Black1 */
-
 						color: #0b090a;
 					}
 					.product-titleWrapper .line-item__option ,
@@ -232,7 +213,6 @@
 						text-transform: capitalize;
 						/* identical to box height, or 114% */
 						/* Neutral/Black2 */
-
 						color: #161a1d;
 						.line-item__option-block {
 							div {
@@ -244,7 +224,6 @@
 						}
 					}
 				}
-
 				.remove-btn {
 					font-family: "DM Sans";
 					font-size: 14px;
@@ -252,23 +231,19 @@
 					font-style: normal;
 					line-height: 16px;
 					/* Inside auto layout */
-
 					flex: none;
 					flex-grow: 0;
 					order: 0;
 					margin: 0;
 					padding: 0;
 					/* identical to box height, or 114% */
-
 					color: #9f9f9f;
 				}
 			}
 		}
-
 		.price-col {
 			display: none;
 			// background-color: blue;
-
 			height: 100%;
 			@media (min-width: 768px) {
 				display: flex;
@@ -279,7 +254,6 @@
 				max-width: initial;
 				text-align: center;
 			}
-
 			span {
 				/* Desktop_B1 */
 				font-family: "DM Sans";
@@ -289,17 +263,14 @@
 				line-height: 21px;
 				/* identical to box height */
 				/* Neutral/Black2 */
-
 				color: #161a1d;
 			}
 		}
-
 		.qty-col {
 			flex: 0 0 100px;
 			max-width: 100px;
 			// background-color: red;
 			height: 100%;
-
 			@media (min-width: 768px) {
 				display: flex;
 				align-items: center;
@@ -341,7 +312,6 @@
 					text-align: center;
 					vertical-align: middle;
 					/* Neutral/Black1 */
-
 					color: #0b090a;
 					// height: 40px;
 					/* Neutral/White3 */
@@ -367,7 +337,6 @@
 				}
 			}
 		}
-
 		.total-col {
 			max-width: 80px;
 			// background-color: khaki;
@@ -387,10 +356,8 @@
 				font-style: normal;
 				line-height: 21px;
 				/* identical to box height */
-
 				text-align: right;
 				/* Neutral/Black2 */
-
 				color: #161a1d;
 				display: flex;
 				align-items: center;
@@ -398,7 +365,6 @@
 			}
 		}
 	}
-
 	.cart-recs {
 		padding-top: 40px;
 		// padding-bottom: 40px;
@@ -416,48 +382,33 @@
 			padding-bottom: 24px;
 			text-align: left;
 			/* Neutral/Black2 */
-
 			color: #161a1d;
 			@media (min-width: 768px) {
 				text-align: center;
 			}
 		}
-
 		.cart-recs__list {
 			display: grid;
 			gap: 24px;
 			grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 		}
-
-		.product-card {
-			display: flex;
-			flex-direction: column;
-			height: 100%;
-
-			.product-card__body {
-				margin-top: 16px;
-			}
-
-			.product-card__cta {
-				margin-top: 16px;
-			}
-
-			&--skeleton {
-				pointer-events: none;
-			}
-		}
-
 		.cart-recs__loading {
 			.cart-recs__skeleton-list {
 				display: grid;
 				gap: 24px;
 				grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 			}
-
 			.product-card__media {
 				height: 200px;
 			}
-
+			.product-card {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				&--skeleton {
+					pointer-events: none;
+				}
+			}
 			.skeleton-box {
 				display: block;
 				width: 100%;
@@ -465,40 +416,29 @@
 				background: linear-gradient(90deg, #f0f0f0 25%, #f6f6f6 37%, #f0f0f0 63%);
 				background-size: 400% 100%;
 				animation: cart-recs-skeleton-shimmer 1.4s ease-in-out infinite;
-
 				&--media {
 					height: 100%;
 					border-radius: 16px;
 				}
-
 				&--title {
 					height: 18px;
 					margin-top: 16px;
 					border-radius: 6px;
 				}
-
 				&--price {
 					height: 14px;
 					margin-top: 10px;
 					width: 60%;
 					border-radius: 6px;
 				}
-
-				&--cta {
-					height: 40px;
-					margin-top: 20px;
-					border-radius: 999px;
-				}
 			}
 		}
 	}
 }
-
 @keyframes cart-recs-skeleton-shimmer {
 	0% {
 		background-position: 100% 0;
 	}
-
 	100% {
 		background-position: -100% 0;
 	}
