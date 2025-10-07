@@ -20,16 +20,19 @@
 		}
 
 		.heading--2 {
-			padding-bottom: 24px;
-			/* Heading2 */
-			font-family: "Minion Pro Cond Capt";
-			// font-style: italic;
-			font-weight: 700;
-			font-size: 36px;
+			/* Desktop_H2 */
+			font-family: "Neilvard One";
+			font-size: 32px;
+			font-weight: 400;
+			font-style: normal;
 			line-height: 36px;
-			/* identical to box height, or 100% */
-			/* Primary/Red1 */
-			color: #c61d23;
+			padding-bottom: 24px;
+			text-align: left;
+			/* Neutral/Black2 */
+			color: #161a1d;
+			@media (min-width: 768px) {
+				text-align: center;
+			}
 		}
 
 		form {
@@ -52,7 +55,7 @@
 					display: block;
 					width: 100%;
 					height: 1px;
-					// background-color: #c61d23;
+					// background-color: #f6ca30;
 				}
 			}
 
@@ -104,7 +107,7 @@
 				padding: 0;
 				margin: 0;
 				min-height: initial;
-				border: 1px solid #c61d23;
+				border: 1px solid #f6ca30;
 				background: transparent;
 				display: inline-block;
 				border-radius: 24px;
@@ -114,9 +117,9 @@
 
 				&:checked {
 					transform: scale(0.9);
-					outline: 2px solid #c61d23;
-					border: 2px solid #c61d23;
-					background: #c61d23;
+					outline: 2px solid #f6ca30;
+					border: 2px solid #f6ca30;
+					background: #f6ca30;
 				}
 			}
 
@@ -130,20 +133,20 @@
 			input[type="submit"] {
 				display: block;
 				padding: 12px 16px;
-				background: #c61d23;
+				background: #f6ca30;
+				color: #000000;
 				border-radius: 6px;
 				font-style: normal;
 				font-weight: 400;
 				font-size: 14px;
 				line-height: 17px;
 				text-align: center;
-				color: #ffffff;
 				width: 100%;
 				margin-bottom: 8px;
 			}
 
 			input[aria-invalid="true"] {
-				border: 1px solid #c61d23;
+				border: 1px solid #f6ca30;
 			}
 		}
 

@@ -788,14 +788,14 @@ body.index.drawer-open {
 .page-customer-login form input[type=submit] {
   display: block;
   padding: 12px 16px;
-  background: var(--color-yellow2);
+  background-color: #f6ca30;
   border-radius: 6px;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
   text-align: center;
-  color: var(--color-black2);
+  color: #000000;
   width: 100%;
   margin-bottom: 8px;
 }
@@ -1916,6 +1916,7 @@ header .header--desktop .header--desktop__container .header__nav .header__nav-pi
   display: inline-block;
 }
 header .header--desktop .header--desktop__container .header__nav .header__link {
+  margin-left: 4px;
   font: var(--font-600);
   font-size: 14px;
   font-style: normal;
@@ -1929,6 +1930,10 @@ header .header--desktop .header--desktop__container .header__nav .header__link {
   header .header--desktop .header--desktop__container .header__nav .header__link {
     display: inline-block;
   }
+}
+header .header--desktop .header--desktop__container .header__nav .header__link:hover {
+  background: #fad75f;
+  border-radius: 24px;
 }
 header .header--desktop .header--desktop__container .header__nav .header__icon {
   display: inline-block;
@@ -2666,7 +2671,7 @@ header .header--desktop .mega__products .mega__body--product .mega__collection-b
   padding-bottom: 10px;
   /* identical to box height */
   /* Primary/Red1 */
-  color: #c61d23;
+  color: #f6ca30;
 }
 .footer__identification-lists {
   position: relative;
@@ -4250,7 +4255,7 @@ body.template-product .footer {
   margin: 24px auto 0;
   padding: 12px 24px;
   /* Neutral/White1 */
-  background-color: #c61d23;
+  background-color: #f6ca30;
   border-radius: 4px;
   /* Select Option */
   font-family: var(--font-header);
@@ -4260,7 +4265,7 @@ body.template-product .footer {
   line-height: 15px;
   /* identical to box height */
   text-align: center;
-  color: #ffffff;
+  color: #000000;
 }
 
 .blog-feed .blog-feed__title {
@@ -4271,7 +4276,7 @@ body.template-product .footer {
   line-height: 36px;
   /* identical to box height, or 100% */
   /* Primary/Red1 */
-  color: #c61d23;
+  color: #f6ca30;
   padding-bottom: 24px;
 }
 .blog-feed .blog-feed__list {
@@ -4370,15 +4375,21 @@ body.template-product .footer {
   margin: 0 auto;
 }
 .template-article .blog-article .blog-article__content .blog-article__content--title {
-  /* Heading2 */
-  font-family: "Minion Pro Cond Capt";
+  /* Desktop_H2 */
+  font-family: "Neilvard One";
+  font-size: 32px;
+  font-weight: 400;
   font-style: normal;
-  font-weight: 700;
-  font-size: 36px;
   line-height: 36px;
-  /* Primary/Red2 */
-  color: #a5161a;
-  padding-bottom: 8px;
+  padding-bottom: 24px;
+  text-align: left;
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+@media (min-width: 768px) {
+  .template-article .blog-article .blog-article__content .blog-article__content--title {
+    text-align: center;
+  }
 }
 .template-article .blog-article .blog-article__content .blog-article__content--meta {
   padding-bottom: 24px;
@@ -4409,7 +4420,7 @@ body.template-product .footer {
 .template-article .blog-article .blog-article__content .blog-article__content--article h5,
 .template-article .blog-article .blog-article__content .blog-article__content--article h6 {
   /* Heading4 */
-  font-family: "Minion Pro Cond Capt";
+  font-family: "Neilvard One";
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -4491,15 +4502,22 @@ body.template-product .footer {
 }
 .template-customers\/login.account .page-customer-register .heading--1,
 .template-customers\/login.account .page-customer-login .heading--1 {
-  padding-bottom: 24px;
-  /* Heading2 */
-  font-family: "Minion Pro Cond Capt";
-  font-weight: 700;
-  font-size: 36px;
+  /* Desktop_H2 */
+  font-family: "Neilvard One";
+  font-size: 32px;
+  font-weight: 400;
+  font-style: normal;
   line-height: 36px;
-  /* identical to box height, or 100% */
-  /* Primary/Red1 */
-  color: #c61d23;
+  padding-bottom: 24px;
+  text-align: left;
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+@media (min-width: 768px) {
+  .template-customers\/login.account .page-customer-register .heading--1,
+  .template-customers\/login.account .page-customer-login .heading--1 {
+    text-align: center;
+  }
 }
 .template-customers\/login.account .page-customer-register form label,
 .template-customers\/login.account .page-customer-login form label {
@@ -4600,7 +4618,7 @@ body.template-product .footer {
   padding: 0;
   margin: 0;
   min-height: initial;
-  border: 1px solid #c61d23;
+  border: 1px solid #f6ca30;
   background: transparent;
   display: inline-block;
   border-radius: 24px;
@@ -4613,9 +4631,9 @@ body.template-product .footer {
 .template-customers\/login.account .page-customer-login form input[type=radio]:checked,
 .template-customers\/login.account .page-customer-login form input[type=checkbox]:checked {
   transform: scale(0.9);
-  outline: 2px solid #c61d23;
-  border: 2px solid #c61d23;
-  background: #c61d23;
+  outline: 2px solid #f6ca30;
+  border: 2px solid #f6ca30;
+  background: #f6ca30;
 }
 .template-customers\/login.account .page-customer-register form .accepts-marketing,
 .template-customers\/login.account .page-customer-login form .accepts-marketing {
@@ -4630,20 +4648,20 @@ body.template-product .footer {
 .template-customers\/login.account .page-customer-login form input[type=submit] {
   display: block;
   padding: 12px 16px;
-  background: #c61d23;
+  background: #f6ca30;
+  color: #000000;
   border-radius: 6px;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
   text-align: center;
-  color: #ffffff;
   width: 100%;
   margin-bottom: 8px;
 }
 .template-customers\/login.account .page-customer-register form input[aria-invalid=true],
 .template-customers\/login.account .page-customer-login form input[aria-invalid=true] {
-  border: 1px solid #c61d23;
+  border: 1px solid #f6ca30;
 }
 .template-customers\/login.account .page-customer-register .form__message,
 .template-customers\/login.account .page-customer-login .form__message {
@@ -4708,15 +4726,22 @@ body.template-product .footer {
 }
 .template-customers\/register.create-account .page-customer-register .heading--2,
 .template-customers\/register.create-account .page-customer-login .heading--2 {
-  padding-bottom: 24px;
-  /* Heading2 */
-  font-family: "Minion Pro Cond Capt";
-  font-weight: 700;
-  font-size: 36px;
+  /* Desktop_H2 */
+  font-family: "Neilvard One";
+  font-size: 32px;
+  font-weight: 400;
+  font-style: normal;
   line-height: 36px;
-  /* identical to box height, or 100% */
-  /* Primary/Red1 */
-  color: #c61d23;
+  padding-bottom: 24px;
+  text-align: left;
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+@media (min-width: 768px) {
+  .template-customers\/register.create-account .page-customer-register .heading--2,
+  .template-customers\/register.create-account .page-customer-login .heading--2 {
+    text-align: center;
+  }
 }
 .template-customers\/register.create-account .page-customer-register form label,
 .template-customers\/register.create-account .page-customer-login form label {
@@ -4817,7 +4842,7 @@ body.template-product .footer {
   padding: 0;
   margin: 0;
   min-height: initial;
-  border: 1px solid #c61d23;
+  border: 1px solid #f6ca30;
   background: transparent;
   display: inline-block;
   border-radius: 24px;
@@ -4830,9 +4855,9 @@ body.template-product .footer {
 .template-customers\/register.create-account .page-customer-login form input[type=radio]:checked,
 .template-customers\/register.create-account .page-customer-login form input[type=checkbox]:checked {
   transform: scale(0.9);
-  outline: 2px solid #c61d23;
-  border: 2px solid #c61d23;
-  background: #c61d23;
+  outline: 2px solid #f6ca30;
+  border: 2px solid #f6ca30;
+  background: #f6ca30;
 }
 .template-customers\/register.create-account .page-customer-register form .accepts-marketing,
 .template-customers\/register.create-account .page-customer-login form .accepts-marketing {
@@ -4847,20 +4872,20 @@ body.template-product .footer {
 .template-customers\/register.create-account .page-customer-login form input[type=submit] {
   display: block;
   padding: 12px 16px;
-  background: #c61d23;
+  background: #f6ca30;
+  color: #000000;
   border-radius: 6px;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
   text-align: center;
-  color: #ffffff;
   width: 100%;
   margin-bottom: 8px;
 }
 .template-customers\/register.create-account .page-customer-register form input[aria-invalid=true],
 .template-customers\/register.create-account .page-customer-login form input[aria-invalid=true] {
-  border: 1px solid #c61d23;
+  border: 1px solid #f6ca30;
 }
 .template-customers\/register.create-account .page-customer-register .form__message,
 .template-customers\/register.create-account .page-customer-login .form__message {
@@ -4906,15 +4931,21 @@ body.template-product .footer {
   margin: 0 auto;
 }
 .shopify-policy__container .shopify-policy__title h1 {
-  padding-bottom: 24px;
-  /* Heading2 */
-  font-family: "Minion Pro Cond Capt";
-  font-weight: 700;
-  font-size: 36px;
+  /* Desktop_H2 */
+  font-family: "Neilvard One";
+  font-size: 32px;
+  font-weight: 400;
+  font-style: normal;
   line-height: 36px;
-  /* identical to box height, or 100% */
-  /* Primary/Red1 */
-  color: #c61d23;
+  padding-bottom: 24px;
+  text-align: left;
+  /* Neutral/Black2 */
+  color: #161a1d;
+}
+@media (min-width: 768px) {
+  .shopify-policy__container .shopify-policy__title h1 {
+    text-align: center;
+  }
 }
 .shopify-policy__container .shopify-policy__body {
   padding-top: 24px;

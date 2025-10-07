@@ -268,6 +268,7 @@ header {
 					}
 				}
 				.header__link {
+					margin-left: 4px;
 					font: var(--font-600);
 					font-size: 14px;
 					font-style: normal;
@@ -278,6 +279,10 @@ header {
 					display: none;
 					@media (min-width: 768px) {
 						display: inline-block;
+					}
+					&:hover {
+						background: #fad75f;
+						border-radius: 24px;
 					}
 				}
 				.header__icon {
