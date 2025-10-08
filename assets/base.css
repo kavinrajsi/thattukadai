@@ -1439,6 +1439,9 @@ input[type=search] {
   --color-white1: #ffffff;
   --color-white2: #f6f6f6;
   --color-white3: #d3d3d3;
+  --font-heading-1: "Neilvard One";
+  --font-heading-2: "Neilvard One";
+  --font-heading-3: "Neilvard One";
 }
 
 @media screen and (prefers-reduced-motion: reduce), (update: slow) {

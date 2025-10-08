@@ -1,6 +1,6 @@
 {% comment %}
   sections/timeline.liquid
-  A horizontal “timeline” with year buttons, slides, prev/next, drag/swipe.
+  Horizontal timeline: left→right, show all cards, overflow scroll if needed.
 {% endcomment %}
 
 <section
@@ -13,12 +13,14 @@
       <h2 class="timeline__heading">{{ section.settings.heading }}</h2>
     {% endif %}
 
-    <div class="timeline__years" role="tablist">
+    <!-- Year buttons (jump to card) -->
+    <div class="timeline__years" role="tablist" aria-label="Years">
       {% for block in section.blocks %}
         <button
           class="tl-year{% if forloop.first %} is-active{% endif %}"
           role="tab"
           data-index="{{ forloop.index0 }}"
+          aria-controls="tl-{{ section.id }}-slide-{{ forloop.index0 }}"
           {{ block.shopify_attributes }}
         >
           {{ block.settings.year }}
@@ -26,16 +28,22 @@
       {% endfor %}
     </div>
 
+    <!-- Horizontal scroll viewport -->
     <div class="timeline__viewport" aria-live="polite">
       <div class="tl-track">
         {% for block in section.blocks %}
-          <section class="tl-slide" data-year="{{ block.settings.year }}" {{ block.shopify_attributes }}>
+          <section
+            id="tl-{{ section.id }}-slide-{{ forloop.index0 }}"
+            class="tl-slide"
+            data-year="{{ block.settings.year }}"
+            {{ block.shopify_attributes }}
+          >
             <div class="tl-card">
               {% if block.settings.image != blank %}
                 {%- assign img = block.settings.image -%}
                 <img
                   srcset="{{ img | img_url: '360x' }} 360w, {{ img | img_url: '720x' }} 720w, {{ img | img_url: '1080x' }} 1080w"
-                  sizes="(min-width: 990px) 720px, 90vw"
+                  sizes="(min-width: 990px) 540px, 85vw"
                   src="{{ img | img_url: '720x' }}"
                   alt="{{ block.settings.image_alt | escape }}"
                   loading="lazy"
@@ -48,42 +56,81 @@
                 {% if block.settings.text != blank %}
                   <p class="tl-card__text">{{ block.settings.text }}</p>
                 {% endif %}
-                {% if block.settings.link_url != blank and block.settings.link_text != blank %}
-                  <a class="tl-card__link" href="{{ block.settings.link_url }}">{{ block.settings.link_text }}</a>
-                {% endif %}
               </div>
             </div>
           </section>
         {% endfor %}
       </div>
     </div>
-
-    <div class="timeline__nav">
-      <button class="tl-prev" aria-label="{{ 'general.pagination.previous' | t | default: 'Previous' }}">←</button>
-      <button class="tl-next" aria-label="{{ 'general.pagination.next' | t | default: 'Next' }}">→</button>
-    </div>
   </div>
 
   <style>
-    #tl-{{ section.id }} .timeline{position:relative;overflow:hidden}
+    /* ---- Layout tokens ---- */
+    #tl-{{ section.id }} {
+      --card-min: 280px;            /* minimum card width */
+      --card-max: 560px;            /* maximum card width on large screens */
+      --gap: 1rem;                  /* space between cards */
+      --slide-pad: {{ section.settings.slide_padding | default: '1rem' }};
+    }
+
+    /* ---- Base ---- */
+    #tl-{{ section.id }} .timeline{position:relative;overflow:visible}
     #tl-{{ section.id }} .timeline__inner{position:relative}
     #tl-{{ section.id }} .timeline__heading{margin:0 0 1rem}
-    #tl-{{ section.id }} .timeline__years{display:flex;gap:1rem;align-items:center;margin-bottom:1rem}
-    #tl-{{ section.id }} .tl-year{background:none;border:0;font:inherit;opacity:.5;cursor:pointer;padding:.25rem .5rem}
+
+    /* ---- Years row ---- */
+    #tl-{{ section.id }} .timeline__years{
+      display:flex;gap:.5rem 1rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap
+    }
+    #tl-{{ section.id }} .tl-year{
+      background:none;border:0;font:inherit;opacity:.6;cursor:pointer;padding:.25rem .5rem;border-radius:.25rem
+    }
+    #tl-{{ section.id }} .tl-year:is(:hover,:focus-visible){opacity:.9;text-decoration:underline}
     #tl-{{ section.id }} .tl-year.is-active{opacity:1;font-weight:700}
-    #tl-{{ section.id }} .timeline__viewport{overflow:hidden}
-    #tl-{{ section.id }} .tl-track{display:flex;transition:transform .45s ease;will-change:transform}
-    #tl-{{ section.id }} .tl-slide{min-width:100%;padding:{{ section.settings.slide_padding }};box-sizing:border-box}
-    #tl-{{ section.id }} .tl-card{display:grid;gap:1rem;align-items:center;grid-template-columns:{{ section.settings.image_first | default: true | ternary: 'min(420px, 45%) 1fr', '1fr' }}}
-    #tl-{{ section.id }} img{width:100%;height:auto;display:block}
-    #tl-{{ section.id }} .timeline__nav{position:absolute;right:1rem;bottom:1rem;display:flex;gap:.5rem}
-    #tl-{{ section.id }} .tl-prev,#tl-{{ section.id }} .tl-next{cursor:pointer}
-    /* Optional: show multiple cards per view on large screens */
-    @media (min-width: 990px){
-      {% if section.settings.cards_per_view > 1 %}
-      #tl-{{ section.id }} .tl-slide{min-width:calc(100% / {{ section.settings.cards_per_view }})}
-      #tl-{{ section.id }} .tl-card{grid-template-columns:1fr}
-      {% endif %}
+
+    /* ---- Horizontal viewport + track ---- */
+    #tl-{{ section.id }} .timeline__viewport{
+      overflow-x:auto; overflow-y:visible;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+      padding-bottom:.25rem;
+    }
+    #tl-{{ section.id }} .tl-track{
+      display:flex; gap:var(--gap);
+      align-items:stretch;
+      /* no transform/transition: native scroll */
+      padding-inline-end: .25rem;
+    }
+
+    /* ---- Slides (each card) ---- */
+    #tl-{{ section.id }} .tl-slide{
+      flex:0 0 auto;
+      min-width: min(var(--card-max), 100%);         /* mobile: near full width */
+      max-width: var(--card-max);                    /* desktop: cap width */
+      scroll-snap-align: start;
+      box-sizing: border-box;
+      padding: var(--slide-pad);
+    }
+
+    /* ---- Card ---- */
+    #tl-{{ section.id }} .tl-card{
+      display:grid; gap:1rem; align-items:center;
+      grid-template-columns: {{ section.settings.image_first | default: true | ternary: 'min(420px, 45%) 1fr', '1fr' }};
+      background: rgb(0 0 0 / 0.03);
+      border-radius:.5rem;
+      padding:1rem;
+    }
+    #tl-{{ section.id }} img{width:100%;height:auto;display:block;border-radius:.375rem}
+    #tl-{{ section.id }} .tl-card__title{margin:0 0 .25rem;font-size:1.125rem;line-height:1.35}
+    #tl-{{ section.id }} .tl-card__text{margin:0}
+
+    /* ---- Responsive: allow smaller fixed min on narrow screens ---- */
+    @media (min-width: 740px){
+      #tl-{{ section.id }} .tl-slide{min-width: clamp(var(--card-min), 44vw, var(--card-max));}
+    }
+    @media (min-width: 1100px){
+      #tl-{{ section.id }} .tl-slide{min-width: clamp(var(--card-min), 33vw, var(--card-max));}
     }
   </style>
 
@@ -93,101 +140,79 @@
       if (!root) return;
 
       const viewport = root.querySelector('.timeline__viewport');
-      const track = root.querySelector('.tl-track');
       const slides = Array.from(root.querySelectorAll('.tl-slide'));
       const years = Array.from(root.querySelectorAll('.tl-year'));
-      const prevBtn = root.querySelector('.tl-prev');
-      const nextBtn = root.querySelector('.tl-next');
 
-      let index = 0;
-      const clamp = (n, min, max) => Math.max(min, Math.min(n, max));
-
-      function goTo(i, { animate = true } = {}) {
-        index = clamp(i, 0, slides.length - 1);
-        track.style.transition = animate ? 'transform .45s ease' : 'none';
-        track.style.transform = `translateX(-${index * 100}%)`;
-        years.forEach((y, k) => {
-          y.classList.toggle('is-active', k === index);
-          y.setAttribute('aria-selected', k === index);
-        });
-        prevBtn.disabled = index === 0;
-        nextBtn.disabled = index === slides.length - 1;
+      // Scroll to a given slide index
+      function scrollToIndex(i) {
+        const el = slides[i];
+        if (!el) return;
+        el.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
       }
 
-      // Buttons
-      prevBtn.addEventListener('click', () => goTo(index - 1));
-      nextBtn.addEventListener('click', () => goTo(index + 1));
+      // Click a year -> scroll to card
+      years.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const idx = +btn.dataset.index || 0;
+          scrollToIndex(idx);
+        });
+      });
 
-      // Click a year
-      years.forEach((btn) => btn.addEventListener('click', () => goTo(+btn.dataset.index)));
+      // Keep active year in sync while scrolling
+      const io = new IntersectionObserver(
+        (entries) => {
+          // find the most visible card near the left edge
+          let best = { idx: 0, vis: 0 };
+          for (const e of entries) {
+            const idx = slides.indexOf(e.target);
+            const vis = e.intersectionRatio;
+            if (vis > best.vis) best = { idx, vis };
+          }
+          years.forEach((y, k) => y.classList.toggle('is-active', k === best.idx));
+          years.forEach((y, k) => y.setAttribute('aria-selected', String(k === best.idx)));
+        },
+        {
+          root: viewport,
+          threshold: [0.01, 0.25, 0.5, 0.75, 1],
+        }
+      );
+      slides.forEach((s) => io.observe(s));
 
-      // Keyboard
+      // Keyboard support when viewport is focused
       root.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') goTo(index + 1);
-        if (e.key === 'ArrowLeft') goTo(index - 1);
+        if (e.key === 'ArrowRight') {
+          viewport.scrollBy({ left: viewport.clientWidth * 0.6, behavior: 'smooth' });
+        } else if (e.key === 'ArrowLeft') {
+          viewport.scrollBy({ left: -viewport.clientWidth * 0.6, behavior: 'smooth' });
+        }
       });
 
-      // Drag / swipe
-      let startX = 0,
-        curX = 0,
-        dragging = false,
-        startIndex = 0;
-      const start = (x) => {
-        dragging = true;
-        startX = curX = x;
-        startIndex = index;
-        track.style.transition = 'none';
-      };
-      const move = (x) => {
-        if (!dragging) return;
-        curX = x;
-        const dx = curX - startX;
-        const pct = (dx / viewport.clientWidth) * 100;
-        track.style.transform = `translateX(calc(-${startIndex * 100}% + ${-pct}%))`;
-      };
-      const end = () => {
-        if (!dragging) return;
-        dragging = false;
-        const dx = curX - startX;
-        const threshold = viewport.clientWidth * 0.2;
-        if (dx < -threshold) goTo(startIndex + 1);
-        else if (dx > threshold) goTo(startIndex - 1);
-        else goTo(startIndex);
-      };
+      // Optional: make shift+wheel scroll sideways
+      viewport.addEventListener(
+        'wheel',
+        (e) => {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            viewport.scrollLeft += e.deltaY;
+          }
+        },
+        { passive: true }
+      );
 
-      viewport.addEventListener('pointerdown', (e) => {
-        viewport.setPointerCapture(e.pointerId);
-        start(e.clientX);
-      });
-      viewport.addEventListener('pointermove', (e) => move(e.clientX));
-      viewport.addEventListener('pointerup', end);
-      viewport.addEventListener('pointercancel', end);
-      viewport.addEventListener('pointerleave', end);
-
-      // Initial state
-      goTo(0, { animate: false });
+      // Ensure first is marked active initially
+      years.forEach((y, k) => y.setAttribute('aria-selected', String(k === 0)));
     })();
   </script>
 
   {% schema %}
 {
-  "name": "Timeline Carousel",
+  "name": "Timeline",
   "tag": "section",
   "class": "section-timeline",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Our Story" },
     { "type": "text", "id": "aria_label", "label": "ARIA label", "default": "Product history timeline" },
-    {
-      "type": "range",
-      "id": "cards_per_view",
-      "label": "Cards per view (desktop)",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "default": 1
-    },
-    { "type": "text", "id": "slide_padding", "label": "Slide padding (CSS)", "default": "1rem" },
-    { "type": "checkbox", "id": "image_first", "label": "Image left (single-card layout)", "default": true }
+    { "type": "text", "id": "slide_padding", "label": "Card outer padding (CSS)", "default": "0" },
+    { "type": "checkbox", "id": "image_first", "label": "Image left (two-column card)", "default": true }
   ],
   "blocks": [
     {
@@ -198,16 +223,14 @@
         { "type": "image_picker", "id": "image", "label": "Image" },
         { "type": "text", "id": "image_alt", "label": "Image alt text" },
         { "type": "text", "id": "title", "label": "Title", "default": "Title" },
-        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Short description.</p>" },
-        { "type": "url", "id": "link_url", "label": "Link URL" },
-        { "type": "text", "id": "link_text", "label": "Link text", "default": "Learn more" }
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Short description.</p>" }
       ]
     }
   ],
-  "max_blocks": 20,
+  "max_blocks": 50,
   "presets": [
     {
-      "name": "Timeline Carousel",
+      "name": "Timeline",
       "category": "Image"
     }
   ]
