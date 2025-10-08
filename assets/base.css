@@ -907,7 +907,7 @@ body.index.drawer-open {
 }
 .homepage-sliderWrapper .section-divider {
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
   z-index: 2;
   left: 0;
   right: 0;
@@ -1731,6 +1731,7 @@ body.active-search::before {
   width: 20px;
   height: 16px;
   position: relative;
+  margin-top: 6px;
   cursor: pointer;
 }
 .page-header .header--mobile .header__nav .menu-icon .menu-icon__line {
@@ -1849,7 +1850,7 @@ body.active-search::before {
 .page-header .header--desktop .header--desktop__container {
   border-radius: 6px;
   position: relative;
-  padding: 20px;
+  padding: 8px 20px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
