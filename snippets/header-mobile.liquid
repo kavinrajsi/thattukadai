@@ -38,7 +38,9 @@
     <nav class="header__nav header__nav--right" aria-label="Utilities">
       <button class="header__icon header__icon--cart" type="button" aria-label="View cart">
         {% render 'icon-cart' %}
-        <span class="header__cart-badge" data-cart-count aria-label="{{ cart.item_count }} items in cart">{{ cart.item_count }}</span>
+        <span class="header__cart-badge" data-cart-count aria-label="{{ cart.item_count }} items in cart">
+          {{- cart.item_count -}}
+        </span>
       </button>
     </nav>
   </div>
@@ -76,5 +78,7 @@
         </a>
       </div>
     {%- endif -%}
+
+    <a class="mega__cta" href="/pages/contact">Contact Us</a>
   </div>
 </div>

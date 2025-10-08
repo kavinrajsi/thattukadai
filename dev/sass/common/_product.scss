@@ -1,9 +1,6 @@
 .product-card {
-	border-radius: 10px;
 	overflow: hidden;
 	position: relative;
-	@media (min-width: 768px) {
-	}
 	.product-card__link {
 		display: block;
 	}
@@ -16,8 +13,12 @@
 			}
 			picture ,
 			img {
-				border-top-left-radius: 20px;
-				border-top-right-radius: 20px;
+				border-radius: 10px;
+				@media (min-width: 768px) {
+					border-radius: 0;
+					border-top-left-radius: 20px;
+					border-top-right-radius: 20px;
+				}
 				position: relative;
 				display: inline-block;
 				width: 100%;
@@ -44,16 +45,18 @@
 
 	.product-card__body {
 		z-index: 2;
-		background-color: #ffffff;
-		border-bottom-left-radius: 20px;
-		border-bottom-right-radius: 20px;
-		padding: 16px 20px;
 		display: flex;
 		justify-content: space-between;
 		gap: 8px;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-start;
+		padding: 8px 0 16px;
 		@media (min-width: 768px) {
+			padding: 16px 20px;
+			background-color: #ffffff;
+			border-bottom-left-radius: 20px;
+			border-bottom-right-radius: 20px;
+			align-items: center;
 			align-items: flex-start;
 			flex-direction: row;
 		}
@@ -65,11 +68,11 @@
 			line-height: 16px;
 			line-height: normal;
 			color: #2a2a2a;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			text-align: center;
+			text-align: left;
 			@media (min-width: 768px) {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 				text-align: left;
 			}
 		}
@@ -81,7 +84,7 @@
 			font-size: 16px;
 			line-height: 16px;
 			color: #2a2a2a;
-			text-align: center;
+			text-align: left;
 			@media (min-width: 768px) {
 				text-align: right;
 			}
@@ -110,13 +113,15 @@
 		transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
 		will-change: bottom, transform, visibility;
 	}
-	&:hover {
-		.product-card__cta {
-			transform: translateY(0px);
-			visibility: visible;
-			bottom: 60px;
-			transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
-			will-change: bottom, transform, visibility;
+	@media(min-width: 768px) {
+		&:hover {
+			.product-card__cta {
+				transform: translateY(0px);
+				visibility: visible;
+				bottom: 60px;
+				transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
+				will-change: bottom, transform, visibility;
+			}
 		}
 	}
 }
