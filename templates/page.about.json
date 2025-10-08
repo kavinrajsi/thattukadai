@@ -64,7 +64,7 @@
         "image_alt": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop",
         "eyebrow": "About us",
         "title": "Crafting TraditionSince 1955",
-        "body_text": "<p>ThattuKadai C. Velayutha Nadar Sweets is more than a sweets brand  it’s a story of humble beginnings, lasting values, and a taste that generations have loved.</p><p>Our journey began in 1955, when Shri C. Velayutha Nadar and his wife Smt. V. Lakshmi Thai started selling homemade sweets and snacks from a wheel cart in the heart of Sivakasi, Tamil Nadu — a town famous for its firework and safety match industries.</p><p>Locals fondly called it “ThattuKadai”, meaning street-side cart — a name that came to represent simplicity, quality, and unmatched flavour.</p><p>After Shri C. Velayutha Nadar’s passing, the family honored his legacy by officially naming the business ThattuKadai C. Velayutha Nadar Sweets. Today, the brand proudly continues under the guidance of the fourth generation, staying true to the original recipes and values.</p>",
+        "body_text": "<p>In 1955, Shri C. Velayutha Nadar and his wife, V. Lakshmi Thai, began their journey with a simple dream — to share the joy of authentic South Indian sweets and snacks with their community. With nothing more than a humble food cart on the lively streets of Sivakasi — a city famous for its fireworks and safety matches — they crafted every delicacy by hand, using traditional recipes and pure ingredients. Their dedication, honesty, and love for good food soon made their creations a local favourite, turning customers into family.</p><p>As the years passed, their five sons carried forward this legacy, upholding the same values of taste, purity, and tradition. From the crunch of our signature Sivakasi Pakkoda to our wide range of karam savouries bursting with bold flavours, every bite continued to tell the story of our roots.</p><p>Today, as a proud fourth-generation business, C. Velayuthanadar Sweets & Snacks stands as a symbol of trust and tradition. With multiple outlets across Sivakasi and a growing presence beyond, we continue to serve the same love and authenticity that began seven decades ago — one sweet, one savoury, and one smile at a time.</p>",
         "cta_label": "",
         "cta_link": ""
       }
@@ -204,7 +204,7 @@
       "settings": {
         "full_bleed": true,
         "max_width": 1200,
-        "bg_color": "#F5C62E",
+        "bg_color": "#f5c62e",
         "text_color": "#111111",
         "layout": "image-left",
         "radius": 24,
@@ -216,7 +216,7 @@
         "image": "shopify://shop_images/tedt.png",
         "btn_label": "Shop now",
         "btn_link": "shopify://collections/all",
-        "btn_bg": "#FFFFFF",
+        "btn_bg": "#ffffff",
         "btn_text": "#111111"
       }
     }
