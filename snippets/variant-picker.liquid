@@ -95,7 +95,7 @@
             <label class="vp__swatch">
               <input
                 type="radio"
-                class="vp__swatch-input"
+                class="vp__swatch-input vp-swatch-input"
                 name="options[{{ option.name }}]"
                 value="{{ val | escape }}"
                 data-option-index="{{ forloop.parentloop.index0 }}"
@@ -120,7 +120,7 @@
           <label class="vp__button">
             <input
               type="radio"
-              class="vp__button-input"
+              class="vp__button-input vp-swatch-input"
               name="options[{{ option.name }}]"
               value="{{ val | escape }}"
               data-option-index="{{ forloop.parentloop.index0 }}"
@@ -135,7 +135,7 @@
     {%- endif -%}
   {%- endfor -%}
 
-  <script type="application/json" class="vp__variants-json">
+  <script type="application/json" class="vp__variants-json vp-variants-json">
     {
       "options": {{ product.options | json }},
       "variants": [
@@ -154,190 +154,3 @@
     }
   </script>
 </div>
-
-<script>
-  (function() {
-    var root = document.currentScript.previousElementSibling; // the .vp container
-    if (!root || !root.classList.contains('vp')) return;
-
-    // Read variants JSON
-    var jsonEl = root.querySelector('.vp__variants-json');
-    if (!jsonEl) return;
-    var data = JSON.parse(jsonEl.textContent || '{}');
-    var variants = data.variants || [];
-    var optionNames = data.options || [];
-
-    // Elements to update
-    var statusEl = root.previousElementSibling;
-
-    // Money formatting - FIXED VERSION
-    // Hook into product form to set variant id
-    var formId = root.getAttribute('data-form-id');
-    var form = formId ? document.getElementById(formId) : null;
-    var idInput = form ? form.querySelector('input[name="id"]') : null;
-
-    // Helpers
-    function getSelectedOptions() {
-      var result = [];
-      optionNames.forEach(function(name, idx) {
-        var input = root.querySelector('[data-option-index="'+ idx +'"] input[type="radio"]:checked');
-        result[idx] = input ? input.value : '';
-      });
-      return result;
-    }
-
-    function findMatchingVariant(selectedOptions) {
-      for (var i = 0; i < variants.length; i++) {
-        var v = variants[i];
-        if (JSON.stringify(v.options) === JSON.stringify(selectedOptions)) return v;
-      }
-      return null;
-    }
-
-    function syncSelectedLabels() {
-      var groups = root.querySelectorAll('.vp__group');
-      groups.forEach(function(fs) {
-        var idx = fs.getAttribute('data-option-index');
-        var checked = fs.querySelector('input[type="radio"]:checked');
-        var selectedText = fs.querySelector('.vp__selected');
-        if (selectedText) selectedText.textContent = checked ? checked.value : '';
-      });
-    }
-
-    function formatMoney(cents) {
-      if (window.Shopify && typeof Shopify.formatMoney === 'function') {
-        return Shopify.formatMoney(cents);
-      }
-      var amount = (parseInt(cents, 10) || 0) / 100;
-      return '₹' + amount.toFixed(2);
-    }
-
-    function formatMoneyWithoutCurrency(cents) {
-      var formatted = formatMoney(cents);
-      if (!formatted) return '';
-      return formatted.replace(/[^0-9.,-]/g, '').trim();
-    }
-
-    function syncProductDetails(variant) {
-      var priceRoot = document.querySelector('.main-product .product__price .product-price[data-price-mode="variant"]');
-      if (priceRoot) {
-        var showCompare = priceRoot.dataset.showCompare === 'true';
-        var compareStyle = priceRoot.dataset.compareStyle || 'strike';
-        var showDiscount = priceRoot.dataset.showDiscount === 'true';
-        var discountFormat = priceRoot.dataset.discountFormat || 'percent';
-
-        if (!variant || !variant.available) {
-          priceRoot.innerHTML = '<span class="price-unavailable">Unavailable</span>';
-        } else {
-          var onSale = variant.compare_at_price && variant.compare_at_price > variant.price;
-          var htmlParts = [];
-          var priceText = formatMoneyWithoutCurrency(variant.price);
-
-          if (onSale && showCompare) {
-            htmlParts.push(
-              '<span class="sale-price">' +
-                '<span class="price-icon" aria-hidden="true">₹</span>' +
-                '<span class="price-amount">' + priceText + '</span>' +
-              '</span>'
-            );
-
-            if (compareStyle !== 'hidden') {
-              var compareClasses = 'compare-at';
-              if (compareStyle === 'strike') compareClasses += ' is-struck';
-              htmlParts.push(
-                '<span class="' + compareClasses + '">' + formatMoney(variant.compare_at_price) + '</span>'
-              );
-            }
-
-            if (showDiscount) {
-              var savings = Math.max(0, variant.compare_at_price - variant.price);
-              var discountPercent = variant.compare_at_price
-                ? Math.max(0, Math.round((1 - variant.price / variant.compare_at_price) * 100))
-                : 0;
-              var discountText = '';
-              if (discountFormat === 'amount') {
-                discountText = '(Save ' + formatMoney(savings) + ')';
-              } else if (discountFormat === 'both') {
-                discountText = '(Save ' + formatMoney(savings) + ' — ' + discountPercent + '% OFF)';
-              } else {
-                discountText = '(' + discountPercent + '% OFF)';
-              }
-              htmlParts.push('<span class="discount">' + discountText + '</span>');
-            }
-          } else {
-            htmlParts.push(
-              '<span class="price-single">' +
-                '<span class="price-icon" aria-hidden="true">₹</span>' +
-                '<span class="price-amount">' + priceText + '</span>' +
-              '</span>'
-            );
-          }
-
-          priceRoot.innerHTML = htmlParts.join('');
-        }
-      }
-
-      var skuEl = document.querySelector('.main-product #variant-sku');
-      if (skuEl) {
-        skuEl.textContent = variant && variant.sku ? variant.sku : '';
-      }
-    }
-
-    function applyVariant(variant) {
-      if (statusEl) {
-        if (!variant) {
-          statusEl.textContent = 'Please choose a combination.';
-        } else if (!variant.available) {
-          statusEl.textContent = 'Sold out for this combination.';
-        } else {
-          statusEl.textContent = '';
-        }
-      }
-
-      if (idInput && variant) {
-        idInput.value = variant.id;
-        // Trigger change so any theme scripts can react
-        idInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-
-      syncProductDetails(variant);
-
-      // If you have a gallery, you can update using variant.featured_media_id here.
-    }
-
-    function onChange() {
-      syncSelectedLabels();
-      var selected = getSelectedOptions();
-      var match = findMatchingVariant(selected);
-      applyVariant(match);
-
-      if (statusEl) {
-        var msg = match
-          ? (match.available ? 'Variant selected.' : 'Variant selected but unavailable.')
-          : 'No matching variant.';
-        statusEl.setAttribute('aria-live', 'polite');
-        statusEl.textContent = msg;
-      }
-    }
-
-    // Change handler for swatches & buttons
-    root.addEventListener('change', function(e) {
-      if (e.target.matches('.vp__swatch-input, .vp__button-input')) onChange();
-    });
-
-    // Click handler on the visual boxes
-    root.addEventListener('click', function(e) {
-      var box = e.target.closest('.vp__swatch-box, .vp__button-box');
-      if (!box) return;
-      var input = box.previousElementSibling;
-      if (input && input.type === 'radio') {
-        input.checked = true;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    });
-
-    // Initialize
-    syncSelectedLabels();
-    onChange();
-  })();
-</script>

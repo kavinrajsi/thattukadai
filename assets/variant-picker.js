@@ -86,6 +86,15 @@
     return null;
   }
 
+  function updateSelectedLabels($vp) {
+    $vp.find('.vp__group').each(function () {
+      var $group = $(this);
+      var $checked = $group.find('.vp-swatch-input:checked');
+      var text = $checked.length ? $checked.val() : '';
+      $group.find('.vp__selected').text(text);
+    });
+  }
+
   function refreshOptionAvailability($vp, data) {
     var len = data.options.length;
 
@@ -183,6 +192,8 @@
 
     refreshOptionAvailability($vp, data);
 
+    updateSelectedLabels($vp);
+
     var opts = selectedOptions($vp, data.options.length);
     var variant = findVariantByOptions(data, opts);
 
@@ -228,6 +239,8 @@
       var opts = selectedOptions($vp, data.options.length);
       initialVariant = findVariantByOptions(data, opts);
     }
+
+    updateSelectedLabels($vp);
 
     syncMainProductDetails(initialVariant);
   }
