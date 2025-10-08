@@ -98,7 +98,7 @@
             {%- assign current_collection = collections[collection_handle] -%}
             <li>
               <a
-                href="javascript:void(0)"
+                href="{{ link.url }}"
                 data-collection-title="{{ current_collection.title | escape }}"
                 data-collection-handle="{{ current_collection.handle }}"
               >

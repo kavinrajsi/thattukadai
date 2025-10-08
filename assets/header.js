@@ -156,10 +156,8 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on('click', '.mega__body [data-collection-handle]', function (e) {
+  $(document).on('click', '.mega__body [data-collection-handle]', function () {
     console.log('📦 Collection link clicked');
-    e.preventDefault();
-    e.stopPropagation();
     var $link = $(this);
     var handle = $link.data('collection-handle');
     setActiveMenuItem($link);
