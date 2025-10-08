@@ -1,6 +1,6 @@
 /* assets/variant-picker.js (jQuery edition)
    - Works with markup from snippets/variant-picker.liquid (swatches + selects)
-   - Updates price, URL, form hidden input[name="id"], and ATC state
+   - Updates URL, form hidden input[name="id"], and ATC state
    - Disables impossible combos; marks sold-out options
    - Emits jQuery event "vp:variant:change" on window with { variant }
 */
@@ -42,39 +42,6 @@
     if (!$btn.length) return;
     $btn.prop('disabled', !enabled);
     if (ariaText) $btn.attr('aria-label', ariaText);
-  }
-
-  function formatMoney(cents) {
-    if (window.Shopify && typeof Shopify.formatMoney === 'function') {
-      try {
-        var fmt =
-          (window.theme && window.theme.moneyFormat) ||
-          (window.Shopify.currency && Shopify.currency.active && '{{amount_no_decimals}} ' + Shopify.currency.active);
-        return Shopify.formatMoney(cents, fmt);
-      } catch (e) {}
-    }
-    var currency = (window.Shopify && Shopify.currency && Shopify.currency.active) || 'USD';
-    return (cents / 100).toLocaleString(undefined, { style: 'currency', currency: currency });
-  }
-
-  function renderPriceHTML(v) {
-    if (!v) return '';
-    var cmpActive = v.compare_at_price && v.compare_at_price > v.price;
-    var classes = 'price-block';
-    if (cmpActive) classes += ' price-block--on-sale';
-
-    var html = '<span class="' + classes + '">';
-    html += '<span class="price-block__current"><span class="price-block__icon" aria-hidden="true"></span><span class="price-block__amount">' + formatMoney(v.price) + '</span></span>';
-    if (cmpActive) {
-      html += '<s class="price-block__compare">' + formatMoney(v.compare_at_price) + '</s>';
-    }
-    html += '</span>';
-    return html;
-  }
-
-  function updatePrice($vp, v) {
-    var $wrap = $vp.prevAll('.vp__price').first().find('.vp__price-values').first();
-    if ($wrap.length) $wrap.html(renderPriceHTML(v));
   }
 
   function updateStatus($vp, text) {
@@ -223,7 +190,6 @@
     if (variant) {
       setHiddenVariantId($form, variant.id);
       setATCEnabled($form, !!variant.available, variant.available ? 'Add to cart' : 'Sold out');
-      updatePrice($vp, variant);
       updateStatus($vp, variant.available ? '' : 'This combination is currently sold out.');
       updateURL(variant.id);
       emitVariantChange(variant);
@@ -248,7 +214,7 @@
     var $form = $findForm($vp);
     if (initialId) setHiddenVariantId($form, initialId);
 
-    // Initial availability + price
+    // Initial availability sync
     refreshOptionAvailability($vp, data);
 
     var initialVariant = null;
@@ -262,7 +228,6 @@
       var opts = selectedOptions($vp, data.options.length);
       initialVariant = findVariantByOptions(data, opts);
     }
-    if (initialVariant) updatePrice($vp, initialVariant);
   }
 
   // ------------ Wire up ------------

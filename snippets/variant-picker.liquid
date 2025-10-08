@@ -14,13 +14,6 @@
 {%- assign vp_form_id = form_id | default: '' -%}
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
-<div class="vp__price" aria-live="polite">
-  <div class="vp__price-values">
-    {%- render 'price', product: product, variant: current_variant -%}
-  </div>
-  <div class="vp__price-tax">Tax included</div>
-</div>
-
 <div class="vp__status" aria-live="polite"></div>
 
 {%- comment -%}
@@ -176,26 +169,8 @@
 
     // Elements to update
     var statusEl = root.previousElementSibling;
-    var priceContainer = statusEl ? statusEl.previousElementSibling : null;
-    var priceWrap = priceContainer ? priceContainer.querySelector('.vp__price-values') : null;
 
     // Money formatting - FIXED VERSION
-    var moneyFormat = {{ shop.money_format | json }};
-    function formatMoney(cents) {
-      var value = (typeof cents === 'number') ? cents : parseInt(cents || 0, 10);
-      var amount = (value / 100).toFixed(2);
-
-      // Check if moneyFormat contains placeholders that need to be replaced
-      if (moneyFormat.includes('{{amount}}')) {
-        return moneyFormat.replace(/\{\{\s*amount\s*\}\}/g, amount);
-      } else if (moneyFormat.includes('{{ amount }}')) {
-        return moneyFormat.replace(/\{\{\s*amount\s*\}\}/g, amount);
-      } else {
-        // Fallback: assume INR format
-        return '₹' + amount;
-      }
-    }
-
     // Hook into product form to set variant id
     var formId = root.getAttribute('data-form-id');
     var form = formId ? document.getElementById(formId) : null;
@@ -229,26 +204,7 @@
       });
     }
 
-    function renderPriceHTML(variant) {
-      if (!variant) return '';
-      var compareActive = variant.compare_at_price && variant.compare_at_price > variant.price;
-      var classes = 'price-block';
-      if (compareActive) classes += ' price-block--on-sale';
-
-      var html = '<span class="' + classes + '">';
-      html += '<span class="price-block__current">' + formatMoney(variant.price) + '</span>';
-      if (compareActive) {
-        html += '<s class="price-block__compare">' + formatMoney(variant.compare_at_price) + '</s>';
-      }
-      html += '</span>';
-      return html;
-    }
-
     function applyVariant(variant) {
-      if (priceWrap) {
-        priceWrap.innerHTML = variant ? renderPriceHTML(variant) : '';
-      }
-
       if (statusEl) {
         if (!variant) {
           statusEl.textContent = 'Please choose a combination.';

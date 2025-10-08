@@ -315,7 +315,7 @@
   //   openCartDrawer();
   //   $.when(refreshCartDrawer());
   // });
-  $(document).on('click', '.icon-link--bag', function (e) {
+  $(document).on('click', '.header__icon--cart', function (e) {
     e.preventDefault();
     $('#cart-drawer .cart-drawer__body').html(drawerSkeletonHTML());
     openCartDrawer();

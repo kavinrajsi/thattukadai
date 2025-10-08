@@ -17,7 +17,7 @@ body.active-search::before {
 	pointer-events: none;
 }
 
-header {
+.page-header {
 	position: sticky;
 	position: fixed;
 	z-index: 50;
@@ -115,6 +115,8 @@ header {
 			align-items: center;
 			padding: 12px 16px;
 			border-radius: 25px;
+			border: none;
+			cursor: pointer;
 			.header__cart-badge {
 				font: var(--font-500);
 				font-size: 16px;
@@ -288,6 +290,9 @@ header {
 				.header__icon {
 					display: inline-block;
 					padding: 12px 8px;
+					background: none;
+					border: none;
+					cursor: pointer;
 				}
 				.header__icon--search {
 					display: none;

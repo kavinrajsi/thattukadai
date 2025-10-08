@@ -105,13 +105,19 @@
         </span>
       {%- endif -%}
     {%- else -%}
-      <span class="price-single">{{ product.price_min | money }}</span>
+      <span class="price-single">
+        <span class="price-icon" aria-hidden="true"></span>
+        <span class="price-amount">{{ product.price_min | money }}</span>
+      </span>
     {%- endif -%}
 
   {%- else -%}
     {%- if current_variant and current_variant.available -%}
       {%- if is_on_sale and show_compare -%}
-        <span class="sale-price">{{ current_variant.price | money }}</span>
+        <span class="sale-price">
+          <span class="price-icon" aria-hidden="true"></span>
+          <span class="price-amount">{{ current_variant.price | money }}</span>
+        </span>
 
         {%- unless compare_style == 'hidden' -%}
           <span class="compare-at{% if compare_style == 'strike' %} is-struck{% endif %}">
@@ -132,7 +138,10 @@
         {%- endif -%}
 
       {%- else -%}
-        <span class="price-single">{{ current_variant.price | money }}</span>
+        <span class="price-single">
+          <span class="price-icon" aria-hidden="true"></span>
+          <span class="price-amount">{{ current_variant.price | money }}</span>
+        </span>
       {%- endif -%}
     {%- else -%}
       <span class="price-unavailable">Unavailable</span>

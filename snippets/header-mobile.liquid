@@ -36,10 +36,10 @@
     </a>
 
     <nav class="header__nav header__nav--right" aria-label="Utilities">
-      <a class="header__icon header__icon--cart" href="{{ routes.cart_url }}" aria-label="View cart">
+      <button class="header__icon header__icon--cart" type="button" aria-label="View cart">
         {% render 'icon-cart' %}
         <span class="header__cart-badge" data-cart-count aria-label="{{ cart.item_count }} items in cart">{{ cart.item_count }}</span>
-      </a>
+      </button>
     </nav>
   </div>
 

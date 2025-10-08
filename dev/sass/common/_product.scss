@@ -93,7 +93,7 @@
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: -100%;
+		bottom: 19px;
 		transform: translateY(-100%);
 		margin: 0 12px;
 		padding: 8px 32px;
@@ -110,15 +110,13 @@
 		transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
 		will-change: bottom, transform, visibility;
 	}
-	@media (min-with: 768px) and (hover: hover) and (pointer: fine) {
-		&:hover {
-			.product-card__cta {
-				transform: translateY(0px);
-				visibility: visible;
-				bottom: 60px;
-				transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
-				will-change: bottom, transform, visibility;
-			}
+	&:hover {
+		.product-card__cta {
+			transform: translateY(0px);
+			visibility: visible;
+			bottom: 60px;
+			transition: 0.4s all cubic-bezier(0.5, 0, 0, 1);
+			will-change: bottom, transform, visibility;
 		}
 	}
 }

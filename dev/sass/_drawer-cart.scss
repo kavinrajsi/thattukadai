@@ -363,3 +363,25 @@ body.index.drawer-open {
 		}
 	}
 }
+
+
+.cart-drawer__recommendations {
+	display: none;
+
+	.cart-drawer__recommendations-list {
+		display: flex;
+		overflow-y: scroll;
+		gap: 8px;
+		padding: 20px;
+		scroll-snap-align: start;
+		scroll-snap-type: x mandatory;
+		-webkit-overflow-scrolling: touch;
+		img {
+			object-position: center;
+			border-radius: 8px;
+			width: 94px;
+			height: 100px;
+			object-fit: cover;
+		}
+	}
+}
