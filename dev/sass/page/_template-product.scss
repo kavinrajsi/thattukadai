@@ -166,13 +166,14 @@
 				display: none;
 				padding-bottom: 24px;
 			}
-			.vp__price-values {
+			.product__price {
 				display: flex;
 				gap: 4px;
 			}
-			.vp__price {
+			.product-price {
 				padding-bottom: 24px;
-				.price-block__current {
+				.price-block__current ,
+				.price-single {
 					/* Desktop_H4 */
 					font-family: "DM Sans";
 					font-style: normal;

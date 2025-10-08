@@ -71,6 +71,7 @@
                     <span class="predictive-search__title">{{ product.title }}</span>
                     {%- if product.price -%}
                       <span class="predictive-search__price">
+                        <span class="price-icon" aria-hidden="true">₹</span>
                         {%- if product.compare_at_price > product.price -%}
                           <s>{{ product.compare_at_price | money }}</s>
                         {%- endif -%}
@@ -125,6 +126,7 @@
                 <span class="predictive-search__title">{{ product.title }}</span>
                 {%- if product.price -%}
                   <span class="predictive-search__price">
+                    <span class="price-icon" aria-hidden="true">₹</span>
                     {%- if product.compare_at_price > product.price -%}
                       <s>{{ product.compare_at_price | money }}</s>
                     {%- endif -%}
@@ -205,6 +207,7 @@
                   <span class="predictive-search__title">{{ product.title }}</span>
                   {%- if product.price -%}
                     <span class="predictive-search__price">
+                    <span class="price-icon" aria-hidden="true">₹</span>
                       {%- if product.compare_at_price > product.price -%}
                         <s>{{ product.compare_at_price | money }}</s>
                       {%- endif -%}

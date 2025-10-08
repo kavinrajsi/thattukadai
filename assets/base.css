@@ -3600,14 +3600,15 @@ body.template-product .footer {
   display: none;
   padding-bottom: 24px;
 }
-.template-product .main-product .product__info-col .vp__price-values {
+.template-product .main-product .product__info-col .product__price {
   display: flex;
   gap: 4px;
 }
-.template-product .main-product .product__info-col .vp__price {
+.template-product .main-product .product__info-col .product-price {
   padding-bottom: 24px;
 }
-.template-product .main-product .product__info-col .vp__price .price-block__current {
+.template-product .main-product .product__info-col .product-price .price-block__current,
+.template-product .main-product .product__info-col .product-price .price-single {
   /* Desktop_H4 */
   font-family: "DM Sans";
   font-style: normal;
@@ -3618,7 +3619,7 @@ body.template-product .footer {
   /* Neutral/Black1 */
   color: #0b090a;
 }
-.template-product .main-product .product__info-col .vp__price .price-block__compare {
+.template-product .main-product .product__info-col .product-price .price-block__compare {
   /* Desktop_H4 */
   font-family: "DM Sans";
   font-style: normal;
@@ -3631,7 +3632,7 @@ body.template-product .footer {
   text-decoration: line-through;
   font-size: small;
 }
-.template-product .main-product .product__info-col .vp__price .vp__price-tax {
+.template-product .main-product .product__info-col .product-price .vp__price-tax {
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 400;
@@ -5497,7 +5498,7 @@ body.template-product .footer {
   margin: 0 auto;
 }
 
-.price-single .price-icon {
+.price-icon {
   font-family: "Neilvard One", system-ui;
 }
 /*# sourceMappingURL=base.css.map */

@@ -16,15 +16,16 @@
 
       <div class="product__info-col">
         <h1 class="product__title">{{ product.title }}</h1>
-        <div class="product__price">
-          {% render 'product-price', product: product, current_variant: product.selected_or_first_available_variant %}
-        </div>
 
         {% if product.description != blank and section.settings.show_description %}
           <div class="product__description rte">
             {{ product.description }}
           </div>
         {% endif %}
+
+        <div class="product__price">
+          {% render 'product-price', product: product, current_variant: product.selected_or_first_available_variant %}
+        </div>
 
         <div class="product__meta">
           <p class="product__sku">

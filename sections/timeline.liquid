@@ -116,7 +116,7 @@
     /* ---- Card ---- */
     #tl-{{ section.id }} .tl-card{
       display:grid; gap:1rem; align-items:center;
-      grid-template-columns: {{ section.settings.image_first | default: true | ternary: 'min(420px, 45%) 1fr', '1fr' }};
+      {% comment %} grid-template-columns: {{ section.settings.image_first  | ternary: 'min(420px, 45%) 1fr', '1fr' }}; {% endcomment %}
       background: rgb(0 0 0 / 0.03);
       border-radius:.5rem;
       padding:1rem;
