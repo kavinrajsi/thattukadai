@@ -103,19 +103,31 @@
                 <div class="cart-col price-col unit-price">
                   {% assign orig = item.original_price | plus: 0 %}
                   {% assign disc = item.final_price | plus: 0 %}
+                  {% assign has_discount = false %}
                   {% if orig > disc %}
-                    <span class="original-price" style="text-decoration: line-through; color:#999;">
-                      {{ item.original_price | money }}
-                    </span>
-                    <span class="discounted-price" style="color:#e53935; font-weight:bold; margin-left:8px;">
-                      {{ item.final_price | money }} </span
-                    ><br>
-                    <span class="discount-label" style="color:#388e3c; font-size:0.9em; margin-left:8px;">
+                    {% assign has_discount = true %}
+                  {% endif %}
+                  <span class="product-price" data-price-mode="variant">
+                    {% if has_discount %}
+                      <span class="sale-price">
+                        <span class="price-icon" aria-hidden="true">₹</span>
+                        <span class="price-amount">
+                          <span class="icon-currency">{{ item.final_price | money }}</span>
+                        </span>
+                      </span>
+                      <span class="compare-at is-struck">{{ item.original_price | money }}</span>
+                    {% else %}
+                      <span class="price-single">
+                        <span class="price-icon" aria-hidden="true">₹</span>
+                        <span class="price-amount">
+                          <span class="icon-currency">{{ item.final_price | money }}</span>
+                        </span>
+                      </span>
+                    {% endif %}
+                  </span>
+                  {% if has_discount %}
+                    <span class="discount-label">
                       (You save {{ item.original_price | minus: item.final_price | money }})
-                    </span>
-                  {% else %}
-                    <span class="regular-price">
-                      {{ item.final_price | money }}
                     </span>
                   {% endif %}
                 </div>
@@ -142,19 +154,34 @@
               </div>
 
               <div class="cart-col total-col line-total line-total-col">
-                {% if item.original_line_price > item.line_price %}
-                  <span class="original-price" style="text-decoration: line-through; color:#999;">
-                    {{ item.original_line_price | money }}
-                  </span>
-                  <span class="discounted-price" style="color:#e53935; font-weight:bold; margin-left:8px;">
-                    {{ item.line_price | money }}
-                  </span>
-                  <br>
-                  <span class="discount-label" style="color:#388e3c; font-size:0.9em; margin-left:8px;">
+                {% assign orig_total = item.original_line_price | plus: 0 %}
+                {% assign final_total = item.line_price | plus: 0 %}
+                {% assign has_total_discount = false %}
+                {% if orig_total > final_total %}
+                  {% assign has_total_discount = true %}
+                {% endif %}
+                <span class="product-price" data-price-mode="total">
+                  {% if has_total_discount %}
+                    <span class="sale-price">
+                      <span class="price-icon" aria-hidden="true">₹</span>
+                      <span class="price-amount">
+                        <span class="icon-currency">{{ item.line_price | money }}</span>
+                      </span>
+                    </span>
+                    <span class="compare-at is-struck">{{ item.original_line_price | money }}</span>
+                  {% else %}
+                    <span class="price-single">
+                      <span class="price-icon" aria-hidden="true">₹</span>
+                      <span class="price-amount">
+                        <span class="icon-currency">{{ item.line_price | money }}</span>
+                      </span>
+                    </span>
+                  {% endif %}
+                </span>
+                {% if has_total_discount %}
+                  <span class="discount-label">
                     (You save {{ item.original_line_price | minus: item.line_price | money }})
                   </span>
-                {% else %}
-                  <span class="regular-price">{{ item.line_price | money }}</span>
                 {% endif %}
               </div>
             </div>

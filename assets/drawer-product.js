@@ -62,21 +62,39 @@
   function updatePrice() {
     var v = state.selectedVariant;
     if (!v) {
-      $priceEl.empty();
+      $priceEl.html(
+        '<span class="product-price" data-price-mode="variant">' +
+          '<span class="price-single">' +
+            '<span class="price-icon" aria-hidden="true">₹</span>' +
+            '<span class="price-amount">—</span>' +
+          '</span>' +
+        '</span>'
+      );
       return;
     }
 
-    if (v.compare_at_price && v.compare_at_price > v.price) {
+    var currentMoney = money(v.price);
+    var compareMoney = v.compare_at_price && v.compare_at_price > v.price ? money(v.compare_at_price) : null;
+
+    if (compareMoney) {
       $priceEl.html(
-        '<span class="product-drawer__price-current">' +
-          money(v.price) +
-          '</span> ' +
-          '<s class="product-drawer__price-compare">' +
-          money(v.compare_at_price) +
-          '</s>'
+        '<span class="product-price" data-price-mode="variant">' +
+          '<span class="sale-price">' +
+            '<span class="price-icon" aria-hidden="true">₹</span>' +
+            '<span class="price-amount">' + currentMoney + '</span>' +
+          '</span>' +
+          '<span class="compare-at is-struck">' + compareMoney + '</span>' +
+        '</span>'
       );
     } else {
-      $priceEl.html('<span class="product-drawer__price-current">' + money(v.price) + '</span>');
+      $priceEl.html(
+        '<span class="product-price" data-price-mode="variant">' +
+          '<span class="price-single">' +
+            '<span class="price-icon" aria-hidden="true">₹</span>' +
+            '<span class="price-amount">' + currentMoney + '</span>' +
+          '</span>' +
+        '</span>'
+      );
     }
   }
 

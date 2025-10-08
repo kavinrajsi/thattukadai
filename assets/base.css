@@ -3974,6 +3974,62 @@ body.template-product .footer {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
+.template-cart .cart-page .unit-price .product-price,
+.template-cart .cart-page .line-total-col .product-price {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+.template-cart .cart-page .unit-price .price-single,
+.template-cart .cart-page .unit-price .sale-price,
+.template-cart .cart-page .line-total-col .price-single,
+.template-cart .cart-page .line-total-col .sale-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.template-cart .cart-page .unit-price .price-icon,
+.template-cart .cart-page .line-total-col .price-icon {
+  display: inline-flex;
+  font: var(--font-600);
+  font-size: 16px;
+  line-height: 20px;
+  color: #2a2a2a;
+}
+.template-cart .cart-page .unit-price .price-amount,
+.template-cart .cart-page .line-total-col .price-amount {
+  font: var(--font-600);
+  font-size: 16px;
+  line-height: 20px;
+  color: #2a2a2a;
+}
+.template-cart .cart-page .unit-price .price-amount .icon-currency,
+.template-cart .cart-page .line-total-col .price-amount .icon-currency {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.template-cart .cart-page .unit-price .compare-at,
+.template-cart .cart-page .line-total-col .compare-at {
+  font: var(--font-500);
+  font-size: 14px;
+  line-height: 18px;
+  color: #9e9e9e;
+}
+.template-cart .cart-page .unit-price .compare-at.is-struck,
+.template-cart .cart-page .line-total-col .compare-at.is-struck {
+  text-decoration: line-through;
+}
+.template-cart .cart-page .unit-price .discount-label,
+.template-cart .cart-page .line-total-col .discount-label {
+  display: block;
+  margin-top: 4px;
+  font: var(--font-500);
+  font-size: 12px;
+  line-height: 16px;
+  color: #388e3c;
+}
 @media (min-width: 568px) {
   .template-cart .cart-page .product-col {
     flex: 1 0 314px;
@@ -5414,108 +5470,7 @@ body.template-product .footer {
   margin: 0 auto;
 }
 
-.video-snippet {
-  background: #f6ca30;
-  position: relative;
-  margin-top: 120px;
-  padding-top: 40px;
-  padding-bottom: 80px;
-  z-index: 0;
-  /* Make SVGs fluid */
-  /* Show mobile by default, swap at breakpoint */
-}
-.video-snippet .section-divider {
-  position: absolute;
-  top: -80px;
-  z-index: 1;
-  left: 0;
-  right: 0;
-  line-height: 0; /* remove stray gaps */
-  --divider-color: #f6ca30; /* default color */
-  color: var(--divider-color);
-}
-.video-snippet .section-divider__svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.video-snippet .section-divider__svg--desktop {
-  display: none;
-}
-.video-snippet .section-divider__svg--mobile {
-  display: block;
-}
-@media (min-width: 768px) {
-  .video-snippet .section-divider__svg--desktop {
-    display: block;
-  }
-  .video-snippet .section-divider__svg--mobile {
-    display: none;
-  }
-}
-.video-snippet .video-snippet__header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding-bottom: 40px;
-  padding-bottom: 80px;
-}
-.video-snippet .video-snippet__header .video-snippet__chip {
-  padding: 8px 32px;
-  /* Neutral/White1 */
-  background: #ffffff;
-  border-radius: 50px;
-  /* Inside auto layout */
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-  /* Desktop_B2 */
-  font-family: "DM Sans";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 16px;
-  /* identical to box height, or 114% */
-  /* Neutral/Black2 */
-  color: #161a1d;
-  margin-bottom: 16px;
-}
-.video-snippet .video-snippet__header .video-snippet__title {
-  font-family: "Neilvard One";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 24px;
-  text-align: center;
-  /* Neutral/Black2 */
-  color: #161a1d;
-}
-.video-snippet .video-snippet__videos {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(4, 1fr);
-}
-.video-snippet .video-snippet__videos video {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 9/16;
-}
-
-/* Tablet & mobile: make it horizontal scroll */
-@media (max-width: 1024px) {
-  .video-snippet__videos {
-    display: flex;
-    overflow-x: auto;
-    gap: 16px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 0 10px;
-  }
-  .video-snippet__videos video {
-    flex: 0 0 auto;
-    width: 250px; /* adjust to your design */
-    scroll-snap-align: start;
-  }
+.price-single .price-icon {
+  font-family: "Neilvard One", system-ui;
 }
 /*# sourceMappingURL=base.css.map */

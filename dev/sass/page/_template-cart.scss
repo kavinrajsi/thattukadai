@@ -163,6 +163,56 @@
 				}
 			}
 		}
+		.unit-price,
+		.line-total-col {
+			.product-price {
+				display: inline-flex;
+				flex-direction: column;
+				gap: 4px;
+				align-items: flex-start;
+			}
+			.price-single,
+			.sale-price {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+			}
+			.price-icon {
+				display: inline-flex;
+				font: var(--font-600);
+				font-size: 16px;
+				line-height: 20px;
+				color: #2a2a2a;
+			}
+			.price-amount {
+				font: var(--font-600);
+				font-size: 16px;
+				line-height: 20px;
+				color: #2a2a2a;
+				.icon-currency {
+					display: inline-flex;
+					align-items: baseline;
+					gap: 4px;
+				}
+			}
+			.compare-at {
+				font: var(--font-500);
+				font-size: 14px;
+				line-height: 18px;
+				color: #9e9e9e;
+				&.is-struck {
+					text-decoration: line-through;
+				}
+			}
+			.discount-label {
+				display: block;
+				margin-top: 4px;
+				font: var(--font-500);
+				font-size: 12px;
+				line-height: 16px;
+				color: #388e3c;
+			}
+		}
 		.product-col {
 			// background-color: orange;
 			@media (min-width: 568px) {
