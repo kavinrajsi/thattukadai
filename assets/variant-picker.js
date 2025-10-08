@@ -64,7 +64,7 @@
     if (cmpActive) classes += ' price-block--on-sale';
 
     var html = '<span class="' + classes + '">';
-    html += '<span class="price-block__current">' + formatMoney(v.price) + '</span>';
+    html += '<span class="price-block__current"><span class="price-block__icon" aria-hidden="true"></span><span class="price-block__amount">' + formatMoney(v.price) + '</span></span>';
     if (cmpActive) {
       html += '<s class="price-block__compare">' + formatMoney(v.compare_at_price) + '</s>';
     }

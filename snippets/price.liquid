@@ -27,7 +27,10 @@
 
 <span class="{{ price_classes }}">
   {%- if price_value -%}
-    <span class="price-block__current">{{ price_value | money }}</span>
+    <span class="price-block__current">
+      <span class="price-block__icon" aria-hidden="true"></span>
+      <span class="price-block__amount">{{ price_value | money }}</span>
+    </span>
   {%- endif -%}
   {%- if has_compare -%}
     <s class="price-block__compare">{{ compare_value | money }}</s>
