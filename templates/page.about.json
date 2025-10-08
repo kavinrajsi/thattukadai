@@ -80,9 +80,7 @@
             "image": "shopify://shop_images/1970.png",
             "image_alt": "",
             "title": "1st Outlet Opened",
-            "text": "",
-            "link_url": "",
-            "link_text": ""
+            "text": ""
           }
         },
         "entry_RkRV3D": {
@@ -93,9 +91,7 @@
             "image": "shopify://shop_images/1994.png",
             "image_alt": "1994",
             "title": "2nd Outlet Opened",
-            "text": "",
-            "link_url": "",
-            "link_text": ""
+            "text": ""
           }
         },
         "entry_geczHK": {
@@ -106,9 +102,7 @@
             "image": "shopify://shop_images/2000.png",
             "image_alt": "2000",
             "title": "3rd Outlet Opened",
-            "text": "",
-            "link_url": "",
-            "link_text": ""
+            "text": ""
           }
         },
         "entry_qBJMWY": {
@@ -119,9 +113,7 @@
             "image": "shopify://shop_images/2011.png",
             "image_alt": "2011",
             "title": "4th Outlet Opened",
-            "text": "",
-            "link_url": "",
-            "link_text": ""
+            "text": ""
           }
         },
         "entry_9DFCFV": {
@@ -132,9 +124,7 @@
             "image": "shopify://shop_images/2013.png",
             "image_alt": "2013",
             "title": "5th Outlet Opened",
-            "text": "<p>Short description.</p>",
-            "link_url": "",
-            "link_text": ""
+            "text": "<p>Short description.</p>"
           }
         }
       },
@@ -145,11 +135,11 @@
         "entry_qBJMWY",
         "entry_9DFCFV"
       ],
+      "disabled": true,
       "name": "Timeline Carousel",
       "settings": {
         "heading": "Our Story",
         "aria_label": "Product history timeline",
-        "cards_per_view": 1,
         "slide_padding": "1rem",
         "image_first": true
       }
