@@ -86,7 +86,14 @@
   {%- endif -%}
 {%- endif -%}
 
-<span class="product-price" data-price-mode="{{ mode }}">
+<span
+  class="product-price"
+  data-price-mode="{{ mode }}"
+  data-show-compare="{{ show_compare }}"
+  data-show-discount="{{ show_discount }}"
+  data-discount-format="{{ discount_format }}"
+  data-compare-style="{{ compare_style }}"
+>
   {%- if mode == 'range' -%}
     {%- if product.price_min != product.price_max -%}
       {%- if show_from -%}
@@ -107,7 +114,7 @@
     {%- else -%}
       <span class="price-single">
         <span class="price-icon" aria-hidden="true">₹</span>
-        <span class="price-amount">{{ product.price_min | money }}</span>
+        <span class="price-amount">{{ product.price_min | money_without_currency }}</span>
       </span>
     {%- endif -%}
 
@@ -116,7 +123,7 @@
       {%- if is_on_sale and show_compare -%}
         <span class="sale-price">
           <span class="price-icon" aria-hidden="true">₹</span>
-          <span class="price-amount">{{ current_variant.price | money }}</span>
+          <span class="price-amount">{{ current_variant.price | money_without_currency }}</span>
         </span>
 
         {%- unless compare_style == 'hidden' -%}
@@ -140,7 +147,7 @@
       {%- else -%}
         <span class="price-single">
           <span class="price-icon" aria-hidden="true">₹</span>
-          <span class="price-amount">{{ current_variant.price | money }}</span>
+          <span class="price-amount">{{ current_variant.price | money_without_currency }}</span>
         </span>
       {%- endif -%}
     {%- else -%}

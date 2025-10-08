@@ -9,9 +9,18 @@
   aria-label="{{ section.settings.aria_label | default: 'Product history timeline' }}"
 >
   <div class="timeline__inner page-width">
-    {% if section.settings.heading != blank %}
-      <h2 class="timeline__heading">{{ section.settings.heading }}</h2>
-    {% endif %}
+    <div class="image-content__header">
+      <div class="image-content__eyebrow-wrapper">
+        <span class="image-content__eyebrow">Our Growth Timeline</span>
+      </div>
+
+      <div class="image-content__title-wrapper">
+        <h2 id="image-content__title-{{ section.id }}" class="image-content__title">
+          Over the decades, we’ve expanded steadily across Sivakasi while preserving our roots:
+        </h2>
+        <p>Each outlet continues to serve the same authentic taste, made with care, tradition, and integrity.</p>
+      </div>
+    </div>
 
     <!-- Year buttons (jump to card) -->
     <div class="timeline__years" role="tablist" aria-label="Years">

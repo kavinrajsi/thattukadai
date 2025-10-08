@@ -1,0 +1,150 @@
+{% comment %}
+  Section: Image and content (content outside)
+  - Uses BEM naming
+  - All <source media> elements removed (single <img> only)
+{% endcomment %}
+
+{%- assign desktop = section.settings.desktop_image -%}
+{%- assign mobile = section.settings.mobile_image | default: desktop -%}
+{%- assign alt_text = section.settings.image_alt | default: desktop.alt -%}
+
+{%- assign mods = '' -%}
+{%- assign mods = mods | append: ' image-content--width-' | append: section.settings.width -%}
+{%- assign mods = mods | append: ' image-content--position-' | append: section.settings.position -%}
+{%- assign mods = mods | append: ' image-content--placement-' | append: section.settings.placement -%}
+{%- assign mods = mods | append: ' image-content--placement-mobile-' | append: section.settings.placement_mobile -%}
+
+<section
+  class="image-content{{ mods }}"
+  aria-labelledby="image-content__title-{{ section.id }}"
+  style="
+    --pt: {{ section.settings.padding_top_desktop | default: 80 }}px;
+    --pb: {{ section.settings.padding_bottom_desktop | default: 80 }}px;
+    --pt-m: {{ section.settings.padding_top_mobile | default: 40 }}px;
+    --pb-m: {{ section.settings.padding_bottom_mobile | default: 40 }}px;
+  "
+>
+  <div class="layout__grid-box image-content-Outside">
+    <figure class="image-content__media" style="--aspect-ratio: {{ desktop.aspect_ratio }};">
+      {% if desktop != blank %}
+        <a class="image-content__cta" href="{{ section.settings.cta_link }}">
+          <img
+            class="image-content__image"
+            src="{{ desktop | image_url: width: 1600 }}"
+            alt="{{ alt_text | escape }}"
+            width="{{ desktop.width }}"
+            height="{{ desktop.height }}"
+            loading="lazy"
+            decoding="async"
+          >
+        </a>
+      {% endif %}
+    </figure>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image",
+  "tag": "section",
+  "class": "image",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "default": "narrow",
+      "options": [
+        { "value": "narrow", "label": "Contained (max-width)" },
+        { "value": "full", "label": "Full width" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Vertical position",
+      "default": "middle",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "placement",
+      "label": "Placement (desktop)",
+      "default": "image-first",
+      "options": [
+        { "value": "image-first", "label": "Image first" },
+        { "value": "image-second", "label": "Image second" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "placement_mobile",
+      "label": "Placement (mobile)",
+      "default": "image-first",
+      "options": [
+        { "value": "image-first", "label": "Image first" },
+        { "value": "image-second", "label": "Image second" }
+      ]
+    },
+
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "desktop_image", "label": "Desktop image" },
+    { "type": "image_picker", "id": "mobile_image", "label": "Mobile image (optional)" },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "VS Thattukadai snack packs with bowls of mixture and thattai on a red tabletop"
+    },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "blocks": [],
+  "presets": [{ "name": "Image", "category": "Image" }]
+}
+{% endschema %}

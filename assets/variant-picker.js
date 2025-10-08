@@ -228,6 +228,8 @@
       var opts = selectedOptions($vp, data.options.length);
       initialVariant = findVariantByOptions(data, opts);
     }
+
+    syncMainProductDetails(initialVariant);
   }
 
   // ------------ Wire up ------------
@@ -250,8 +252,107 @@
   };
 })(jQuery, window, document);
 
+function formatMoney(cents) {
+  if (window.Shopify && typeof Shopify.formatMoney === 'function') {
+    return Shopify.formatMoney(cents);
+  }
+  var amount = (parseInt(cents, 10) || 0) / 100;
+  return '₹' + amount.toFixed(2);
+}
+
+function formatMoneyWithoutCurrency(cents) {
+  var formatted = formatMoney(cents);
+  if (!formatted) return '';
+  return formatted.replace(/[^0-9.,-]/g, '').trim();
+}
+
+function syncMainProductDetails(variant) {
+  var $section = $('.main-product');
+  if (!$section.length) return;
+
+  var $price = $section.find('.product__price .product-price[data-price-mode="variant"]');
+  if ($price.length) {
+    var showCompare = String($price.data('show-compare')) === 'true';
+    var compareStyle = String($price.data('compare-style') || 'strike');
+    var showDiscount = String($price.data('show-discount')) === 'true';
+    var discountFormat = String($price.data('discount-format') || 'percent');
+
+    if (!variant || !variant.available) {
+      $price.html('<span class="price-unavailable">Unavailable</span>');
+    } else {
+      var onSale = variant.compare_at_price && variant.compare_at_price > variant.price;
+      var priceText = formatMoneyWithoutCurrency(variant.price);
+      var htmlParts = [];
+
+      if (onSale && showCompare) {
+        htmlParts.push(
+          '<span class="sale-price">' +
+            '<span class="price-icon" aria-hidden="true">₹</span>' +
+            '<span class="price-amount">' +
+            priceText +
+            '</span>' +
+          '</span>'
+        );
+
+        if (compareStyle !== 'hidden') {
+          var compareClasses = 'compare-at';
+          if (compareStyle === 'strike') {
+            compareClasses += ' is-struck';
+          }
+          htmlParts.push(
+            '<span class="' +
+              compareClasses +
+              '">' +
+              formatMoney(variant.compare_at_price) +
+            '</span>'
+          );
+        }
+      } else {
+        htmlParts.push(
+          '<span class="price-single">' +
+            '<span class="price-icon" aria-hidden="true">₹</span>' +
+            '<span class="price-amount">' +
+            priceText +
+            '</span>' +
+          '</span>'
+        );
+      }
+
+      if (onSale && showDiscount && showCompare && variant.compare_at_price) {
+        var savingsAmount = Math.max(0, variant.compare_at_price - variant.price);
+        var discountPercent = variant.compare_at_price
+          ? Math.max(0, Math.round((1 - variant.price / variant.compare_at_price) * 100))
+          : 0;
+        var discountText = '';
+
+        if (discountFormat === 'amount') {
+          discountText = '(Save ' + formatMoney(savingsAmount) + ')';
+        } else if (discountFormat === 'both') {
+          discountText =
+            '(Save ' + formatMoney(savingsAmount) + ' — ' + discountPercent + '% OFF)';
+        } else {
+          discountText = '(' + discountPercent + '% OFF)';
+        }
+
+        htmlParts.push('<span class="discount">' + discountText + '</span>');
+      }
+
+      $price.html(htmlParts.join(''));
+    }
+  }
+
+  var $sku = $section.find('#variant-sku');
+  if ($sku.length) {
+    $sku.text(variant && variant.sku ? variant.sku : '');
+  }
+}
+
 $(window).on('vp:variant:change', function (e, payload) {
-  var v = payload.variant;
+  payload = payload || {};
+  var v = payload.variant || null;
+
+  syncMainProductDetails(v);
+
   if (!v || !v.featured_media_id) return;
   // Example: slide to the variant's featured image
   var $slides = $('.pm-main-swiper .swiper-slide');
