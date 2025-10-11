@@ -5164,7 +5164,7 @@ body.template-product .footer {
   height: 340px;
   border: none;
   border-radius: 20px;
-  padding-bottom: 40px;
+  /* padding-bottom: 40px; */
   border: 6px solid #ffffff;
 }
 .template-page.contact .contact-map iframe {
