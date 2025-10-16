@@ -161,7 +161,7 @@
         "gap": 24,
         "title": "READY TO SHOP",
         "body": "<p>Find your traditional sweets and savouries here.</p>",
-        "image": "shopify://shop_images/tedt.png",
+        "image": "shopify://shop_images/vsthattukadai-ready-to-shop.webp",
         "btn_label": "Shop now",
         "btn_link": "shopify://collections/all",
         "btn_bg": "#ffffff",
