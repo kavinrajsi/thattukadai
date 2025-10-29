@@ -48,7 +48,7 @@
       "settings": {
         "eyebrow": "Our Best Sellers",
         "heading": "South India's most-loved snacks!",
-        "source": "manual",
+        "source": "collection",
         "collection": "savouries",
         "product_limit": 8
       }
