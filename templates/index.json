@@ -48,8 +48,8 @@
       "settings": {
         "eyebrow": "Our Best Sellers",
         "heading": "South India's most-loved snacks!",
-        "source": "collection",
-        "collection": "chips",
+        "source": "manual",
+        "collection": "savouries",
         "product_limit": 8
       }
     },
