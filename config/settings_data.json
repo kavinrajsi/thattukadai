@@ -44,10 +44,23 @@
               "enableDismiss": false,
               "showOnlyOnHome": false
             }
+          },
+          "bar_KW97AW": {
+            "type": "bar",
+            "settings": {
+              "message": "<ul><li>Free shipping over $50</li><li>30-day returns</li></ul>",
+              "useMarquee": true,
+              "scrollAmount": 10,
+              "bgColor": "#111827",
+              "textColor": "#ffffff",
+              "enableDismiss": true,
+              "showOnlyOnHome": false
+            }
           }
         },
         "block_order": [
-          "bar_QW6HeT"
+          "bar_QW6HeT",
+          "bar_KW97AW"
         ],
         "settings": {
           "enableAnnouncement": true,
@@ -170,18 +183,6 @@
         "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
         "disabled": false,
         "settings": {}
-      },
-      "7079518687644006178": {
-        "type": "shopify://apps/checkout-blocks/blocks/app-embed/b0024ca5-9de8-4bf0-a92f-cd0783877ae2",
-        "disabled": false,
-        "settings": {
-          "utm_id": true,
-          "utm_source": true,
-          "utm_medium": true,
-          "utm_campaign": true,
-          "utm_term": true,
-          "ref": true
-        }
       },
       "15683396631634586217": {
         "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
