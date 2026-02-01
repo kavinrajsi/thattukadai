@@ -131,7 +131,7 @@
     <script defer src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
-    {% comment %} {% render 'social-meta-tags' %} {% endcomment %}
+    {% render 'social-meta-tags' %}
 
     {{ content_for_header }}
   </head>
@@ -157,7 +157,7 @@
 
     <script type="application/ld+json">
       {
-        "@context": "http://schema.org",
+        "@context": "https://schema.org",
         "@type": "WebSite",
         "name": {{ shop.name | json }},
         "potentialAction": {
@@ -170,11 +170,11 @@
     </script>
     <script type="application/ld+json">
       {
-        "@context": "http://schema.org",
+        "@context": "https://schema.org",
         "@type": "Organization",
         "name": {{ shop.name | json }},
         {% if settings.brand_logo != blank %}
-        "logo": "",
+        "logo": {{ settings.brand_logo | image_url: width: 600 | json }},
         {% endif %}
         "sameAs": [
           {{ settings.social_twitter_link | json }},

@@ -10,27 +10,24 @@
 		margin-bottom: 40px;
 
 		.bestsellers__eyebrow {
-			font-family: "DM Sans";
 			font-style: normal;
 			font-weight: 600;
 			font-size: 14px;
 			line-height: 16px;
-			color: #161a1d;
+			color: var(--color-black2);
 			padding: 8px 32px;
-			/* Primary/Yellow */
-			background: #fad75f;
+			background: var(--color-yellow1);
 			border-radius: 50px;
 		}
 
 		.bestsellers__title {
-			font-family: "Neilvard One";
+			font-family: var(--font-heading-1);
 			font-style: normal;
 			font-weight: 400;
 			font-size: 24px;
 			line-height: 24px;
 			text-align: center;
-			/* Neutral/Black2 */
-			color: #161a1d;
+			color: var(--color-black2);
 		}
 	}
 
@@ -40,6 +37,13 @@
 
 		&.is-initialized {
 			opacity: 1;
+		}
+
+		// Fallback horizontal scroll layout when Flickity fails to load
+		&.is-initialized:not(.flickity-enabled) {
+			display: flex;
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
 		}
 	}
 
@@ -56,6 +60,11 @@
 		}
 		@media (min-width: 1024px) {
 			width: 25%;
+		}
+
+		// Prevent items from shrinking in fallback scroll layout
+		.bestsellers__list.is-initialized:not(.flickity-enabled) & {
+			flex-shrink: 0;
 		}
 	}
 
@@ -87,23 +96,22 @@
 		display: flex;
 		align-items: center;
 
-		/* position dots up a bit */
 		.flickity-page-dots {
-		position: static;
-		margin: 0;
-		max-width: 930px;
-		text-align: left;
+			position: static;
+			margin: 0;
+			max-width: 930px;
+			text-align: left;
 			.dot {
 				height: 4px;
 				margin: 0;
 				border-radius: 0;
-				background-color: #d3d3d3;
+				background-color: var(--color-white3);
 				width: 8%;
 				@media (min-width: 480px) {
 					width: 10%;
 				}
 				&.is-selected {
-					background-color: #f6ca30;
+					background-color: var(--color-yellow2);
 				}
 			}
 		}

@@ -11,6 +11,7 @@
         type="button"
         aria-label="Shop"
         aria-controls="mobile-menu-panel"
+        aria-expanded="false"
         data-mobile-menu-button
       >
         <div class="menu-icon__line menu-icon__line--top"></div>
@@ -79,6 +80,8 @@
       </div>
     {%- endif -%}
 
-    <a class="mega__cta" href="/pages/contact">Contact Us</a>
+    {%- if section.settings.cta_link != blank -%}
+      <a class="mega__cta" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label | default: 'Contact Us' }}</a>
+    {%- endif -%}
   </div>
 </div>

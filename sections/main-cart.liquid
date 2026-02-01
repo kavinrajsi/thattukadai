@@ -331,7 +331,27 @@
               {% endfor %}
             </div>
           </div>
-          <div class="cart-recs__list" data-cart-recs-list></div>
+          <div class="cart-recs__slider" data-cart-recs-slider>
+            <button
+              class="cart-recs__nav cart-recs__nav--prev"
+              type="button"
+              data-cart-recs-prev
+              aria-label="Show previous recommended products"
+              disabled
+            >
+              &lsaquo;
+            </button>
+            <div class="cart-recs__track" data-cart-recs-list></div>
+            <button
+              class="cart-recs__nav cart-recs__nav--next"
+              type="button"
+              data-cart-recs-next
+              aria-label="Show more recommended products"
+              disabled
+            >
+              &rsaquo;
+            </button>
+          </div>
         </div>
       {% endif %}
     {% endif %}
@@ -378,7 +398,10 @@
         return;
       }
 
+      const slider = container.querySelector('[data-cart-recs-slider]');
       const list = container.querySelector('[data-cart-recs-list]');
+      const prevBtn = container.querySelector('[data-cart-recs-prev]');
+      const nextBtn = container.querySelector('[data-cart-recs-next]');
       const loading = container.querySelector('.cart-recs__loading');
 
       const money = (cents) => {
@@ -391,7 +414,52 @@
         return '₹' + amount.toFixed(2);
       };
 
-      fetch('/recommendations/products.json?product_id=' + encodeURIComponent(productId) + '&limit=4')
+      const setupSlider = () => {
+        if (!slider || !list) return;
+
+        const updateNav = () => {
+          if (!prevBtn || !nextBtn) return;
+          const slides = list.querySelectorAll('.cart-recs__slide');
+          const hasSlides = slides.length > 0;
+          const maxScroll = Math.max(0, list.scrollWidth - list.clientWidth);
+          const hasOverflow = maxScroll > 4;
+          const showNav = hasSlides && hasOverflow;
+
+          prevBtn.classList.toggle('is-hidden', !showNav);
+          nextBtn.classList.toggle('is-hidden', !showNav);
+          prevBtn.disabled = !showNav || list.scrollLeft <= 4;
+          nextBtn.disabled = !showNav || list.scrollLeft >= maxScroll - 4;
+        };
+
+        const scrollByDistance = (direction) => {
+          const distance = list.clientWidth || 0;
+          if (!distance) return;
+          list.scrollBy({ left: distance * direction, behavior: 'smooth' });
+        };
+
+        if (!slider.dataset.sliderInit) {
+          slider.dataset.sliderInit = 'true';
+          if (prevBtn) {
+            prevBtn.addEventListener('click', () => scrollByDistance(-1));
+          }
+          if (nextBtn) {
+            nextBtn.addEventListener('click', () => scrollByDistance(1));
+          }
+          list.addEventListener(
+            'scroll',
+            () => {
+              window.requestAnimationFrame(updateNav);
+            },
+            { passive: true }
+          );
+          window.addEventListener('resize', () => window.requestAnimationFrame(updateNav));
+        }
+
+        list.scrollTo({ left: 0 });
+        updateNav();
+      };
+
+      fetch('/recommendations/products.json?product_id=' + encodeURIComponent(productId) + '&limit=8')
         .then((res) => {
           if (!res.ok) throw new Error('Network');
           return res.json();
@@ -452,6 +520,7 @@
                   '</button>'
                 : '';
               return (
+                '<div class="cart-recs__slide">' +
                 '<div class="product-card">' +
                 '<a class="product-card__link" href="' +
                 url +
@@ -465,12 +534,14 @@
                 '</div>' +
                 '</a>' +
                 ctaButton +
+                '</div>' +
                 '</div>'
               );
             })
             .join('');
           if (loading) loading.remove();
           list.innerHTML = html;
+          setupSlider();
         })
         .catch(() => {
           container.setAttribute('hidden', 'hidden');

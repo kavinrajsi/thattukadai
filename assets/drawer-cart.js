@@ -139,16 +139,57 @@
   /* =========================
      Drawer open / close
   ========================== */
+  var cartDrawerOpener = null;
+
   function openCartDrawer() {
+    cartDrawerOpener = document.activeElement;
     $('#cart-drawer').addClass('is-open').attr('aria-hidden', 'false');
+    $('#MainContent').attr('aria-hidden', 'true');
     $('body').addClass('drawer-open');
+    setTimeout(function () {
+      var $panel = $('#cart-drawer .cart-drawer__panel');
+      $panel.trigger('focus');
+    }, 0);
   }
   function closeCartDrawer() {
     $('#cart-drawer').removeClass('is-open').attr('aria-hidden', 'true');
+    $('#MainContent').removeAttr('aria-hidden');
     $('body').removeClass('drawer-open');
+    if (cartDrawerOpener) {
+      $(cartDrawerOpener).trigger('focus');
+      cartDrawerOpener = null;
+    }
   }
   $(document).on('click', '#cart-drawer [data-drawer-close], #cart-drawer .cart-drawer__overlay', function () {
     closeCartDrawer();
+  });
+
+  // ESC key closes cart drawer
+  $(document).on('keydown', function (e) {
+    if (e.key === 'Escape' && $('#cart-drawer').hasClass('is-open')) {
+      closeCartDrawer();
+    }
+  });
+
+  // Focus trap inside cart drawer
+  $(document).on('keydown', '#cart-drawer', function (e) {
+    if (e.key !== 'Tab') return;
+    var $panel = $(this).find('.cart-drawer__panel');
+    var $focusable = $panel.find('a[href], button:not(:disabled), input:not(:disabled), [tabindex]:not([tabindex="-1"])');
+    if (!$focusable.length) return;
+    var $first = $focusable.first();
+    var $last = $focusable.last();
+    if (e.shiftKey) {
+      if ($(document.activeElement).is($first) || !$panel.has(document.activeElement).length) {
+        e.preventDefault();
+        $last.trigger('focus');
+      }
+    } else {
+      if ($(document.activeElement).is($last) || !$panel.has(document.activeElement).length) {
+        e.preventDefault();
+        $first.trigger('focus');
+      }
+    }
   });
 
   /* =========================

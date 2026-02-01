@@ -8,6 +8,19 @@ class PredictiveSearch extends HTMLElement {
 
     this.input.setAttribute('aria-expanded', 'false');
 
+    // Accessibility: make results container a live region
+    if (this.results) {
+      this.results.setAttribute('aria-live', 'polite');
+      this.results.setAttribute('role', 'status');
+    }
+
+    // Screen reader announcement element
+    this.srAnnounce = document.createElement('span');
+    this.srAnnounce.className = 'visually-hidden';
+    this.srAnnounce.setAttribute('aria-live', 'polite');
+    this.srAnnounce.setAttribute('role', 'status');
+    this.appendChild(this.srAnnounce);
+
     // Initialize dynamic placeholder
     this.initializeDynamicPlaceholder();
 
@@ -104,11 +117,13 @@ class PredictiveSearch extends HTMLElement {
         return r.text();
       })
       .then((html) => {
-        const markup =
-          new DOMParser().parseFromString(html, 'text/html').querySelector('#shopify-section-predictive-search')
-            ?.innerHTML || '';
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const markup = doc.querySelector('#shopify-section-predictive-search')?.innerHTML || '';
         this.results.innerHTML = markup;
         this.open();
+        // Announce result count to screen readers
+        const count = this.results.querySelectorAll('a').length;
+        this.srAnnounce.textContent = count > 0 ? count + ' search results found' : 'No results found';
       })
       .catch(() => this.close());
   }

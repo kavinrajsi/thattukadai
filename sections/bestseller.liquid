@@ -1,3 +1,20 @@
+{% liquid
+  assign has_products = false
+  if section.settings.source == 'collection' and section.settings.collection != blank
+    if section.settings.collection.products.size > 0
+      assign has_products = true
+    endif
+  else
+    for block in section.blocks
+      if block.settings.product
+        assign has_products = true
+        break
+      endif
+    endfor
+  endif
+%}
+
+{% if has_products %}
 <section class="bestsellers layout__grid-box" id="section-{{ section.id }}">
   <div class="bestsellers__container">
     <div class="bestsellers__header">
@@ -13,6 +30,8 @@
       <div
         class="bestsellers__list"
         id="bestsellers-{{ section.id }}"
+        role="region"
+        aria-label="{{ section.settings.heading | default: 'Best sellers' }}"
         data-flickity='
           {
             "cellAlign": "left",
@@ -22,7 +41,7 @@
             "groupCells": 1,
             "wrapAround": true,
             "draggable": true,
-            "adaptiveHeight": true,
+            "adaptiveHeight": false,
             "watchCSS": false
           }
         '
@@ -79,6 +98,7 @@
     </div>
   </div>
 </section>
+{% endif %}
 <script>
   (function () {
     function initFlickity(root) {
@@ -99,10 +119,6 @@
 
       var controller = root.querySelector('.bestsellers__controller');
       if (!controller) return;
-
-      controller.addEventListener('click', function (e) {
-        e.stopPropagation();
-      });
 
       var dotsTarget = controller.querySelector('.bestsellers__controller--dots');
       function moveDots() {
@@ -161,12 +177,17 @@
 
     var section = document.getElementById('section-{{ section.id }}');
     if (section) {
-      // If Flickity loaded already, init immediately; otherwise wait for load
       if (typeof Flickity !== 'undefined') {
         initFlickity(section);
       } else {
         window.addEventListener('load', function () {
-          initFlickity(section);
+          if (typeof Flickity !== 'undefined') {
+            initFlickity(section);
+          } else {
+            // Flickity failed to load — reveal products without carousel
+            var slider = section.querySelector('.bestsellers__list');
+            if (slider) slider.classList.add('is-initialized');
+          }
         });
       }
     }

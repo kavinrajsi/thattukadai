@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  console.log('✅ Document ready');
-
   // --- Cache ---
   var $body = $('body');
   var $desktopBtn = $('[data-desktop-menu-button]');
@@ -12,11 +10,11 @@ $(document).ready(function () {
 
   // --- Helpers ---
   function closeAllMenus() {
-    console.log('🔒 closeAllMenus() called');
     $body.removeClass('active-mobile-menu active-desktop-menu');
     $mobileShopMenu.removeClass('active-mobile-submenu').prop('hidden', true);
     $desktopBtn.attr('aria-expanded', 'false');
     $mobileShopToggle.attr('aria-expanded', 'false');
+    $mobileBtn.attr('aria-expanded', 'false');
     $('.mega__collection-block').removeClass('active');
   }
 
@@ -28,11 +26,9 @@ $(document).ready(function () {
 
   // Stop outside-click from closing when interacting inside panels
   $mobileMenuPanel.on('click', function (e) {
-    console.log('🛑 Click inside mobileMenuPanel');
     e.stopPropagation();
   });
   $mobileShopMenu.on('click', function (e) {
-    console.log('🛑 Click inside mobileShopMenu');
     e.stopPropagation();
   });
 
@@ -79,13 +75,11 @@ $(document).ready(function () {
   }
 
   $desktopBtn.on('mouseenter focus', function () {
-    console.log('🖥️ Desktop button hover/focus');
     clearTimeout(desktopHoverTimer);
     openDesktopMenu();
   });
 
   $desktopBtn.on('click', function (e) {
-    console.log('🖥️ Desktop button clicked');
     e.stopPropagation();
 
     if ($body.hasClass('active-desktop-menu')) {
@@ -116,14 +110,13 @@ $(document).ready(function () {
 
   // --- Mobile: main menu button ---
   $mobileBtn.on('click', function (e) {
-    console.log('📱 Mobile main menu button clicked');
     e.stopPropagation();
 
     $body.toggleClass('active-mobile-menu');
-    console.log('Mobile menu active?', $body.hasClass('active-mobile-menu'));
+    var isOpen = $body.hasClass('active-mobile-menu');
+    $mobileBtn.attr('aria-expanded', String(isOpen));
 
-    if ($body.hasClass('active-mobile-menu') && $body.hasClass('active-desktop-menu')) {
-      console.log('Closing desktop menu because mobile is active');
+    if (isOpen && $body.hasClass('active-desktop-menu')) {
       $body.removeClass('active-desktop-menu');
       $desktopBtn.attr('aria-expanded', 'false');
     }
@@ -131,15 +124,12 @@ $(document).ready(function () {
 
   // --- Mobile: Shop subsection toggle ---
   $mobileShopToggle.on('click', function (e) {
-    console.log('📂 Mobile shop toggle clicked');
     e.stopPropagation();
 
     var isOpen = $(this).attr('aria-expanded') === 'true';
-    console.log('Mobile shop toggle was open?', isOpen);
     $(this).attr('aria-expanded', String(!isOpen));
 
     $mobileShopMenu.toggleClass('active-mobile-submenu');
-    console.log('Mobile submenu active?', $mobileShopMenu.hasClass('active-mobile-submenu'));
 
     $mobileShopMenu.prop('hidden', !$mobileShopMenu.hasClass('active-mobile-submenu'));
   });
@@ -157,7 +147,6 @@ $(document).ready(function () {
   });
 
   $(document).on('click', '.mega__body [data-collection-handle]', function () {
-    console.log('📦 Collection link clicked');
     var $link = $(this);
     var handle = $link.data('collection-handle');
     setActiveMenuItem($link);
@@ -167,24 +156,26 @@ $(document).ready(function () {
 
   // --- Click outside anywhere to close/reset ---
   // $(document).on('click', function () {
-  //   console.log('🌍 Click outside detected, closing menus');
   //   closeAllMenus();
   // });
 
   // --- Search toggle ---
   $('.js-search-toggle').on('click', function () {
     $body.toggleClass('active-search');
+    var isSearchOpen = $body.hasClass('active-search');
+    $('.js-search-toggle').attr('aria-expanded', String(isSearchOpen));
   });
   $('.js-search-close').on('click', function () {
     $body.removeClass('active-search');
+    $('.js-search-toggle').attr('aria-expanded', 'false');
   });
 
   // --- ESC key to close everything ---
   $(document).on('keydown', function (e) {
     if (e.key === 'Escape') {
-      console.log('⎋ ESC pressed, closing menus + search');
-      // closeAllMenus();
+      closeAllMenus();
       $body.removeClass('active-search');
+      $('.js-search-toggle').attr('aria-expanded', 'false');
     }
   });
 

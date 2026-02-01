@@ -13,6 +13,7 @@
           type="button"
           aria-label="Shop"
           aria-controls="mobile-menu-panel"
+          aria-expanded="false"
           data-mobile-menu-button
         >
           <div class="menu-icon__line menu-icon__line--top"></div>
@@ -63,7 +64,7 @@
     </a>
 
     <nav class="header__nav header__nav--right" aria-label="Utilities">
-      <button class="header__icon header__icon--search js-search-toggle" aria-label="search" type="button">
+      <button class="header__icon header__icon--search js-search-toggle" aria-label="search" aria-expanded="false" type="button">
         {% render 'icon-search' %}
       </button>
 
@@ -113,7 +114,9 @@
         {%- endfor -%}
       </ul>
 
-      <a class="mega__cta" href="/pages/contact">Contact Us</a>
+      {%- if section.settings.cta_link != blank -%}
+        <a class="mega__cta" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label | default: 'Contact Us' }}</a>
+      {%- endif -%}
     </div>
 
     <div class="mega__body--product">
