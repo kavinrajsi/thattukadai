@@ -197,7 +197,9 @@
 
     // Title / description / view link
     $titleEl.text(p.title || '');
-    $descEl.html(p.description || ''); // Shopify product description is already sanitized by you/the theme
+    // Sanitize product description: strip script/iframe tags to prevent XSS from third-party app data
+    var safeDesc = (p.description || '').replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
+    $descEl.html(safeDesc);
     $viewLink.attr('href', productUrl || '#');
 
     // Image (first available)

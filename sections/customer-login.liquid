@@ -11,9 +11,9 @@
       {%- form 'recover_customer_password' -%}
         {% assign recover_success = form.posted_successfully? %}
         <div class="field">
-          {% comment %} <label for="RecoverEmail">
+          <label for="RecoverEmail" class="visually-hidden">
             {{ 'customer.login_page.email' | t }}
-          </label> {% endcomment %}
+          </label>
           <input
             type="email"
             value=""
@@ -78,10 +78,9 @@
           </h2>
         {%- endif -%}
         <div class="field">
-          {% comment %} <label for="CustomerEmail">
+          <label for="CustomerEmail" class="visually-hidden">
             {{ 'customer.login_page.email' | t }}
           </label>
-        {% endcomment %}
           <input
             required="required"
             type="email"
@@ -98,9 +97,9 @@
         </div>
         {%- if form.password_needed -%}
           <div class="field">
-            {% comment %} <label for="CustomerPassword">
+            <label for="CustomerPassword" class="visually-hidden">
               {{ 'customer.login_page.password' | t }}
-            </label> {% endcomment %}
+            </label>
             <input
               required="required"
               type="password"

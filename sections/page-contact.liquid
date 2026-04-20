@@ -13,7 +13,7 @@
 
     <!-- Map -->
     <div class="contact-map">
-      {{ section.settings.map_iframe }}
+      {{ section.settings.map_iframe | remove: '<script' | remove: '</script>' }}
     </div>
 
     <!-- Info + Form -->
@@ -28,7 +28,7 @@
           </p>
         </div>
         <div class="contact-info-contact">
-          <h3>Informations</h3>
+          <h3>Contact Information</h3>
           <p>
             <a href="tel:{{ section.settings.phone }}">{{ section.settings.phone }}</a><br>
             <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
@@ -38,7 +38,7 @@
           <h3>Social Media</h3>
           <div class="icons">
             {% if section.settings.instagram_url != blank %}
-              <a href="{{ section.settings.instagram_url }}" target="_blank" aria-label="Instagram">
+              <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
                 {% if section.settings.instagram_svg != blank %}
                   {{ section.settings.instagram_svg }}
                 {% else %}
@@ -48,7 +48,7 @@
             {% endif %}
 
             {% if section.settings.facebook_url != blank %}
-              <a href="{{ section.settings.facebook_url }}" target="_blank" aria-label="Facebook">
+              <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">
                 {% if section.settings.facebook_svg != blank %}
                   {{ section.settings.facebook_svg }}
                 {% else %}
@@ -58,7 +58,7 @@
             {% endif %}
 
             {% if section.settings.youtube_url != blank %}
-              <a href="{{ section.settings.youtube_url }}" target="_blank" aria-label="YouTube">
+              <a href="{{ section.settings.youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube">
                 {% if section.settings.youtube_svg != blank %}
                   {{ section.settings.youtube_svg }}
                 {% else %}
@@ -81,11 +81,15 @@
           {% endif %}
 
           <div class="form-grid">
-            <input type="text" name="contact[name]" placeholder="Full Name*" required>
-            <input type="email" name="contact[email]" placeholder="Email Address*" required>
+            <label class="visually-hidden" for="contact-name-{{ section.id }}">Full Name</label>
+            <input id="contact-name-{{ section.id }}" type="text" name="contact[name]" placeholder="Full Name*" required>
+            <label class="visually-hidden" for="contact-email-{{ section.id }}">Email Address</label>
+            <input id="contact-email-{{ section.id }}" type="email" name="contact[email]" placeholder="Email Address*" required>
           </div>
-          <input type="tel" name="contact[phone]" placeholder="Phone Number*">
-          <textarea name="contact[body]" placeholder="Message" rows="5"></textarea>
+          <label class="visually-hidden" for="contact-phone-{{ section.id }}">Phone Number</label>
+          <input id="contact-phone-{{ section.id }}" type="tel" name="contact[phone]" placeholder="Phone Number*">
+          <label class="visually-hidden" for="contact-body-{{ section.id }}">Message</label>
+          <textarea id="contact-body-{{ section.id }}" name="contact[body]" placeholder="Message" rows="5"></textarea>
 
           <button type="submit" class="submit-btn">{{ section.settings.submit_label }}</button>
         {% endform %}

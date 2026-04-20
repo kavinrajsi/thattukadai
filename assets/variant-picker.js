@@ -160,9 +160,9 @@
         }
 
         $input.prop('disabled', !exists2);
-        var $label = $input.closest('.vp-swatch');
-        $label.toggleClass('vp-swatch--disabled', !exists2);
-        $label.toggleClass('vp-swatch--soldout', exists2 && !inStock2);
+        var $label = $input.closest('.vp__swatch');
+        $label.toggleClass('vp__swatch--disabled', !exists2);
+        $label.toggleClass('vp__swatch--soldout', exists2 && !inStock2);
       });
     }
   }

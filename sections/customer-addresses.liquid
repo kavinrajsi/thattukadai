@@ -1,96 +1,237 @@
 <div class="page-account">
   <aside class="page-account-navigation">
     <nav>
-      <a class="active" href="/account">
+      <a href="/account">
         <span> Account Details </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-chevron-down"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </a>
       <a href="/pages/order">
         <span> My Orders </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-chevron-down"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </a>
       <a href="/pages/swym-wishlist">
         <span> My Wishlist </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-chevron-down"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </a>
-      <a href="/account/addresses">
+      <a class="active" href="/account/addresses">
         <span>Address </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="feather feather-chevron-down"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </a>
       <a href="{{ routes.account_logout_url }}">Sign Out </a>
     </nav>
   </aside>
 
-  <section>
+  <section class="customer-addresses">
+    <h2 class="account-card-title">Your Addresses</h2>
 
-    <h2 class="account-card-title">Account</h2>
-    <p class="customer-name-firstName">
-      <span class="firstName">
-    {{customer.first_name | slice: 0 }}
-      </span>
-    </p>
-    <p class="customer-name">
-    {{customer.name}}
-    </p>
-    <p class="customer-email">
-    {{customer.email}}
-    </p>
-    <p class="customer-phone">
-    {{customer.phone}}
-    </p>
+    <button type="button" class="button button-solid-maroon" id="add-address-toggle">
+      Add a New Address
+    </button>
+
+    {%- form 'customer_address', customer.new_address -%}
+      <div id="add-address-form" class="address-form" hidden>
+        <h3>Add a New Address</h3>
+
+        <div class="field">
+          <label for="AddressFirstName">First name</label>
+          <input type="text" id="AddressFirstName" name="address[first_name]" autocomplete="given-name" placeholder="First name">
+        </div>
+
+        <div class="field">
+          <label for="AddressLastName">Last name</label>
+          <input type="text" id="AddressLastName" name="address[last_name]" autocomplete="family-name" placeholder="Last name">
+        </div>
+
+        <div class="field">
+          <label for="AddressCompany">Company</label>
+          <input type="text" id="AddressCompany" name="address[company]" autocomplete="organization" placeholder="Company">
+        </div>
+
+        <div class="field">
+          <label for="AddressAddress1">Address</label>
+          <input type="text" id="AddressAddress1" name="address[address1]" autocomplete="address-line1" placeholder="Address">
+        </div>
+
+        <div class="field">
+          <label for="AddressAddress2">Apartment, suite, etc.</label>
+          <input type="text" id="AddressAddress2" name="address[address2]" autocomplete="address-line2" placeholder="Apartment, suite, etc.">
+        </div>
+
+        <div class="field">
+          <label for="AddressCity">City</label>
+          <input type="text" id="AddressCity" name="address[city]" autocomplete="address-level2" placeholder="City">
+        </div>
+
+        <div class="field">
+          <label for="AddressCountry">Country/Region</label>
+          <select id="AddressCountry" name="address[country]" data-default="{{ form.country }}">
+            {{ all_country_option_tags }}
+          </select>
+        </div>
+
+        <div class="field" id="AddressProvinceContainer">
+          <label for="AddressProvince">Province</label>
+          <select id="AddressProvince" name="address[province]" data-default="{{ form.province }}"></select>
+        </div>
+
+        <div class="field">
+          <label for="AddressZip">Postal/ZIP code</label>
+          <input type="text" id="AddressZip" name="address[zip]" autocomplete="postal-code" placeholder="Postal/ZIP code">
+        </div>
+
+        <div class="field">
+          <label for="AddressPhone">Phone</label>
+          <input type="tel" id="AddressPhone" name="address[phone]" autocomplete="tel" placeholder="Phone">
+        </div>
+
+        <div class="field">
+          <input type="checkbox" id="AddressDefaultNew" name="address[default]" value="1">
+          <label for="AddressDefaultNew">Set as default address</label>
+        </div>
+
+        <button type="submit" class="button button-solid-maroon">Add Address</button>
+        <button type="button" class="button button-outline" onclick="document.getElementById('add-address-form').hidden = true;">Cancel</button>
+      </div>
+    {%- endform -%}
+
+    <hr>
+
+    {%- for address in customer.addresses -%}
+      <div class="address-card" data-address-id="{{ address.id }}">
+        <p>
+          {{ address.first_name }} {{ address.last_name }}
+          {% if address.company != blank %}<br>{{ address.company }}{% endif %}
+          <br>{{ address.street }}
+          <br>{{ address.city }}, {{ address.province_code }} {{ address.zip }}
+          <br>{{ address.country }}
+          {% if address.phone != blank %}<br>{{ address.phone }}{% endif %}
+        </p>
+        {% if address == customer.default_address %}
+          <p><em>Default address</em></p>
+        {% endif %}
+
+        <div class="address-card__actions">
+          <button type="button" class="button button-outline address-edit-toggle" data-address-id="{{ address.id }}">Edit</button>
+
+          <button type="button" class="button button-outline" data-address-delete data-address-id="{{ address.id }}" data-confirm-message="Are you sure you wish to delete this address?">Delete</button>
+        </div>
+
+        {%- form 'customer_address', address -%}
+          <div class="address-form address-edit-form" id="edit-address-{{ address.id }}" hidden>
+            <h3>Edit Address</h3>
+
+            <div class="field">
+              <label for="AddressFirstName_{{ address.id }}">First name</label>
+              <input type="text" id="AddressFirstName_{{ address.id }}" name="address[first_name]" value="{{ address.first_name }}" autocomplete="given-name">
+            </div>
+
+            <div class="field">
+              <label for="AddressLastName_{{ address.id }}">Last name</label>
+              <input type="text" id="AddressLastName_{{ address.id }}" name="address[last_name]" value="{{ address.last_name }}" autocomplete="family-name">
+            </div>
+
+            <div class="field">
+              <label for="AddressCompany_{{ address.id }}">Company</label>
+              <input type="text" id="AddressCompany_{{ address.id }}" name="address[company]" value="{{ address.company }}" autocomplete="organization">
+            </div>
+
+            <div class="field">
+              <label for="AddressAddress1_{{ address.id }}">Address</label>
+              <input type="text" id="AddressAddress1_{{ address.id }}" name="address[address1]" value="{{ address.address1 }}" autocomplete="address-line1">
+            </div>
+
+            <div class="field">
+              <label for="AddressAddress2_{{ address.id }}">Apartment, suite, etc.</label>
+              <input type="text" id="AddressAddress2_{{ address.id }}" name="address[address2]" value="{{ address.address2 }}" autocomplete="address-line2">
+            </div>
+
+            <div class="field">
+              <label for="AddressCity_{{ address.id }}">City</label>
+              <input type="text" id="AddressCity_{{ address.id }}" name="address[city]" value="{{ address.city }}" autocomplete="address-level2">
+            </div>
+
+            <div class="field">
+              <label for="AddressCountry_{{ address.id }}">Country/Region</label>
+              <select id="AddressCountry_{{ address.id }}" name="address[country]" data-default="{{ address.country }}">
+                {{ all_country_option_tags }}
+              </select>
+            </div>
+
+            <div class="field" id="AddressProvinceContainer_{{ address.id }}">
+              <label for="AddressProvince_{{ address.id }}">Province</label>
+              <select id="AddressProvince_{{ address.id }}" name="address[province]" data-default="{{ address.province }}"></select>
+            </div>
+
+            <div class="field">
+              <label for="AddressZip_{{ address.id }}">Postal/ZIP code</label>
+              <input type="text" id="AddressZip_{{ address.id }}" name="address[zip]" value="{{ address.zip }}" autocomplete="postal-code">
+            </div>
+
+            <div class="field">
+              <label for="AddressPhone_{{ address.id }}">Phone</label>
+              <input type="tel" id="AddressPhone_{{ address.id }}" name="address[phone]" value="{{ address.phone }}" autocomplete="tel">
+            </div>
+
+            <div class="field">
+              <input type="checkbox" id="AddressDefault_{{ address.id }}" name="address[default]" value="1" {% if address == customer.default_address %}checked{% endif %}>
+              <label for="AddressDefault_{{ address.id }}">Set as default address</label>
+            </div>
+
+            <button type="submit" class="button button-solid-maroon">Update Address</button>
+            <button type="button" class="button button-outline" onclick="document.getElementById('edit-address-{{ address.id }}').hidden = true;">Cancel</button>
+          </div>
+        {%- endform -%}
+      </div>
+    {%- endfor -%}
+
+    {% if customer.addresses_count == 0 %}
+      <p>You haven't saved any addresses yet.</p>
+    {% endif %}
   </section>
-
-
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Toggle new address form
+    var addBtn = document.getElementById('add-address-toggle');
+    var addForm = document.getElementById('add-address-form');
+    if (addBtn && addForm) {
+      addBtn.addEventListener('click', function () {
+        addForm.hidden = !addForm.hidden;
+      });
+    }
+
+    // Toggle edit forms
+    document.querySelectorAll('.address-edit-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-address-id');
+        var form = document.getElementById('edit-address-' + id);
+        if (form) form.hidden = !form.hidden;
+      });
+    });
+
+    // Delete address
+    document.querySelectorAll('[data-address-delete]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var msg = btn.getAttribute('data-confirm-message');
+        if (confirm(msg)) {
+          var id = btn.getAttribute('data-address-id');
+          fetch('/account/addresses/' + id, {
+            method: 'DELETE',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          }).then(function () {
+            window.location.reload();
+          });
+        }
+      });
+    });
+
+    // Country/province selector (Shopify helper)
+    if (typeof Shopify !== 'undefined' && Shopify.CountryProvinceSelector) {
+      new Shopify.CountryProvinceSelector('AddressCountry', 'AddressProvince', { hideElement: 'AddressProvinceContainer' });
+      {% for address in customer.addresses %}
+        new Shopify.CountryProvinceSelector('AddressCountry_{{ address.id }}', 'AddressProvince_{{ address.id }}', { hideElement: 'AddressProvinceContainer_{{ address.id }}' });
+      {% endfor %}
+    }
+  });
+</script>

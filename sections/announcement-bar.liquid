@@ -35,17 +35,13 @@
       >
         <div class="announcement-bar__inner">
           {% if block.settings.useMarquee %}
-            <marquee
-              class="announcement-bar__marquee"
-              direction="left"
-              width="100%"
-              scrollamount="{{ block.settings.scrollAmount | default: 10 }}"
-              onmouseover="this.stop();"
-              onmouseout="this.start();"
-            >
-              {% assign marquee_text = block.settings.message | strip_newlines | replace: '&nbsp;', ' ' %}
-              <span class="announcement-bar__text">{{ marquee_text }}</span>
-            </marquee>
+            {% assign marquee_text = block.settings.message | strip_newlines | replace: '&nbsp;', ' ' %}
+            <div class="announcement-bar__marquee" style="--marquee-speed: 56s;" aria-label="Scrolling announcement">
+              <span class="announcement-bar__marquee-track">
+                <span class="announcement-bar__text">{{ marquee_text }}</span>
+                <span class="announcement-bar__text" aria-hidden="true">{{ marquee_text }}</span>
+              </span>
+            </div>
           {% else %}
             <span class="announcement-bar__text rte">{{ block.settings.message }}</span>
           {% endif %}
@@ -129,5 +125,31 @@
   /* Inner container: centers content & applies padding */
   .announcement-bar__inner {
     max-width: var(--page-width, 100%);
+  }
+
+  /* CSS marquee animation (replaces deprecated <marquee> element) */
+  .announcement-bar__marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .announcement-bar__marquee-track {
+    display: inline-flex;
+    animation: marquee-scroll var(--marquee-speed, 10s) linear infinite;
+  }
+
+  .announcement-bar__marquee:hover .announcement-bar__marquee-track {
+    animation-play-state: paused;
+  }
+
+  .announcement-bar__marquee-track .announcement-bar__text {
+    display: inline-block;
+    padding-right: 3rem;
+  }
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 {% endstylesheet %}

@@ -34,23 +34,13 @@
 
 <!-- Preload product imagery for the current collection page -->
 {% if collection.products_count > 0 %}
-  {% for product in collection.products %}
+  {% for product in collection.products limit: 4 %}
     {% if product.featured_image %}
       <link
         rel="preload"
         as="image"
         href="{{ product.featured_image | image_url: width: 530, height: 640, crop: 'center', format: 'jpg' }}"
         imagesrcset="{{ product.featured_image | image_url: width: 265, height: 320, crop: 'center', format: 'jpg' }} 265w, {{ product.featured_image | image_url: width: 530, height: 640, crop: 'center', format: 'jpg' }} 530w"
-        imagesizes="(max-width: 749px) 50vw, (max-width: 999px) 33vw, 25vw"
-      >
-    {% endif %}
-    {% assign second_image = product.images[1] %}
-    {% if second_image %}
-      <link
-        rel="preload"
-        as="image"
-        href="{{ second_image | image_url: width: 530, height: 640, crop: 'center', format: 'jpg' }}"
-        imagesrcset="{{ second_image | image_url: width: 265, height: 320, crop: 'center', format: 'jpg' }} 265w, {{ second_image | image_url: width: 530, height: 640, crop: 'center', format: 'jpg' }} 530w"
         imagesizes="(max-width: 749px) 50vw, (max-width: 999px) 33vw, 25vw"
       >
     {% endif %}
@@ -175,7 +165,7 @@
       {
         "@type": "ListItem",
         "position": {{ forloop.index }},
-        "name": "{{ product.title }}",
+        "name": {{ product.title | json }},
         "url": "{{ shop.secure_url }}{{ product.url }}"
       }{% unless forloop.last %},{% endunless %}
       {% endfor %}

@@ -22,7 +22,7 @@
 
     <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
       {%- if section.settings.logo_svg != blank -%}
-        {{ section.settings.logo_svg }}
+        {{ section.settings.logo_svg | remove: '<script' | remove: '</script>' | remove: '<iframe' | remove: '</iframe>' }}
       {%- elsif settings.logo -%}
         <img
           src="{{ settings.logo | image_url: width: 320 }}"

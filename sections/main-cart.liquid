@@ -134,7 +134,7 @@
 
                 <div class="cart-col qty-col">
                   <div class="qty-changer">
-                    <button type="button" class="qty-btn qty-decrease minus-btn" data-line-key="{{ item.key }}">
+                    <button type="button" class="qty-btn qty-decrease minus-btn" data-line-key="{{ item.key }}" aria-label="Decrease quantity of {{ item.product.title | escape }}">
                       −
                     </button>
                     <input
@@ -145,8 +145,9 @@
                       min="1"
                       step="1"
                       inputmode="numeric"
+                      aria-label="Quantity for {{ item.product.title | escape }}"
                     >
-                    <button type="button" class="qty-btn qty-increase plus-btn" data-line-key="{{ item.key }}">
+                    <button type="button" class="qty-btn qty-increase plus-btn" data-line-key="{{ item.key }}" aria-label="Increase quantity of {{ item.product.title | escape }}">
                       +
                     </button>
                   </div>
@@ -371,11 +372,20 @@
   if (typeof Shopify === 'undefined') {
     var Shopify = {};
   }
-  Shopify.formatMoney = function (cents, format = '₹{{amount}}') {
-    const formatINR = (amount) => {
-      let [rupees, paise] = amount.toFixed(2).split('.');
-      rupees = rupees.replace(/\B(?=(\d{2})+(?!\d))/g, ',').replace(/,(\d{3})$/, '$1'); // Indian comma rule
-      return `${rupees}.${paise}`;
+  Shopify.formatMoney = function (cents, format) {
+    format = format || '₹{{amount}}';
+    var formatINR = function (amount) {
+      var parts = amount.toFixed(2).split('.');
+      var rupees = parts[0];
+      var paise = parts[1];
+      // Indian grouping: last 3 digits, then groups of 2
+      var lastThree = rupees.slice(-3);
+      var rest = rupees.slice(0, -3);
+      if (rest.length > 0) {
+        lastThree = ',' + lastThree;
+        rupees = rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThree;
+      }
+      return rupees + '.' + paise;
     };
     return format.replace('{{amount}}', formatINR(cents / 100));
   };
@@ -508,7 +518,7 @@
                 product.variants.length === 1 &&
                 product.variants[0] &&
                 product.variants[0].available
-                  ? 'Select options'
+                  ? 'Quick add'
                   : 'Select options';
               const ctaButton = handle
                 ? '<button class="product-card__cta" type="button" data-product-handle="' +

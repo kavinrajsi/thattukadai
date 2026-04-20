@@ -32,7 +32,7 @@
         {%- comment -%} Both collections and products - split layout {%- endcomment -%}
         <div class="predictive-search__split">
           <div class="predictive-search__split-left">
-            <h3 class="predictive-search__heading">Collections</h3>
+            <h3 class="predictive-search__heading" id="predictive-search-collections">Collections</h3>
             <ul
               class="predictive-search__list predictive-search__list--collections"
               role="listbox"
@@ -54,7 +54,7 @@
           </div>
 
           <div class="predictive-search__split-right">
-            <h3 class="predictive-search__heading">Products</h3>
+            <h3 class="predictive-search__heading" id="predictive-search-products">Products</h3>
             <ul
               class="predictive-search__list predictive-search__list--products"
               role="listbox"
@@ -87,7 +87,7 @@
 
       {%- elsif has_collections -%}
         {%- comment -%} Collections only {%- endcomment -%}
-        <h3 class="predictive-search__heading">Collections</h3>
+        <h3 class="predictive-search__heading" id="predictive-search-collections">Collections</h3>
         <ul
           class="predictive-search__list predictive-search__list--collections"
           role="listbox"
@@ -109,7 +109,7 @@
 
       {%- elsif has_products -%}
         {%- comment -%} Products only {%- endcomment -%}
-        <h3 class="predictive-search__heading">Products</h3>
+        <h3 class="predictive-search__heading" id="predictive-search-products">Products</h3>
         <ul
           class="predictive-search__list predictive-search__list--products"
           role="listbox"
@@ -140,7 +140,7 @@
       {%- endif -%}
 
       {%- if predictive_search.resources.articles.size > 0 -%}
-        <h3 class="predictive-search__heading">Articles</h3>
+        <h3 class="predictive-search__heading" id="predictive-search-articles">Articles</h3>
         <ul
           class="predictive-search__list predictive-search__list--articles"
           role="listbox"

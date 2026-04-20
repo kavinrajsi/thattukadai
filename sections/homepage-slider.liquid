@@ -21,9 +21,11 @@
 </noscript>
 
 {% if section.settings.height_mode == 'fixed' %}
-  #homepage-slider-{{ section.id }} .flickity-viewport { height: {{ section.settings.fixed_height }}px !important; }
-  #homepage-slider-{{ section.id }} .flickity-slider__img { height: {{ section.settings.fixed_height }}px; width: 100%;
-  object-fit: cover; object-position: {{ block.settings.image_position | default: 'center center' }}; }
+  <style>
+    #homepage-slider-{{ section.id }} .flickity-viewport { height: {{ section.settings.fixed_height }}px !important; }
+    #homepage-slider-{{ section.id }} .flickity-slider__img { height: {{ section.settings.fixed_height }}px; width: 100%;
+    object-fit: cover; object-position: center center; }
+  </style>
 {% endif %}
 <div class="homepage-sliderWrapper">
   <div id="homepage-slider-{{ section.id }}" class="homepage-slider main-carousel">

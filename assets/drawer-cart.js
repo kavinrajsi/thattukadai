@@ -1,4 +1,21 @@
 (function ($) {
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function showCartToast(msg) {
+    var existing = document.querySelector('.cart-drawer-toast');
+    if (existing) existing.remove();
+    var toast = document.createElement('div');
+    toast.className = 'cart-drawer-toast';
+    toast.setAttribute('role', 'alert');
+    toast.textContent = msg;
+    toast.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:0.75rem 1.5rem;border-radius:6px;z-index:100000;font-size:0.875rem;max-width:90vw;text-align:center;';
+    document.body.appendChild(toast);
+    setTimeout(function () { toast.remove(); }, 4000);
+  }
+
   function formatMoney(cents) {
     try {
       if (window.Shopify && typeof Shopify.formatMoney === 'function') {
@@ -18,9 +35,9 @@
         .map(function (ov) {
           return (
             '<div class="drawer-item__variant"><span class="opt-name">' +
-            ov.name +
+            escapeHtml(ov.name) +
             ':</span> <span class="opt-val">' +
-            ov.value +
+            escapeHtml(ov.value) +
             '</span></div>'
           );
         })
@@ -28,7 +45,7 @@
     }
 
     if (item.variant_title && item.variant_title !== 'Default Title') {
-      return '<div class="drawer-item__variant">' + item.variant_title + '</div>';
+      return '<div class="drawer-item__variant">' + escapeHtml(item.variant_title) + '</div>';
     }
 
     return '';
@@ -49,9 +66,9 @@
         var value = props[key];
         return (
           '<li><span>' +
-          key +
+          escapeHtml(key) +
           ':</span> <span>' +
-          value +
+          escapeHtml(value) +
           '</span></li>'
         );
       })
@@ -95,7 +112,7 @@
           '<a href="' +
           item.url +
           '" class="drawer-item__title">' +
-          item.product_title +
+          escapeHtml(item.product_title) +
           '</a>' +
           variantsHtml +
           propsHtml +
@@ -307,7 +324,7 @@
     return (
       '<div class="cart-drawer__recommendation">' +
       imageMarkup +
-      '<h5 class="cart-drawer__recommendation-title">' + title + '</h5>' +
+      '<h5 class="cart-drawer__recommendation-title">' + escapeHtml(title) + '</h5>' +
       priceHtml +
       actionMarkup +
       '</div>'
@@ -423,7 +440,7 @@
     var $qty = $form.find('[name="quantity"]');
 
     if (!$id.val()) {
-      alert('Please select a variant.');
+      showCartToast('Please select a variant.');
       return;
     }
     if ($btn.prop('disabled')) {
@@ -459,7 +476,7 @@
           var res = xhr.responseJSON || JSON.parse(xhr.responseText);
           msg = res.description || res.message || msg;
         } catch (e) {}
-        alert(msg);
+        showCartToast(msg);
       })
       .always(function () {
         $btn.prop('disabled', false).removeClass('is-loading').text(originalText);
@@ -487,7 +504,7 @@
         updateCartCount(cart.item_count);
       })
       .fail(function () {
-        alert('Could not update cart. Please try again.');
+        showCartToast('Could not update cart. Please try again.');
       })
       .always(function () {
         // STOP loader (safe even if the line disappears after remove)
@@ -585,7 +602,7 @@
         });
       })
       .fail(function () {
-        alert('Unable to add item. Please try again.');
+        showCartToast('Unable to add item. Please try again.');
       })
       .always(function () {
         setTimeout(function () {

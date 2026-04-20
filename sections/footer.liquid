@@ -33,16 +33,16 @@
 
 <footer class="site-footer" role="contentinfo" aria-label="Site Footer">
   <div class="footer">
-    <div class="footer__navigtion-wrapper layout__grid-box">
+    <div class="footer__navigation-wrapper layout__grid-box">
       <!-- Footer Menus -->
-      <div class="footer__navigtion-lists" role="navigation" aria-label="Footer Navigation">
+      <div class="footer__navigation-lists" role="navigation" aria-label="Footer Navigation">
         {% for block in section.blocks %}
           {% if block.type == 'footer_menu' %}
             {% assign menu = linklists[block.settings.menu] %}
             {% if menu.links.size > 0 %}
-              <nav class="footer__navigtion-menu" aria-labelledby="footer-menu-{{ forloop.index }}">
+              <nav class="footer__navigation-menu" aria-labelledby="footer-menu-{{ forloop.index }}">
                 {% if block.settings.label != blank %}
-                  <h4 class="footer__navigtion-menu-title" id="footer-menu-{{ forloop.index }}">
+                  <h4 class="footer__navigation-menu-title" id="footer-menu-{{ forloop.index }}">
                     <button
                       class="footer__accordion-trigger"
                       type="button"
@@ -60,13 +60,13 @@
                   </h4>
                 {% endif %}
                 <ul
-                  class="footer__navigtion-menu-items"
+                  class="footer__navigation-menu-items"
                   id="footer-panel-{{ forloop.index }}"
                   data-acc-panel
                 >
                   {% for link in menu.links %}
-                    <li class="footer__navigtion-menu-item">
-                      <a class="footer__navigtion-menu-link" href="{{ link.url }}">{{ link.title }}</a>
+                    <li class="footer__navigation-menu-item">
+                      <a class="footer__navigation-menu-link" href="{{ link.url }}">{{ link.title }}</a>
                     </li>
                   {% endfor %}
                 </ul>
@@ -77,15 +77,15 @@
       </div>
 
       <!-- Contact Info -->
-      <div class="footer__navigtion-contact" aria-label="Contact Information">
+      <div class="footer__navigation-contact" aria-label="Contact Information">
         {% if section.settings.address %}
-          <p class="footer__navigtion-contact-list">
+          <p class="footer__navigation-contact-list">
             <i>{{ section.settings.address_icon }}</i>
             <span>{{ section.settings.address }}</span>
           </p>
         {% endif %}
         {% if section.settings.phone %}
-          <p class="footer__navigtion-contact-list">
+          <p class="footer__navigation-contact-list">
             <i>{{ section.settings.phone_icon }}</i>
             <a href="tel:{{ section.settings.phone }}" aria-label="Call us at {{ section.settings.phone }}">
               {{- section.settings.phone -}}
@@ -93,7 +93,7 @@
           </p>
         {% endif %}
         {% if section.settings.email %}
-          <p class="footer__navigtion-contact-list">
+          <p class="footer__navigation-contact-list">
             <i>{{ section.settings.email_icon }}</i>
             <a href="mailto:{{ section.settings.email }}" aria-label="Email us at {{ section.settings.email }}">
               {{- section.settings.email -}}
@@ -106,10 +106,8 @@
     <!-- Social Icons -->
     <div class="footer__trust layout__grid-box">
       <div class="footer__trust-payment">
-        {% comment %} FIX: change theis title as dynamic {% endcomment %}
         <p class="footer__trust-title">Payment Options</p>
         <div class="image">
-          {% comment %} FIX: load image as dynamic {% endcomment %}
           <svg
             width="295"
             height="20"
@@ -141,7 +139,7 @@
                 rel="noopener"
                 aria-label="{{ block.settings.label | escape }}"
               >
-                {{ block.settings.svg_code }}
+                {{ block.settings.svg_code | remove: '<script' | remove: '</script>' | remove: '<iframe' | remove: '</iframe>' }}
               </a>
             {% endif %}
           {% endfor %}
@@ -176,7 +174,7 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Nithya Amirtham Indian Food Pvt Ltd.",
+    "name": {{ shop.name | json }},
     "url": "{{ shop.url }}",
     "logo": {% if section.settings.logo %}"{{ section.settings.logo | image_url: width: 300 }}"{% else %}""{% endif %},
     "contactPoint": {

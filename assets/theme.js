@@ -1,5 +1,4 @@
 // Basic starter JS for thattukadai theme
-console.log('thattukadai theme loaded');
 
 (function () {
   // Find the header once the DOM is ready
@@ -63,7 +62,7 @@ $(document).ready(function () {
   }
 
   function initAccordion() {
-    $('.footer__navigtion-menu').each(function () {
+    $('.footer__navigation-menu').each(function () {
       var $menu = $(this);
       var $trigger = $menu.find('[data-acc-trigger]');
       var $panel = $menu.find('[data-acc-panel]');

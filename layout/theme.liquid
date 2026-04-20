@@ -51,9 +51,7 @@
     %}
 
     {{ 'Neilvard-One.ttf' | asset_url | preload_tag: as: 'font', type: 'font/ttf', crossorigin: true }}
-    {{ 'Neilvard-One.otf' | asset_url | preload_tag: as: 'font', type: 'font/otf', crossorigin: true }}
     {{ 'Neilvard-Semibold-One.ttf' | asset_url | preload_tag: as: 'font', type: 'font/ttf', crossorigin: true }}
-    {{ 'Neilvard-Semibold-One.otf' | asset_url | preload_tag: as: 'font', type: 'font/otf', crossorigin: true }}
 
     {% style %}
       /* Emit @font-face for each chosen variant */
@@ -127,8 +125,10 @@
     {{ 'drawer-cart.js' | asset_url | preload_tag: as: 'script' }}
     {{ 'theme.js' | asset_url | preload_tag: as: 'script' }}
 
-    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-    <script defer src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    {%- if request.page_type == 'index' or request.page_type == 'collection' or request.page_type == 'product' -%}
+      {{ 'flickity.min.css' | asset_url | stylesheet_tag }}
+      <script defer src="{{ 'flickity.pkgd.min.js' | asset_url }}"></script>
+    {%- endif -%}
 
     <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
     {% render 'social-meta-tags' %}
@@ -137,7 +137,7 @@
   </head>
   <body class="template-{{ template | split : '.' | first }}  {{ page_title | handleize }}">
     <!--[if IE]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <a class="skip-to-content" href="#MainContent">Skip to content</a>
@@ -162,7 +162,8 @@
         "name": {{ shop.name | json }},
         "potentialAction": {
           "@type": "SearchAction",
-          "target": {{ potential_action_target | json }},
+          {% assign search_action = shop.url | append: '/search?q=' %}
+          "target": "{{ search_action }}{search_term_string}",
           "query-input": "required name=search_term_string"
         },
         "url": {{ request.origin | append: page.url | json }}
@@ -177,11 +178,12 @@
         "logo": {{ settings.brand_logo | image_url: width: 600 | json }},
         {% endif %}
         "sameAs": [
-          {{ settings.social_twitter_link | json }},
-          {{ settings.social_facebook_link | json }},
-          {{ settings.social_pinterest_link | json }},
-          {{ settings.social_instagram_link | json }},
-          {{ settings.social_youtube_link | json }}
+          {%- assign _comma = false -%}
+          {%- if settings.social_twitter_link != blank -%}{{ settings.social_twitter_link | json }}{%- assign _comma = true -%}{%- endif -%}
+          {%- if settings.social_facebook_link != blank -%}{%- if _comma -%},{%- endif -%}{{ settings.social_facebook_link | json }}{%- assign _comma = true -%}{%- endif -%}
+          {%- if settings.social_pinterest_link != blank -%}{%- if _comma -%},{%- endif -%}{{ settings.social_pinterest_link | json }}{%- assign _comma = true -%}{%- endif -%}
+          {%- if settings.social_instagram_link != blank -%}{%- if _comma -%},{%- endif -%}{{ settings.social_instagram_link | json }}{%- assign _comma = true -%}{%- endif -%}
+          {%- if settings.social_youtube_link != blank -%}{%- if _comma -%},{%- endif -%}{{ settings.social_youtube_link | json }}{%- endif -%}
         ],
         "url": {{ request.origin | append: page.url | json }}
       }

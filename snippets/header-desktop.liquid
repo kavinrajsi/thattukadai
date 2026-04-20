@@ -49,7 +49,7 @@
 
     <a class="header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
       {%- if section.settings.logo_svg != blank -%}
-        {{ section.settings.logo_svg }}
+        {{ section.settings.logo_svg | remove: '<script' | remove: '</script>' | remove: '<iframe' | remove: '</iframe>' }}
       {%- elsif settings.logo -%}
         <img
           src="{{ settings.logo | image_url: width: 146 }}"
@@ -64,12 +64,12 @@
     </a>
 
     <nav class="header__nav header__nav--right" aria-label="Utilities">
-      <button class="header__icon header__icon--search js-search-toggle" aria-label="search" aria-expanded="false" type="button">
+      <button class="header__icon header__icon--search js-search-toggle" aria-label="Open search" aria-expanded="false" type="button">
         {% render 'icon-search' %}
       </button>
 
       {%- if shop.customer_accounts_enabled -%}
-        <a class="header__icon header__icon--account" href="{{ routes.account_url }}" aria-label="account">
+        <a class="header__icon header__icon--account" href="{{ routes.account_url }}" aria-label="Go to your account">
           {% render 'icon-user' %}
         </a>
       {%- endif -%}

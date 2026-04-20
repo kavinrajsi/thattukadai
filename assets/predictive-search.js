@@ -65,7 +65,6 @@ class PredictiveSearch extends HTMLElement {
         this.updatePlaceholder(dynamicKeyword);
       }
     } catch (error) {
-      console.log('Using fallback search placeholder');
       // Fallback is already set in the liquid template
     }
   }
