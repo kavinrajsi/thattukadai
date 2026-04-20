@@ -148,12 +148,26 @@
     },
     "video_snippet_food_vloggers": {
       "type": "video-snippet",
-      "name": "By Food Vloggers",
       "blocks": {
-        "video_block_1": { "type": "video_block", "settings": {} },
-        "video_block_2": { "type": "video_block", "settings": {} },
-        "video_block_3": { "type": "video_block", "settings": {} },
-        "video_block_4": { "type": "video_block", "settings": {} }
+        "video_block_1": {
+          "type": "video_block",
+          "settings": {
+            "video": "shopify://files/videos/video-1.mp4",
+            "image": "shopify://shop_images/video-1.png"
+          }
+        },
+        "video_block_2": {
+          "type": "video_block",
+          "settings": {}
+        },
+        "video_block_3": {
+          "type": "video_block",
+          "settings": {}
+        },
+        "video_block_4": {
+          "type": "video_block",
+          "settings": {}
+        }
       },
       "block_order": [
         "video_block_1",
@@ -161,6 +175,7 @@
         "video_block_3",
         "video_block_4"
       ],
+      "name": "By Food Vloggers",
       "settings": {
         "chip_text": "About Our Store",
         "title": "BY FOOD VLOGGERS"
