@@ -172,7 +172,10 @@
         },
         "video_block_4": {
           "type": "video_block",
-          "settings": {}
+          "settings": {
+            "video": "shopify://files/videos/video-4.mp4",
+            "image": "shopify://shop_images/video-4.png"
+          }
         }
       },
       "block_order": [
