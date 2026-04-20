@@ -146,6 +146,26 @@
         "cta_link": "shopify://pages/about-us"
       }
     },
+    "video_snippet_food_vloggers": {
+      "type": "video-snippet",
+      "name": "By Food Vloggers",
+      "blocks": {
+        "video_block_1": { "type": "video_block", "settings": {} },
+        "video_block_2": { "type": "video_block", "settings": {} },
+        "video_block_3": { "type": "video_block", "settings": {} },
+        "video_block_4": { "type": "video_block", "settings": {} }
+      },
+      "block_order": [
+        "video_block_1",
+        "video_block_2",
+        "video_block_3",
+        "video_block_4"
+      ],
+      "settings": {
+        "chip_text": "About Our Store",
+        "title": "BY FOOD VLOGGERS"
+      }
+    },
     "promo_cta_j3r8KR": {
       "type": "promo-cta",
       "name": "READY TO SHOP",
@@ -174,6 +194,7 @@
     "bestseller_HMAJzc",
     "main_product_features_k3UDje",
     "image_text_QyhkJT",
+    "video_snippet_food_vloggers",
     "promo_cta_j3r8KR"
   ]
 }
