@@ -8,7 +8,9 @@
 		position: relative;
 		.product-card__image-wrapper {
 			width: 100%;
+			aspect-ratio: 265 / 320;
 			@media (min-width: 768px) {
+				aspect-ratio: auto;
 				height: 280px;
 			}
 			picture ,
