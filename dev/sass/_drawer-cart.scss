@@ -121,41 +121,48 @@ body.index.drawer-open {
 .cart-drawer {
 	position: fixed;
 	z-index: 9999;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	width: 100%;
-	max-width: 380px;
-	transition: transform 0.3s ease-in-out;
-	transform: translateX(100%);
-	background: #ffffff;
-	box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+	inset: 0;
+	visibility: hidden;
+	pointer-events: none;
 
 	&.is-open {
-		transform: translateX(0);
+		visibility: visible;
+		pointer-events: auto;
 	}
 
 	&__overlay {
-		position: fixed;
-		z-index: 9998;
-		visibility: hidden;
-		content: "";
+		position: absolute;
+		z-index: 1;
+		inset: 0;
 		transition: opacity 0.3s ease;
 		opacity: 0;
 		background: rgba(0, 0, 0, 0.5);
-		inset: 0;
+	}
 
-		.drawer-open & {
-			visibility: visible;
-			opacity: 1;
-		}
+	&.is-open &__overlay {
+		opacity: 1;
 	}
 
 	&__panel {
+		position: absolute;
+		z-index: 2;
+		top: 0;
+		right: 0;
+		bottom: 0;
 		display: flex;
 		overflow: hidden;
 		flex-direction: column;
+		width: 100%;
+		max-width: 380px;
 		min-height: 100%;
+		transition: transform 0.3s ease-in-out;
+		transform: translateX(100%);
+		background: #ffffff;
+		box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+	}
+
+	&.is-open &__panel {
+		transform: translateX(0);
 	}
 	&__header {
 		display: flex;
