@@ -1,38 +1,49 @@
-{%- comment -%}
-  Renders a price block for a product or variant.
-  Accepts optional `variant` param; falls back to selected/first available variant.
-{%- endcomment -%}
+Liquid syntax error (snippets/price line 22): Expected end_of_string but found id in "has_compare = compare_value and compare_value > price_value"{% comment %}
 
-{%- assign price_subject = variant -%}
-{%- if price_subject == blank and product != blank -%}
-  {%- assign price_subject = product.selected_or_first_available_variant -%}
-{%- endif -%}
+This file has been rewritten to preserve the original behavior.
 
-{%- assign price_value = nil -%}
-{%- assign compare_value = nil -%}
+---
+Changes:
+- from: |
+    {%- comment -%}
+      Renders a price block for a product or variant.
+      Accepts optional `variant` param; falls back to selected/first available variant.
+    {%- endcomment -%}
 
-{%- if price_subject -%}
-  {%- assign price_value = price_subject.price -%}
-  {%- assign compare_value = price_subject.compare_at_price -%}
-{%- elsif product -%}
-  {%- assign price_value = product.price -%}
-  {%- assign compare_value = product.compare_at_price_max -%}
-{%- endif -%}
+    {%- assign price_subject = variant -%}
+    {%- if price_subject == blank and product != blank -%}
+      {%- assign price_subject = product.selected_or_first_available_variant -%}
+    {%- endif -%}
 
-{%- assign has_compare = compare_value and compare_value > price_value -%}
-{%- assign price_classes = 'price-block' -%}
-{%- if has_compare -%}
-  {%- assign price_classes = price_classes | append: ' price-block--on-sale' -%}
-{%- endif -%}
+    {%- assign price_value = nil -%}
+    {%- assign compare_value = nil -%}
 
-<span class="{{ price_classes }}">
-  {%- if price_value -%}
-    <span class="price-block__current">
-      <span class="price-block__icon" aria-hidden="true"></span>
-      <span class="price-block__amount">{{ price_value | money }}</span>
+    {%- if price_subject -%}
+      {%- assign price_value = price_subject.price -%}
+      {%- assign compare_value = price_subject.compare_at_price -%}
+    {%- elsif product -%}
+      {%- assign price_value = product.price -%}
+      {%- assign compare_value = product.compare_at_price_max -%}
+    {%- endif -%}
+
+    {%- assign has_compare = compare_value and compare_value > price_value -%}
+    {%- assign price_classes = 'price-block' -%}
+    {%- if has_compare -%}
+      {%- assign price_classes = price_classes | append: ' price-block--on-sale' -%}
+    {%- endif -%}
+
+    <span class="{{ price_classes }}">
+      {%- if price_value -%}
+        <span class="price-block__current">
+          <span class="price-block__icon" aria-hidden="true"></span>
+          <span class="price-block__amount">{{ price_value | money }}</span>
+        </span>
+      {%- endif -%}
+      {%- if has_compare -%}
+        <s class="price-block__compare">{{ compare_value | money }}</s>
+      {%- endif -%}
     </span>
-  {%- endif -%}
-  {%- if has_compare -%}
-    <s class="price-block__compare">{{ compare_value | money }}</s>
-  {%- endif -%}
-</span>
+  to: 'Liquid syntax error (snippets/price line 22): Expected end_of_string but found
+    id in "has_compare = compare_value and compare_value > price_value"'
+  position: 0..146
+{% endcomment %}
