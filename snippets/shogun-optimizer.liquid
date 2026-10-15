@@ -1611,55 +1611,53 @@ This file can be re-written at any time.
       console.debug(`shogun: Shopify ID verified: ${intendedShopifyId}`);
     }
 
-    
-      if (typeof ShogunDispatcher === 'undefined') {
-        console.error("shogun: Dispatcher is not defined. Please ensure the shogun optimizer script is properly loaded.");
-        reportExclusion('dispatcher_unavailable', { optimizer_version: 2 });
-        return;
-      }
+    if (typeof ShogunDispatcher === 'undefined') {
+      console.error("shogun: Dispatcher is not defined. Please ensure the shogun optimizer script is properly loaded.");
+      reportExclusion('dispatcher_unavailable', { optimizer_version: 2 });
+      return;
+    }
 
-      const dispatcherConfig = {
-        shop: {
-          shopId: "d5f8578e-da06-4c69-8103-fedc6ee2965b",
-          shopDomain: "thattukadai.myshopify.com",
-          analyticsUrl: "https://shogun-abc-production.global.ssl.fastly.net",
-          geoLocationApi: "https://ipinfo.io/json?token=f2ae3a557d807b",
-          storefrontAccessToken: "e40760d5ef58b4c0d03157a2cda71fae",
-          defaultThemeId: shopMetafieldConfig.default_theme_id ? shopMetafieldConfig.default_theme_id.toString() : null,
-          configExpiresAt: shopMetafieldConfig.expires_at,
-        },
-        page: {
-          pageId: "{{ content.id }}",
-          pageType: "{% assign shg_page_types = 'search,cart,password,gift_card' | split: ',' %}{% if template.directory == 'customers' %}customers{% elsif template.name == 'list-collections' %}list-collections{% elsif article %}article{% elsif blog %}blog{% elsif page %}page{% elsif product %}product{% elsif collection %}collection{% elsif metaobject %}metaobject{% elsif template.name == 'index' %}homepage{% elsif template.name == '404' %}not_found{% elsif shg_page_types contains template.name %}{{ template.name }}{% else %}other{% endif %}",
-          templateName: "{{ template.name }}",
-          templateSuffix: "{{ template.suffix }}",
-          templateDirectory: "{{ template.directory }}",
-          themeId: "152177672415",
-          languageRootUrl: "{{ localization.language.root_url }}",
-          path: window.location.pathname,
-          currentCartVariantId: {% if cart.attributes.shogun_variant_id %}"{{ cart.attributes.shogun_variant_id }}"{% else %}null{% endif %},
-        },
-        session: {
-          sessionId: urlParams.get('shgSessionId'),
-          customerId: "{{ customer.id }}",
-          isB2B: {{ customer.b2b? | default: false }},
-        },
-        assignmentStrategy: shopMetafieldConfig.method,
-        botDetectionLevel: shopMetafieldConfig.bot_detection,
-        publishedOptimizations: optimizationsData,
-        configExpired: configExpired,
-        configExpiresAt: typeof shopMetafieldConfig.expires_at === 'number' ? shopMetafieldConfig.expires_at : null
-      }
+    const dispatcherConfig = {
+      shop: {
+        shopId: "d5f8578e-da06-4c69-8103-fedc6ee2965b",
+        shopDomain: "thattukadai.myshopify.com",
+        analyticsUrl: "https://shogun-abc-production.global.ssl.fastly.net",
+        geoLocationApi: "https://ipinfo.io/json?token=f2ae3a557d807b",
+        storefrontAccessToken: "e40760d5ef58b4c0d03157a2cda71fae",
+        defaultThemeId: shopMetafieldConfig.default_theme_id ? shopMetafieldConfig.default_theme_id.toString() : null,
+        configExpiresAt: shopMetafieldConfig.expires_at,
+      },
+      page: {
+        pageId: "{{ content.id }}",
+        pageType: "{% assign shg_page_types = 'search,cart,password,gift_card' | split: ',' %}{% if template.directory == 'customers' %}customers{% elsif template.name == 'list-collections' %}list-collections{% elsif article %}article{% elsif blog %}blog{% elsif page %}page{% elsif product %}product{% elsif collection %}collection{% elsif metaobject %}metaobject{% elsif template.name == 'index' %}homepage{% elsif template.name == '404' %}not_found{% elsif shg_page_types contains template.name %}{{ template.name }}{% else %}other{% endif %}",
+        templateName: "{{ template.name }}",
+        templateSuffix: "{{ template.suffix }}",
+        templateDirectory: "{{ template.directory }}",
+        themeId: "152177672415",
+        languageRootUrl: "{{ localization.language.root_url }}",
+        path: window.location.pathname,
+        currentCartVariantId: {% if cart.attributes.shogun_variant_id %}"{{ cart.attributes.shogun_variant_id }}"{% else %}null{% endif %},
+      },
+      session: {
+        sessionId: urlParams.get('shgSessionId'),
+        customerId: "{{ customer.id }}",
+        isB2B: {{ customer.b2b? | default: false }},
+      },
+      assignmentStrategy: shopMetafieldConfig.method,
+      botDetectionLevel: shopMetafieldConfig.bot_detection,
+      publishedOptimizations: optimizationsData,
+      configExpired: configExpired,
+      configExpiresAt: typeof shopMetafieldConfig.expires_at === 'number' ? shopMetafieldConfig.expires_at : null
+    }
 
-      console.debug("shogun: Initializing ShogunOptimizer v2");
-      try {
-        const dispatcher = new ShogunDispatcher(dispatcherConfig);
-        dispatcher.run();
-      } catch (error) {
-        console.error("shogun: Dispatcher failed to start.", error);
-        reportExclusion('dispatcher_unavailable', { optimizer_version: 2, error: describeThrown(error) });
-      }
-    
+    console.debug("shogun: Initializing ShogunOptimizer v2");
+    try {
+      const dispatcher = new ShogunDispatcher(dispatcherConfig);
+      dispatcher.run();
+    } catch (error) {
+      console.error("shogun: Dispatcher failed to start.", error);
+      reportExclusion('dispatcher_unavailable', { optimizer_version: 2, error: describeThrown(error) });
+    }
   })();
 
 </script>
